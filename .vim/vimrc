@@ -1,13 +1,11 @@
-
-" init
-
-set nocompatible
+" init 
+set nocompatible 
 
 let g:is_mac = has('mac')
 let g:is_win = has('win32') || has('win64')
 
 if len($H)
-  let g:home = expand('$H')
+let g:home = expand('$H')
   set runtimepath-=~/.vim
   set runtimepath+=$H/.vim
 elseif len($USERPROFILE)
