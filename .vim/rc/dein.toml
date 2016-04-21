@@ -35,7 +35,7 @@ repo = 'Shougo/vimproc.vim'
   linux   = 'make'
   unix    = 'gmake'
 
-[[plugins]]]
+[[plugins]]
 repo = 'w0ng/vim-hybrid'
 
 [[plugins]]
