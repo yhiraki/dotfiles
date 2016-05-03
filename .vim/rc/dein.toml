@@ -63,3 +63,10 @@ repo = 'vim-airline/vim-airline-themes'
 
 [[plugins]]
 repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
