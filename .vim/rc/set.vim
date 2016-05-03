@@ -6,6 +6,7 @@ set ic
 set shiftwidth=2
 set tabstop=2
 set expandtab
+set laststatus=2
 
 if has('mouse')
   set mouse=a
