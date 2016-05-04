@@ -73,3 +73,8 @@ repo = 'tpope/vim-fugitive'
 [[plugins]]
 repo = 'kana/vim-smartinput'
 
+[[plugins]]
+repo = 'jeffkreeftmeijer/vim-numbertoggle'
+
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
