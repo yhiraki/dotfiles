@@ -78,3 +78,6 @@ repo = 'jeffkreeftmeijer/vim-numbertoggle'
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
