@@ -70,3 +70,6 @@ repo = 'airblade/vim-gitgutter'
 [[plugins]]
 repo = 'tpope/vim-fugitive'
 
+[[plugins]]
+repo = 'kana/vim-smartinput'
+
