@@ -1,6 +1,8 @@
 " init 
 set nocompatible 
 
+syntax on
+
 let g:is_mac = has('mac')
 let g:is_win = has('win32') || has('win64')
 
