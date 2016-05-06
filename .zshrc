@@ -68,7 +68,7 @@ setopt nolistbeep
 # autoload predict-on; predict-on
 
 # エイリアス
-alias ls="ls -F --color=auto"
+#alias ls="ls -F --color=auto"
 
 # リダイレクトのマルチ化
 # http://news.mynavi.jp/column/zsh/007/
@@ -230,7 +230,7 @@ function trash-it(){
   mv --backup=numbered --target-directory=$TRASHDIR $@
   du -sh $TRASHDIR
 }
-alias rm='trash-it'
+#alias rm='trash-it'
 
 function trash-clear(){
   TRASHDIR="${HOME}/.Trash"
