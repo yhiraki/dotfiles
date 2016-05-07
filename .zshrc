@@ -143,7 +143,7 @@ setopt prompt_subst
 
 # 外部ファイルの読み込み設定
 # http://news.mynavi.jp/column/zsh/006/
-[ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 # https://gist.github.com/mollifier/4979906
 # 補完で小文字でも大文字にマッチさせる
