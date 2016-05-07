@@ -61,14 +61,11 @@ setopt correct
 setopt list_packed
 
 # Beep音を無効化
-setopt nolistbeep
+setopt no_beep
 
 # http://news.mynavi.jp/column/zsh/006/
 # 先方予測機能
 # autoload predict-on; predict-on
-
-# エイリアス
-#alias ls="ls -F --color=auto"
 
 # リダイレクトのマルチ化
 # http://news.mynavi.jp/column/zsh/007/
@@ -230,7 +227,7 @@ function trash-it(){
   mv --backup=numbered --target-directory=$TRASHDIR $@
   du -sh $TRASHDIR
 }
-#alias rm='trash-it'
+alias rm='trash-it'
 
 function trash-clear(){
   TRASHDIR="${HOME}/.Trash"
@@ -260,3 +257,17 @@ if [ -e /dev/clipboard ]; then
     cygpath -w `pwd`/$1 > /dev/clipboard
   }
 fi
+
+case "${OSTYPE}" in
+linux*)
+  alias ls='ls --color'
+  alias ll='ls -l --color'
+  alias la='ls -la --color'
+  ;;
+darwin*)
+  alias ls="ls -G"
+  alias ll="ls -lG"
+  alias la="ls -laG"
+  ;;
+esac
+
