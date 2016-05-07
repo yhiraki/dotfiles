@@ -8,6 +8,11 @@ set tabstop=2
 set expandtab
 set laststatus=2
 set t_Co=256
+set background=dark
+
+"ビープ音すべてを無効にする
+set visualbell t_vb=
+set noerrorbells "エラーメッセージの表示時にビープを鳴らさない"
 
 if has('mouse')
   set mouse=a
