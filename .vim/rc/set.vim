@@ -1,4 +1,3 @@
-" テキスト表示・タブ関連
 set number
 set incsearch
 set autoindent
@@ -9,6 +8,7 @@ set expandtab
 set laststatus=2
 set t_Co=256
 set background=dark
+set hlsearch
 
 "ビープ音すべてを無効にする
 set visualbell t_vb=
