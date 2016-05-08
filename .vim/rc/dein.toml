@@ -81,3 +81,7 @@ repo = 'davidhalter/jedi-vim'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+
