@@ -63,6 +63,9 @@ setopt list_packed
 # Beep音を無効化
 setopt no_beep
 
+# 対応カッコなどを自動的に保管
+setopt auto_param_keys
+
 # http://news.mynavi.jp/column/zsh/006/
 # 先方予測機能
 # autoload predict-on; predict-on
