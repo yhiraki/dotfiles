@@ -251,12 +251,18 @@ darwin*)
   ;;
 esac
 
+
 source ~/.zplug/zplug
 
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
-zplug "b4b4r07/zsh-gomi", if:"which fzf"
+# zplug "b4b4r07/zsh-gomi", if:"which fzf"
 zplug "zsh-users/zsh-syntax-highlighting", nice:10
+# zplug "junegunn/fzf-bin", \
+#     as:command, \
+#     rename-to:"fzf", \
+#     from:gh-r, \
+#     on: zplug "b4b4r07/enhancd", use:enhancd.sh
 
 # check installed
 if ! zplug check --verbose; then
