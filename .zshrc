@@ -220,29 +220,6 @@ alias zmv='noglob zmv -W'
 #   source ~/.enhancd/enhancd.sh
 # fi
 
-# rmで削除するときにワンクッション置く
-# http://keisanbutsuriya.hateblo.jp/entry/2015/03/21/171333
-function trash-it(){
-  TRASHDIR="${HOME}/.Trash"
-  if [ ! -d $TRASHDIR ]; then
-    mkdir $TRASHDIR
-  fi
-  mv --backup=numbered --target-directory=$TRASHDIR $@
-  du -sh $TRASHDIR
-}
-alias rm='trash-it'
-
-function trash-clear(){
-  TRASHDIR="${HOME}/.Trash"
-  if [ -d $TRASHDIR ]; then
-    BEFORE=`du $TRASHDIR`
-    \rm -rf ${TRASHDIR}
-    echo "$BEFORE -> Trash cleared."
-  else
-    echo 'No trash.'
-  fi
-}
-
 # startコマンドで補完が効かない問題
 if which start > /dev/null; then
   function mstart(){
@@ -274,3 +251,20 @@ darwin*)
   ;;
 esac
 
+source ~/.zplug/zplug
+
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+zplug "b4b4r07/zsh-gomi", if:"which fzf"
+zplug "zsh-users/zsh-syntax-highlighting", nice:10
+
+# check installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# load plugins
+zplug load --verbose
