@@ -85,3 +85,8 @@ repo = 'Shougo/neomru.vim'
 [[plugins]]
 repo = 'junegunn/fzf'
 
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+
+[[plugins]]
+repo = 'vim-scripts/taglist.vim'
