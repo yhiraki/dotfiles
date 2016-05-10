@@ -238,15 +238,6 @@ if [ -e /dev/clipboard ]; then
   }
 fi
 
-case ${OSTYPE} in
-  darwin*)
-    source ~/.zshrc.darwin
-    ;;
-  linux*)
-    source ~/.zshrc.linux
-    ;;
-esac
-
 export ZPLUG_HOME=$HOME/.zplug
 if [ ! -d $ZPLUG_HOME ]; then
   git clone https://github.com/zplug/zplug $ZPLUG_HOME
@@ -274,3 +265,15 @@ fi
 
 # load plugins
 zplug load --verbose
+
+# 分割されたzshrc
+ZSHHOME="${HOME}/.zsh.d"
+
+case ${OSTYPE} in
+  darwin*)
+    source $ZSHHOME/.zshrc.darwin
+    ;;
+  linux*)
+    source $ZSHHOME/.zshrc.linux
+    ;;
+esac
