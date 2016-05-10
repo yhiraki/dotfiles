@@ -32,7 +32,7 @@ repo = 'tpope/vim-endwise'
 repo = 'tpope/vim-surround'
 
 [[plugins]]
-repo = 'gabrielelana/vim-markdown'
+repo = 'plasticboy/vim-markdown'
 
 [[plugins]]
 repo = 'kannokanno/previm'
