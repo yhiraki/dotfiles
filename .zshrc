@@ -238,17 +238,13 @@ if [ -e /dev/clipboard ]; then
   }
 fi
 
-case "${OSTYPE}" in
-linux*)
-  alias ls='ls --color'
-  alias ll='ls -l --color'
-  alias la='ls -la --color'
-  ;;
-darwin*)
-  alias ls="ls -G"
-  alias ll="ls -lG"
-  alias la="ls -laG"
-  ;;
+case ${OSTYPE} in
+  darwin*)
+    source ~/.zshrc.darwin
+    ;;
+  linux*)
+    source ~/.zshrc.linux
+    ;;
 esac
 
 export ZPLUG_HOME=$HOME/.zplug
