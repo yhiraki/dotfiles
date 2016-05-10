@@ -277,3 +277,7 @@ case ${OSTYPE} in
     source $ZSHHOME/.zshrc.linux
     ;;
 esac
+
+if which anyframe-widget-select-widget > /dev/null; then
+  source $ZSHHOME/.zshrc.anyframe
+fi
