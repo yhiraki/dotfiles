@@ -90,3 +90,6 @@ repo = 'scrooloose/nerdtree'
 
 [[plugins]]
 repo = 'vim-scripts/taglist.vim'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
