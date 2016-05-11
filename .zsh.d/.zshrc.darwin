@@ -4,10 +4,10 @@ alias la="ls -laG"
 
 function nas () {
   echo -E $1 \
+  | tr -d '\n' \
   | sed 's/^ *//g' \
   | sed 's/ *$//g' \
   | tr '\' '/' \
-  | tr -d '\n' \
   | sed 's/^/smb:/g' \
-  | xargs -E -t open
+  | xargs -I{} -t open {}
 }
