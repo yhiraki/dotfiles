@@ -276,6 +276,9 @@ case ${OSTYPE} in
   linux*)
     source $ZSHHOME/.zshrc.linux
     ;;
+  msys*)
+    source $ZSHHOME/.zshrc.msys
+    ;;
 esac
 
 if which anyframe-widget-select-widget > /dev/null; then
