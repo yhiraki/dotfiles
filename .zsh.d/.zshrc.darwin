@@ -3,5 +3,11 @@ alias ll="ls -lG"
 alias la="ls -laG"
 
 function nas () {
-  open smb:${1//\\//}
+  echo -E $1 \
+  | sed 's/^ *//g' \
+  | sed 's/ *$//g' \
+  | tr '\' '/' \
+  | tr -d '\n' \
+  | sed 's/^/smb:/g' \
+  | xargs -E -t open
 }
