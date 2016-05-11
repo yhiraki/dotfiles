@@ -7,6 +7,6 @@ function help(){
     | sed '/#.*/d' \
     | sed '/^$/d' \
     | anyframe-selector-auto \
-    | sed -E 's/ *\[.*\]//g' \
+    | sed -E 's/ *\[.*\] *//g' \
     | anyframe-action-insert
 }
