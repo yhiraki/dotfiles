@@ -1,0 +1,12 @@
+function nas () {
+  pathlist=$(echo -E $1 \
+    | tr -s '\\' '/' \
+    | tr -d '\n' \
+    | sed 's/^  *//g' \
+    | sed 's/  *$//g' )
+  remotepath="smb://$(echo $pathlist | cut -d '/' -f2-3)"
+  volumepath="/Volume/$(echo -E $pathlist | cut -d '/' -f3-)"
+
+  echo -E $remotepath  | xargs -I{} -t open {}
+  && echo -E $volumepath  | xargs -I{} -t open {}
+}
