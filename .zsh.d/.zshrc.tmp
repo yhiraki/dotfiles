@@ -5,8 +5,11 @@ function nas () {
     | sed 's/^  *//g' \
     | sed 's/  *$//g' )
   remotepath="smb://$(echo $pathlist | cut -d '/' -f2-3)"
-  volumepath="/Volume/$(echo -E $pathlist | cut -d '/' -f3-)"
+  volumepath="/Volumes/$(echo -E $pathlist | cut -d '/' -f3-)"
 
-  echo -E $remotepath  | xargs -I{} -t open {}
-  && echo -E $volumepath  | xargs -I{} -t open {}
+  if [ ! -e $volumepath ]; then
+    echo -E $remotepath  | xargs -I{} -t open {}
+    sleep 5
+  fi
+  echo -E $volumepath  | xargs -I{} -t open {}
 }
