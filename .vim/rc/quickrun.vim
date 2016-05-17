@@ -15,3 +15,27 @@ let g:quickrun_config._ = {
 \   'outputter/buffer/split'  : ':rightbelow 8sp',
 \   'outputter/buffer/close_on_empty' : 1,
 \}
+
+" python 実行用の設定
+let g:quickrun_config['python'] = {
+\   'command' : 'python',
+\   'outputter/buffer/filetype' : 'python_result'
+\}
+let g:quickrun_config['python.pytest.doctest'] = {
+\   'command' : 'py.test',
+\   'cmdopt' : '--doctest-modules',
+\   'tempfile': '$HOME/.vim/temp/__tmp__.py',
+\   'outputter/buffer/filetype' : 'doctest_result'
+\}
+let g:quickrun_config['python.nose.doctest'] = {
+\   'command' : 'nosetests',
+\   'cmdopt' : '--with-doctest',
+\   'tempfile': '$HOME/.vim/temp/__tmp__.py',
+\   'outputter/buffer/filetype' : 'doctest_result'
+\}
+let g:quickrun_config['python.pytest'] = {
+\   'command' : 'py.test',
+\   'cmdopt' : '-s -v',
+\   'tempfile' : '$HOME/.vim/temp/__tmp__.py',
+\   'outputter/buffer/filetype' : 'pytest_result'
+\}
