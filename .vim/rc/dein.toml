@@ -20,7 +20,7 @@ hook_post_update = '''
 repo = 'mattn/emmet-vim'
 
 [[plugins]]
-repo = 'tomtom/tcomment_vim'
+repo = 'tyru/caw.vim'
 
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
@@ -78,6 +78,10 @@ repo = 'jeffkreeftmeijer/vim-numbertoggle'
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
+hook_post_update = '''
+  let cmd = 'pip install jedi'
+  let g:dein#plugin.build = cmd
+'''
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
