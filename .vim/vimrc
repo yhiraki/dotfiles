@@ -22,7 +22,18 @@ function! s:load_rc(file)
   execute 'source ' . g:rc_dir . '/' . a:file . '.vim'
 endfunction
 
-let load_rc_list = [ 'dein', 'set', 'encoding', 'os', 'markdown', 'airline', 'color', 'quickrun', 'jedi' ]
+let load_rc_list = [
+      \ 'dein',
+      \ 'set',
+      \ 'encoding',
+      \ 'os',
+      \ 'markdown',
+      \ 'airline',
+      \ 'color',
+      \ 'quickrun',
+      \ 'jedi',
+      \ 'unite',
+      \ 'fzf' ]
 
 for rc in load_rc_list
   call s:load_rc(rc)
