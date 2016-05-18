@@ -48,6 +48,9 @@ set status=ssl,input,location,bookmark,history,tabcount,position
 " R で.vimperatorrcを再読込み
 map R :source ~/.vimperatorrc<CR>
 
+" 入力欄に自動フォーカスしない
+set focuscontent
+
 "===================="
 " mappings
 "===================="
