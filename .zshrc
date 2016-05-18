@@ -285,3 +285,6 @@ esac
 if which anyframe-widget-select-widget > /dev/null; then
   source $ZSHHOME/.zshrc.anyframe
 fi
+
+# cal 今日の日付に色を付ける
+alias cal='cal | grep -C6 --color $(date +%d)'
