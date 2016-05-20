@@ -1,6 +1,7 @@
 alias ls="ls -G"
 alias ll="ls -lG"
 alias la="ls -laG"
+alias updatedb='/usr/libexec/locate.updatedb'
 
 function nas () {
   pathlist=$(echo -E $1 \
