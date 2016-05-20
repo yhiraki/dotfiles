@@ -33,7 +33,8 @@ let load_rc_list = [
       \ 'quickrun',
       \ 'jedi',
       \ 'unite',
-      \ 'fzf' ]
+      \ 'fzf',
+      \ 'submode' ]
 
 for rc in load_rc_list
   call s:load_rc(rc)
