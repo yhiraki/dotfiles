@@ -1,0 +1,41 @@
+" init
+set nocompatible
+
+let g:is_mac = has('mac')
+let g:is_linux = has('unix') || has('win32unix') || has('win64unix')
+let g:is_win = has('win32') || has('win64')
+
+if len($HOME)
+let g:home = expand('$HOME')
+  set runtimepath-=~/.vim
+  set runtimepath+=$HOME/.vim
+elseif len($USERPROFILE)
+  let g:home = expand('$USERPROFILE')
+else
+  let g:home = expand('~')
+endif
+
+let g:vim_home = g:home . (g:is_win ? '/vimfiles' : '/.vim')
+let g:rc_dir = g:vim_home . '/rc'
+
+function! s:load_rc(file)
+  execute 'source ' . g:rc_dir . '/' . a:file . '.vim'
+endfunction
+
+let load_rc_list = [
+      \ 'dein',
+      \ 'set',
+      \ 'encoding',
+      \ 'os',
+      \ 'markdown',
+      \ 'airline',
+      \ 'color',
+      \ 'quickrun',
+      \ 'jedi',
+      \ 'unite',
+      \ 'fzf',
+      \ 'submode' ]
+
+for rc in load_rc_list
+  call s:load_rc(rc)
+endfor
