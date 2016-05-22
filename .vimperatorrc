@@ -88,6 +88,9 @@ nnoremap <Leader>gr :<C-u>panorama remove<Space>
 " タブグループビューを開く
 nnoremap <Leader>go <C-S-e>
 
+"Backspaceを無効化する。
+map <BS> ""
+
 " @でタブのピン留めをトグル
 javascript <<EOM
 liberator.modules.commands.addUserCommand(["togglepin"], "add pin to current tab",
