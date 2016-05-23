@@ -112,6 +112,13 @@ nnoremap <Leader>p goq
 " copy.js
 "============================
 
+let g:caret_hint_swap_key = 'o'
+
+
+"============================
+" copy.js
+"============================
+
 javascript <<EOM
   liberator.globalVariables.copy_templates = [
     { label: 'title', value: '%TITLE%' },
