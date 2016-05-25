@@ -3,35 +3,6 @@
 # set prompt
 #
 
-case ${UID} in
-0)
-    PROMPT="%B%{[31m%}#%{[m%}%b "
-    PROMPT2="%B%{[31m%}%_#%{[m%}%b "
-    RPROMPT="[%~]"
-    SPROMPT="%B%{[31m%}%r is correct? [n,y,a,e]:%{[m%}%b "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-        PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
-    ;;
-*)
-    PROMPT="%{[31m%}%%%{[m%} "
-    PROMPT2="%{[31m%}%_%%%{[m%} "
-    RPROMPT="[%~]"
-    SPROMPT="%{[31m%}%r is correct? [n,y,a,e]:%{[m%} "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-        PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
-    ;;
-esac
-
-# set terminal title including current directory
-#
-case "${TERM}" in
-kterm*|xterm)
-    precmd() {
-        echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-    }
-    ;;
-esac
-
 # 日本語の設定
 export LANG=ja_JP.UTF-8
 
@@ -83,7 +54,11 @@ bindkey -v
 # 自動補完を有効にする
 # コマンドの引数やパス名を途中まで入力して <Tab> を押すといい感じに補完してくれる
 # 例： `cd path/to/<Tab>`, `ls -<Tab>`
-autoload -U compinit; compinit
+autoload -U compinit; compinit -u
+compinit -C
+
+# pure
+autoload -U promptinit && promptinit
 
 # 入力したコマンドが存在せず、かつディレクトリ名と一致するなら、ディレクトリに cd する
 # 例： /usr/bin と入力すると /usr/bin ディレクトリに移動
@@ -246,15 +221,11 @@ source $ZPLUG_HOME/init.zsh
 
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
-zplug "b4b4r07/zsh-gomi", if:"which fzf"
 zplug "zsh-users/zsh-syntax-highlighting", nice:10
 zplug "mollifier/anyframe"
 zplug "zsh-users/zsh-completions"
-# zplug "junegunn/fzf-bin", \
-#     as:command, \
-#     rename-to:"fzf", \
-#     from:gh-r, \
-#     on: zplug "b4b4r07/enhancd", use:enhancd.sh
+zplug "mafredri/zsh-async"
+zplug "sindresorhus/pure"
 
 # check installed
 if ! zplug check --verbose; then
@@ -265,7 +236,7 @@ if ! zplug check --verbose; then
 fi
 
 # load plugins
-zplug load --verbose
+zplug load
 
 # 分割されたzshrc
 ZSHHOME="${HOME}/.zsh.d"
