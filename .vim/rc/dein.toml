@@ -100,3 +100,9 @@ repo = 'thinca/vim-quickrun'
 
 [[plugins]]
 repo = 'kana/vim-submode'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+[[plugins]]
+repo = 'kana/vim-textobj-entire'
