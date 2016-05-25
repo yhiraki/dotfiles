@@ -10,6 +10,9 @@ set t_Co=256
 set background=dark
 set hlsearch
 
+" 0から始まる数値を10進数として処理する
+set nrformats=
+
 "ビープ音すべてを無効にする
 set visualbell t_vb=
 set noerrorbells "エラーメッセージの表示時にビープを鳴らさない"
