@@ -10,6 +10,9 @@ set t_Co=256
 set background=dark
 set hlsearch
 
+" ペーストモードを簡単に切り替え
+set pastetoggle=<f5>
+
 " 0から始まる数値を10進数として処理する
 set nrformats=
 
