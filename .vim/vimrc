@@ -34,7 +34,8 @@ let load_rc_list = [
       \ 'jedi',
       \ 'unite',
       \ 'fzf',
-      \ 'submode' ]
+      \ 'submode',
+      \ 'mapping' ]
 
 for rc in load_rc_list
   call s:load_rc(rc)
