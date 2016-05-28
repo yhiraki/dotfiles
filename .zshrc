@@ -141,10 +141,10 @@ zplug "sindresorhus/pure"
 
 # check installed
 if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
+    # printf "Install? [y/N]: "
+    # if read -q; then
         echo; zplug install
-    fi
+    # fi
 fi
 
 # load plugins
