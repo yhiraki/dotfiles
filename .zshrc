@@ -227,6 +227,8 @@ fi
 # load plugins
 zplug load
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # 分割されたzshrc
 ZSHHOME="${HOME}/.zsh.d"
 
@@ -253,8 +255,9 @@ alias cal='cal | grep -C6 --color $(date +%d)'
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
 
-frepo() {
+repos() {
   local dir
   dir=$(ghq list > /dev/null | fzf-tmux) &&
       cd $(ghq root)/$dir
 }
+
