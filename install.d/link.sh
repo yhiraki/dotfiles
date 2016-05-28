@@ -1,11 +1,12 @@
 #!/bin/bash
 
-ORIG_DOTFILES=(
+ORIG_DOTFILES='
 .zshrc
 .zsh.d
 .tmux.conf
 .vim
-)
+.gitconfig
+'
 
 for f in $ORIG_DOTFILES; do
   if [ -e $DOTFILES_GIT_PATH/$f ]; then
