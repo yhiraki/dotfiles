@@ -106,15 +106,11 @@ zstyle ':completion:*:default' menu select=1
 # こうすると、 Ctrl-W でカーソル前の1単語を削除したとき、 / までで削除が止まる
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-
 ## このサイトを参考にした
 # http://qiita.com/KENJU/items/828f5319ca29b9928f70
 
 # 色を使う
 setopt prompt_subst
-
-# mintty+percol用設定
-# export TERM=xterm
 
 # 外部ファイルの読み込み設定
 # http://news.mynavi.jp/column/zsh/006/
@@ -124,85 +120,12 @@ setopt prompt_subst
 # 補完で小文字でも大文字にマッチさせる
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# percol 関連
-
-if which percol > /dev/null; then
-
-  # シェルの履歴検索
-  # https://gist.github.com/mitukiii/4234173
-  function percol-select-history() {
-    local tac
-    if which tac > /dev/null; then
-      tac="tac"
-    else
-      tac="tail -r"
-    fi
-    BUFFER=$(history -n 1 | \
-      eval $tac | \
-      percol --match-method migemo --query "$LBUFFER")
-    CURSOR=$#BUFFER
-    zle clear-screen
-  }
-  zle -N percol-select-history
-  bindkey '^r' percol-select-history
-
-  # ドキュメントファイルをインクリメンタルサーチ
-  # http://d.hatena.ne.jp/kbkbkbkb1/20120429
-  function search-document-by-percol(){
-    if [ $# -ge 1 ]; then
-      DOCUMENT_DIR=$*
-    else
-      DOCUMENT_DIR="\
-  $HOME/Dropbox/
-  $HOME/Documents/"
-    fi
-    SELECTED_FILE=$(echo $DOCUMENT_DIR | xargs find | \
-      grep -E "\.*(pdf|txt|md|markdown|odp|odt|ods|pptx?|docx?|xlsx?|log)$" | percol --match-method migemo)
-    if [ $? -eq 0 ]; then
-      start $SELECTED_FILE
-    fi
-  }
-  alias sd='search-document-by-percol'
-
-  # カレントディレクトリ配下をインクリメンタルサーチしてプロンプトに追加
-  function insert-file-by-percol(){
-    LBUFFER=$LBUFFER$( find . | percol --match-method migemo | tr '\n' ' ' | \
-      sed 's/[[:space:]]*$//') # delete trailing space
-    zle -R -c
-  }
-  zle -N insert-file-by-percol
-  bindkey 'c' insert-file-by-percol
-
-  # カレントディレクトリのファイルを複数選択して渡す
-  function multiple-select-by-percol(){
-    LBUFFER=$LBUFFER$( ls . | percol | tr '\n' ' ' | \
-      sed 's/[[:space:]]*$//') # delete trailing space
-    zle -R -c
-  }
-  zle -N multiple-select-by-percol
-  bindkey 'm' multiple-select-by-percol
-
-fi
-
 # zmvの設定
 # http://mollifier.hatenablog.com/entry/20101227/
 autoload -Uz zmv
 alias zmv='noglob zmv -W'
 
-# enhancdの設定
-# http://github.com/b4b4r07/enhancd.git
-# if [ -f ~/.enhancd/enhancd.sh ]; then
-#   source ~/.enhancd/enhancd.sh
-# fi
-
-
-# カレントディレクトリをクリップボードに転送
-if [ -e /dev/clipboard ]; then
-  function cpwd(){
-    cygpath -w `pwd`/$1 > /dev/clipboard
-  }
-fi
-
+# zplug
 export ZPLUG_HOME=$HOME/.zplug
 if [ ! -d $ZPLUG_HOME ]; then
   git clone https://github.com/zplug/zplug $ZPLUG_HOME
