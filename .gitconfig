@@ -1,2 +1,4 @@
 [init]
 	templatedir = ~/.git_template
+[ghq]
+	root = ~/src
