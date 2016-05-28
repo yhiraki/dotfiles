@@ -219,7 +219,6 @@ if [ ! -d $ZPLUG_HOME ]; then
 fi
 source $ZPLUG_HOME/init.zsh
 
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "zsh-users/zsh-syntax-highlighting", nice:10
 zplug "mollifier/anyframe"
@@ -259,3 +258,7 @@ fi
 
 # cal 今日の日付に色を付ける
 alias cal='cal | grep -C6 --color $(date +%d)'
+
+# gopath
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOPATH/bin
