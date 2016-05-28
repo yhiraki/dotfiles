@@ -175,7 +175,7 @@ fi
 alias cal='cal | grep -C6 --color $(date +%d)'
 
 # gopath
-export GOPATH=$HOME/.go
+export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
 
 repos() {

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-GOPATH=$HOME
+export GOPATH=$HOME
+export PATH=$PATH:$GOPATH/bin
+
 GO_INSTALL_LIST='
 github.com/motemen/ghq
 '
