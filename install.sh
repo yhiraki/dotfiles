@@ -22,4 +22,5 @@ source $DOTFILES_GIT_PATH/install.d/link.sh
 source $DOTFILES_GIT_PATH/install.d/go.sh
 source $DOTFILES_GIT_PATH/install.d/ghq.sh
 
-exec $SHELL
+sudo chsh --shell $(which zsh)
+exec zsh
