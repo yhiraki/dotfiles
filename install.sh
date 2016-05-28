@@ -5,7 +5,7 @@ DOTFILES_GIT_PATH=$HOME/src/github.com/awa-manju/dotfiles
 
 # install packages
 if which apt-get > /dev/null; then
-  sudo apt-get install git
+  sudo apt-get -y install git
   git clone $DOTFILES_GIT_URL $DOTFILES_GIT_PATH
   source $DOTFILES_GIT_PATH/install.d/apt.sh
 
