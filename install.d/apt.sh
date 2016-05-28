@@ -6,6 +6,4 @@ zsh
 golang
 '
 
-for i in $APT_INSTALL_LIST; do
-  sudo apt-get -y install $i
-done
+sudo apt-get -y install $APT_INSTALL_LIST
