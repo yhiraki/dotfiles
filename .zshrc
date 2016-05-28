@@ -262,3 +262,4 @@ alias cal='cal | grep -C6 --color $(date +%d)'
 # gopath
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOPATH/bin
+
