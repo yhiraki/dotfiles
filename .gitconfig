@@ -2,3 +2,5 @@
 	templatedir = ~/.git_template
 [ghq]
 	root = ~/src
+[core]
+	editor = vi
