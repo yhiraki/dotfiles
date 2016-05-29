@@ -24,4 +24,4 @@ source $DOTFILES_GIT_PATH/install.d/ghq.sh
 source $DOTFILES_GIT_PATH/install.d/pyenv.sh
 
 sudo chsh $USER --shell $(which zsh)
-exec zsh
+exit
