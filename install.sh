@@ -23,5 +23,5 @@ source $DOTFILES_GIT_PATH/install.d/go.sh
 source $DOTFILES_GIT_PATH/install.d/ghq.sh
 source $DOTFILES_GIT_PATH/install.d/pyenv.sh
 
-sudo chsh --shell $(which zsh)
+sudo chsh $USER --shell $(which zsh)
 exec zsh
