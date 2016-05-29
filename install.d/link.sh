@@ -6,6 +6,7 @@ ORIG_DOTFILES=$(echo '
 .tmux.conf
 .vim
 .gitconfig
+.git_template
 ' | xargs)
 
 for f in $ORIG_DOTFILES; do
