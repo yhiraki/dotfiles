@@ -16,5 +16,6 @@ function nas () {
     echo -E $remotepath  | xargs -I{} -t open {}
     sleep 5
   fi
+  cd $(echo -E $volumepath  | xargs dirname)
   echo -E $volumepath  | xargs -I{} -t open {}
 }
