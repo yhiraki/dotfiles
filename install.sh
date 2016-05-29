@@ -21,6 +21,7 @@ fi
 source $DOTFILES_GIT_PATH/install.d/link.sh
 source $DOTFILES_GIT_PATH/install.d/go.sh
 source $DOTFILES_GIT_PATH/install.d/ghq.sh
+source $DOTFILES_GIT_PATH/install.d/pyenv.sh
 
 sudo chsh --shell $(which zsh)
 exec zsh
