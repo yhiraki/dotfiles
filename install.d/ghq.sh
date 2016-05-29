@@ -1,9 +1,9 @@
 #!/bin/bash
 
-GHQ_INSTALL_LIST='
+GHQ_INSTALL_LIST=$(echo '
 junegunn/fzf
 motemen/ghq
-'
+' | xargs)
 
 for p in $GHQ_INSTALL_LIST; do
   ghq get $p
