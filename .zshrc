@@ -181,6 +181,6 @@ export PATH=$PATH:$GOPATH/bin
 repos() {
   local dir
   dir=$(ghq list > /dev/null | fzf-tmux) &&
-      cd $(ghq root)/$dir
+    cd $(ghq root)/$dir
 }
 
