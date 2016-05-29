@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ORIG_DOTFILES=$(echo '
+.zprofile
 .zshrc
 .zsh.d
 .tmux.conf
