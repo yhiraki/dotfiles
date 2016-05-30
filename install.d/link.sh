@@ -8,6 +8,7 @@ ORIG_DOTFILES=$(echo '
 .vim
 .gitconfig
 .git_template
+.vimperatorrc
 ' | xargs)
 
 for f in $ORIG_DOTFILES; do
