@@ -13,7 +13,7 @@ ORIG_DOTFILES=$(echo '
 
 for f in $ORIG_DOTFILES; do
   if [ -e $HOME/$f ]; then
-    mv $HOME/$f /tmp${f}.orig
+    mv $HOME/$f /tmp/${f}.orig
   fi
   ln -s $DOTFILES_GIT_PATH/$f $HOME/$f
 done
