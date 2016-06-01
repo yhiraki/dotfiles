@@ -153,7 +153,7 @@ zplug load
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # 分割されたzshrc
-ZSHHOME="${HOME}/.zsh.d"
+ZSHHOME="${ZDOTDIR}/.zsh.d"
 
 case ${OSTYPE} in
   darwin*)
