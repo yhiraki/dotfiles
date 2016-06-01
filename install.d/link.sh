@@ -1,9 +1,7 @@
 #!/bin/bash
 
 ORIG_DOTFILES=$(echo '
-.zprofile
-.zshrc
-.zsh.d
+.zshenv
 .tmux.conf
 .vim
 .gitconfig
