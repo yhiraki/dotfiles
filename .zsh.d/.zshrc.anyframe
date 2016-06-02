@@ -11,10 +11,10 @@ function my-manual(){
     HELPFILE=${HELPDIR}/$1
   fi
   SELECTED_LINE=$(
-    cat $HELPFILE \
+    echo $(cat $HELPFILE \
       | sed '/^#.*/d' \
       | sed '/^$/d' \
-      | anyframe-selector-auto \
+      | fzf-tmux) \
       | sed -e 's/ *\[.*\] *//g'
   )
   if [ ${#$(echo $SELECTED_LINE | grep '#.*insert')} -ne 0 ]; then
