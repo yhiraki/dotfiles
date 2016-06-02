@@ -28,6 +28,7 @@ let load_rc_list = [
       \ 'encoding',
       \ 'os',
       \ 'markdown',
+      \ 'python',
       \ 'airline',
       \ 'color',
       \ 'quickrun',
