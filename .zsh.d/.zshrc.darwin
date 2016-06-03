@@ -4,18 +4,25 @@ alias la="ls -laG"
 alias updatedb='/usr/libexec/locate.updatedb'
 
 function nas () {
-  pathlist=$(echo -E $1 \
-    | tr -s '\\' '/' \
-    | tr -d '\n' \
-    | sed 's/^  *//g' \
-    | sed 's/  *$//g' )
-  remotepath="smb://$(echo $pathlist | cut -d '/' -f2-3)"
-  volumepath="/Volumes/$(echo -E $pathlist | cut -d '/' -f3-)"
+  local destremote="$(echo $1 \
+      | tr '\' '/' \
+      | tr -d '\n' \
+      | sed 's/^  *//g' \
+      | sed 's/  *$//g' )"
+  local mountremote="$(echo $destremote | cut -d '/' -f0-4)"
+  local mountlocalroot="/Volumes"
+  local mountlocal="$mountlocalroot/$(echo $destremote | cut -d '/' -f3-4 | tr '/' '_')"
+  local destlocalfile="$mountlocal/$(echo $destremote | cut -d '/' -f5-)"
 
-  if [ ! -e $volumepath ]; then
-    echo -E $remotepath  | xargs -I{} -t open {}
-    sleep 5
+  if [ ! -d $mountlocal ]; then
+    mkdir $mountlocal
+    mount_smbfs $mountremote $mountlocal
   fi
-  cd $(echo -E $volumepath  | xargs dirname)
-  echo -E $volumepath  | xargs -I{} -t open {}
+
+  open "$destlocalfile"
+  if [ -d $destlocalfile ]; then
+    cd "$destlocalfile"
+  else
+    cd "$(dirname $destlocalfile)"
+  fi
 }
