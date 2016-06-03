@@ -110,3 +110,5 @@ repo = 'kana/vim-textobj-entire'
 [[plugins]]
 repo = 'tpope/vim-abolish'
 
+[[plugins]]
+repo = 'vim-scripts/confluencewiki.vim'
