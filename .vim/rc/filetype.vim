@@ -1,4 +1,3 @@
-" --------------------------------------------------
 " python {{{
 
 augroup setPythonFiletype
@@ -8,7 +7,6 @@ augroup END
 " }}}
 
 
-" --------------------------------------------------
 " markdwon {{{
 
 augroup setMarkdownFiletype
@@ -21,7 +19,6 @@ au BufNewFile,BufRead *.md :set filetype=markdown
 "}}}
 
 
-"" --------------------------------------------------
 " confluence {{{
 
 " .mdファイルをmarkdownに紐付け
