@@ -56,9 +56,38 @@ fi
 # cal 今日の日付に色を付ける
 alias cal='cal | grep -C6 --color $(date +%d)'
 
-repos() {
+repo() {
   local dir
   dir=$(ghq list > /dev/null | fzf-tmux) &&
     cd $(ghq root)/$dir
+}
+
+# fbr - checkout git branch
+branch() {
+  local branches branch
+  branches=$(git branch --all -vv) &&
+  branch=$(echo "$branches" | fzf-tmux +m) &&
+  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+}
+
+# fshow - git commit browser
+gitshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
+}
+
+# v - open files in ~/.viminfo
+v() {
+  local files
+  files=$(grep '^>' ~/.viminfo | cut -c3- |
+          while read line; do
+            [ -f "${line/\~/$HOME}" ] && echo "$line"
+          done | fzf-tmux -d -m -q "$*" -1) && vim ${files//\~/$HOME}
 }
 
