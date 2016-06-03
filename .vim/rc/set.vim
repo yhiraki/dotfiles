@@ -10,6 +10,9 @@ set t_Co=256
 set background=dark
 set hlsearch
 
+" マーカーで閉じる
+set foldtext=marker
+
 " ペーストモードを簡単に切り替え
 set pastetoggle=<f5>
 
