@@ -19,6 +19,16 @@ elif which brew > /dev/null; then
 fi
 
 
+# gitconfig
+touch $HOME/.gitconfig
+if ! `grep "\[include\]" $HOME/.gitconfig > /dev/null`; then
+  cat << EOF >> $HOME/.gitconfig
+[include]
+	path = $ZDOTDIR/.gitconfig.local
+EOF
+fi
+
+
 # execute installers
 INSTALL_SH=$(echo '
 link
@@ -30,16 +40,6 @@ pyenv
 for s in $INSTALL_SH; do
   source $ZDOTDIR/install.d/$s.sh
 done
-
-
-# gitconfig
-touch $HOME/.gitconfig
-if ! `grep "\[include\]" $HOME/.gitconfig > /dev/null`; then
-  cat << EOF >> $HOME/.gitconfig
-[include]
-	path = $ZDOTDIR/.gitconfig.local
-EOF
-fi
 
 sudo chsh $USER --shell $(which zsh)
 exec zsh
