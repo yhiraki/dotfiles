@@ -7,18 +7,18 @@ ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
 if which apt-get > /dev/null; then
   sudo apt-get -y install git
   git clone $DOTFILES_REMOTE $ZDOTDIR
-  source $ZDOTFIR/install.d/apt.sh
+  source $ZDOTDIR/install.d/apt.sh
 
 elif which brew > /dev/null; then
   brew install git
-  git clone $DOTFILES_REMOTE $ZDOTFIR
-  source $ZDOTFIR/install.d/brew.sh
+  git clone $DOTFILES_REMOTE $ZDOTDIR
+  source $ZDOTDIR/install.d/brew.sh
 
 # elif which pacman > /dev/null; then
 #   source $HOME/install.d/pacman.sh
 fi
 
-source $ZDOTFIR/install.d/{link,go,ghq,pyenv}.sh
+source $ZDOTDIR/install.d/{link,go,ghq,pyenv}.sh
 
 # gitconfig
 touch $HOME/.gitconfig
