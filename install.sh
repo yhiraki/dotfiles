@@ -23,7 +23,10 @@ source $ZDOTDIR/install.d/{link,go,ghq,pyenv}.sh
 # gitconfig
 touch $HOME/.gitconfig
 if [ ! `grep "\[include\]" $HOME/.gitconfig > /dev/null` ]; then
-  echo "[include]\n\tpath = $ZDOTDIR/.gitconfig.local" >> $HOME/.gitconfig
+  cat << EOF >> $HOME/.gitconfig
+[include]
+	path = $ZDOTDIR/.gitconfig.local
+EOF
 fi
 
 sudo chsh $USER --shell $(which zsh)
