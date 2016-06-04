@@ -5,6 +5,7 @@ ctags
 gawk
 git
 golang
+tmux
 vim
 zsh
 ' | xargs)
