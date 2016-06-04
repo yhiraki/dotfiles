@@ -1,4 +1,4 @@
-ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+export ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
 
 export LANG=ja_JP.UTF-8
 
