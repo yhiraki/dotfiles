@@ -28,7 +28,7 @@ link
 ' | xargs)
 
 for s in $INSTALL_SH; do
-  source $ZDOTDIR/install.d/$INSTALL_SH.sh
+  source $ZDOTDIR/install.d/$s.sh
 done
 
 
