@@ -18,7 +18,7 @@ elif which brew > /dev/null; then
 #   source $HOME/install.d/pacman.sh
 fi
 
-source $ZDOTFIR/install.d/{link,go,ghq,pyenv}.sh
+source $ZDOTDIR/install.d/{link,go,ghq,pyenv}.sh
 
 # gitconfig
 touch $HOME/.gitconfig
