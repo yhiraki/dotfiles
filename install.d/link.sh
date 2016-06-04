@@ -12,7 +12,7 @@ for f in $ORIG_DOTFILES; do
   if [ -e $HOME/$f ]; then
     mv $HOME/$f /tmp/${f}.orig
   fi
-  ln -s $DOTFILES_GIT_PATH/$f $HOME/$f
+  ln -s $ZDOTDIR/$f $HOME/$f
 done
 
 # tmux plugins
