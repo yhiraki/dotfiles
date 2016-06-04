@@ -18,7 +18,19 @@ elif which brew > /dev/null; then
 #   source $HOME/install.d/pacman.sh
 fi
 
-source $ZDOTDIR/install.d/{link,go,ghq,pyenv}.sh
+
+# execute installers
+INSTALL_SH=$(echo '
+link
+.go
+.ghq
+.pyenv
+' | xargs)
+
+for s in $INSTALL_SH; do
+  source $ZDOTDIR/install.d/$INSTALL_SH.sh
+done
+
 
 # gitconfig
 touch $HOME/.gitconfig
