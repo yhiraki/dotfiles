@@ -22,7 +22,7 @@ source $ZDOTDIR/install.d/{link,go,ghq,pyenv}.sh
 
 # gitconfig
 touch $HOME/.gitconfig
-if [ ! grep "\[include\]" > /dev/null ]; then
+if [ ! `grep "\[include\]" > /dev/null` ]; then
   echo "[include]\n\tpath = $ZDOTDIR/.gitconfig.local" >> $HOME/.gitconfig
 fi
 
