@@ -22,9 +22,9 @@ fi
 # execute installers
 INSTALL_SH=$(echo '
 link
-.go
-.ghq
-.pyenv
+go
+ghq
+pyenv
 ' | xargs)
 
 for s in $INSTALL_SH; do
