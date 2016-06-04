@@ -4,7 +4,6 @@ ORIG_DOTFILES=$(echo '
 .zshenv
 .tmux.conf
 .vim
-.gitconfig
 .git_template
 .vimperatorrc
 ' | xargs)
