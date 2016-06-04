@@ -30,4 +30,4 @@ EOF
 fi
 
 sudo chsh $USER --shell $(which zsh)
-exit
+exec zsh
