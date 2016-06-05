@@ -28,7 +28,7 @@ if has('mouse')
 endif
 
 " 無名レジスタに入るデータを、*レジスタにも入れる。
-if has('clipboard')
+if !has('nvim') && has('clipboard')
   set clipboard+=unnamed
 endif
 
