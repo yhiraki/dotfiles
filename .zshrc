@@ -88,7 +88,7 @@ v() {
   files=$(grep '^>' ~/.viminfo | cut -c3- |
           while read line; do
             [ -f "${line/\~/$HOME}" ] && echo "$line"
-          done | fzf-tmux -d -m -q "$*" -1) && vim ${files//\~/$HOME}
+          done | fzf-tmux -d -m -q "$*" -1) && $EDITOR ${files//\~/$HOME}
 }
 
 # fd - cd to selected directory

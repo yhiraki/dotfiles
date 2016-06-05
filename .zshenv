@@ -2,6 +2,9 @@ export ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
 
 export LANG=ja_JP.UTF-8
 
+export EDITOR=nvim
+# export EDITOR=vim
+
 # history 関連
 export HISTFILE=${HOME}/.zsh_history
 export HISTSIZE=10000
