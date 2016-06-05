@@ -16,8 +16,17 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
       \ },
       \ 'component_function': {
-      \   'pyenv': 'pyenv#statusline#component',
+      \   'pyenv': 'LightLinePyenv'
       \ },
-      \ 'separator': { 'left': '⮀', 'right': '⮂' },
-      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '|', 'right': '|' }
       \ }
+
+function! LightLinePyenv()
+  if &filetype == "python"
+    return pyenv#pyenv#get_activated_env()
+  else
+    return ""
+  endif
+endfunction
+

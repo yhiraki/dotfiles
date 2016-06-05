@@ -71,13 +71,6 @@ repo = 'kana/vim-smartinput'
 repo = 'jeffkreeftmeijer/vim-numbertoggle'
 
 [[plugins]]
-repo = 'davidhalter/jedi-vim'
-hook_post_update = '''
-  let cmd = 'pip install jedi'
-  let g:dein#plugin.build = cmd
-'''
-
-[[plugins]]
 repo = 'Shougo/neomru.vim'
 
 [[plugins]]
@@ -108,10 +101,20 @@ repo = 'tpope/vim-abolish'
 repo = 'vim-scripts/confluencewiki.vim'
 
 [[plugins]]
+repo = 'davidhalter/jedi-vim'
+if = '''!has('nvim')'''
+hook_post_update = '''
+  let cmd = 'pip install jedi'
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
 repo = 'Shougo/deoplete.nvim'
+if = '''has('nvim')'''
 
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
+if = '''has('nvim')'''
 
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
@@ -124,3 +127,7 @@ repo = 'itchyny/lightline.vim'
 
 [[plugins]]
 repo = 'cocopon/lightline-hybrid.vim'
+
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
