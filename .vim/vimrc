@@ -41,3 +41,5 @@ let load_rc_list = [
 for rc in load_rc_list
   call s:load_rc(rc)
 endfor
+
+let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python'
