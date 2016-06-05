@@ -1,13 +1,12 @@
 #!/bin/bash
 
-APT_INSTALL_LIST=$(echo '
-ctags
-gawk
-git
-golang
-tmux
-vim
-zsh
-' | xargs)
+APT_CMD="apt-get install -y"
 
-sudo apt-get -y install $APT_INSTALL_LIST
+# common
+$APT_CMD ctags gawk git golang tmux vim wget zsh
+
+# build tools
+$APT_CMD make build-essential
+
+# python build
+$APT_CMD libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl llvm libncurses5-dev
