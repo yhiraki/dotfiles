@@ -56,12 +56,6 @@ repo = 'Shougo/junkfile.vim'
 repo = 'vim-jp/vimdoc-ja'
 
 [[plugins]]
-repo = 'vim-airline/vim-airline'
-
-[[plugins]]
-repo = 'vim-airline/vim-airline-themes'
-
-[[plugins]]
 repo = 'Shougo/unite.vim'
 
 [[plugins]]
@@ -112,3 +106,21 @@ repo = 'tpope/vim-abolish'
 
 [[plugins]]
 repo = 'vim-scripts/confluencewiki.vim'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+
+[[plugins]]
+repo = 'zchee/deoplete-jedi'
+
+[[plugins]]
+repo = 'jmcantrell/vim-virtualenv'
+
+[[plugins]]
+repo = 'lambdalisue/vim-pyenv'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+[[plugins]]
+repo = 'cocopon/lightline-hybrid.vim'
