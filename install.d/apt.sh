@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APT_CMD="apt-get install -y"
+APT_CMD="sudo apt-get install -y"
 
 # common
 $APT_CMD ctags gawk git golang tmux vim wget zsh
