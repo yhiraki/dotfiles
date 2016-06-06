@@ -40,7 +40,7 @@ command! FZFMru call fzf#run({
 function! s:all_files()
   return extend(
   \ filter(copy(v:oldfiles),
-  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/\\|/private/'"),
   \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
 endfunction
 
