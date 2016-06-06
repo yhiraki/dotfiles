@@ -33,7 +33,7 @@ repo = 'tpope/vim-surround'
 
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
-if = '''&filetype == "markdown"'''
+on_ft = 'markdown'
 
 [[plugins]]
 repo = 'kannokanno/previm'
@@ -100,15 +100,20 @@ repo = 'tpope/vim-abolish'
 
 [[plugins]]
 repo = 'vim-scripts/confluencewiki.vim'
-if = '''&filetype == "confluencewiki"'''
+on_ft = 'confluencewiki'
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
 if = '''!has('nvim')'''
+on_ft = ['python', 'djangohtml']
 hook_post_update = '''
   let cmd = 'pip install jedi'
   let g:dein#plugin.build = cmd
 '''
+
+[[plugins]]
+repo = 'lambdalisue/vim-django-support'
+on_ft = ['python', 'djangohtml']
 
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
@@ -117,6 +122,7 @@ if = '''has('nvim')'''
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
 if = '''has('nvim')'''
+on_ft = ['python', 'djangohtml']
 hook_post_update = '''
   let cmd = 'pip install neovim jedi'
   let g:dein#plugin.build = cmd
@@ -124,10 +130,11 @@ hook_post_update = '''
 
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
+on_ft = ['python', 'djangohtml']
 
 [[plugins]]
 repo = 'lambdalisue/vim-pyenv'
-if = '''&filetype == "python"'''
+on_ft = ['python', 'djangohtml']
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'

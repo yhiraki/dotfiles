@@ -1,6 +1,3 @@
-# 設定はここを参考にした
-# http://qiita.com/uasi/items/c4288dd835a65eb9d70
-
 # pure
 autoload -U promptinit && promptinit
 
@@ -104,3 +101,15 @@ fda() {
   local dir
   dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) && cd "$dir"
 }
+
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+fe() {
+  IFS='
+'
+  local declare files=($(ls -a | fzf-tmux --query="$1" --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  unset IFS
+}
+

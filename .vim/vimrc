@@ -5,6 +5,8 @@ let g:is_mac = has('mac')
 let g:is_linux = has('unix') || has('win32unix') || has('win64unix')
 let g:is_win = has('win32') || has('win64')
 
+let $PATH = "~/.pyenv/shims:".$PATH
+
 if len($HOME)
 let g:home = expand('$HOME')
   set runtimepath-=~/.vim
