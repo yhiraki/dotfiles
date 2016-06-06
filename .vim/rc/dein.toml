@@ -33,6 +33,7 @@ repo = 'tpope/vim-surround'
 
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
+if = '''&filetype == "markdown"'''
 
 [[plugins]]
 repo = 'kannokanno/previm'
@@ -99,6 +100,7 @@ repo = 'tpope/vim-abolish'
 
 [[plugins]]
 repo = 'vim-scripts/confluencewiki.vim'
+if = '''&filetype == "confluencewiki"'''
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
@@ -115,12 +117,17 @@ if = '''has('nvim')'''
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
 if = '''has('nvim')'''
+hook_post_update = '''
+  let cmd = 'pip install neovim jedi'
+  let g:dein#plugin.build = cmd
+'''
 
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
 
 [[plugins]]
 repo = 'lambdalisue/vim-pyenv'
+if = '''&filetype == "python"'''
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'
