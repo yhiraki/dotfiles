@@ -38,6 +38,7 @@ let load_rc_list = [
       \ 'unite',
       \ 'fzf',
       \ 'submode',
+      \ 'syntastic',
       \ 'mapping' ]
 
 for rc in load_rc_list

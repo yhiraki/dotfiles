@@ -28,8 +28,11 @@ if has('mouse')
 endif
 
 " 無名レジスタに入るデータを、*レジスタにも入れる。
-if !has('nvim') && has('clipboard')
-  set clipboard+=unnamed
+if has('clipboard')
+  if !has('nvim')
+    set clipboard+=unnamed
+  endif
+  set clipboard+=unnamedplus
 endif
 
 " 行80文字のラインを引く
