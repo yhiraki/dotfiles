@@ -1,31 +1,13 @@
 #!/bin/bash
 
-BREW_INSTALL_LIST=$(echo '
-git
-zsh
-golang
-autoconf
-ctags
-gdbm
-gmp
-gnutls
-go
-libevent
-libtasn1
-nettle
-openssl
-pcre
-pkg-config
-postgresql
-pyenv
-pyenv-virtualenv
-readline
-reattach-to-user-namespace
-task
-tmux
-tree
-vim
-wget
-' | xargs)
+BREW_CMD="brew install"
 
-brew install $BREW_INSTALL_LIST
+# commons
+$BREW_CMD git zsh golang ctags tmux tree vim wget
+
+# python
+$BREW_CMD pyenv pyenv-virtualenvjawshooah/pyenv/pyenv-default-packages
+
+# neovim
+$BREW_CMD neovim/neovim/neovim
+
