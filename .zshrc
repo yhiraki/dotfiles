@@ -53,6 +53,9 @@ fi
 # cal 今日の日付に色を付ける
 alias cal='cal | grep -C6 --color $(date +%d)'
 
+# direnv setup
+eval "$(direnv hook zsh)"
+
 repo() {
   local dir
   dir=$(ghq list > /dev/null | fzf-tmux) &&
@@ -82,10 +85,8 @@ FZF-EOF"
 # v - open files in ~/.viminfo
 v() {
   local files
-  files=$(grep '^>' ~/.viminfo | cut -c3- |
-          while read line; do
-            [ -f "${line/\~/$HOME}" ] && echo "$line"
-          done | fzf-tmux -d -m -q "$*" -1) && $EDITOR ${files//\~/$HOME}
+    files=$(tail +2 $XDG_CACHE_HOME/neomru/file \
+      | fzf-tmux -d -m -q "$*" -1) && $EDITOR ${files}
 }
 
 # fd - cd to selected directory
