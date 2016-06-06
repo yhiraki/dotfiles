@@ -1,17 +1,15 @@
 #!/bin/bash
 
-GHQ_INSTALL_LIST=$(echo '
-junegunn/fzf
-lysyi3m/osx-terminal-themes
-motemen/ghq
-tmux-plugins/tpm
-yyuu/pyenv
-yyuu/pyenv-virtualenv
-vimpr/vimperator-colors
-' | xargs)
+GHQ_CMD='ghq get'
 
-for p in $GHQ_INSTALL_LIST; do
-  ghq get $p
-done
+$GHQ_CMD junegunn/fzf
+$GHQ_CMD lysyi3m/osx-terminal-themes
+$GHQ_CMD motemen/ghq
+$GHQ_CMD tmux-plugins/tpm
+$GHQ_CMD yyuu/pyenv
+$GHQ_CMD yyuu/pyenv-virtualenv
+$GHQ_CMD vimpr/vimperator-colors
+$GHQ_CMD jawshooah/pyenv-default-packages
 
+# fzf init
 $HOME/src/github.com/junegunn/fzf/install --all
