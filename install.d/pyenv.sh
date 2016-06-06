@@ -11,5 +11,7 @@ ln -s $GOPATH/src/github.com/jawshooah/pyenv-default-packages $PYENV_ROOT/plugin
 # pyenv default packages
 cat << EOF > $PYENV_ROOT/default-packages
 neovim
+pep8
+pyflakes
 EOF
 
