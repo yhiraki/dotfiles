@@ -1,4 +1,5 @@
 export ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+export XDG_CACHE_HOME=$HOME/.config
 
 export LANG=ja_JP.UTF-8
 
