@@ -20,11 +20,11 @@ function! s:tags()
   endif
 
   call fzf#run({
-  \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
-  \            '| grep -v ^!',
-  \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
-  \ 'down':    '40%',
-  \ 'sink':    function('s:tags_sink')})
+        \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+        \            '| grep -v ^!',
+        \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+        \ 'down':    '40%',
+        \ 'sink':    function('s:tags_sink')})
 endfunction
 
 command! FZFTags call s:tags()
@@ -32,17 +32,17 @@ command! FZFTags call s:tags()
 
 " mru search
 command! FZFMru call fzf#run({
-\ 'source':  reverse(s:all_files()),
-\ 'sink':    'edit',
-\ 'options': '-m -x +s',
-\ 'down':    '40%' })
+      \ 'source':  'tail +2 $XDG_CACHE_HOME/neomru/file',
+      \ 'sink':    'edit',
+      \ 'options': '-m -x +s',
+      \ 'down':    '40%' })
 
-function! s:all_files()
-  return extend(
-  \ filter(copy(v:oldfiles),
-  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/\\|/private/'"),
-  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
-endfunction
+" function! s:all_files()
+"   return extend(
+"         \ filter(copy(v:oldfiles),
+"         \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/\\|/private/'"),
+"         \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+" endfunction
 
 
 " lines
@@ -62,11 +62,11 @@ function! s:buffer_lines()
 endfunction
 
 command! FZFLines call fzf#run({
-\   'source':  <sid>buffer_lines(),
-\   'sink':    function('<sid>line_handler'),
-\   'options': '--extended --nth=3..',
-\   'down':    '60%'
-\})
+      \   'source':  <sid>buffer_lines(),
+      \   'sink':    function('<sid>line_handler'),
+      \   'options': '--extended --nth=3..',
+      \   'down':    '60%'
+      \})
 
 
 " FZF find
@@ -81,8 +81,8 @@ command! -nargs=1 FZFLocate call fzf#run(
       \ {'source': 'locate <q-args>', 'sink': 'e', 'options': '-m'})
 
 " mappings
-" nnoremap <silent> <leader>fe :<C-u>FZFFind .<CR>
+nnoremap <silent> <leader>fe :<C-u>FZFFind .<CR>
 nnoremap <silent> <leader>fa :<C-u>FZFLocate 
-" nnoremap <silent> <leader>fm :<C-u>FZFMru<CR>
+nnoremap <silent> <leader>fm :<C-u>FZFMru<CR>
 nnoremap <silent> <leader>fl :<C-u>FZFLines<CR>
 nnoremap <silent> <leader>tg :<C-u>FZFTags<CR>

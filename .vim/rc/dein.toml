@@ -56,8 +56,8 @@ repo = 'Shougo/junkfile.vim'
 [[plugins]]
 repo = 'vim-jp/vimdoc-ja'
 
-[[plugins]]
-repo = 'Shougo/unite.vim'
+# [[plugins]]
+# repo = 'Shougo/unite.vim'
 
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
