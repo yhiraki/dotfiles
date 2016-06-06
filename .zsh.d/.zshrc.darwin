@@ -14,7 +14,7 @@ function nas () {
   local l_dir="$l_root/$(echo $r_path | cut -d '/' -f3-4 | tr '/' '_')"
   local l_path="$l_dir/$(echo $r_path | cut -d '/' -f5-)"
 
-  if [ ! -d $l_dir ]; then
+  if mount | grep $l_dir > /dev/null; then
     mkdir $l_dir
     mount_smbfs $r_dir $l_dir
   fi
