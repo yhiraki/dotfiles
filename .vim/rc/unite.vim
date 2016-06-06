@@ -4,11 +4,11 @@ let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
 
 " " カレントディレクトリ
-" nnoremap <silent> [unite]a :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" "バッファと最近開いたファイル一覧を表示
-" nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer file_mru<CR>
-" "最近開いたディレクトリを表示
-" nnoremap <silent> [unite]d :<C-u>Unite<Space>directory_mru<CR>
+nnoremap <silent> <leader>fe :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+"バッファと最近開いたファイル一覧を表示
+nnoremap <silent> <leader>fm :<C-u>Unite<Space>buffer file_mru<CR>
+"最近開いたディレクトリを表示
+nnoremap <silent> <leader>fd :<C-u>Unite<Space>directory_mru<CR>
 " "バッファを表示
 " nnoremap <silent> [unite]b :<C-u>Unite<Space>buffer<CR>
 " "レジストリを表示
