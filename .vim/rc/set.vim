@@ -37,7 +37,7 @@ endif
 
 " 行80文字のラインを引く
 if (exists('+colorcolumn'))
-    set colorcolumn=80
+    set colorcolumn=80,100
     highlight ColorColumn ctermbg=9
 endif
 
