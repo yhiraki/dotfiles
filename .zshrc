@@ -82,7 +82,7 @@ gitshow() {
 FZF-EOF"
 }
 
-# v - open files in ~/.viminfo
+# v - open files in neomru
 v() {
   local files
     files=$(tail +2 $XDG_CACHE_HOME/neomru/file \
@@ -109,7 +109,8 @@ fda() {
 fe() {
   IFS='
 '
-  local declare files=($(ls -a | fzf-tmux --query="$1" --select-1 --exit-0))
+  local -a declare files
+  files=($(ls -a | fzf-tmux --query="$1" --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   unset IFS
 }
