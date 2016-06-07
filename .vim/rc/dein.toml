@@ -80,8 +80,8 @@ repo = 'junegunn/fzf'
 [[plugins]]
 repo = 'scrooloose/nerdtree'
 
-[[plugins]]
-repo = 'vim-scripts/taglist.vim'
+# [[plugins]]
+# repo = 'vim-scripts/taglist.vim'
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
@@ -145,3 +145,5 @@ repo = 'cocopon/lightline-hybrid.vim'
 [[plugins]]
 repo = 'scrooloose/syntastic'
 
+[[plugins]]
+repo = 'majutsushi/tagbar'
