@@ -7,11 +7,4 @@ mkdir $PYENV_ROOT/plugins
 ln -s $GOPATH/src/github.com/yyuu/pyenv $PYENV_ROOT
 ln -s $GOPATH/src/github.com/yyuu/pyenv-virtualenv $PYENV_ROOT/plugins/pyenv-virtualenv
 ln -s $GOPATH/src/github.com/jawshooah/pyenv-default-packages $PYENV_ROOT/plugins/pyenv-default-packages
-
-# pyenv default packages
-cat << EOF > $PYENV_ROOT/default-packages
-neovim
-pep8
-pyflakes
-EOF
-
+ln -s $ZDOTPATH/pyenv/default-packages $PYENV_ROOT/
