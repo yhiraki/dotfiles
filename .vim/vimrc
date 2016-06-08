@@ -47,3 +47,7 @@ endfor
 let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python'
 nnoremap <silent> <leader>bo :<C-u> :TagbarOpen<CR>:<C-u> :NERDTree<CR>
 nnoremap <silent> <leader>bc :<C-u> :TagbarClose<CR>:<C-u> :NERDTreeClose<CR>
+
+" https://github.com/fatih/vim-go/issues/108
+" Quickfix window opening beneath TagBar
+autocmd FileType qf wincmd J
