@@ -68,3 +68,6 @@ alias zmv='noglob zmv -W'
 
 # 色を使う
 setopt prompt_subst
+
+# pure
+autoload -U promptinit && promptinit
