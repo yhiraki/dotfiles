@@ -3,8 +3,6 @@
 export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
 
-GO_INSTALL_LIST=$(echo '
-github.com/motemen/ghq
-' | xargs)
+GO_CMD='go get'
 
-go get $GO_INSTALL_LIST
+$GO_CMD github.com/motemen/ghq
