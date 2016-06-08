@@ -4,15 +4,16 @@ alias la="ls -laG"
 alias updatedb='/usr/libexec/locate.updatedb'
 
 function nas () {
-  local r_path="$(echo -E $1 \
+  local r_path="$(echo -E /$1 \
       | tr '\' '/' \
       | tr -d '\n' \
       | sed 's/^  *//g' \
-      | sed 's/  *$//g' )"
-  local r_dir="$(echo $r_path | cut -d '/' -f-4)"
+      | sed 's/  *$//g' \
+      | sed 's://*:/:g')"
+  local r_dir="$(echo $r_path | cut -d '/' -f-3)"
   local l_root="/Volumes"
-  local l_dir="$l_root/$(echo $r_path | cut -d '/' -f3-4 | tr '/' '_')"
-  local l_path="$l_dir/$(echo $r_path | cut -d '/' -f5-)"
+  local l_dir="$l_root/$(echo $r_path | cut -d '/' -f2-3 | tr '/' '_')"
+  local l_path="$l_dir/$(echo $r_path | cut -d '/' -f4-)"
 
   if ! mount | grep $l_dir > /dev/null; then
     mkdir $l_dir
