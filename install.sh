@@ -30,16 +30,10 @@ fi
 
 
 # execute installers
-INSTALL_SH=$(echo '
-link
-go
-ghq
-pyenv
-' | xargs)
-
-for s in $INSTALL_SH; do
-  source $ZDOTDIR/install.d/$s.sh
-done
+source $ZDOTDIR/install.d/link.sh
+source $ZDOTDIR/install.d/go.sh
+source $ZDOTDIR/install.d/ghq.sh
+source $ZDOTDIR/install.d/pyenv.sh
 
 sudo chsh $USER --shell $(which zsh)
 exec zsh
