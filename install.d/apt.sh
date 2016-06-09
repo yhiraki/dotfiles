@@ -10,3 +10,9 @@ $APT_CMD make build-essential
 
 # python build
 $APT_CMD libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl llvm libncurses5-dev
+
+# neovim
+$APT_CMD software-properties-common
+sudo add-apt-repository -y ppa:neovim-ppa/unstable
+sudo apt-get update
+$APT_CMD neovim

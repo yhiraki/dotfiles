@@ -36,4 +36,9 @@ source $ZDOTDIR/install.d/ghq.sh
 source $ZDOTDIR/install.d/pyenv.sh
 
 sudo chsh $USER --shell $(which zsh)
+
+nvim -c "set nomore
+call dein#update()
+q"
+
 exec zsh

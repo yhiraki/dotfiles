@@ -9,6 +9,7 @@ set laststatus=2
 set t_Co=256
 set background=dark
 set hlsearch
+set nomore
 
 " マーカーで閉じる
 set foldtext=marker
