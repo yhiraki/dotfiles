@@ -10,7 +10,7 @@ source $ZSHHOME/zplug.zsh
 source $ZSHHOME/func.zsh
 
 if which anyframe-widget-select-widget > /dev/null; then
-  source $ZSHHOME/.zshrc.anyframe
+  source $ZSHHOME/anyframe.zsh
 fi
 
 case ${OSTYPE} in
