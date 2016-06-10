@@ -16,3 +16,7 @@ $APT_CMD software-properties-common
 sudo add-apt-repository -y ppa:neovim-ppa/unstable
 sudo apt-get update
 $APT_CMD neovim
+
+# locale
+$APT_CMD language-pack-ja
+sudo update-locale LANG=ja_JP.UTF-8
