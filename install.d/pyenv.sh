@@ -2,7 +2,7 @@
 
 export PYENV_ROOT=$HOME/.pyenv
 
-mkdir $PYENV_ROOT/plugins
+mkdir -p $PYENV_ROOT/plugins
 
 ln -s $GOPATH/src/github.com/yyuu/pyenv $PYENV_ROOT
 ln -s $GOPATH/src/github.com/yyuu/pyenv-virtualenv $PYENV_ROOT/plugins/pyenv-virtualenv
