@@ -16,3 +16,8 @@ $APT_CMD software-properties-common
 sudo add-apt-repository -y ppa:neovim-ppa/unstable
 sudo apt-get update
 $APT_CMD neovim
+
+# direnv
+curl -L -o direnv https://github.com/zimbatm/direnv/releases/download/v2.5.0/direnv.linux-amd64
+chmod 775 ./direnv
+mv ./direnv $HOME/bin/direnv
