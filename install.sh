@@ -38,8 +38,10 @@ source $ZDOTDIR/install.d/pyenv.sh
 
 sudo chsh $USER --shell $(which zsh)
 
-nvim -c "set nomore
+nvim -c '
+set shortmess=a
+set nomore
 call dein#update()
-q"
+q'
 
 exec zsh
