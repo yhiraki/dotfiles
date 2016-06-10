@@ -2,6 +2,7 @@
 
 DOTFILES_REMOTE=https://github.com/awa-manju/dotfiles
 ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+source $ZDOTDIR/.zsh.d/env.zsh
 
 # install packages
 if which apt-get > /dev/null; then
