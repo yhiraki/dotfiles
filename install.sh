@@ -2,6 +2,7 @@
 
 DOTFILES_REMOTE=https://github.com/awa-manju/dotfiles
 ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+source $ZDOTDIR/.zsh.d/env.zsh
 
 # install packages
 if which apt-get > /dev/null; then
@@ -36,4 +37,11 @@ source $ZDOTDIR/install.d/ghq.sh
 source $ZDOTDIR/install.d/pyenv.sh
 
 sudo chsh $USER --shell $(which zsh)
+
+nvim -c '
+set shortmess=a
+set nomore
+call dein#update()
+q'
+
 exec zsh
