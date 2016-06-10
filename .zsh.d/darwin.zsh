@@ -10,7 +10,7 @@ function nas () {
       | sed 's/^  *//g' \
       | sed 's/  *$//g' \
       | sed 's://*:/:g')"
-  local r_dir="$(echo $r_path | cut -d '/' -f-3)"
+  local r_dir="smb:/$(echo $r_path | cut -d '/' -f-3)"
   local l_root="/Volumes"
   local l_dir="$l_root/$(echo $r_path | cut -d '/' -f2-3 | tr '/' '_')"
   local l_path="$l_dir/$(echo $r_path | cut -d '/' -f4-)"
