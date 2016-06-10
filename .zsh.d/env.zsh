@@ -14,3 +14,5 @@ export SAVEHIST=100000
 
 export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
+
+export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
