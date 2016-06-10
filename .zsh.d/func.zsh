@@ -1,7 +1,7 @@
 # repo - cd to repogitory dir
 repo() {
   local dir
-  dir=$(ghq list > /dev/null | fzf-tmux) &&
+  dir=$(ghq list > /dev/null | fzf-tmux -q "$*") &&
     cd $(ghq root)/$dir
 }
 
@@ -9,7 +9,7 @@ repo() {
 branch() {
   local branches branch
   branches=$(git branch --all -vv) &&
-  branch=$(echo "$branches" | fzf-tmux +m) &&
+  branch=$(echo "$branches" | fzf-tmux +m -q "$*") &&
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
 
