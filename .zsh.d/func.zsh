@@ -53,7 +53,7 @@ fe() {
   IFS='
 '
   local -a declare files
-  files=($(ls -a | fzf-tmux --query="$1" --select-1 --exit-0))
+  files=($(ls -a | grep -v -e "\.$" | fzf-tmux --query="$1" --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   unset IFS
 }
