@@ -11,6 +11,12 @@ set background=dark
 set hlsearch
 set nomore
 
+" undoの永続化
+if has('persistent_undo')
+  set undodir=~/.vim/undo
+  set undofile
+endif
+
 " マーカーで閉じる
 set foldtext=marker
 
