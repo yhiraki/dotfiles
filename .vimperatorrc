@@ -66,6 +66,9 @@ noremap S :tabopen<Space>google<Space>
 " undo一覧から開く
 nnoremap U :undo<Space>
 
+" hlsearchを消す
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR>
+
 " タブグループ関連
 " http://jagua.hatenablog.jp/entry/2012/12/08/001014
 " :panorama のサブコマンドを入力待ち
