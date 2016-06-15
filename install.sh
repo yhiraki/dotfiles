@@ -2,7 +2,7 @@
 
 DOTFILES_REMOTE=https://github.com/awa-manju/dotfiles
 DOTDIR=$HOME/src/github.com/awa-manju/dotfiles
-source $DOTDIR/.zsh.d/env.zsh
+source $DOTDIR/zsh/env.zsh
 
 # install packages
 if which apt-get > /dev/null; then
@@ -39,10 +39,10 @@ source $DOTDIR/install.d/plantuml.sh
 
 sudo chsh $USER --shell $(which zsh)
 
-nvim -c '
+nvim -c "
 set shortmess=a
 set nomore
 call dein#update()
-q'
+q"
 
 exec zsh
