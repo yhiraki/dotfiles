@@ -10,14 +10,16 @@ function nas () {
       | sed 's/^  *//g' \
       | sed 's/  *$//g' \
       | sed 's://*:/:g')"
-  local r_dir="smb:/$(echo $r_path | cut -d '/' -f-3)"
+  local r_dir="/$(echo $r_path | cut -d '/' -f-3)"
   local l_root="/Volumes"
   local l_dir="$l_root/$(echo $r_path | cut -d '/' -f2-3 | tr '/' '_')"
   local l_path="$l_dir/$(echo $r_path | cut -d '/' -f4-)"
 
-  if ! mount | grep $l_dir > /dev/null; then
+  if [ ! -d $l_dir ]; then
     mkdir $l_dir
-    mount_smbfs $r_dir $l_dir
+  fi
+  if ! mount | grep $l_dir > /dev/null; then
+    mount -t smbfs $r_dir $l_dir
   fi
 
   open "$l_path"
