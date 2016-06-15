@@ -11,3 +11,5 @@ $BREW_CMD pyenv pyenv-virtualenvjawshooah/pyenv/pyenv-default-packages
 # neovim
 $BREW_CMD neovim/neovim/neovim
 
+# for dot / plantuml
+$BREW_CMD graphviz

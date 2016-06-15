@@ -57,4 +57,3 @@ fe() {
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   unset IFS
 }
-

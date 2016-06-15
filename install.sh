@@ -35,6 +35,7 @@ source $DOTDIR/install.d/link.sh
 source $DOTDIR/install.d/go.sh
 source $DOTDIR/install.d/ghq.sh
 source $DOTDIR/install.d/pyenv.sh
+source $DOTDIR/install.d/plantuml.sh
 
 sudo chsh $USER --shell $(which zsh)
 
