@@ -1,5 +1,5 @@
-export ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
-source $ZDOTDIR/.zsh.d/env.zsh
+export DOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+source $DOTDIR/zsh/env.zsh
 
 # history 関連
 setopt hist_ignore_dups
