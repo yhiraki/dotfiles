@@ -3,25 +3,22 @@
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# 分割されたzshrc
-ZSHHOME="${ZDOTDIR}/.zsh.d"
-
-source $ZSHHOME/zplug.zsh
-source $ZSHHOME/func.zsh
+source $ZDOTDIR/zplug.zsh
+source $ZDOTDIR/func.zsh
 
 if which anyframe-widget-select-widget > /dev/null; then
-  source $ZSHHOME/anyframe.zsh
+  source $ZDOTDIR/anyframe.zsh
 fi
 
 case ${OSTYPE} in
   darwin*)
-    source $ZSHHOME/darwin.zsh
+    source $ZDOTDIR/darwin.zsh
     ;;
   linux*)
-    source $ZSHHOME/linux.zsh
+    source $ZDOTDIR/linux.zsh
     ;;
   msys*)
-    source $ZSHHOME/msys.zsh
+    source $ZDOTDIR/msys.zsh
     ;;
 esac
 

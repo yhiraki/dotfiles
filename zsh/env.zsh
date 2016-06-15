@@ -1,4 +1,4 @@
-export ZDOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+export ZDOTDIR=$DOTDIR/zsh
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -16,3 +16,4 @@ export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
 
 export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
+export ZPLUG_HOME=$HOME/.zplug
