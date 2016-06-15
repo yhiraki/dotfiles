@@ -11,6 +11,9 @@ $APT_CMD make build-essential
 # python build
 $APT_CMD libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl llvm libncurses5-dev
 
+# for dot / plantuml
+$APT_CMD graphviz
+
 # neovim
 $APT_CMD software-properties-common
 sudo add-apt-repository -y ppa:neovim-ppa/unstable

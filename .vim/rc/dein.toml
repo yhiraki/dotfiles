@@ -147,3 +147,9 @@ repo = 'scrooloose/syntastic'
 
 [[plugins]]
 repo = 'majutsushi/tagbar'
+
+[[plugins]]
+repo = 'wannesm/wmgraphviz.vim'
+
+[[plugins]]
+repo = 'aklt/plantuml-syntax'

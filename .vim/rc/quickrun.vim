@@ -37,3 +37,12 @@ let g:quickrun_config['python.pytest'] = {
 \   'tempfile' : '$HOME/.vim/temp/__tmp__.py',
 \   'outputter/buffer/filetype' : 'pytest_result'
 \}
+
+" Graphviz
+let g:quickrun_config['dot'] = {
+\ 'hook/cd/directory'              : '%S:p:h',
+\ 'command'                        : 'dot',
+\ 'cmdopt'                         : '',
+\ 'exec'                           : '%c -T png %s -o %s:r.png',
+\ 'outputter/quickfix/errorformat' : 'Error: %f: %m in line %l %.%#,%EError: %m,%C%m,%Z%m'
+\}

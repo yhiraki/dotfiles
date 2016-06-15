@@ -10,6 +10,8 @@ if which anyframe-widget-select-widget > /dev/null; then
   source $ZDOTDIR/anyframe.zsh
 fi
 
+PATH=$PATH:$DOTDIR/bin
+
 case ${OSTYPE} in
   darwin*)
     source $ZDOTDIR/darwin.zsh
