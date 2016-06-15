@@ -20,7 +20,8 @@
 " download colorscheme files first
 " git clone https://github.com/vimpr/vimperator-colors.git ~/.vimperator/colors
 
-colorscheme simple
+" colorscheme simple
+colorscheme indigo-fx3
 
 "===================="
 " general
