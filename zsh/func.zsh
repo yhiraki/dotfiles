@@ -57,3 +57,7 @@ fe() {
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   unset IFS
 }
+
+fssh() {
+  ssh $(cat ~/.ssh/config | grep -e '^host' | sed -e 's/host //' | fzf-tmux)
+}
