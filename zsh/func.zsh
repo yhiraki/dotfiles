@@ -59,5 +59,5 @@ fe() {
 }
 
 fssh() {
-  ssh $(cat ~/.ssh/config | grep -e '^host' | sed -e 's/host //' | fzf-tmux)
+  ssh $(cat ~/.ssh/config | grep -e '^host' | sed -e 's/host //' | fzf-tmux -q "$*")
 }
