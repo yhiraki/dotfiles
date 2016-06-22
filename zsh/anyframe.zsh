@@ -10,7 +10,7 @@ function my-manual(){
     echo $(cat $HELPFILE \
       | sed '/^#.*/d' \
       | sed '/^$/d' \
-      | fzf-tmux -q ${@:2:($#-1)}) \
+      | fzf-tmux) \
       | sed -e 's/ *\[.*\] *//g'
   )
   if [ ${#$(echo $SELECTED_LINE | grep '#.*insert')} -ne 0 ]; then
