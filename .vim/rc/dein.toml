@@ -17,59 +17,17 @@ hook_post_update = '''
 '''
 
 [[plugins]]
-repo = 'mattn/emmet-vim'
-
-[[plugins]]
-repo = 'tyru/caw.vim'
-
-[[plugins]]
-repo = 'junegunn/vim-easy-align'
-
-[[plugins]]
-repo = 'tpope/vim-endwise'
-
-[[plugins]]
-repo = 'tpope/vim-surround'
-
-[[plugins]]
-repo = 'plasticboy/vim-markdown'
-on_ft = 'markdown'
-
-[[plugins]]
-repo = 'kannokanno/previm'
-
-[[plugins]]
-repo = 'tyru/open-browser.vim'
-
-[[plugins]]
 repo = 'lambdalisue/vim-gista'
+if = '''!has('nvim')'''
 
 [[plugins]]
 repo = 'w0ng/vim-hybrid'
 
-[[plugins]]
-repo = 'bronson/vim-trailing-whitespace'
-
-[[plugins]]
-repo = 'Shougo/junkfile.vim'
-
-[[plugins]]
-repo = 'vim-jp/vimdoc-ja'
+# [[plugins]]
+# repo = 'vim-jp/vimdoc-ja'
 
 # [[plugins]]
 # repo = 'Shougo/unite.vim'
-
-[[plugins]]
-repo = 'airblade/vim-gitgutter'
-
-[[plugins]]
-repo = 'tpope/vim-fugitive'
-
-[[plugins]]
-repo = 'kana/vim-smartinput'
-
-[[plugins]]
-repo = 'jeffkreeftmeijer/vim-numbertoggle'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
@@ -80,62 +38,6 @@ repo = 'junegunn/fzf'
 [[plugins]]
 repo = 'scrooloose/nerdtree'
 
-# [[plugins]]
-# repo = 'vim-scripts/taglist.vim'
-
-[[plugins]]
-repo = 'thinca/vim-quickrun'
-
-[[plugins]]
-repo = 'kana/vim-submode'
-
-[[plugins]]
-repo = 'kana/vim-textobj-user'
-
-[[plugins]]
-repo = 'kana/vim-textobj-entire'
-
-[[plugins]]
-repo = 'tpope/vim-abolish'
-
-[[plugins]]
-repo = 'vim-scripts/confluencewiki.vim'
-on_ft = 'confluencewiki'
-
-[[plugins]]
-repo = 'davidhalter/jedi-vim'
-if = '''!has('nvim')'''
-on_ft = ['python', 'djangohtml']
-hook_post_update = '''
-  let cmd = 'pip install jedi'
-  let g:dein#plugin.build = cmd
-'''
-
-[[plugins]]
-repo = 'lambdalisue/vim-django-support'
-on_ft = ['python', 'djangohtml']
-
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-if = '''has('nvim')'''
-
-[[plugins]]
-repo = 'zchee/deoplete-jedi'
-if = '''has('nvim')'''
-on_ft = ['python', 'djangohtml']
-hook_post_update = '''
-  let cmd = 'pip install neovim jedi'
-  let g:dein#plugin.build = cmd
-'''
-
-[[plugins]]
-repo = 'jmcantrell/vim-virtualenv'
-on_ft = ['python', 'djangohtml']
-
-[[plugins]]
-repo = 'lambdalisue/vim-pyenv'
-on_ft = ['python', 'djangohtml']
-
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 
@@ -143,13 +45,4 @@ repo = 'itchyny/lightline.vim'
 repo = 'cocopon/lightline-hybrid.vim'
 
 [[plugins]]
-repo = 'scrooloose/syntastic'
-
-[[plugins]]
 repo = 'majutsushi/tagbar'
-
-[[plugins]]
-repo = 'wannesm/wmgraphviz.vim'
-
-[[plugins]]
-repo = 'aklt/plantuml-syntax'
