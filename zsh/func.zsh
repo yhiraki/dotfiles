@@ -66,6 +66,6 @@ fea() {
   find . | sed -e 's/\.\///g' | _fzf-select-file $1
 }
 
-fssh() {
+fsh() {
   ssh $(cat ~/.ssh/config | grep -e '^host' | sed -e 's/host //' | fzf-tmux -q "$*")
 }
