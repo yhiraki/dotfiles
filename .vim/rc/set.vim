@@ -18,7 +18,7 @@ if has('persistent_undo')
 endif
 
 " マーカーで閉じる
-" set foldtext=marker
+set foldtext=marker
 
 " ペーストモードを簡単に切り替え
 set pastetoggle=<f5>
