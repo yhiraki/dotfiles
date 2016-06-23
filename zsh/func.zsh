@@ -59,11 +59,11 @@ _fzf-select-file() {
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-u
 fe() {
-  ls -a | grep -v -e "\.$" | _fzf-select-file
+  ls -a | grep -v -e "\.$" | _fzf-select-file $1
 }
 
 fea() {
-  find . | sed -e 's/\.\///g' | _fzf-select-file
+  find . | sed -e 's/\.\///g' | _fzf-select-file $1
 }
 
 fssh() {
