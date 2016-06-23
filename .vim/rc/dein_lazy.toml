@@ -1,0 +1,126 @@
+[[plugins]]
+repo = 'mattn/emmet-vim'
+on_i = 1
+
+[[plugins]]
+repo = 'tyru/caw.vim'
+on_i = 1
+
+[[plugins]]
+repo = 'junegunn/vim-easy-align'
+on_i = 1
+
+[[plugins]]
+repo = 'tpope/vim-endwise'
+on_i = 1
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+on_path = '.*'
+
+[[plugins]]
+repo = 'plasticboy/vim-markdown'
+on_ft = 'markdown'
+
+[[plugins]]
+repo = 'kannokanno/previm'
+on_ft = ['markdown', 'text', 'rst']
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+on_path = '.*'
+
+[[plugins]]
+repo = 'bronson/vim-trailing-whitespace'
+on_path = '.*'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+on_path = '.*'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+on_i = 1
+
+[[plugins]]
+repo = 'kana/vim-smartinput'
+on_i = 1
+
+[[plugins]]
+repo = 'jeffkreeftmeijer/vim-numbertoggle'
+on_i = 1
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+on_map = '<Plug>(quickrun'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+on_i = 1
+
+[[plugins]]
+repo = 'kana/vim-textobj-entire'
+on_i = 1
+
+[[plugins]]
+repo = 'tpope/vim-abolish'
+on_path = '.*'
+
+[[plugins]]
+repo = 'vim-scripts/confluencewiki.vim'
+on_ft = 'confluencewiki'
+
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
+if = '''!has('nvim')'''
+on_ft = ['python', 'djangohtml']
+hook_post_update = '''
+  let cmd = 'pip install jedi'
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'lambdalisue/vim-django-support'
+on_ft = ['python', 'djangohtml']
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+if = '''has('nvim')'''
+on_i = 1
+
+[[plugins]]
+repo = 'zchee/deoplete-jedi'
+if = '''has('nvim')'''
+on_ft = ['python', 'djangohtml']
+hook_post_update = '''
+  let cmd = 'pip install neovim jedi'
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'jmcantrell/vim-virtualenv'
+on_ft = ['python', 'djangohtml']
+
+[[plugins]]
+repo = 'lambdalisue/vim-pyenv'
+on_ft = ['python', 'djangohtml']
+
+[[plugins]]
+repo = 'scrooloose/syntastic'
+on_path = '.*'
+
+[[plugins]]
+repo = 'wannesm/wmgraphviz.vim'
+on_ft = ['dot', 'plantuml']
+
+[[plugins]]
+repo = 'aklt/plantuml-syntax'
+on_ft = ['plantuml']
+
+[[plugins]]
+repo = 'Shougo/junkfile.vim'
+on_map = 'Junkfile'
+
+[[plugins]]
+repo = 'kana/vim-submode'
+on_map = '<Plug>(submode-'
