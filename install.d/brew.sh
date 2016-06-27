@@ -13,3 +13,6 @@ $BREW_CMD neovim/neovim/neovim
 
 # for dot / plantuml
 $BREW_CMD graphviz
+
+# utils
+$BREW_CMD gnu-sed
