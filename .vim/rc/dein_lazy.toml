@@ -40,7 +40,7 @@ on_path = '.*'
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
-on_i = 1
+on_path = '.*'
 
 [[plugins]]
 repo = 'kana/vim-smartinput'
@@ -124,3 +124,7 @@ on_map = 'Junkfile'
 [[plugins]]
 repo = 'kana/vim-submode'
 on_map = '<Plug>(submode-'
+
+[[plugins]]
+repo = 'freitass/todo.txt-vim'
+on_ft = 'text'
