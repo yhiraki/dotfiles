@@ -5,6 +5,8 @@ nnoremap <silent> <leader>bc :<C-u> :TagbarClose<CR>:<C-u> :NERDTreeClose<CR>
 
 nnoremap <silent> <leader>gs :<C-u> :Gstatus<CR>
 
+nnoremap <silent> <leader>jo :<C-u> :JunkfileOpen<CR>
+
 " コマンドライン履歴を一つ進む
 cnoremap <C-n> <Down>
 " コマンドライン履歴を一つ戻る
