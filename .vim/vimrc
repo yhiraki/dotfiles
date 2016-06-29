@@ -33,11 +33,11 @@ let load_rc_list = [
       \ 'lightline',
       \ 'deoplete',
       \ 'color',
-      \ 'quickrun',
       \ 'jedi',
       \ 'fzf',
-      \ 'submode',
       \ 'syntastic',
+      \ 'quickrun',
+      \ 'submode',
       \ 'mapping' ]
 
 for rc in load_rc_list
