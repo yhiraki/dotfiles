@@ -23,3 +23,5 @@ function my-manual(){
 }
 
 alias ma='my-manual'
+
+# vim:ft=zsh

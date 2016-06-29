@@ -30,3 +30,5 @@ function nas () {
     cd "$(dirname $l_path)"
   fi
 }
+
+# vim:ft=zsh
