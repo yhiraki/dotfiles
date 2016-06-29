@@ -46,3 +46,12 @@ repo = 'cocopon/lightline-hybrid.vim'
 
 [[plugins]]
 repo = 'majutsushi/tagbar'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'kana/vim-submode'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
