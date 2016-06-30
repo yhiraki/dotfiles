@@ -10,7 +10,7 @@ branch() {
   local branches branch
   branches=$(git branch --all -vv) &&
   branch=$(echo "$branches" | fzf-tmux +m -q "$*") &&
-  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+  git checkout $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
 }
 
 # fshow - git commit browser
