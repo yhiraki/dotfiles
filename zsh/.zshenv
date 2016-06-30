@@ -28,9 +28,6 @@ bindkey -v
 # ディレクトリ名だけで cd
 setopt auto_cd
 
-alias ...='cd ../..'
-alias ....='cd ../../..'
-
 # cd + / cd - で過去にいたディレクトリに移動
 setopt auto_pushd
 setopt pushd_ignore_dups

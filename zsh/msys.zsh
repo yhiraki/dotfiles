@@ -1,7 +1,3 @@
-alias ls='ls --color'
-alias ll='ls -l --color'
-alias la='ls -la --color'
-
 # startコマンドで補完が効かない問題
 if which start > /dev/null; then
   function mstart(){
