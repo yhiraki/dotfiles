@@ -9,3 +9,5 @@ alias cal='cal | grep -C6 --color $(date +%d)'
 
 alias ...='cd ../..'
 alias ....='cd ../../..'
+
+alias e=$EDITOR

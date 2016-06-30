@@ -46,12 +46,13 @@ fda() {
   dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) && cd "$dir"
 }
 
-_fzf-select-file() {
+_fzf-select-files() {
   IFS='
 '
   local -a declare files
-  files=($(cat - | fzf-tmux --query="$1" --select-1 --exit-0))
-  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  files=($(cat - | fzf-tmux --query="$1" -m --select-1 --exit-0))
+  # [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  [[ -n "$files" ]] && echo "${files[@]}"
   unset IFS
 }
 
@@ -59,11 +60,11 @@ _fzf-select-file() {
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-u
 fe() {
-  ls -a | grep -v -e "\.$" | _fzf-select-file $1
+  $EDITOR $(ls -a | grep -v -e "\.$" | _fzf-select-files $1)
 }
 
 fea() {
-  find . | sed -e 's/\.\///g' | _fzf-select-file $1
+  $EDITOR $(find . | sed -e 's/\.\///g' | _fzf-select-files $1)
 }
 
 fsh() {
