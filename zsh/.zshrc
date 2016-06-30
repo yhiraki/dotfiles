@@ -12,6 +12,8 @@ fi
 
 PATH=$PATH:$DOTDIR/bin
 
+source $ZDOTDIR/alias.zsh
+
 case ${OSTYPE} in
   darwin*)
     source $ZDOTDIR/darwin.zsh
@@ -23,9 +25,6 @@ case ${OSTYPE} in
     source $ZDOTDIR/msys.zsh
     ;;
 esac
-
-# cal 今日の日付に色を付ける
-alias cal='cal | grep -C6 --color $(date +%d)'
 
 # direnv setup
 eval "$(direnv hook zsh)"

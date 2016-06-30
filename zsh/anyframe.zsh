@@ -1,6 +1,5 @@
-HELPDIR=$HOME/.help
-
 function my-manual(){
+  local HELPDIR=$HOME/.help
   if [ $# -eq 0 ]; then
     HELPFILE=${HELPDIR}/$(ls $HELPDIR | anyframe-selector-auto)
   else
@@ -21,7 +20,3 @@ function my-manual(){
   echo -E $SELECTED_LINE \
     | $CMD
 }
-
-alias ma='my-manual'
-
-# vim:ft=zsh
