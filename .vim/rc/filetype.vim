@@ -1,7 +1,7 @@
 " python {{{
 
 augroup setPythonFiletype
-  autocmd! FileType markdown setlocal shiftwidth=4 tabstop=4
+  autocmd! FileType python setlocal shiftwidth=4 tabstop=4
 augroup END
 
 " }}}
