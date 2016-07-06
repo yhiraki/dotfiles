@@ -1,16 +1,24 @@
-# repo - cd to repogitory dir
-repo() {
+_fzf-select-repo-dir(){
   local dir
   dir=$(ghq list > /dev/null | fzf-tmux -q "$*") &&
-    cd $(ghq root)/$dir
+    echo $(ghq root)/$dir
 }
 
-# fbr - checkout git branch
-branch() {
+# repo - cd to repogitory dir
+repo() {
+  cd $(_fzf-select-repo-dir "$*")
+}
+
+_fzf-select-branch(){
   local branches branch
   branches=$(git branch --all -vv) &&
   branch=$(echo "$branches" | fzf-tmux +m -q "$*") &&
-  git checkout $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
+  echo $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
+}
+
+# fbr - checkout git branch
+checkout() {
+  git checkout $(_fzf-select-branch "$*")
 }
 
 # fshow - git commit browser
@@ -56,6 +64,10 @@ _fzf-select-files() {
   unset IFS
 }
 
+_find-current-dir(){
+  find . | sed -e 's/\.\///g'
+}
+
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-u
@@ -64,9 +76,31 @@ fe() {
 }
 
 fea() {
-  $EDITOR $(find . | sed -e 's/\.\///g' | _fzf-select-files $1)
+  $EDITOR $(_find-current-dir | _fzf-select-files $1)
 }
 
 fsh() {
   ssh $(cat ~/.ssh/config | grep -i -e '^host' | sed -e 's/host //i' | fzf-tmux -q "$*")
 }
+
+_select-files-in-dir(){
+  find $1 -type f | _fzf-select-files
+}
+
+_select-dirs-in-dir(){
+  find $1 -type d | _fzf-select-files
+}
+
+_select-dirs-in-repo(){
+  _select-dirs-in-dir $(_fzf-select-repo-dir)
+}
+
+_select-files-in-repo(){
+  _select-files-in-dir $(_fzf-select-repo-dir)
+}
+
+alias -g dlf='$(_select-files-in-dir ~/Downloads)'
+alias -g dld='$(_select-dirs-in-dir ~/Downloads)'
+alias -g repod='$(_select-dirs-in-repo)'
+alias -g repof='$(_select-files-in-repo)'
+alias -g bra='$(_fzf-select-branch)'
