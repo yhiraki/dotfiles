@@ -1,2 +1,1 @@
-let g:syntastic_python_checkers = ['pyflakes', 'pep8']
-
+let g:syntastic_python_checkers = ["flake8"]

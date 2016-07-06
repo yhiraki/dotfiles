@@ -1,4 +1,3 @@
 neovim
-pep8
-pyflakes
+flake8
 ipython
