@@ -49,9 +49,10 @@ on_path = '.*'
 repo = 'kana/vim-smartinput'
 on_i = 1
 
-[[plugins]]
-repo = 'jeffkreeftmeijer/vim-numbertoggle'
-on_i = 1
+# set relativenumber は全画面再描画されるため重いらしい
+# [[plugins]]
+# repo = 'jeffkreeftmeijer/vim-numbertoggle'
+# on_i = 1
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'
