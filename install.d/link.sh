@@ -5,6 +5,7 @@ ln -s $DOTDIR/.tmux.conf $HOME
 ln -s $DOTDIR/.vim $HOME
 ln -s $DOTDIR/.git_template $HOME
 ln -s $DOTDIR/.vimperatorrc $HOME
+ln -s $DOTDIR/.gitignore.local $HOME
 
 # tmux plugins
 TMUXDIR=$HOME/.tmux
