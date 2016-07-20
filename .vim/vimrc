@@ -38,7 +38,8 @@ let load_rc_list = [
       \ 'syntastic',
       \ 'quickrun',
       \ 'submode',
-      \ 'mapping' ]
+      \ 'mapping',
+      \ 'neosnippet' ]
 
 for rc in load_rc_list
   call s:load_rc(rc)
