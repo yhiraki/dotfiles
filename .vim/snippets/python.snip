@@ -1,6 +1,26 @@
 snippet     logger
 abbr        logger = logging.getLogger(__name__)...
 options     head
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(format='%(asctime)s - %(levelname)-8s - [%(name)s %(filename)s %(funcName)s %(lineno)d] %(message)s')
+	logger = logging.getLogger(__name__)
+	logging.basicConfig(format='${1:%(asctime)s - %(levelname)-8s - [%(name)s %(filename)s %(funcName)s %(lineno)d] %(message)s}')
 	${0}
+
+snippet     unittest
+options     head
+	import unittest
+
+
+	class ${1:Test}(unittest.TestCase):
+
+		def setUp(self):
+			pass
+
+		def tearDown(self):
+			pass
+
+		def test_something(self):
+			${2:pass}
+
+
+	if __name__ == '__main__':
+			unittest.main()

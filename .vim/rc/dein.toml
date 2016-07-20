@@ -55,3 +55,6 @@ repo = 'kana/vim-submode'
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'

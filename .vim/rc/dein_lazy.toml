@@ -133,3 +133,13 @@ on_ft = 'toml'
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
 on_path = '.*'
+
+# [[plugins]]
+# repo = 'mattn/sonictemplate-vim'
+# on_path = '.*'
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+depends = ['neosnippet-snippets']
+on_i = 1
+on_ft = ['snippet']

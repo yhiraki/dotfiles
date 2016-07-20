@@ -1,28 +1,17 @@
-" python {{{
-
+" python
 augroup setPythonFiletype
   autocmd! FileType python setlocal shiftwidth=4 tabstop=4
 augroup END
 
-" }}}
-
-
-" markdwon {{{
-
+" markdown
 augroup setMarkdownFiletype
   autocmd! FileType markdown setlocal shiftwidth=4 tabstop=4
 augroup END
 
-" .mdファイルをmarkdownに紐付け
-au BufNewFile,BufRead *.md :set filetype=markdown
+autocmd BufNewFile,BufRead *.md set filetype=markdown
 
-"}}}
+" conflu
+autocmd BufNewFile,BufRead *.conflu set filetype=confluencewiki
 
-
-" confluence {{{
-
-" .mdファイルをmarkdownに紐付け
-au BufNewFile,BufRead *.conflu :set filetype=confluencewiki
-
-" }}}
-
+" snip
+autocmd! FileType neosnippet setlocal noexpandtab
