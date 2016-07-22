@@ -1,0 +1,15 @@
+snippet     digraph
+options     head
+	digraph ${1:graph_name} {
+		label="${2}";
+
+		${0}
+	}
+
+snippet     subgraph
+options     head
+	subgraph ${1:cluster_} {
+		label="${2}";
+
+		${0}
+	}
