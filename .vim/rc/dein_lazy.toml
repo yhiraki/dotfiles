@@ -79,6 +79,9 @@ hook_post_update = '''
   let cmd = 'pip install jedi'
   let g:dein#plugin.build = cmd
 '''
+hook_source = '''
+  source ~/.vim/rc/jedi.vim
+'''
 
 [[plugins]]
 repo = 'lambdalisue/vim-django-support'
@@ -88,6 +91,9 @@ on_ft = ['python', 'htmldjango']
 repo = 'Shougo/deoplete.nvim'
 if = '''has('nvim')'''
 on_i = 1
+hook_source = '''
+  source ~/.vim/rc/deoplete.vim
+'''
 
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
@@ -106,9 +112,21 @@ on_ft = ['python', 'htmldjango']
 repo = 'lambdalisue/vim-pyenv'
 on_ft = ['python', 'htmldjango']
 
-[[plugins]]
-repo = 'scrooloose/syntastic'
-on_path = '.*'
+#[[plugins]]
+#repo = 'scrooloose/syntastic'
+##if = '''has('vim')'''
+#on_path = '.*'
+#hook_source = '''
+#  source ~/.vim/rc/syntastic.vim
+#'''
+
+#[[plugins]]
+#repo = 'neomake/neomake'
+#if = '''has('nvim')'''
+#on_path = '.*'
+#hook_source = '''
+#  source ~/.vim/rc/neomake.vim
+#'''
 
 [[plugins]]
 repo = 'wannesm/wmgraphviz.vim'
@@ -143,3 +161,25 @@ repo = 'Shougo/neosnippet'
 depends = ['neosnippet-snippets']
 on_i = 1
 on_ft = ['snippet']
+hook_source = '''
+  source ~/.vim/rc/neosnippet.vim
+'''
+
+[[plugins]]
+repo = 'osyo-manga/shabadou.vim'
+
+[[plugins]]
+repo = 'osyo-manga/vim-watchdogs'
+depends = ['vim-quickrun', 'vimproc.vim', 'shabadou.vim']
+hook_source = '''
+  source ~/.vim/rc/watchdogs.vim
+'''
+on_path = '.*'
+
+[[plugins]]
+repo = 'jceb/vim-hier'
+on_path = '.*'
+
+[[plugins]]
+repo = 'dannyob/quickfixstatus'
+on_path = '.*'

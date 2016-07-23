@@ -22,6 +22,9 @@ if = '''!has('nvim')'''
 
 [[plugins]]
 repo = 'w0ng/vim-hybrid'
+hook_add = '''
+  source ~/.vim/rc/color.vim
+'''
 
 # [[plugins]]
 # repo = 'vim-jp/vimdoc-ja'
@@ -34,12 +37,18 @@ repo = 'Shougo/neomru.vim'
 
 [[plugins]]
 repo = 'junegunn/fzf'
+hook_add = '''
+  source ~/.vim/rc/fzf.vim
+'''
 
 [[plugins]]
 repo = 'scrooloose/nerdtree'
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'
+hook_add = '''
+  source ~/.vim/rc/lightline.vim
+'''
 
 [[plugins]]
 repo = 'cocopon/lightline-hybrid.vim'
@@ -52,9 +61,22 @@ repo = 'Shougo/context_filetype.vim'
 
 [[plugins]]
 repo = 'kana/vim-submode'
+hook_add = '''
+  source ~/.vim/rc/submode.vim
+'''
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
+hook_add = '''
+  source ~/.vim/rc/quickrun.vim
+'''
 
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'KazuakiM/vim-qfstatusline'
+hook_add = '''
+  " :WatchdogsRun後にlightline.vimを更新
+  let g:Qfstatusline#UpdateCmd = function('lightline#update')
+'''

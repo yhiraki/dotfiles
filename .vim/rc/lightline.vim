@@ -3,7 +3,10 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'pyenv' ],
-      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'qfstatusline', 'lineinfo' ],
+      \             [ 'percent' ],
+      \             [ 'fileformat', 'fileencoding', 'filetype' ] ],
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly?"RO":""}',
@@ -18,6 +21,12 @@ let g:lightline = {
       \ 'component_function': {
       \   'pyenv': 'LightLinePyenv'
       \ },
+      \ 'component_expand': {
+      \   'qfstatusline': 'qfstatusline#Update',
+      \ },
+      \ 'component_type': {
+      \   'qfstatusline': 'error',
+      \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '|', 'right': '|' }
       \ }
@@ -29,4 +38,3 @@ function! LightLinePyenv()
     return ""
   endif
 endfunction
-

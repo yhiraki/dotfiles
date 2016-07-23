@@ -36,7 +36,7 @@ FZF-EOF"
 # v - open files in neomru
 v() {
   local files
-    files=$(tail +2 $XDG_CACHE_HOME/neomru/file \
+    files=$(tail -n +2 $XDG_CACHE_HOME/neomru/file \
       | fzf-tmux -d -m -q "$*" -1) && $EDITOR ${files}
 }
 

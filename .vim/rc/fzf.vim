@@ -32,7 +32,7 @@ command! FZFTags call s:tags()
 
 " mru search
 command! FZFMru call fzf#run({
-      \ 'source':  'tail +2 $XDG_CACHE_HOME/neomru/file',
+      \ 'source':  'tail -n +2 $XDG_CACHE_HOME/neomru/file',
       \ 'sink':    'edit',
       \ 'options': '-m -x +s',
       \ 'down':    '40%' })
