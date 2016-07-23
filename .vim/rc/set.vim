@@ -44,8 +44,7 @@ endif
 
 " 行80文字のラインを引く
 if (exists('+colorcolumn'))
-    set colorcolumn=80,100
-    highlight ColorColumn ctermbg=9
+  let &colorcolumn="80,100,".join(range(120,999),",")
 endif
 
 " 特殊文字の可視化

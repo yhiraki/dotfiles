@@ -30,16 +30,7 @@ let load_rc_list = [
       \ 'encoding',
       \ 'filetype',
       \ 'os',
-      \ 'lightline',
-      \ 'deoplete',
-      \ 'color',
-      \ 'jedi',
-      \ 'fzf',
-      \ 'syntastic',
-      \ 'quickrun',
-      \ 'submode',
-      \ 'mapping',
-      \ 'neosnippet' ]
+      \ 'mapping' ]
 
 for rc in load_rc_list
   call s:load_rc(rc)
