@@ -187,3 +187,10 @@ on_path = '.*'
 [[plugins]]
 repo = 'zchee/deoplete-zsh'
 on_ft = 'zsh'
+
+[[plugins]]
+repo = 'mattn/gist-vim'
+depends = 'mattn/webapi-vim'
+
+[[plugins]]
+repo = 'mattn/webapi-vim'
