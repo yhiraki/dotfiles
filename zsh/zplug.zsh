@@ -7,6 +7,7 @@ zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "zsh-users/zsh-syntax-highlighting", nice:10
 zplug "mollifier/anyframe"
 zplug "zsh-users/zsh-completions"
+zplug "felixr/docker-zsh-completion"
 zplug "mafredri/zsh-async"
 zplug "sindresorhus/pure"
 
@@ -20,3 +21,7 @@ fi
 
 # load plugins
 zplug load
+
+# 自動補完を有効化
+autoload -U compinit; compinit -u
+compinit -C

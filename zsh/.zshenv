@@ -13,9 +13,6 @@ setopt auto_param_keys
 setopt list_packed
 # 先方予測機能
 # autoload predict-on; predict-on
-# 自動補完を有効化
-autoload -U compinit; compinit -u
-compinit -C
 
 setopt no_beep
 
