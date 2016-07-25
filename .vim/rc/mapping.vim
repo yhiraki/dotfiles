@@ -28,3 +28,6 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)nnoremap q? <NOP>
+
+" quickrun ウインドウを閉じる
+nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
