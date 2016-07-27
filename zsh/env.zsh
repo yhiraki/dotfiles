@@ -14,6 +14,7 @@ export SAVEHIST=100000
 
 export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
+export DOTDIR=$GOPATH/src/github.com/awa-manju/dotfiles
 
 export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
 export ZPLUG_HOME=$HOME/.zplug
