@@ -40,7 +40,7 @@ source $DOTDIR/install.d/plantuml.sh
 
 sudo chsh $USER --shell $(which zsh)
 
-neovim -c "
+nvim -c "
 set shortmess=a
 set nomore
 call dein#update()
