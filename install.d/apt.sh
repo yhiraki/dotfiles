@@ -3,7 +3,12 @@
 APT_CMD="sudo apt-get install -y"
 
 # common
-$APT_CMD ctags gawk git golang tmux vim wget zsh
+$APT_CMD ctags gawk git golang vim wget zsh
+
+# tmux
+sudo add-apt-repository -y ppa:pi-rho/dev
+sudo apt-get update
+sudo apt-get install -y tmux
 
 # build tools
 $APT_CMD make build-essential
