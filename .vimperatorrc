@@ -135,6 +135,7 @@ javascript <<EOM
     { label: 'plain', value: '%TITLE% %URL%' },
     { label: 'anchor', value: '<a href="%URL%">%TITLE%</a>' },
     { label: 'markdown', value: '[%TITLE%](%URL%)' },
+    { label: 'confluencewiki', value: '[%TITLE%|%URL%]' },
   ];
 EOM
 
