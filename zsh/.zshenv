@@ -1,4 +1,4 @@
-export DOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+export DOTDIR=$HOME/src/github.com/awaman/dotfiles
 source $DOTDIR/zsh/env.zsh
 
 # history 関連
