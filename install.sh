@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DOTFILES_REMOTE=https://github.com/awa-manju/dotfiles
-DOTDIR=$HOME/src/github.com/awa-manju/dotfiles
+DOTFILES_REMOTE=https://github.com/awaman/dotfiles
+DOTDIR=$HOME/src/github.com/awaman/dotfiles
 
 # install packages
 if which apt-get > /dev/null; then
