@@ -1,4 +1,0 @@
-#!/bin/bash
-java -jar $HOME/lib/java/plantuml.jar -tpng $@
-
-# vim :set ft=bash:
