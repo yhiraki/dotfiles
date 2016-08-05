@@ -11,6 +11,7 @@ zplug "felixr/docker-zsh-completion"
 zplug "mafredri/zsh-async"
 zplug "sindresorhus/pure"
 zplug "aws/aws-cli", use:bin/aws_zsh_completer.sh, on:"zsh-users/zsh-completions", nice:10
+zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))", nice:10
 
 zplug "$ZDOTDIR/func.zsh", from:local
 zplug "$ZDOTDIR/anyframe.zsh", from:local, on:"mollifier/anyframe"
