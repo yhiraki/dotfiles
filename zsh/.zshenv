@@ -52,3 +52,9 @@ setopt prompt_subst
 
 # pure
 autoload -U promptinit && promptinit
+
+# zsh-autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=15'
+bindkey '^ ' autosuggest-accept
+bindkey '^ ' autosuggest-execute
+bindkey '^^?' autosuggest-clear
