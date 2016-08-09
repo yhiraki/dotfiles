@@ -33,6 +33,6 @@ sudo update-locale LANG=ja_JP.UTF-8
 $APT_CMD xsel
 
 # direnv
-curl -L -o direnv https://github.com/zimbatm/direnv/releases/download/v2.5.0/direnv.linux-amd64
-chmod 775 ./direnv
-mv ./direnv $HOME/bin/direnv
+curl -L -o /tmp/direnv https://github.com/zimbatm/direnv/releases/download/v2.5.0/direnv.linux-amd64
+chmod 775 /tmp/direnv
+mv /tmp/direnv $HOME/bin/direnv
