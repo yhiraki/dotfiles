@@ -44,6 +44,7 @@ nvim -c "
 set shortmess=a
 set nomore
 call dein#update()
+
 q"
 
 exec zsh
