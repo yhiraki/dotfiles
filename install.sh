@@ -43,8 +43,8 @@ sudo chsh $USER --shell $(which zsh)
 nvim -c "
 set shortmess=a
 set nomore
-call dein#update()
 
+call dein#update()
 q"
 
 exec zsh
