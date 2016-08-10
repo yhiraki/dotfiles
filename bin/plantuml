@@ -1,0 +1,10 @@
+#!/bin/bash
+
+local JARFILE
+JARFILE=$HOME/lib/java/plantuml.jar
+if [ -e $JARFILE ]
+then
+        java -jar $JARFILE -tpng $@
+else
+        echo "$JARFILE not found."
+fi

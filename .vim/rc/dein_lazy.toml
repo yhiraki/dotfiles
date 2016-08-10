@@ -26,8 +26,13 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'kannokanno/previm'
+# repo = 'kannokanno/previm'
+repo = 'kazuph/previm'
+rev = 'feature/add-plantuml-plugin'
 on_ft = ['markdown', 'text', 'rst']
+hook_source = '''
+  " let g:previm_enable_realtime = 1 " vim-preciousとの相性が良くない
+'''
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
