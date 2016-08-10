@@ -99,15 +99,6 @@ _select-files-in-repo(){
   _select-files-in-dir $(_fzf-select-repo-dir)
 }
 
-plantuml(){
-  local JARFILE
-  JARFILE=$HOME/lib/java/plantuml.jar
-  if [ -e $JARFILE ];then
-    java -jar $JARFILE -tpng $@
-  else
-    echo "$JARFILE not found."
-  fi
-}
 
 alias -g dlf='$(_select-files-in-dir ~/Downloads)'
 alias -g dld='$(_select-dirs-in-dir ~/Downloads)'
