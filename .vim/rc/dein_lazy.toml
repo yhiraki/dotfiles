@@ -31,7 +31,7 @@ repo = 'kazuph/previm'
 rev = 'feature/add-plantuml-plugin'
 on_ft = ['markdown', 'text', 'rst']
 hook_source = '''
-  " let g:previm_enable_realtime = 1 " vim-preciousとの相性が良くない
+  let g:previm_enable_realtime = 1
 '''
 
 [[plugins]]
@@ -156,6 +156,20 @@ on_ft = 'toml'
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
 on_path = '.*'
+hook_source = '''
+  let g:precious_enable_switch_CursorMoved = {
+  \   "help" : 0
+  \}
+  let g:precious_enable_switchers = {
+  \  "markdown" : {
+  \    "setfiletype" : 0
+  \  },
+  \}
+  augroup preciousSyntaxSwitch
+    autocmd!
+    autocmd User PreciousFileType let &l:syntax = precious#context_filetype()
+  augroup END
+'''
 
 # [[plugins]]
 # repo = 'mattn/sonictemplate-vim'
