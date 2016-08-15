@@ -8,6 +8,7 @@ nnoremap <silent> <leader>bc :<C-u>NERDTreeClose<CR>
 nnoremap <silent> <leader>gs :<C-u> :Gstatus<CR>
 
 nnoremap <silent> <leader>jo :<C-u> :JunkfileOpen<CR>
+nnoremap <silent> <leader>jd :<C-u> :JunkfileDiary<CR>
 
 " コマンドライン履歴を一つ進む
 cnoremap <C-n> <Down>
