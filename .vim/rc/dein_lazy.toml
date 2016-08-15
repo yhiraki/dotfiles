@@ -143,7 +143,10 @@ on_ft = ['plantuml']
 
 [[plugins]]
 repo = 'Shougo/junkfile.vim'
-on_map = 'Junkfile'
+on_map = ['Junkfile', 'JunkfileDiary']
+hook_source = '''
+  command! -nargs=0 JunkfileDiary call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
+'''
 
 [[plugins]]
 repo = 'freitass/todo.txt-vim'
