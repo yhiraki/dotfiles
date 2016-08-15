@@ -5,3 +5,14 @@ options     head
 	${0}
 	@enduml
 	\`\`\`
+
+snippet     hugoheader
+options     head
+	+++
+	date = "`strftime("%FT%TZ")`"
+	draft = true
+	slug = ""
+	tags = [""]
+	title = ""
+	
+	+++
