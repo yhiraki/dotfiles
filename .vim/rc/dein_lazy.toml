@@ -217,3 +217,7 @@ repo = 'mattn/webapi-vim'
 [[plugins]]
 repo = 'ekalinin/Dockerfile.vim'
 on_ft = 'dockerfile'
+
+[[plugins]]
+repo = 'vim-scripts/dbext.vim'
+on_path = '.*'
