@@ -79,13 +79,14 @@ on_ft = 'confluencewiki'
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
 if = '''!has('nvim')'''
-on_ft = ['python', 'htmldjango']
+on_ft = ['python', 'htmldjango', 'markdown']
 hook_post_update = '''
   let cmd = 'pip install jedi'
   let g:dein#plugin.build = cmd
 '''
 hook_source = '''
-  source ~/.vim/rc/jedi.vim
+  " quickrunと被るため大文字に変更
+  let g:jedi#rename_command = '<Leader>R'
 '''
 
 [[plugins]]
@@ -97,13 +98,13 @@ repo = 'Shougo/deoplete.nvim'
 if = '''has('nvim')'''
 on_i = 1
 hook_source = '''
-  source ~/.vim/rc/deoplete.vim
+  let g:deoplete#enable_at_startup = 1
 '''
 
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
 if = '''has('nvim')'''
-on_ft = ['python', 'htmldjango']
+on_ft = ['python', 'htmldjango', 'markdown']
 hook_post_update = '''
   let cmd = 'pip install neovim jedi'
   let g:dein#plugin.build = cmd
@@ -135,11 +136,11 @@ on_ft = ['python', 'htmldjango']
 
 [[plugins]]
 repo = 'wannesm/wmgraphviz.vim'
-on_ft = ['dot', 'plantuml']
+on_ft = ['dot', 'plantuml', 'markdown']
 
 [[plugins]]
 repo = 'aklt/plantuml-syntax'
-on_ft = ['plantuml']
+on_ft = ['plantuml', 'markdown']
 
 [[plugins]]
 repo = 'Shougo/junkfile.vim'
@@ -154,7 +155,7 @@ on_ft = 'todo'
 
 [[plugins]]
 repo = 'cespare/vim-toml'
-on_ft = 'toml'
+on_ft = ['toml', 'markdown']
 
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
@@ -194,7 +195,12 @@ repo = 'osyo-manga/shabadou.vim'
 repo = 'osyo-manga/vim-watchdogs'
 depends = ['vim-quickrun', 'vimproc.vim', 'shabadou.vim']
 hook_source = '''
-  source ~/.vim/rc/watchdogs.vim
+  " 書き込み後にシンタックスチェックを行う
+  let g:watchdogs_check_BufWritePost_enable = 1
+
+  " こっちは一定時間キー入力がなかった場合にシンタックスチェックを行う
+  " バッファに書き込み後、1度だけ行われる
+  let g:watchdogs_check_CursorHold_enable = 1
 '''
 on_path = '.*'
 
@@ -219,7 +225,7 @@ repo = 'mattn/webapi-vim'
 
 [[plugins]]
 repo = 'ekalinin/Dockerfile.vim'
-on_ft = 'dockerfile'
+on_ft = ['dockerfile', 'markdown']
 
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
