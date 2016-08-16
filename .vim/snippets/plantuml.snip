@@ -1,0 +1,26 @@
+snippet     if
+options     head
+	--> if "" then
+		--> [true] "${1:Success}"
+	else ""
+		--> [false] "${2:Failed}"
+	endif
+	${0}
+
+snippet     node
+options     head
+	(*)-->
+	${0}
+	-->(*)
+
+snippet     class
+options     head
+	class "${1:Hoge}"{
+		${0}
+	}
+
+snippet     startuml
+options     head
+	@startuml
+	${0}
+	@enduml
