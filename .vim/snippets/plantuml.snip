@@ -1,9 +1,9 @@
 snippet     if
 options     head
-	--> if "" then
-		--> [true] "${1:Success}"
-	else ""
-		--> [false] "${2:Failed}"
+	--> if "${1:Test}" then
+		--> [true] "${2:Success}"
+	else
+		--> [false] "${3:Failed}"
 	endif
 	${0}
 
