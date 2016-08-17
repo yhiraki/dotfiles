@@ -1,0 +1,7 @@
+snippet     copy
+options     head
+	COPY ${1:table} (${2:column_names,}) FROM '${3:hoge.csv}' WITH CSV
+
+snippet     copymeta
+options     head
+	\copy ${1:table} (${2:column_names,}) from '${3:hoge.csv}' with csv
