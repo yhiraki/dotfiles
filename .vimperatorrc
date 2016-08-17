@@ -49,6 +49,9 @@ set status=ssl,input,location,bookmark,history,tabcount,position
 " R で.vimperatorrcを再読込み
 map R :source ~/.vimperatorrc<CR>
 
+" full screen でも statusline を表示
+set statuslinevisibility=visible
+
 "===================="
 " mappings
 "===================="
