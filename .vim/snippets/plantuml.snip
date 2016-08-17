@@ -1,11 +1,115 @@
 snippet     if
 options     head
-	--> if "${1:Test}" then
-		--> [true] "${2:Success}"
-	else
-		--> [false] "${3:Failed}"
+	if (${1:Graphviz installed?}) then (${2:yes})
+		:${3:process all\ndiagrams};
+	else (${4:no})
+		:${5:__sequence__ and __activity__ diagrams};
 	endif
+
+snippet     repeat
+options     head
+	repeat
+		:${2:read data};
+		${0}
+	repeat while (${1:more data?})
+
+snippet     while
+options     head
+	while (${1:data available?})
+		:${2:read data};
+		${0}
+	endwhile
+
+snippet     fork
+options     head
+	if (${1:multiprocessor?}) then (${2:yes})
+	fork
+		:{$3:Treatment 1};
+	fork again
+		:${4:Treatment 2};
+	end fork
+
+snippet     note
+options     head
+	${1:floating }note ${2:right}${3: of Foo}
+		${4:* Calling the method ""foo()"" is prohibited}
+		${0}
+	end note
+
+snippet     partition
+options     head
+	partition ${1:name}{
+		:${0}
+	}
+
+snippet     swimlane
+options     head
+	|${1:#AntiqueWhite|}${2:Swimlane1}|
 	${0}
+
+snippet     autonumber
+options     head
+	autonumber ${1:40} ${2:10} ${3:"<font color=red><b>Message 0  "}
+	${0}
+	autonumber stop
+
+snippet     newpage
+options     head
+	newpage ${1:A title for the\nlast page}
+
+snippet     alt
+options     head
+	alt ${1:successful case}
+		${0}
+	else ${2:some kind of failure}
+	end
+
+snippet     roop
+options     head
+	loop ${1:1000 times}
+		${2:Alice -> Bob: DNS Attack}
+	end
+
+snippet     group
+options     head
+	group ${1:My own label}
+		${2:Alice -> Log : Log attack start}
+	end
+
+snippet     hnote
+options     head
+	hnote${1: over caller} : ${2:idle}
+	${0}
+
+snippet     img
+options     head
+alias       image
+	<img ${1:sourceforge.jpg}>
+	${0}
+
+snippet     activate-deactivate
+options     head
+	activate ${1:A}
+	${0}
+	deactivate ${2:A}
+
+snippet     activate-destroy
+options     head
+	activate ${1:A}
+	${0}
+	destroy ${2:A}
+
+snippet     participant
+options     head
+	participant "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
+	${0}
+
+snippet     box
+options     head
+	box "${1:Internal Service}" #${2:LightBlue}
+		participant ${3:Alice}
+		${0}
+	end box
 
 snippet     (*)
 options     head
