@@ -1,6 +1,5 @@
 #!/bin/bash
 
-local JARFILE
 JARFILE=$HOME/lib/java/plantuml.jar
 if [ -e $JARFILE ]
 then

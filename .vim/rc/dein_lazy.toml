@@ -32,6 +32,7 @@ rev = 'feature/add-plantuml-plugin'
 on_ft = ['markdown', 'text', 'rst']
 hook_source = '''
   let g:previm_enable_realtime = 1
+	let g:previm_show_header = 0
 '''
 
 [[plugins]]
@@ -99,6 +100,9 @@ if = '''has('nvim')'''
 on_i = 1
 hook_source = '''
   let g:deoplete#enable_at_startup = 1
+  inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+        \ neosnippet#expandable_or_jumpable() ?
+        \    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
 '''
 
 [[plugins]]

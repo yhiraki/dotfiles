@@ -46,6 +46,12 @@ let g:quickrun_config['dot'] = {
 \ 'outputter/quickfix/errorformat' : 'Error: %f: %m in line %l %.%#,%EError: %m,%C%m,%Z%m'
 \}
 
+let g:quickrun_config['plantuml'] = {
+\  'command': 'plantuml'
+\, 'exec': ['%c %s', 'open %s:p:r.png']
+\, 'outputter': 'null'
+\}
+
 let g:quickrun_config["watchdogs_checker/_"] = {
       \ "outputter/quickfix/open_cmd" : "",
       \ "hook/qfstatusline_update/enable_exit" : 1,
