@@ -1,7 +1,65 @@
+# Class Diagram
+
+snippet     class
+options     head
+	class "${1:Hoge}" as ${2:hoge}{
+		${0}
+	}
+
+snippet     object
+options     head
+	object "${1:Hoge}" as ${2:hoge}{
+		${0}
+	}
+
+snippet     ..
+options     head
+	${1:Class01 "1"} .. ${2:"many" Class02} :${3: < owns}
+
+snippet     --|>
+options     head
+	${1:Class01 "1"} --|> ${2:"many" Class02} :${3: < owns}
+
+snippet     --*
+options     head
+	${1:Class01 "1"} --* ${2:"many" Class02} :${3: < owns}
+
+snippet     --o
+options     head
+	${1:Class01 "1"} --o ${2:"many" Class02} :${3: < owns}
+
+snippet     --+
+options     head
+	${1:package01.foo} --+ ${2:package02.bar} :${3: message}
+
+snippet     private
+alias       -
+options     head
+	-${1:val_name}
+
+snippet     protected
+alias       #
+options     head
+	#${1:val_name}
+
+snippet     package-private
+alias       ~
+options     head
+	~${1:val_name}
+
+snippet     public
+alias       +
+options     head
+	+${1:val_name}
+
+
+# Activity Diagram (beta)
+
 snippet     if
 options     head
 	if (${1:Graphviz installed?}) then (${2:yes})
 		:${3:process all\ndiagrams};
+	${4:elseif (condition) then (yes)}
 	else (${4:no})
 		:${5:__sequence__ and __activity__ diagrams};
 	endif
@@ -29,13 +87,6 @@ options     head
 		:${4:Treatment 2};
 	end fork
 
-snippet     note
-options     head
-	${1:floating }note ${2:right}${3: of Foo}
-		${4:* Calling the method ""foo()"" is prohibited}
-		${0}
-	end note
-
 snippet     partition
 options     head
 	partition ${1:name}{
@@ -46,6 +97,9 @@ snippet     swimlane
 options     head
 	|${1:#AntiqueWhite|}${2:Swimlane1}|
 	${0}
+
+
+# Sequence Diagram
 
 snippet     autonumber
 options     head
@@ -64,16 +118,48 @@ options     head
 	else ${2:some kind of failure}
 	end
 
-snippet     roop
+snippet     opt
 options     head
-	loop ${1:1000 times}
-		${2:Alice -> Bob: DNS Attack}
+	opt ${1:condition}
+		${0}
+	end
+
+snippet     par
+options     head
+	par
+		${0}
+	else
+
+	end
+
+snippet     ref
+options     head
+	ref over ${1:Alice, Bob}
+		${0}
 	end
 
 snippet     group
 options     head
-	group ${1:My own label}
-		${2:Alice -> Log : Log attack start}
+	group ${1:name}
+		${0}
+	end
+
+snippet     critical
+options     head
+	critical ${1:condition}
+		${0}
+	end
+
+snippet     break
+options     head
+	break ${1:condition}
+		${0}
+	end
+
+snippet     loop
+options     head
+	loop ${1:1000 times}
+		${2:Alice -> Bob: DNS Attack}
 	end
 
 snippet     hnote
@@ -81,28 +167,81 @@ options     head
 	hnote${1: over caller} : ${2:idle}
 	${0}
 
-snippet     img
-options     head
-alias       image
-	<img ${1:sourceforge.jpg}>
-	${0}
-
 snippet     activate-deactivate
+alias       activate
 options     head
 	activate ${1:A}
-	${0}
+		${3:Alice <-- Bob: Done}
 	deactivate ${2:A}
 
 snippet     activate-destroy
 options     head
 	activate ${1:A}
-	${0}
+		${0}
 	destroy ${2:A}
+
+snippet     ++
+alias       shortcut-activate
+options     head
+	${1:alice -> bob} ++ : ${2:hello}
+
+snippet     --
+alias       shortcut-deactivate
+options     head
+	${1:alice -> bob} -- : ${2:hello}
+
+snippet     **
+alias       shortcut-create
+options     head
+	${1:alice -> bob} ** : ${2:hello}
+
+snippet     !!
+alias       shortcut-activate
+options     head
+	${1:alice -> bob} !! : ${2:hello}
+
+snippet     autoactivate
+alias       activate-auto
+options     head
+	autoactivate on
+
+snippet     return
+options     head
+	return ${message}
 
 snippet     participant
 options     head
 	participant "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
-	${0}
+
+snippet     actor
+alias       participant-actor
+options     head
+	actor "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
+
+snippet     boudary
+alias       participant-boudary
+options     head
+	boudary "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
+
+snippet     control
+alias       participant-control
+options     head
+	control "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
+
+snippet     entity
+alias       participant-entity
+options     head
+	entity "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
+
+snippet     database
+alias       participant-database
+options     head
+	database "${1:Famous Bob}" as ${2:Bob}${3: << Generated >>}
+
+snippet     create
+alias       participant-create
+options     head
+	create ${1:"participant"} as ${2:New}
 
 snippet     box
 options     head
@@ -111,20 +250,55 @@ options     head
 		${0}
 	end box
 
+snippet     space
+alias       |||
+options     head
+	||${1:45|}|
+
+snippet     ...
+options     head
+	...${1: comment ...}
+
+
+# Common syntax
+
+snippet     note
+options     head
+	${1:floating }note ${2:right}${3: of Foo}
+		${4:* Calling the method ""foo()"" is prohibited}
+		${0}
+	end note
+
+snippet     img
+options     head
+alias       image
+	<img ${1:sourceforge.jpg}>
+	${0}
+
 snippet     (*)
 options     head
 	(*)-->
 	${0}
 	-->(*)
 
-snippet     class
-options     head
-	class "${1:Hoge}"{
-		${0}
-	}
-
 snippet     startuml
 options     head
 	@startuml
+	skinparam monochrome true
+	skinparam shadowing false
 	${0}
 	@enduml
+
+snippet     hide-circle
+options     head
+	hide circle
+
+snippet     monochrome
+alias       skinparam-monochrome
+options     head
+	skinparam monochrome ${1:true}
+
+snippet     shadowing
+alias       skinparam-shadowing
+options     head
+	 skinparam shadowing ${1:false}
