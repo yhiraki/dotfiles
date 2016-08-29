@@ -237,3 +237,7 @@ on_path = '.*'
 hook_source = '''
   let g:dbext_default_buffer_lines = 20
 '''
+
+[[plugins]]
+repo = 'gorodinskiy/vim-coloresque'
+on_ft = ['css', 'html', 'less', 'sass', 'scss', 'styles', 'vim']
