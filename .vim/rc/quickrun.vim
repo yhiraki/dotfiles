@@ -1,3 +1,35 @@
+" http://d.hatena.ne.jp/osyo-manga/20120507/1336320335
+let s:hook = {
+\    "name" : "anim",
+\    "kind" : "hook",
+\    "index_counter" : 0,
+\    "config" : {
+\        "enable" : 0
+\    }
+\}
+
+function! s:hook.on_ready(session, context)
+    let self.index_counter = -2
+endfunction
+
+function! s:hook.on_output(session, context)
+    let self.index_counter += 1
+    if self.index_counter < 0
+        return
+    endif
+    let anim_list = [
+          \ '\',
+          \ '|',
+          \ '/',
+          \ '-',
+          \]
+    echo  anim_list[ self.index_counter / 2 % len(anim_list)  ] . ' quickrun ...'
+endfunction
+
+call quickrun#module#register(s:hook, 1)
+unlet s:hook
+
+
 " http://qiita.com/Hatajoe/items/d07d788a9b101ea5c38d
 if !exists("g:quickrun_config")
     let g:quickrun_config = {}
@@ -15,6 +47,7 @@ let g:quickrun_config._ = {
 \   'outputter/error/error'   : 'buffer',
 \   'outputter/buffer/split'  : ':rightbelow 8sp',
 \   'outputter/buffer/close_on_empty' : 1,
+\   'hook/anim/enable' : 1,
 \}
 
 " python 実行用の設定
