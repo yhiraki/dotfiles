@@ -43,7 +43,7 @@ on_path = '.*'
 repo = 'bronson/vim-trailing-whitespace'
 on_path = '.*'
 hook_source = '''
-  let g:extra_whitespace_ignored_filetypes = ['unite', 'quickrun']
+  let g:extra_whitespace_ignored_filetypes = ['unite', 'quickrun', 'dbext']
 '''
 
 [[plugins]]
