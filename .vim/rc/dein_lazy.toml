@@ -42,6 +42,9 @@ on_path = '.*'
 [[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 on_path = '.*'
+hook_source = '''
+  let g:extra_whitespace_ignored_filetypes = ['unite', 'quickrun']
+'''
 
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
