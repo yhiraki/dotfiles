@@ -40,9 +40,17 @@ repo = 'Shougo/neomru.vim'
 
 [[plugins]]
 repo = 'junegunn/fzf'
+marged = 0
+build = '''
+  ./install --all
+'''
 hook_add = '''
   source ~/.vim/rc/fzf.vim
 '''
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
 
 [[plugins]]
 repo = 'scrooloose/nerdtree'
