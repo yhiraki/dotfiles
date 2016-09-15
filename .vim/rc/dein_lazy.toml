@@ -4,11 +4,11 @@ on_i = 1
 
 [[plugins]]
 repo = 'tyru/caw.vim'
-on_i = 1
+on_path = '.*'
 
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
-on_i = 1
+on_path = '.*'
 
 [[plugins]]
 repo = 'tpope/vim-endwise'
@@ -19,23 +19,29 @@ on_i = 1
 # on_path = '.*'
 
 [[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+[[plugins]]
 repo = 'kana/vim-textobj-entire'
-on_i = 1
+on_path = '.*'
 
 [[plugins]]
 repo = 'kana/vim-textobj-indent'
-on_i = 1
+on_path = '.*'
 
 [[plugins]]
 repo = 'kana/vim-operator-replace'
-on_i = 1
+on_path = '.*'
 hook_source = '''
-  nmap S <Plug>(operator-replace)
+  nmap s <Plug>(operator-replace)
 '''
 
 [[plugins]]
 repo = 'osyo-manga/vim-textobj-multiblock'
-on_i = 1
+on_path = '.*'
 hook_source = '''
   omap ab <Plug>(textobj-multiblock-a)
   omap ib <Plug>(textobj-multiblock-i)
@@ -46,19 +52,20 @@ hook_source = '''
 [[plugins]]
 repo = 'rhysd/vim-operator-surround'
 rev = 'input_in_advance'
-on_i = 1
+on_path = '.*'
 hook_source = '''
-  " Legacy
-  " map <silent> sa <Plug>(operator-surround-append)
-  " map <silent> sd <Plug>(operator-surround-delete)
-  " map <silent> sr <Plug>(operator-surround-replace)
   nmap sa <Plug>(operator-surround-append-input-in-advance)
+  nmap sd <Plug>(operator-surround-delete)
+  nmap sr <Plug>(operator-surround-replace)
   nmap s( <Plug>(operator-surround-append-input-in-advance)(
-  nmap sb <Plug>(operator-surround-append-input-in-advance)(
   nmap s{ <Plug>(operator-surround-append-input-in-advance){
   nmap s[ <Plug>(operator-surround-append-input-in-advance)[
   nmap s" <Plug>(operator-surround-append-input-in-advance)"
   nmap s' <Plug>(operator-surround-append-input-in-advance)'
+
+  " vim-textobj-multiblock
+  nmap sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+  nmap srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 '''
 
 # [[plugins]]
