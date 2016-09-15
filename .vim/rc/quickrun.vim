@@ -101,3 +101,7 @@ let g:quickrun_config["watchdogs_checker/jedi"] = {
 let g:quickrun_config["python/watchdogs_checker"] = {
       \  "type" : "watchdogs_checker/jedi"
       \ }
+
+let g:quickrun_config["javascript/watchdogs_checker"] = {
+      \  "type" : "watchdogs_checker/eslint"
+      \ }
