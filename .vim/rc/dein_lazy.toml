@@ -191,6 +191,14 @@ hook_post_update = '''
 '''
 
 [[plugins]]
+repo = 'carlitux/deoplete-ternjs'
+on_ft = 'javascript'
+
+[[plugins]]
+repo = 'marijnh/tern_for_vim'
+on_ft = 'javascript'
+
+[[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
 on_ft = ['python', 'htmldjango']
 
