@@ -43,6 +43,12 @@ repo = 'Shougo/denite.nvim'
 # depends = 'Shougo/unite.vim'
 
 [[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+[[plugins]]
 repo = 'Shougo/neomru.vim'
 
 [[plugins]]

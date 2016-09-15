@@ -19,12 +19,6 @@ on_i = 1
 # on_path = '.*'
 
 [[plugins]]
-repo = 'kana/vim-operator-user'
-
-[[plugins]]
-repo = 'kana/vim-textobj-user'
-
-[[plugins]]
 repo = 'kana/vim-textobj-entire'
 on_path = '.*'
 
@@ -157,10 +151,6 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'andviro/flake8-vim'
-on_ft = ['python', 'htmldjango']
-
-[[plugins]]
 repo = 'lambdalisue/vim-django-support'
 on_ft = ['python', 'htmldjango']
 
@@ -291,7 +281,8 @@ hook_source = '''
 on_path = '.*'
 
 [[plugins]]
-repo = 'jceb/vim-hier'
+# repo = 'jceb/vim-hier'
+repo = 'cohama/vim-hier'
 on_path = '.*'
 
 [[plugins]]
