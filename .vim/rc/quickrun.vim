@@ -90,3 +90,14 @@ let g:quickrun_config["watchdogs_checker/_"] = {
       \ "hook/qfstatusline_update/enable_exit" : 1,
       \ "hook/qfstatusline_update/priority_exit" : 4,
       \ }
+
+let g:quickrun_config["watchdogs_checker/jedi"] = {
+      \ "command" : "python",
+      \ "cmdopt" : "-m jedi linter",
+      \ "exec"    : "%c %o %s:p",
+      \ "errorformat" : '%f:%l:%c: %t%n %m',
+      \ }
+
+let g:quickrun_config["python/watchdogs_checker"] = {
+      \  "type" : "watchdogs_checker/jedi"
+      \ }
