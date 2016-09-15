@@ -36,10 +36,11 @@ hook_add = '''
 # repo = 'Shougo/unite.vim'
 
 [[plugins]]
-repo = 'kana/vim-operator-user'
+repo = 'Shougo/denite.nvim'
 
-[[plugins]]
-repo = 'kana/vim-textobj-user'
+# [[plugins]]
+# repo = 'Shougo/vimfiler.vim'
+# depends = 'Shougo/unite.vim'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
