@@ -4,72 +4,11 @@
 " plugins
 "===================="
 " How to setup plugins
-  " cd ~/.vimperator
-  " mkdir plugin
-  " downloaded plugins put into the 'plugin' dir
+  " git clone https://github.com/vimpr/vimperator-plugins ~/.vimperator-plugins
+  " ln -s ~/.vimperator-plugins/plugin_loader.js ~/.vimperator/
 
-" _libly.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/_libly.js
-"
-" caret-hint.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/caret-hint.js
-"
-" copy.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/copy.js
-"
-" walk-input.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/walk-input.js
-"
-" lookupDictionary.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/lookupDictionary.js
-"
-" auto_detect_links.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/auto_detect_link.js
-"
-" auto-focus-frame.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/auto-focus-frame.js
-"
-" opener.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/opener.js
-"
-" twitperator.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/twittperator.js
-"
-" fourcefocuscontent.js
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/forcefocuscontent.js
-"
-" goo.gl
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/goo.gl.js
-"
-" google tasks
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/google-tasks.js
-"
-" image extender
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/imageextender.js
-"
-" zoom
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/zoom-em-all.js
-"
-" amazon short url
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/amazon_simple_uri.js
-"
-" account switcher
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/account_switcher.js
-"
-" plugin manager
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/pluginManager.js
-"
-" append ancher
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/appendAnchor.js
-"
-" higemo hint
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/migemo_hint.js
-"
-" migemized find
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/migemized_find.js
-"
-" migemo find
-" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/migemo-find.js
+let g:plugin_loader_roots = '~/.vimperator-plugins'
+let g:plugin_loader_plugins = '_libly,caret-hint,copy,walk-input,lookupDictionary,auto_detect_link,auto-focus-frame,opener,twittperator,forcefocuscontent,goo,google-tasks,imageextender,zoom-em-all,amazon_simple_uri,account_switcher,pluginManager,appendAnchor,migemo_hint,migemo-find'
 
 "===================="
 " colorscheme
@@ -93,11 +32,6 @@ highlight Bell display:none
 " 参考ページ http://vimperator.g.hatena.ne.jp/teramako/20090311/1236776437
 style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
 
-" 次のページを検索するマッチキャラクタを追加
-" http://umeji.blogspot.jp/2008/05/vimperatornextpattern.html
-" set nextpattern=\bnext\b,\bmore\b,next,^次(の)?ページ,\b次.*,→\b,^>$,^(>>|≫)$,^(>|≫),(>|≫)$
-" set previouspattern=\bprev|previous\b,prev,^前(の)?ページ,\b前.*,\b←,^<$,^(<<|≪)$,^(<|≪),(<|≪)$
-
 " ツールバーはアドオンとタブのみ表示
 set gui=addons,nobookmarks,nomenu,nonavigation,tabs
 
@@ -109,9 +43,6 @@ map R :source ~/.vimperatorrc<CR>
 
 " full screen でも statusline を表示
 set statuslinevisibility=visible
-
-" 入力欄に自動フォーカスしない
-set focuscontent
 
 "===================="
 " mappings
@@ -177,14 +108,12 @@ nnoremap @ :togglepin <CR>
 "============================
 
 ignorekeys clear
-" ignorekeys add https://docs\\.google\\.com
 
 "============================
 " copy.js
 "============================
 
 let g:caret_hint_swap_key = 'o'
-
 
 "============================
 " copy.js
