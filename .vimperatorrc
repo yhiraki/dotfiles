@@ -8,6 +8,9 @@
   " mkdir plugin
   " downloaded plugins put into the 'plugin' dir
 
+" _libly.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/_libly.js
+"
 " caret-hint.js
 " https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/caret-hint.js
 "
@@ -19,6 +22,42 @@
 "
 " lookupDictionary.js
 " https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/lookupDictionary.js
+"
+" auto_detect_links.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/auto_detect_link.js
+"
+" auto-focus-frame.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/auto-focus-frame.js
+"
+" opener.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/opener.js
+"
+" twitperator.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/twittperator.js
+"
+" fourcefocuscontent.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/forcefocuscontent.js
+"
+" goo.gl
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/goo.gl.js
+"
+" google tasks
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/google-tasks.js
+"
+" image extender
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/imageextender.js
+"
+" zoom
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/zoom-em-all.js
+"
+" amazon short url
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/amazon_simple_uri.js
+"
+" account switcher
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/account_switcher.js
+"
+" plugin manager
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/pluginManager.js
 
 "===================="
 " colorscheme
@@ -44,8 +83,8 @@ style -name commandline-ime chrome://* #liberator-commandline-command input {ime
 
 " 次のページを検索するマッチキャラクタを追加
 " http://umeji.blogspot.jp/2008/05/vimperatornextpattern.html
-set nextpattern=\bnext\b,\bmore\b,next,^次(の)?ページ,\b次.*,→\b,^>$,^(>>|≫)$,^(>|≫),(>|≫)$
-set previouspattern=\bprev|previous\b,prev,^前(の)?ページ,\b前.*,\b←,^<$,^(<<|≪)$,^(<|≪),(<|≪)$
+" set nextpattern=\bnext\b,\bmore\b,next,^次(の)?ページ,\b次.*,→\b,^>$,^(>>|≫)$,^(>|≫),(>|≫)$
+" set previouspattern=\bprev|previous\b,prev,^前(の)?ページ,\b前.*,\b←,^<$,^(<<|≪)$,^(<|≪),(<|≪)$
 
 " ツールバーはアドオンとタブのみ表示
 set gui=addons,nobookmarks,nomenu,navigation,tabs
