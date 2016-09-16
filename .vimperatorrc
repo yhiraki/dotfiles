@@ -10,8 +10,15 @@
 
 " caret-hint.js
 " https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/caret-hint.js
+"
 " copy.js
 " https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/copy.js
+"
+" walk-input.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/walk-input.js
+"
+" lookupDictionary.js
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/lookupDictionary.js
 
 "===================="
 " colorscheme
@@ -51,6 +58,9 @@ map R :source ~/.vimperatorrc<CR>
 
 " full screen でも statusline を表示
 set statuslinevisibility=visible
+
+" 入力欄に自動フォーカスしない
+set focuscontent
 
 "===================="
 " mappings
