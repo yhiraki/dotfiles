@@ -58,6 +58,18 @@
 "
 " plugin manager
 " https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/pluginManager.js
+"
+" append ancher
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/appendAnchor.js
+"
+" higemo hint
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/migemo_hint.js
+"
+" migemized find
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/migemized_find.js
+"
+" migemo find
+" https://raw.githubusercontent.com/vimpr/vimperator-plugins/master/migemo-find.js
 
 "===================="
 " colorscheme
@@ -110,7 +122,8 @@ nnoremap j 5j
 nnoremap k 5k
 
 " ヒントメッセージを変更
-:set hintchars=abcdefghijklmnopqrstuvwxyz
+set hintchars='abcdefghijklmnopqrstuvwxyz234567890;,.[]-/\'
+" set hintmatching=custom
 
 " google検索を手早くする
 noremap s :open<Space>google<Space>
