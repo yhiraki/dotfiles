@@ -187,5 +187,20 @@ javascript <<EOM
   ];
 EOM
 
+"============================
+" open in chrome
+"============================
+
+js <<EOM
+liberator.modules.commands.addUserCommand(["OpenInChrome"], 'Open URL In Chrome',
+  function(){
+    if(liberator.has("MacUnix")){
+      io.system('open -a "/Applications/Google\ Chrome.app" ' + "'"+ buffer.URL + "'");
+    }
+  },{}
+);
+EOM
+nnoremap ,c :OpenInChrome <CR>
+
 "読み込み完了メッセージ
 echo "vimperatorrc loaded."
