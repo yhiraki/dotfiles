@@ -6,6 +6,12 @@ setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt EXTENDED_HISTORY
+#同時に起動したzshの間でヒストリを共有する
+setopt share_history
+# ヒストリに保存するときに余分なスペースを削除する
+setopt hist_reduce_blanks
+# historyコマンドは履歴に登録しない
+setopt hist_no_store
 
 # 間違いを補完
 setopt correct
@@ -32,6 +38,9 @@ setopt pushd_ignore_dups
 # 拡張 glob
 setopt extended_glob
 
+# '#'以降をコメントとして扱う
+setopt interactive_comments
+
 # <Tab> でパス名を選択
 # 候補を選ぶには <Tab> か Ctrl-N,B,F,P
 zstyle ':completion:*:default' menu select=1
@@ -50,5 +59,4 @@ alias zmv='noglob zmv -W'
 # 色を使う
 setopt prompt_subst
 
-# pure
 autoload -U promptinit && promptinit
