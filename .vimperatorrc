@@ -53,7 +53,7 @@ nnoremap j 5j
 nnoremap k 5k
 
 " ヒントメッセージを変更
-set hintchars='abcdefghijklmnopqrstuvwxyz234567890;,.[]-/\'
+set hintchars=abcdefghijklmnopqrstuvwxyz234567890;,.[]-/
 " set hintmatching=custom
 
 " google検索を手早くする
