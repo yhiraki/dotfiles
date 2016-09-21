@@ -1,4 +1,32 @@
 [[plugins]]
+repo = 'easymotion/vim-easymotion'
+on_path = '.*'
+hook_source = '''
+  map f <Plug>(easymotion-fl)
+  map t <Plug>(easymotion-tl)
+  map F <Plug>(easymotion-Fl)
+  map T <Plug>(easymotion-Tl)
+  " s{char}{char} to move to {char}{char}
+  nmap m <Plug>(easymotion-overwin-f2)
+  vmap m <Plug>(easymotion-bd-f2)
+  " Move to line
+  map <Leader>L <Plug>(easymotion-bd-jk)
+  nmap <Leader>L <Plug>(easymotion-overwin-line)
+  " smartcase
+  let g:EasyMotion_smartcase = 1
+  " j, k motion
+  let g:EasyMotion_startofline=0
+  " incremental search
+  nmap g/ <Plug>(easymotion-sn)
+  xmap g/ <Plug>(easymotion-sn)
+  omap g/ <Plug>(easymotion-tn)
+'''
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+on_path = '.*'
+
+[[plugins]]
 repo = 'AndrewRadev/splitjoin.vim'
 on_i = 1
 
