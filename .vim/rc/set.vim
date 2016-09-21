@@ -42,7 +42,7 @@ if has('clipboard')
   set clipboard+=unnamedplus
 endif
 
-" 行80文字のラインを引く
+" 行80, 100, 120+文字のラインを引く
 if (exists('+colorcolumn'))
   let &colorcolumn="80,100,".join(range(120,999),",")
 endif
@@ -83,3 +83,16 @@ if has('syntax')
     augroup END
     call ZenkakuSpace()
 endif
+
+" " スペルチェックを ON
+" set spell
+" " 日本語をスペルチェックから除外
+" set spelllang=en,cjk
+"
+" " スペルチェック highlight を下線のみに
+" " http://tango-ruby.hatenablog.com/entry/2015/09/04/175729
+" hi clear SpellBad
+" hi clear SpellLocal
+" hi clear SpellRare
+" hi clear SpellCap
+" hi SpellBad cterm=underline
