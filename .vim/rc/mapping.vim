@@ -18,9 +18,5 @@ cnoremap <C-n> <Down>
 " コマンドライン履歴を一つ戻る
 cnoremap <C-p> <Up>
 
-" q:、q/、q? は無効化
-:nnoremap q: <NOP>
-:nnoremap q/ <NOP>
-
 " quickrun ウインドウを閉じる
 nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
