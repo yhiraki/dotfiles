@@ -20,3 +20,5 @@ cnoremap <C-p> <Up>
 
 " quickrun ウインドウを閉じる
 nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
+" 実行中の quickrun を中断させる
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
