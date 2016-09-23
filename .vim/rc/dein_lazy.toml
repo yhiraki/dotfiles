@@ -147,7 +147,7 @@ on_path = '.*'
 repo = 'bronson/vim-trailing-whitespace'
 on_path = '.*'
 hook_source = '''
-  let g:extra_whitespace_ignored_filetypes = ['unite', 'quickrun', 'dbext', 'qf']
+  let g:extra_whitespace_ignored_filetypes = ['help', 'unite', 'quickrun', 'dbext', 'qf']
 '''
 
 [[plugins]]
@@ -158,9 +158,19 @@ on_path = '.*'
 repo = 'tpope/vim-fugitive'
 on_path = '.*'
 
+# [[plugins]]
+# repo = 'kana/vim-smartinput'
+# on_i = 1
+# hook_post_source = '''
+#   source ~/.vim/rc/smartinput.vim
+# '''
+
 [[plugins]]
-repo = 'kana/vim-smartinput'
+repo = 'cohama/lexima.vim'
 on_i = 1
+hook_post_source = '''
+  source ~/.vim/rc/lexima.vim
+'''
 
 # set relativenumber は全画面再描画されるため重いらしい
 # iterm2 ではそんなに重くない感じ
