@@ -138,7 +138,7 @@ call lexima#add_rule({
 
 " クオート内改行では'\'を入力しない
 call lexima#add_rule({
-      \   "at" : "'.* = \%#'",
+      \   "at" : '''.* = \%#''',
       \   "char" : '<CR>',
       \   "input" : '<CR>',
       \   'filetype' : ['python'],
@@ -152,6 +152,22 @@ call lexima#add_rule({
       \   'filetype' : ['python'],
       \})
 
+" docstring の改行
+call lexima#add_rule({
+      \   "at" : '''''''.*\%#''''''',
+      \   "char" : "<CR>",
+      \   "input_after" : "<CR>",
+      \   'filetype' : ['python'],
+      \})
+
+" docstring の改行
+call lexima#add_rule({
+      \   "at" : '""".*\%#"""',
+      \   "char" : "<CR>",
+      \   "input_after" : "<CR>",
+      \   'filetype' : ['python'],
+      \})
+
 
 " markdown
 
@@ -160,5 +176,13 @@ call lexima#add_rule({
       \   "at" : '\S\+\s\+\%#$',
       \   "char" : "<CR>",
       \   "input" : "<ESC>ciw<Space><Space><CR>",
+      \   'filetype' : ['markdown'],
+      \})
+
+" コード PRE の改行
+call lexima#add_rule({
+      \   "at" : '```.*\%#```',
+      \   "char" : "<CR>",
+      \   "input_after" : "<CR>",
       \   'filetype' : ['markdown'],
       \})
