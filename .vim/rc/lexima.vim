@@ -29,6 +29,27 @@ call lexima#add_rule({
       \   'input' : '<BS><BS>',
       \})
 
+" :の後にスペースを入れる
+call lexima#add_rule({
+      \   'at' : '\%#',
+      \   'char' : ':',
+      \   'input' : ':<Space>',
+      \})
+
+" ': ' の後にスペースを続けれないようにする
+call lexima#add_rule({
+      \   'at' : ': \%#',
+      \   'char' : '<Space>',
+      \   'input' : '',
+      \})
+
+" ': 'を一度に削除する
+call lexima#add_rule({
+      \   'at' : ': \%#',
+      \   'char' : '<BS>',
+      \   'input' : '<BS><BS>',
+      \})
+
 " =の前後にスペースを入れる
 call lexima#add_rule({
       \   'at' : '\w\+\%#',
@@ -173,7 +194,7 @@ call lexima#add_rule({
 
 " 改行後に末尾のスペースが2つ以上の場合は2つ残す
 call lexima#add_rule({
-      \   'at' : '\S\+\s\+\%#$',
+      \   'at' : '\S\+\s\s\+\%#$',
       \   'char' : '<CR>',
       \   'input' : '<ESC>ciw<Space><Space><CR>',
       \   'filetype' : ['markdown'],
