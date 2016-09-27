@@ -177,7 +177,7 @@ hook_post_source = '''
 
 [[plugins]]
 repo = 'jeffkreeftmeijer/vim-numbertoggle'
-on_i = 1
+on_path = '.*'
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
@@ -292,10 +292,6 @@ hook_source = '''
     autocmd User PreciousFileType let &l:syntax = precious#context_filetype()
   augroup END
 '''
-
-# [[plugins]]
-# repo = 'mattn/sonictemplate-vim'
-# on_path = '.*'
 
 [[plugins]]
 repo = 'Shougo/neosnippet'
