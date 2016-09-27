@@ -106,6 +106,20 @@ call lexima#add_rule({
       \   'input' : '<ESC>kJDA',
       \})
 
+" docstring の改行
+call lexima#add_rule({
+      \   'at' : '''''''.*\%#''''''',
+      \   'char' : '<CR>',
+      \   'input_after' : '<CR>',
+      \})
+
+" docstring の改行
+call lexima#add_rule({
+      \   'at' : '""".*\%#"""',
+      \   'char' : '<CR>',
+      \   'input_after' : '<CR>',
+      \})
+
 
 " python
 " http://qiita.com/hatchinee/items/c5bc19a656925ce33882
@@ -170,22 +184,6 @@ call lexima#add_rule({
       \   'at' : '".* = \%#"',
       \   'char' : '<CR>',
       \   'input' : '<CR>',
-      \   'filetype' : ['python'],
-      \})
-
-" docstring の改行
-call lexima#add_rule({
-      \   'at' : '''''''.*\%#''''''',
-      \   'char' : '<CR>',
-      \   'input_after' : '<CR>',
-      \   'filetype' : ['python'],
-      \})
-
-" docstring の改行
-call lexima#add_rule({
-      \   'at' : '""".*\%#"""',
-      \   'char' : '<CR>',
-      \   'input_after' : '<CR>',
       \   'filetype' : ['python'],
       \})
 
