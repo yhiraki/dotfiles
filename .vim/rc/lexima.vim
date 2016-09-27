@@ -66,7 +66,7 @@ call lexima#add_rule({
 
 " ' = 'の後ろにスペースをいれ続けない
 call lexima#add_rule({
-      \   'at' : '\w\+ =\+ \%#',
+      \   'at' : '\w\+ [-+\\*/%=]\==\+ \%#',
       \   'char' : '<Space>',
       \   'input' : '',
       \})
