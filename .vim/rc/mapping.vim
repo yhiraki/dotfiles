@@ -20,3 +20,6 @@ cnoremap <C-p> <Up>
 
 " quickrun ウインドウを閉じる
 nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
+
+" tags が複数ある時は一覧表示
+nnoremap <C-]> g<C-]>
