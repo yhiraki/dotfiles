@@ -66,7 +66,7 @@ call lexima#add_rule({
 
 " ' = 'の後ろにスペースをいれ続けない
 call lexima#add_rule({
-      \   'at' : '\w\+ =\+ \%#',
+      \   'at' : '\w\+ [-+\\*/%=]\==\+ \%#',
       \   'char' : '<Space>',
       \   'input' : '',
       \})
@@ -104,6 +104,20 @@ call lexima#add_rule({
       \   'at' : '^\s\+\%#$',
       \   'char' : '<BS>',
       \   'input' : '<ESC>kJDA',
+      \})
+
+" docstring の改行
+call lexima#add_rule({
+      \   'at' : '''''''.*\%#''''''',
+      \   'char' : '<CR>',
+      \   'input_after' : '<CR>',
+      \})
+
+" docstring の改行
+call lexima#add_rule({
+      \   'at' : '""".*\%#"""',
+      \   'char' : '<CR>',
+      \   'input_after' : '<CR>',
       \})
 
 
@@ -170,22 +184,6 @@ call lexima#add_rule({
       \   'at' : '".* = \%#"',
       \   'char' : '<CR>',
       \   'input' : '<CR>',
-      \   'filetype' : ['python'],
-      \})
-
-" docstring の改行
-call lexima#add_rule({
-      \   'at' : '''''''.*\%#''''''',
-      \   'char' : '<CR>',
-      \   'input_after' : '<CR>',
-      \   'filetype' : ['python'],
-      \})
-
-" docstring の改行
-call lexima#add_rule({
-      \   'at' : '""".*\%#"""',
-      \   'char' : '<CR>',
-      \   'input_after' : '<CR>',
       \   'filetype' : ['python'],
       \})
 

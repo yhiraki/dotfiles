@@ -29,8 +29,8 @@ hook_add = '''
   syntax on
 '''
 
-# [[plugins]]
-# repo = 'vim-jp/vimdoc-ja'
+[[plugins]]
+repo = 'vim-jp/vimdoc-ja'
 
 # [[plugins]]
 # repo = 'Shougo/unite.vim'
@@ -104,9 +104,3 @@ hook_add = '''
   " :WatchdogsRun後にlightline.vimを更新
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
 '''
-
-# [[plugins]]
-# repo = 'osyo-manga/vim-automatic'
-# hook_add = '''
-#   source ~/.vim/rc/automatic.vim
-# '''
