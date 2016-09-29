@@ -33,6 +33,10 @@ gitshow() {
 FZF-EOF"
 }
 
+gitroot(){
+  cd $(git rev-parse --show-toplevel)
+}
+
 # v - open files in neomru
 v() {
   local files
