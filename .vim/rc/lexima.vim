@@ -239,9 +239,30 @@ call lexima#add_rule({
       \   'at' : '^[gbwtslv]\%#',
       \   'char' : ':',
       \   'input' : ':',
+      \   'filetype' : ['vim'],
       \})
 call lexima#add_rule({
       \   'at' : ' [gbwtslv]\%#',
       \   'char' : ':',
       \   'input' : ':',
+      \   'filetype' : ['vim'],
+      \})
+
+" set 系コマンドでは = の間にスペースを入れない
+call lexima#add_rule({
+      \   'at' : '^set.*\%#',
+      \   'char' : '=',
+      \   'input' : '=',
+      \   'filetype' : ['vim'],
+      \})
+
+
+" sh, zsh
+
+" = の間にスペースを入れない
+call lexima#add_rule({
+      \   'at' : '\%#',
+      \   'char' : '=',
+      \   'input' : '=',
+      \   'filetype' : ['sh', 'zsh'],
       \})
