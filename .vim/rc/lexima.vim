@@ -29,6 +29,13 @@ for c in [',', ':']
         \})
 endfor
 
+" FQDN っぽい場合は : 直後にスペースを入れない
+call lexima#add_rule({
+      \   'at' : '\(\w\+\.\)\+\w\+\%#',
+      \   'char' : ':',
+      \   'input' : ':',
+      \})
+
 " =の前後にスペースを入れる
 call lexima#add_rule({
       \   'at' : '\w\+\%#',
