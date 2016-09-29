@@ -31,4 +31,20 @@ function nas () {
   fi
 }
 
+function winpath(){
+  local _dir
+
+  if [ $# -eq 1 ]; then
+    _dir=$1
+  else
+    _dir=$(pwd)
+  fi
+
+  if echo $_dir | grep '^/Volumes/' > /dev/null; then
+    _dir=$(echo $_dir | sed s/Volumes// | sed s:_:/:)
+  fi
+
+  echo $_dir | tr '/' '\\'
+}
+
 # vim:ft=zsh
