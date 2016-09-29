@@ -8,47 +8,26 @@ call lexima#add_rule({
       \   "input" : "<ESC>diwo",
       \})
 
-" ,の後にスペースを入れる
-call lexima#add_rule({
-      \   'at' : '\%#',
-      \   'char' : ',',
-      \   'input' : ',<Space>',
-      \})
-
-" ', ' の後にスペースを続けれないようにする
-call lexima#add_rule({
-      \   'at' : ', \%#',
-      \   'char' : '<Space>',
-      \   'input' : '',
-      \})
-
-" ', 'を一度に削除する
-call lexima#add_rule({
-      \   'at' : ', \%#',
-      \   'char' : '<BS>',
-      \   'input' : '<BS><BS>',
-      \})
-
-" :の後にスペースを入れる
-call lexima#add_rule({
-      \   'at' : '\%#',
-      \   'char' : ':',
-      \   'input' : ':<Space>',
-      \})
-
-" ': ' の後にスペースを続けれないようにする
-call lexima#add_rule({
-      \   'at' : ': \%#',
-      \   'char' : '<Space>',
-      \   'input' : '',
-      \})
-
-" ': 'を一度に削除する
-call lexima#add_rule({
-      \   'at' : ': \%#',
-      \   'char' : '<BS>',
-      \   'input' : '<BS><BS>',
-      \})
+for c in [',', ':']
+  " 後にスペースを入れる
+  call lexima#add_rule({
+        \   'at' : '\%#',
+        \   'char' : c,
+        \   'input' : c . '<Space>',
+        \})
+  " 後にスペースを続けれないようにする
+  call lexima#add_rule({
+        \   'at' : '\w\+' . c . ' \%#',
+        \   'char' : '<Space>',
+        \   'input' : '',
+        \})
+  " 一度に削除する
+  call lexima#add_rule({
+        \   'at' : '\w\+' . c . ' \%#',
+        \   'char' : '<BS>',
+        \   'input' : '<BS><BS>',
+        \})
+endfor
 
 " =の前後にスペースを入れる
 call lexima#add_rule({
@@ -107,18 +86,13 @@ call lexima#add_rule({
       \})
 
 " docstring の改行
+for c in ['''', '"']
 call lexima#add_rule({
-      \   'at' : '''''''.*\%#''''''',
+      \   'at' : c . '\{3}.*\%#' . c . '\{3}',
       \   'char' : '<CR>',
       \   'input_after' : '<CR>',
       \})
-
-" docstring の改行
-call lexima#add_rule({
-      \   'at' : '""".*\%#"""',
-      \   'char' : '<CR>',
-      \   'input_after' : '<CR>',
-      \})
+endfor
 
 
 " python
