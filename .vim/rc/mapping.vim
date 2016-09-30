@@ -1,4 +1,4 @@
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR>:<C-u>cclose<CR><C-l>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 nnoremap <silent> <leader>bo :<C-u>NERDTree<CR>
 nnoremap <silent> <leader>bc :<C-u>NERDTreeClose<CR>
