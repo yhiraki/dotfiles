@@ -57,8 +57,7 @@ set hintchars=abcdefghijklmnopqrstuvwxyz234567890;,.[]-/
 " set hintmatching=custom
 
 " google検索を手早くする
-noremap s :open<Space>google<Space>
-noremap S :tabopen<Space>google<Space>
+noremap s :tabopen<Space>google<Space>
 
 " undo一覧から開く
 nnoremap U :undo<Space>
