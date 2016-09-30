@@ -17,7 +17,7 @@ for c in [',', ':']
         \})
   " 後にスペースを続けれないようにする
   call lexima#add_rule({
-        \   'at' : '\w\+' . c . ' \%#',
+        \   'at' : c . ' \%#',
         \   'char' : '<Space>',
         \   'input' : '',
         \})
@@ -32,6 +32,13 @@ endfor
 " FQDN っぽい場合は : 直後にスペースを入れない
 call lexima#add_rule({
       \   'at' : '\(\w\+\.\)\+\w\+\%#',
+      \   'char' : ':',
+      \   'input' : ':',
+      \})
+
+" 時刻や日付っぽい場合は : 直後にスペースを入れない
+call lexima#add_rule({
+      \   'at' : '\d\+\%#',
       \   'char' : ':',
       \   'input' : ':',
       \})
