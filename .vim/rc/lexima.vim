@@ -194,6 +194,30 @@ call lexima#add_rule({
       \   'filetype' : ['markdown'],
       \})
 
+" コード PRE shell の場合 プロンプト $ を自動入力
+call lexima#add_rule({
+      \   'at' : '```sh\n\(\n.*\)*\%#\(\n.*\)*```',
+      \   'char' : '<CR>',
+      \   'input' : '<CR>$<Space>',
+      \   'filetype' : ['markdown'],
+      \})
+
+" コード PRE shell の場合 行頭スペースでプロンプト $ を自動入力
+call lexima#add_rule({
+      \   'at' : '```sh\(\n.*\)*\n\%#\(\n.*\)*```',
+      \   'char' : '<Space>',
+      \   'input' : '$<Space>',
+      \   'filetype' : ['markdown'],
+      \})
+
+" コード PRE shell の場合 プロンプト $ を一括削除
+call lexima#add_rule({
+      \   'at' : '```sh\(\n.*\)*$ \%#\(\n.*\)*```',
+      \   'char' : '<BS>',
+      \   'input' : '<BS><BS>',
+      \   'filetype' : ['markdown'],
+      \})
+
 
 " sql
 " http://www.agtech.co.jp/html/v8manuals/sqlref/Sqlkword3.html#611355
