@@ -370,6 +370,7 @@ repo = 'vim-scripts/dbext.vim'
 on_path = '.*'
 hook_source = '''
   let g:dbext_default_buffer_lines = 20
+  let g:dbext_default_history_file = '~/.dbext_sql_history'
 '''
 
 [[plugins]]
