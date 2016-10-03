@@ -43,6 +43,13 @@ call lexima#add_rule({
       \   'input' : ':',
       \})
 
+" 行頭では : 直後にスペースを入れない
+call lexima#add_rule({
+      \   'at' : '^\s*\%#',
+      \   'char' : ':',
+      \   'input' : ':',
+      \})
+
 " =の前後にスペースを入れる
 call lexima#add_rule({
       \   'at' : '\w\+\%#',
