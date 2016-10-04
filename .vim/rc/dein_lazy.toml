@@ -1,8 +1,4 @@
 [[plugins]]
-repo = 'junegunn/vim-peekaboo'
-on_path = '.*'
-
-[[plugins]]
 repo = 'haya14busa/incsearch.vim'
 on_path = '.*'
 hook_add = '''
