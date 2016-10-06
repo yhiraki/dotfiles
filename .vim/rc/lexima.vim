@@ -100,11 +100,11 @@ call lexima#add_rule({
       \})
 
 " <BS>空白(インデント)を一気に削除
-call lexima#add_rule({
-      \   'at' : '^\s\+\%#$',
-      \   'char' : '<BS>',
-      \   'input' : '<ESC>kJDA',
-      \})
+" call lexima#add_rule({
+"       \   'at' : '^\s\+\%#$',
+"       \   'char' : '<BS>',
+"       \   'input' : '<ESC>kJDA',
+"       \})
 
 " docstring の改行
 for c in ['''', '"']
@@ -147,6 +147,14 @@ call lexima#add_rule({
       \   'at'       : '^\s*\%(\<def\>\|\<if\>\|\<for\>\|\<while\>\|\<class\>\|\<with\>\)\s*\w\+.*\%#:$',
       \   'char'     : '<CR>',
       \   'input'    : '<Right><CR>',
+      \   'filetype' : ['python'],
+      \   })
+
+" (): を一度に消す
+call lexima#add_rule({
+      \   'at'       : '^\s*\%(\<def\>\|\<if\>\|\<for\>\|\<while\>\|\<class\>\|\<with\>\)\s*\w\+(\%#):$',
+      \   'char'     : '<BS>',
+      \   'input'    : '<BS><Del><Del>',
       \   'filetype' : ['python'],
       \   })
 
