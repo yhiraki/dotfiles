@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/bin/ctags -R $(git rev-parse --show-toplevel)
+/usr/local/bin/ctags -R .
