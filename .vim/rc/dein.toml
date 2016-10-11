@@ -37,6 +37,11 @@ repo = 'vim-jp/vimdoc-ja'
 
 [[plugins]]
 repo = 'Shougo/denite.nvim'
+hook_add = '''
+  nnoremap <silent> <leader>fe :<C-u>Denite file_rec<CR>
+  nnoremap <silent> <leader>fm :<C-u>Denite file_mru<CR>
+  nnoremap <silent> <leader>fl :<C-u>Denite files<CR>
+'''
 
 # [[plugins]]
 # repo = 'Shougo/vimfiler.vim'
