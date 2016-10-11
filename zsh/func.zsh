@@ -1,7 +1,5 @@
 _fzf-select-repo-dir(){
-  local dir
-  dir=$(ghq list > /dev/null | fzf-tmux -q "$*") &&
-    echo $(ghq root)/$dir
+  echo $(find $(ghq root) -mindepth 3 -maxdepth 3 | fzf-tmux -q "$*")
 }
 
 # repo - cd to repogitory dir
