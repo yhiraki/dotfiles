@@ -151,7 +151,7 @@ command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='feedly\.com' j k n p o v gh gm ga gg gl ? A / r m x s l f b
-lazy fmaps -u='calendar\.google\.com' j r t + / s d w m x a c e <BS> z 
+" lazy fmaps -u='calendar\.google\.com' j r t + / s d w m x a c e <BS> z 
 
 "============================
 " hatena bookmark
