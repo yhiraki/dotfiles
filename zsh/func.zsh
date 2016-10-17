@@ -1,5 +1,6 @@
 _fzf-select-repo-dir(){
-  echo $(find $(ghq root) -mindepth 3 -maxdepth 3 | fzf-tmux -q "$*")
+  local gitroot=$(ghq root)
+  echo $gitroot/$(find $gitroot -mindepth 3 -maxdepth 3 | sed s:$gitroot/::g | fzf-tmux -q "$*")
 }
 
 # repo - cd to repogitory dir
