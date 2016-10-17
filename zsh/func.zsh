@@ -83,7 +83,10 @@ fea() {
 }
 
 fsh() {
-  ssh $(cat ~/.ssh/config | grep -i -e '^host' | sed -e 's/host //i' | fzf-tmux -q "$*")
+  ssh $(cat ~/.ssh/config \
+    | grep -i -e '^host' \
+    | sed -e 's/host //i' \
+    | fzf-tmux -q "$*")
 }
 
 fsql(){
