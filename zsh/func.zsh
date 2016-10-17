@@ -86,6 +86,16 @@ fsh() {
   ssh $(cat ~/.ssh/config | grep -i -e '^host' | sed -e 's/host //i' | fzf-tmux -q "$*")
 }
 
+fsql(){
+  psql $(cat ~/.pgpass \
+     | sed -E 's/:[^:]+$//' \
+     | fzf-tmux -q "$*" \
+     | sed 's/^/-h /' \
+     | sed 's/:/ -p /' \
+     | sed 's/:/ -d /' \
+     | sed 's/:/ -U /')
+}
+
 _select-files-in-dir(){
   find $1 -type f | _fzf-select-files
 }
