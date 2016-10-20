@@ -235,52 +235,6 @@ call lexima#add_rule({
 
 
 " sql
-" http://www.agtech.co.jp/html/v8manuals/sqlref/Sqlkword3.html#611355
-let s:sql_keywords = [
-      \ 'absolute', 'action', 'add', 'all', 'allocate', 'alter', 'and', 'any', 'are', 'as', 'asc', 'assertion', 'at', 'authorization', 'avg', 'begin', 'between', 'bit', 'bit_length', 'both', 'by', 'cascade', 'cascaded', 'case', 'cast', 'catalog', 'char', 'character', 'char_length', 'character_length', 'check', 'close', 'coalesce', 'collate', 'collation', 'column', 'commit', 'connect', 'connection', 'constraint', 'constraints', 'continue', 'convert', 'corresponding', 'count', 'create', 'cross', 'current', 'current_date', 'current_time', 'current_timestamp', 'current_user', 'cursor', 'date', 'day', 'deallocate', 'dec', 'decimal', 'declare', 'default', 'deferrable', 'deferred', 'delete', 'desc', 'describe', 'descriptor', 'diagnostics', 'disconnect', 'distinct', 'domain', 'double', 'drop', 'else', 'end', 'end-exec', 'escape', 'except', 'exception', 'exec', 'execute', 'exists', 'external', 'extract', 'false', 'fetch', 'first', 'float', 'for', 'foreign', 'found', 'from', 'full', 'get', 'global', 'go', 'goto', 'grant', 'group', 'having', 'hour', 'identity', 'immediate', 'in', 'indicator', 'initially', 'inner', 'input', 'insensitive', 'insert', 'int', 'integer', 'intersect', 'interval', 'into', 'is', 'isolation', 'join', 'key', 'language', 'last', 'leading', 'left', 'level', 'like', 'local', 'lower', 'mask', 'match', 'max', 'min', 'minute', 'module', 'month', 'names', 'national', 'natural', 'nchar', 'next', 'no', 'not', 'notice', 'null', 'nullif', 'numeric', 'octet_length', 'of', 'on', 'only', 'open', 'option', 'or', 'order', 'outer', 'output', 'overlaps', 'pad', 'partial', 'position', 'precision', 'prepare', 'preserve', 'primary', 'prior', 'privileges', 'procedure', 'public', 'raise', 'read', 'real', 'references', 'relative', 'restrict', 'revoke', 'right', 'rollback', 'rows', 'schema', 'scroll', 'second', 'section', 'select', 'session', 'session_user', 'set', 'size', 'smallint', 'some', 'space', 'sql', 'sqlcode', 'sqlerror', 'sqlstate', 'substring', 'sum', 'system_user', 'table', 'temporary', 'text', 'then', 'time', 'timestamp', 'timezone_hour', 'timezone_minute', 'to', 'trailing', 'transaction', 'translate', 'translation', 'trim', 'true', 'union', 'unique', 'unknown', 'update', 'upper', 'usage', 'user', 'using', 'value', 'values', 'varchar', 'varying', 'view', 'when', 'whenever', 'where', 'with', 'work', 'write', 'year', 'zone'
-      \ ]
-
-let s:sql_keywords_match = '\<' . join(s:sql_keywords, '\>\|\<') . '\>'
-
-" 予約を大文字にする
-call lexima#add_rule({
-      \   'at' : '\%('.s:sql_keywords_match.'\)\%#',
-      \   'char' : '<Space>',
-      \   'input' : '<ESC>gUiwea<Space>',
-      \   'filetype' : ['sql'],
-      \})
-call lexima#add_rule({
-      \   'at' : '\%('.s:sql_keywords_match.'\)\%#',
-      \   'char' : '<CR>',
-      \   'input' : '<ESC>gUiwea<CR>',
-      \   'filetype' : ['sql'],
-      \})
-call lexima#add_rule({
-      \   'at' : '\%('.s:sql_keywords_match.'\)\%#',
-      \   'char' : ';',
-      \   'input' : '<ESC>gUiwea;',
-      \   'filetype' : ['sql'],
-      \})
-
-" 予約を大文字にする 例: INT(10)
-call lexima#add_rule({
-      \   'at' : '\%('.s:sql_keywords_match.'\)(.*)\%#',
-      \   'char' : '<Space>',
-      \   'input' : '<ESC>F(<Left>gUiwf)a<Space>',
-      \   'filetype' : ['sql'],
-      \})
-call lexima#add_rule({
-      \   'at' : '\%('.s:sql_keywords_match.'\)(.*)\%#',
-      \   'char' : '<CR>',
-      \   'input' : '<ESC>F(<Left>gUiwf)a<CR>',
-      \   'filetype' : ['sql'],
-      \})
-call lexima#add_rule({
-      \   'at' : '\%('.s:sql_keywords_match.'\)(.*)\%#',
-      \   'char' : ';',
-      \   'input' : '<ESC>F(<Left>gUiwf)a;',
-      \   'filetype' : ['sql'],
-      \})
 
 " postgres 変数宣言 ':='
 call lexima#add_rule({

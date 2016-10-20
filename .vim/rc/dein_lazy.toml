@@ -380,3 +380,7 @@ repo = 'basyura/twibill.vim'
 repo = 'basyura/TweetVim'
 on_path = '.*'
 depends = 'twibill.vim'
+
+[[plugins]]
+repo = 'vim-scripts/sql_iabbr.vim'
+on_ft = 'sql'
