@@ -11,6 +11,12 @@ set background=dark
 set hlsearch
 set nomore
 
+" return to continue を表示しない
+set shortmess=t
+
+" ※等の記号を2バイト表示
+set ambiwidth=double
+
 " undoの永続化
 if has('persistent_undo')
   set undodir=~/.vim/undo

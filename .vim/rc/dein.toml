@@ -32,8 +32,8 @@ hook_add = '''
 [[plugins]]
 repo = 'vim-jp/vimdoc-ja'
 
-# [[plugins]]
-# repo = 'Shougo/unite.vim'
+[[plugins]]
+repo = 'Shougo/unite.vim'
 
 [[plugins]]
 repo = 'Shougo/denite.nvim'
@@ -43,9 +43,12 @@ hook_add = '''
   nnoremap <silent> <leader>fl :<C-u>Denite files<CR>
 '''
 
-# [[plugins]]
-# repo = 'Shougo/vimfiler.vim'
-# depends = 'Shougo/unite.vim'
+[[plugins]]
+repo = 'Shougo/vimfiler.vim'
+hook_add = '''
+  let g:vimfiler_as_default_explorer = 1
+'''
+depends = 'Shougo/unite.vim'
 
 [[plugins]]
 repo = 'kana/vim-operator-user'
