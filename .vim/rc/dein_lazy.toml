@@ -101,7 +101,7 @@ repo = 'rhysd/vim-operator-surround'
 rev = 'input_in_advance'
 on_path = '.*'
 hook_source = '''
-  " nmap sa <Plug>(operator-surround-append-input-in-advance)
+  nmap sa <Plug>(operator-surround-append-input-in-advance)
   nmap sd <Plug>(operator-surround-delete)
   nmap sr <Plug>(operator-surround-replace)
   nmap s( <Plug>(operator-surround-append-input-in-advance)(
@@ -157,7 +157,7 @@ on_path = '.*'
 repo = 'bronson/vim-trailing-whitespace'
 on_path = '.*'
 hook_source = '''
-  let g:extra_whitespace_ignored_filetypes = ['help', 'unite', 'quickrun', 'dbext', 'qf', 'tweetvim']
+  let g:extra_whitespace_ignored_filetypes = ['help', 'unite', 'quickrun', 'dbext', 'qf', 'tweetvim', 'vimfiler']
 '''
 
 [[plugins]]

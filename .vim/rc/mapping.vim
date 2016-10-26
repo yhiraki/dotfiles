@@ -1,7 +1,6 @@
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
-nnoremap <silent> <leader>bo :<C-u>NERDTree<CR>
-nnoremap <silent> <leader>bc :<C-u>NERDTreeClose<CR>
+nnoremap <silent> <leader>bo :<C-u>VimFilerExplorer<CR>
 
 nnoremap <silent> <leader>to :<C-u>TagbarOpen<CR>
 nnoremap <silent> <leader>tc :<C-u>TagbarClose<CR>
