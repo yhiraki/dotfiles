@@ -4,7 +4,8 @@ repo = 'Shougo/unite.vim'
 [[plugins]]
 repo = 'Shougo/vimfiler.vim'
 depends = 'unite.vim'
-hook_add = '''
+on_cmd = 'VimFiler'
+hook_source = '''
   let g:vimfiler_as_default_explorer = 1
 '''
 
@@ -128,13 +129,6 @@ hook_source = '''
 [[plugins]]
 repo = 'tyru/open-browser.vim'
 on_path = '.*'
-
-[[plugins]]
-repo = 'bronson/vim-trailing-whitespace'
-on_path = '.*'
-hook_source = '''
-  let g:extra_whitespace_ignored_filetypes = ['help', 'unite', 'quickrun', 'dbext', 'qf', 'tweetvim', 'vimfiler']
-'''
 
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
