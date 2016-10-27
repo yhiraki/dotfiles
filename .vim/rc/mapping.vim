@@ -12,6 +12,9 @@ nnoremap <silent> <leader>jd :<C-u> :JunkfileDiary<CR>
 
 nnoremap <silent> <leader>td :<C-u> :e ~/todo.txt<CR>
 
+nnoremap <leader>tws :<C-u>TweetVimSwitch<Space>
+nnoremap <silent> <leader>twu :<C-u>TweetVimSay<CR>
+
 " コマンドライン履歴を一つ進む
 cnoremap <C-n> <Down>
 " コマンドライン履歴を一つ戻る
