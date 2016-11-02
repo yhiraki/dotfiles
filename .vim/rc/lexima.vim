@@ -270,12 +270,29 @@ call lexima#add_rule({
       \})
 
 
-" sh, zsh
+" yaml
+
+" 行頭の - 直後はスペースを開ける
+call lexima#add_rule({
+      \   'at' : '^ *\%#',
+      \   'char' : '-',
+      \   'input' : '-<Space>',
+      \   'filetype' : ['yaml'],
+      \})
+call lexima#add_rule({
+      \   'at' : '^ *-\+ \%#',
+      \   'char' : '-',
+      \   'input' : '<Left>-<Right>',
+      \   'filetype' : ['yaml'],
+      \})
+
+
+" sh, zsh, yaml
 
 " = の間にスペースを入れない
 call lexima#add_rule({
       \   'at' : '\%#',
       \   'char' : '=',
       \   'input' : '=',
-      \   'filetype' : ['sh', 'zsh'],
+      \   'filetype' : ['sh', 'zsh', 'yaml'],
       \})

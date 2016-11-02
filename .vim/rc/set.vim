@@ -11,6 +11,13 @@ set background=dark
 set hlsearch
 set nomore
 
+" 描画の高速化
+set nocursorcolumn
+set nocursorline
+set norelativenumber
+set synmaxcol=200
+syntax sync minlines=256
+
 " return to continue を表示しない
 set shortmess=t
 
