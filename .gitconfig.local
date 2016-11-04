@@ -4,4 +4,4 @@
 	root = ~/src
 [core]
 	editor = vi
-	excludesfile = ~/.gitignore.local
+	excludesfile = ~/.gitexclude
