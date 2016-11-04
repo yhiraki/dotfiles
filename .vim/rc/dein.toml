@@ -92,9 +92,3 @@ on_source = 'lightline.vim'
 [[plugins]]
 repo = 'cocopon/lightline-hybrid.vim'
 on_source = 'lightline.vim'
-
-[[plugins]]
-repo = 'ntpeters/vim-better-whitespace'
-hook_source = '''
-  let g:better_whitespace_filetypes_blacklist=['quickrun', 'dbext', 'tweetvim', 'vimfiler', 'diff', 'gitcommit', 'unite', 'qf', 'help']
-'''

@@ -373,3 +373,17 @@ on_cmd = 'Ag'
 [[plugins]]
 repo = 'majutsushi/tagbar'
 on_cmd = 'Tagbar'
+
+[[plugins]]
+repo = 'ntpeters/vim-better-whitespace'
+hook_source = '''
+  let g:better_whitespace_filetypes_blacklist=['quickrun', 'dbext', 'tweetvim', 'vimfiler', 'diff', 'gitcommit', 'unite', 'qf', 'help']
+'''
+on_path = '.*'
+
+[[plugins]]
+repo = 'heavenshell/vim-pydocstring'
+hook_add = '''
+  nmap <silent> <C-m> <Plug>(pydocstring)
+'''
+on_ft = 'python'
