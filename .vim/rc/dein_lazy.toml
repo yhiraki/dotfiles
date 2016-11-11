@@ -181,11 +181,11 @@ on_ft = ['python', 'htmldjango']
 
 [[plugins]]
 repo = 'hynek/vim-python-pep8-indent'
-on_ft = ['python', 'htmldjango', 'markdown']
+on_ft = ['python', 'htmldjango']
 
 [[plugins]]
 repo = 'hdima/python-syntax'
-on_ft = ['python', 'htmldjango', 'markdown']
+on_ft = ['python', 'htmldjango']
 hook_source = '''
   let python_highlight_all = 1
 '''
@@ -193,18 +193,28 @@ hook_source = '''
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
 if = '''has('nvim')'''
+depends = 'context_filetype.vim'
 on_i = 1
 hook_source = '''
-  let g:deoplete#enable_at_startup = 1
-  inoremap <expr><tab> pumvisible() ? "\<C-n>" :
-        \ neosnippet#expandable_or_jumpable() ?
-        \    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_ignore_case = 1
+    let g:deoplete#enable_smart_case = 1
+
+    " <TAB>: completion.
+    imap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+
+    " <S-TAB>: completion back.
+    inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
 
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
 if = '''has('nvim')'''
-on_ft = ['python', 'htmldjango', 'markdown']
+on_ft = ['python', 'htmldjango']
 hook_post_update = '''
   let cmd = 'pip install neovim jedi'
   let g:dein#plugin.build = cmd
