@@ -53,7 +53,7 @@ repo = 'Shougo/neomru.vim'
 repo = 'junegunn/fzf'
 marged = 0
 build = '''
-  ./install --all
+  ./install --bin
 '''
 hook_add = '''
   source ~/.vim/rc/fzf.vim
