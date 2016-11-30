@@ -136,7 +136,8 @@ repo = 'tyru/open-browser.vim'
 on_path = '.*'
 
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
+# repo = 'airblade/vim-gitgutter'
+repo = 'sgur/vim-lazygutter'
 on_path = '.*'
 
 [[plugins]]
@@ -266,12 +267,15 @@ repo = 'osyo-manga/vim-precious'
 on_path = '.*'
 hook_source = '''
   let g:precious_enable_switch_CursorMoved = {
-  \   "help" : 0
+  \   "*" : 0
   \}
   let g:precious_enable_switch_CursorMoved_i = {
   \    "help" : 0
   \}
   let g:precious_enable_switchers = {
+  \  "*" : {
+  \    "setfiletype" : 1
+  \  },
   \  "markdown" : {
   \    "setfiletype" : 0
   \  },
