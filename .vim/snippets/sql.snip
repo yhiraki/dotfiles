@@ -1,22 +1,22 @@
-snippet     copy
+snippet     COPY
 options     head
 	COPY ${1:table} (${2:column_names,}) FROM '${3:hoge.csv}' WITH CSV
 
-snippet     copymeta
+snippet     \COPY
 options     head
 	\copy ${1:table} (${2:column_names,}) from '${3:hoge.csv}' with csv
 
-snippet     kill
+snippet     KIll
 options     head
 	-- KIll query
 	SELECT pg_cancel_backend(${1:PID});
 
-snippet     kill-force
+snippet     KILL_FORCE
 options     head
 	-- KIll query force
 	SELECT pg_terminate_backend(${1:PID});
 
-snippet     current-queries
+snippet     CURRENT_QUERIES
 options     head
 	-- Current queries
 	SELECT
@@ -29,3 +29,7 @@ options     head
 	  state='active'
 	ORDER BY
 	  query_start;
+
+snippet     SET_TRANSACTION_MODE
+options     head
+	SET SESSION CHARACTERISTICS AS TRANSACTION READ ${1:ONLY};

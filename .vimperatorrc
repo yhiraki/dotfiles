@@ -8,7 +8,7 @@
   " ln -s ~/.vimperator-plugins/plugin_loader.js ~/.vimperator/
 
 let g:plugin_loader_roots = '~/.vimperator-plugins'
-let g:plugin_loader_plugins = '_libly,hint-tombloo,tinyurl,yetmappings,tab-history,feedSomeKeys_3,caret-hint,copy,walk-input,lookupDictionary,auto_detect_link,opener,googlesuggest,edit-vimperator-files,google-search,imageextender,zoom-em-all,amazon_simple_uri,appendAnchor'
+let g:plugin_loader_plugins = '_libly,hint-tombloo,tinyurl,yetmappings,tab-history,feedSomeKeys_3,caret-hint,copy,walk-input,lookupDictionary,auto_detect_link,opener,forcefocuscontent,googlesuggest,edit-vimperator-files,google-search,imageextender,zoom-em-all,amazon_simple_uri,appendAnchor'
 
 "===================="
 " colorscheme
@@ -47,6 +47,10 @@ set statuslinevisibility=visible
 "===================="
 " mappings
 "===================="
+
+" vimperator と skk を共存させるために vimperator 側で <C-j> を無効化する
+map <C-j> <Nop>
+cmap <C-j> <Nop>
 
 "j/kの移動量を5倍に変更
 nnoremap j 5j
