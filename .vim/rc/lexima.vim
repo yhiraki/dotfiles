@@ -287,6 +287,17 @@ call lexima#add_rule({
       \})
 
 
+" html
+
+" タグ内では = の間にスペースを入れない
+call lexima#add_rule({
+      \   'at' : '<.* \w\+\%#>',
+      \   'char' : '=',
+      \   'input' : '=',
+      \   'filetype' : ['html', 'htmldjango'],
+      \})
+
+
 " sh, zsh, yaml
 
 " = の間にスペースを入れない
