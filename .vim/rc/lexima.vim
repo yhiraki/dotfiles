@@ -291,7 +291,7 @@ call lexima#add_rule({
 
 " タグ内では = の間にスペースを入れない
 call lexima#add_rule({
-      \   'at' : '<.* \w\+\%#>',
+      \   'at' : '<.* \w\+\%#.*>',
       \   'char' : '=',
       \   'input' : '=',
       \   'filetype' : ['html', 'htmldjango'],
