@@ -287,11 +287,17 @@ call lexima#add_rule({
       \})
 
 
-" html
+" html, htmldjango
 
 " タグ内では = の間にスペースを入れない
 call lexima#add_rule({
       \   'at' : '<.* \w\+\%#.*>',
+      \   'char' : '=',
+      \   'input' : '=',
+      \   'filetype' : ['html', 'htmldjango'],
+      \})
+call lexima#add_rule({
+      \   'at' : '{%.* \w\+\%#.*%}',
       \   'char' : '=',
       \   'input' : '=',
       \   'filetype' : ['html', 'htmldjango'],
