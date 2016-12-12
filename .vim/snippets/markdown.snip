@@ -8,13 +8,12 @@ options     head
 	@enduml
 	\`\`\`
 
-snippet     hugoheader
+snippet     pelican-header
 options     head
-	+++
-	date = "`strftime("%FT%TZ")`"
-	draft = true
-	slug = ""
-	tags = [""]
-	title = ""
-	
-	+++
+	title: 
+	date: `strftime("%Y-%m-%d %H:%M")`
+	modified: `strftime("%Y-%m-%d %H:%M")`
+	tags: true
+	slug: 
+	authors: awaman
+	summary: 
