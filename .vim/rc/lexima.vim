@@ -29,6 +29,13 @@ for c in [',', ':']
         \})
 endfor
 
+" 連続して : を入力する場合はスペースを入れない
+call lexima#add_rule({
+      \   'at' : ': \%#',
+      \   'char' : ':',
+      \   'input' : '<Left>:<Right>',
+      \})
+
 " FQDN っぽい場合は : 直後にスペースを入れない
 call lexima#add_rule({
       \   'at' : '\(\w\+\.\)\+\w\+\%#',
@@ -287,23 +294,6 @@ call lexima#add_rule({
       \})
 
 
-" htmldjango
-
-" {%  %} の補完
-call lexima#add_rule({
-      \   'at' : '{\%#}',
-      \   'char' : '%',
-      \   'input' : '%%<Left>',
-      \   'filetype' : ['htmldjango'],
-      \})
-call lexima#add_rule({
-      \   'at' : '{%\%#%}',
-      \   'char' : '<Space>',
-      \   'input' : '<Space><Space><Left>',
-      \   'filetype' : ['htmldjango'],
-      \})
-
-
 " html, htmldjango
 
 " タグ内では = の間にスペースを入れない
@@ -318,6 +308,20 @@ call lexima#add_rule({
       \   'char' : '=',
       \   'input' : '=',
       \   'filetype' : ['html', 'htmldjango'],
+      \})
+
+" {%  %} の補完
+call lexima#add_rule({
+      \   'at' : '{\%#}',
+      \   'char' : '%',
+      \   'input' : '%%<Left>',
+      \   'filetype' : ['htmldjango'],
+      \})
+call lexima#add_rule({
+      \   'at' : '{%\%#%}',
+      \   'char' : '<Space>',
+      \   'input' : '<Space><Space><Left>',
+      \   'filetype' : ['htmldjango'],
       \})
 
 
