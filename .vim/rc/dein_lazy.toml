@@ -403,3 +403,7 @@ hook_add = '''
   nmap <silent> <C-m> <Plug>(pydocstring)
 '''
 on_ft = 'python'
+
+# [[plugins]]
+# repo = 'Shougo/deol.nvim'
+# on_path = '.*'
