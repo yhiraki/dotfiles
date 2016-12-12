@@ -287,6 +287,23 @@ call lexima#add_rule({
       \})
 
 
+" htmldjango
+
+" {%  %} の補完
+call lexima#add_rule({
+      \   'at' : '{\%#}',
+      \   'char' : '%',
+      \   'input' : '%%<Left>',
+      \   'filetype' : ['htmldjango'],
+      \})
+call lexima#add_rule({
+      \   'at' : '{%\%#%}',
+      \   'char' : '<Space>',
+      \   'input' : '<Space><Space><Left>',
+      \   'filetype' : ['htmldjango'],
+      \})
+
+
 " html, htmldjango
 
 " タグ内では = の間にスペースを入れない
