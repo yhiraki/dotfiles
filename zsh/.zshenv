@@ -1,4 +1,4 @@
-export DOTDIR=$HOME/src/github.com/awaman/dotfiles
+export DOTDIR=$HOME/src/github.com/coffexpr/dotfiles
 source $DOTDIR/zsh/env.zsh
 
 setopt hist_ignore_dups
