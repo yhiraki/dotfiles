@@ -1,6 +1,6 @@
 snippet     pelican-header
 options     head
-	${1:Super Title}
+	${1:`expand('%:t')`}
 	##############
 	
 	:date: `strftime("%Y-%m-%d %H:%M")`
