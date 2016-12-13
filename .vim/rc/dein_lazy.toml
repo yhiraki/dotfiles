@@ -347,13 +347,6 @@ repo = 'zchee/deoplete-zsh'
 on_ft = 'zsh'
 
 [[plugins]]
-repo = 'mattn/gist-vim'
-depends = 'mattn/webapi-vim'
-
-[[plugins]]
-repo = 'mattn/webapi-vim'
-
-[[plugins]]
 repo = 'ekalinin/Dockerfile.vim'
 on_ft = ['dockerfile', 'markdown']
 
@@ -407,3 +400,10 @@ on_ft = 'python'
 # [[plugins]]
 # repo = 'Shougo/deol.nvim'
 # on_path = '.*'
+
+[[plugins]]
+repo = 'lambdalisue/vim-gista'
+hook_add = '''
+  let g:gista#client#default_username = 'coffexpr'
+'''
+on_cmd = 'Gista'
