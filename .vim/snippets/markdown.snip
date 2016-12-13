@@ -10,12 +10,11 @@ options     head
 
 snippet     pelican-header
 options     head
-	title:
+	title: ${1:`expand('%:t')`}
 	date: `strftime("%Y-%m-%d %H:%M")`
 	modified: `strftime("%Y-%m-%d %H:%M")`
 	tags:
 	slug:
-	authors: awaman
-	summary:
+	authors: `system('git config user.name')`summary:
 	
 	${0}
