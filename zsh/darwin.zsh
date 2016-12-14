@@ -5,12 +5,14 @@ alias sed="gsed"
 alias updatedb='/usr/libexec/locate.updatedb'
 
 function nas () {
-  local r_path="$(echo -E /$1 \
+  local r_path="$(
+    echo -E /$1 \
       | tr '\' '/' \
       | tr -d '\n' \
-      | sed 's/^  *//g' \
-      | sed 's/  *$//g' \
-      | sed 's://*:/:g')"
+      | sed -e 's/^  *//g' \
+            -e 's/  *$//g' \
+            -e 's://*:/:g'
+  )"
   local r_dir="/$(echo $r_path | cut -d '/' -f-3)"
   local l_root="/Volumes"
   local l_dir="$l_root/$(echo $r_path | cut -d '/' -f2-3 | tr '/' '_')"
@@ -31,20 +33,20 @@ function nas () {
   fi
 }
 
-function winpath(){
-  local _dir
+function winpath () {
+  local _dir _file
 
   if [ $# -eq 1 ]; then
-    _dir=$1
-  else
-    _dir=$(pwd)
+    _file=$1
   fi
+
+  _dir=$(pwd)
 
   if echo $_dir | grep '^/Volumes/' > /dev/null; then
     _dir=$(echo $_dir | sed s/Volumes// | sed s:_:/:)
   fi
 
-  echo $_dir | tr '/' '\\'
+  echo $_dir/$_file | tr '/' '\\'
 }
 
 # vim:ft=zsh
