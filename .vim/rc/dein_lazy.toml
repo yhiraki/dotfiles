@@ -370,9 +370,9 @@ repo = 'basyura/TweetVim'
 on_cmd = 'TweetVim'
 depends = 'twibill.vim'
 
-[[plugins]]
-repo = 'vim-scripts/sql_iabbr.vim'
-on_ft = 'sql'
+# [[plugins]]
+# repo = 'vim-scripts/sql_iabbr.vim'
+# on_ft = 'sql'
 
 [[plugins]]
 repo = 'rking/ag.vim'
