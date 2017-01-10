@@ -352,7 +352,7 @@ on_ft = ['dockerfile', 'markdown']
 
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
-on_path = '.*'
+on_cmd = 'DB'
 hook_source = '''
   let g:dbext_default_buffer_lines = 20
   let g:dbext_default_history_file = '~/.dbext_sql_history'

@@ -5,7 +5,12 @@
 call lexima#add_rule({
       \   "at" : '\S\+\s\+\%#$',
       \   "char" : "<CR>",
-      \   "input" : "<ESC>diwo",
+      \   "input" : "<ESC>diwa<CR>",
+      \})
+call lexima#add_rule({
+      \   "at" : '\S\+\s\+\%#',
+      \   "char" : "<CR>",
+      \   "input" : "<ESC>diwi<CR>",
       \})
 
 for c in [',', ':']
@@ -59,59 +64,52 @@ call lexima#add_rule({
 
 " =の前後にスペースを入れる
 call lexima#add_rule({
-      \   'at' : '\w\+\%#',
+      \   'at' : '\S\+\%#',
       \   'char' : '=',
       \   'input' : '<Space>=<Space>',
       \})
 
 " =入力前にスペースがあったら入力しない
 call lexima#add_rule({
-      \   'at' : '\w\+ [-+\\*/%=]\=\%#',
+      \   'at' : '[^=]\+ [-+\\*/%=]\=\%#',
       \   'char' : '=',
       \   'input' : '=<Space>',
       \})
 
 " ' = 'の後ろにスペースをいれ続けない
 call lexima#add_rule({
-      \   'at' : '\w\+ [-+\\*/%=]\==\+ \%#',
+      \   'at' : '\S\+\s[-+\\*/%=]\==\+\s\%#',
       \   'char' : '<Space>',
       \   'input' : '',
       \})
 
 " ==の場合は1つスペースを消す
 call lexima#add_rule({
-      \   'at' : '\w\+ =\+ \%#',
+      \   'at' : '\S\+\s=\+\s\%#',
       \   'char' : '=',
       \   'input' : '<BS>=<Space>',
       \})
 
 " 演算子直後の=
 call lexima#add_rule({
-      \   'at' : '\w\+[-+\\*/%=]\%#',
+      \   'at' : '\S\+[-+\\*/%=]\%#',
       \   'char' : '=',
       \   'input' : '<Left> <Right>=<Space>',
       \})
 
 " ' = 'を一度に消す
 call lexima#add_rule({
-      \   'at' : '\w\+ = \%#',
+      \   'at' : '\s=\s\%#',
       \   'char' : '<BS>',
       \   'input' : '<BS><BS><BS>',
       \})
 
 " ' == ', ' += '等を一度に消す
 call lexima#add_rule({
-      \   'at' : '\w\+ [-+\\*/%=]= \%#',
+      \   'at' : '\s[-+\\*/%=]=\s\%#',
       \   'char' : '<BS>',
       \   'input' : '<BS><BS><BS><BS>',
       \})
-
-" <BS>空白(インデント)を一気に削除
-" call lexima#add_rule({
-"       \   'at' : '^\s\+\%#$',
-"       \   'char' : '<BS>',
-"       \   'input' : '<ESC>kJDA',
-"       \})
 
 " docstring の改行
 for c in ['''', '"']
