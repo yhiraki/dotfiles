@@ -28,3 +28,8 @@ options     head
 snippet     ipdb
 options     head
 	import ipdb; ipdb.set_trace()
+
+snippet     init
+options     head
+	def __init__(self${1:, *args}):
+		${0}
