@@ -28,7 +28,7 @@ for c in [',', ':']
         \})
   " 一度に削除する
   call lexima#add_rule({
-        \   'at' : '\w\+' . c . ' \%#',
+        \   'at' : c . ' \%#',
         \   'char' : '<BS>',
         \   'input' : '<BS><BS>',
         \})
