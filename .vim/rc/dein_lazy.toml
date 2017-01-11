@@ -352,7 +352,7 @@ on_ft = ['dockerfile', 'markdown']
 
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
-on_cmd = 'DB'
+on_path = '.*'
 hook_source = '''
   let g:dbext_default_buffer_lines = 20
   let g:dbext_default_history_file = '~/.dbext_sql_history'
@@ -369,10 +369,6 @@ repo = 'basyura/twibill.vim'
 repo = 'basyura/TweetVim'
 on_cmd = 'TweetVim'
 depends = 'twibill.vim'
-
-# [[plugins]]
-# repo = 'vim-scripts/sql_iabbr.vim'
-# on_ft = 'sql'
 
 [[plugins]]
 repo = 'rking/ag.vim'
@@ -396,10 +392,6 @@ hook_add = '''
   nmap <silent> <C-m> <Plug>(pydocstring)
 '''
 on_ft = 'python'
-
-# [[plugins]]
-# repo = 'Shougo/deol.nvim'
-# on_path = '.*'
 
 [[plugins]]
 repo = 'lambdalisue/vim-gista'
