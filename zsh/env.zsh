@@ -22,3 +22,5 @@ export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
 export ZPLUG_HOME=$HOME/.zplug
 
 export PLANTUML_LIMIT_SIZE=8192
+
+export FZF_CMD='fzf'

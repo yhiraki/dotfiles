@@ -1,6 +1,6 @@
 _fzf-select-repo-dir(){
   local gitroot=$(ghq root)
-  echo $gitroot/$(find $gitroot -mindepth 3 -maxdepth 3 | sed s:$gitroot/::g | fzf-tmux -q "$*")
+  echo $gitroot/$(find $gitroot -mindepth 3 -maxdepth 3 | sed s:$gitroot/::g | $FZF_CMD -q "$*")
 }
 
 # repo - cd to repogitory dir
@@ -11,7 +11,7 @@ repo() {
 _fzf-select-branch(){
   local branches branch
   branches=$(git branch --all -vv) &&
-  branch=$(echo "$branches" | fzf-tmux +m -q "$*") &&
+  branch=$(echo "$branches" | $FZF_CMD +m -q "$*") &&
   echo $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
 }
 
@@ -40,28 +40,28 @@ gitroot(){
 v() {
   local files
     files=$(tail -n +2 $XDG_CACHE_HOME/neomru/file \
-      | fzf-tmux -d -m -q "$*" -1) && $EDITOR ${files}
+      | $FZF_CMD -d -m -q "$*" -1) && $EDITOR ${files}
 }
 
 # fd - cd to selected directory
 fd() {
   local dir
   dir=$(find ${1:-*} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf-tmux +m) &&
+                  -o -type d -print 2> /dev/null | $FZF_CMD +m) &&
   cd "$dir"
 }
 
 # fda - including hidden directories
 fda() {
   local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf-tmux +m) && cd "$dir"
+  dir=$(find ${1:-.} -type d 2> /dev/null | $FZF_CMD +m) && cd "$dir"
 }
 
 _fzf-select-files() {
   IFS='
 '
   local -a declare files
-  files=($(cat - | fzf-tmux --query="$1" -m --select-1 --exit-0))
+  files=($(cat - | $FZF_CMD --query="$1" -m --select-1 --exit-0))
   # [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   [[ -n "$files" ]] && echo "${files[@]}"
   unset IFS
@@ -86,13 +86,13 @@ fsh() {
   ssh $(cat ~/.ssh/config \
     | grep -i -e '^host' \
     | sed -e 's/host //i' \
-    | fzf-tmux -q "$*")
+    | $FZF_CMD -q "$*")
 }
 
 fsql(){
   psql $(cat ~/.pgpass \
      | sed -E 's/:[^:]+$//' \
-     | fzf-tmux -q "$*" \
+     | $FZF_CMD -q "$*" \
      | sed 's/^/-h /' \
      | sed 's/:/ -p /' \
      | sed 's/:/ -d /' \
