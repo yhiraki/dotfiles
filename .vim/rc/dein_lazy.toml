@@ -204,16 +204,6 @@ hook_add = '''
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
 
-# [[plugins]]
-# repo = 'zchee/deoplete-jedi'
-# if = '''has('nvim')'''
-# on_ft = ['python', 'htmldjango']
-# hook_post_update = '''
-#   let cmd = 'pip install neovim jedi'
-#   let g:dein#plugin.build = cmd
-#   let g:deoplete#sources#jedi#show_docstring = 1
-# '''
-
 [[plugins]]
 repo = 'carlitux/deoplete-ternjs'
 on_ft = 'javascript'
@@ -224,11 +214,9 @@ on_ft = 'javascript'
 
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
-on_ft = ['python', 'htmldjango']
 
 [[plugins]]
 repo = 'lambdalisue/vim-pyenv'
-on_ft = ['python', 'htmldjango']
 
 [[plugins]]
 repo = 'wannesm/wmgraphviz.vim'
