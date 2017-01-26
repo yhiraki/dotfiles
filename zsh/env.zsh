@@ -23,4 +23,4 @@ export ZPLUG_HOME=$HOME/.zplug
 
 export PLANTUML_LIMIT_SIZE=8192
 
-export FZF_CMD='fzf'
+export FZF_CMD='fzf-tmux'
