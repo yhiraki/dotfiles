@@ -32,10 +32,6 @@ repo = 'AndrewRadev/splitjoin.vim'
 on_i = 1
 
 [[plugins]]
-repo = 'alfredodeza/khuno.vim'
-on_path = '.*'
-
-[[plugins]]
 repo = 'mattn/emmet-vim'
 on_i = 1
 
@@ -150,10 +146,6 @@ on_i = 1
 hook_post_source = '''
   source ~/.vim/rc/lexima.vim
 '''
-
-[[plugins]]
-repo = 'jeffkreeftmeijer/vim-numbertoggle'
-on_path = '.*'
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
