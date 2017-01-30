@@ -165,7 +165,6 @@ on_ft = 'confluencewiki'
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
-if = '''!has('nvim')'''
 on_ft = ['python', 'htmldjango', 'markdown']
 hook_post_update = '''
   let cmd = 'pip install jedi'
@@ -213,15 +212,15 @@ hook_add = '''
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
 
-[[plugins]]
-repo = 'zchee/deoplete-jedi'
-if = '''has('nvim')'''
-on_ft = ['python', 'htmldjango']
-hook_post_update = '''
-  let cmd = 'pip install neovim jedi'
-  let g:dein#plugin.build = cmd
-  let g:deoplete#sources#jedi#show_docstring = 1
-'''
+# [[plugins]]
+# repo = 'zchee/deoplete-jedi'
+# if = '''has('nvim')'''
+# on_ft = ['python', 'htmldjango']
+# hook_post_update = '''
+#   let cmd = 'pip install neovim jedi'
+#   let g:dein#plugin.build = cmd
+#   let g:deoplete#sources#jedi#show_docstring = 1
+# '''
 
 [[plugins]]
 repo = 'carlitux/deoplete-ternjs'
