@@ -307,36 +307,12 @@ repo = 'osyo-manga/shabadou.vim'
 on_path = '.*'
 
 [[plugins]]
-repo = 'osyo-manga/vim-watchdogs'
-depends = ['vim-quickrun', 'vimproc.vim', 'shabadou.vim']
-hook_source = '''
-  " 書き込み後に実行
-  let g:watchdogs_check_BufWritePost_enable = 1
-
-  " 一定時間キー入力がなかった場合に実行
-  let g:watchdogs_check_CursorHold_enable = 1
-
-  " :wq 時に実行されない
-  let g:watchdogs_check_BufWritePost_enable_on_wq = 0
-'''
-on_path = '.*'
-
-[[plugins]]
-repo = 'cohama/vim-hier'
-on_path = '.*'
+repo = 'vim-syntastic/syntastic'
 hook_add = '''
-  " execute 'highlight HierError ctermfg=blue'
-  " execute 'highlight HierWarn ctermfg=blue'
-  " execute 'highlight HierInfo ctermfg=blue'
-  "
-  " let g:hier_highlight_group_qf   = 'HierError'
-  " let g:hier_highlight_group_qfw  = 'HierWarn'
-  " let g:hier_highlight_group_qfi  = 'HierInfo'
-
-  " let g:hier_highlight_group_loc  = 'HierError'
-  " let g:hier_highlight_group_locw = 'HierWarn'
-  " let g:hier_highlight_group_loci = 'HierInfo'
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_wq = 0
 '''
+on_path = '.*'
 
 [[plugins]]
 repo = 'dannyob/quickfixstatus'
