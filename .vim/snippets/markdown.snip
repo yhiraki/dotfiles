@@ -21,3 +21,18 @@ options     head
 	status: draft
 	
 	${0}
+
+snippet     hugo-header-toml
+options     head
+	+++
+	title = "${1:`expand('%:t:r')`}"
+	description = "${2:`expand('%:t:r')`}"
+	date = "`strftime("%Y-%m-%d %H:%M")`"
+	lastmod:  "`strftime("%Y-%m-%d %H:%M")`"
+	categories = []
+	tags = []
+	slug = "${3:`expand('%:t:r')`}"
+	draft: true
+	+++
+	
+	${0}
