@@ -6,6 +6,8 @@
   "mode.normal.scroll_page_up": "<c-b> <s-space>",
   "mode.normal.scroll_half_page_down": "<c-d>",
   "mode.normal.scroll_half_page_up": "<c-u>",
+  "mode.normal.tab_select_previous": "<c-p> J    gT",
+  "mode.normal.tab_select_next": "<c-n> K    gt",
   "mode.normal.tab_restore": "u",
   "mode.ignore.exit": "<escape>",
   "custom.mode.normal.search_tabs": "b"
