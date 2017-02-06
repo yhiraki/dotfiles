@@ -1,0 +1,12 @@
+{
+  "config_file_directory": "~/.config/vimfx",
+  "mode.normal.history_back": "<c-o> H",
+  "mode.normal.history_forward": "<c-i> L",
+  "mode.normal.scroll_page_down": "<c-f> <space>",
+  "mode.normal.scroll_page_up": "<c-b> <s-space>",
+  "mode.normal.scroll_half_page_down": "<c-d>",
+  "mode.normal.scroll_half_page_up": "<c-u>",
+  "mode.normal.tab_restore": "u",
+  "mode.ignore.exit": "<escape>",
+  "custom.mode.normal.search_tabs": "b"
+}
