@@ -237,10 +237,6 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'freitass/todo.txt-vim'
-on_ft = 'todo'
-
-[[plugins]]
 repo = 'cespare/vim-toml'
 on_ft = ['toml', 'markdown']
 
