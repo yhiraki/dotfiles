@@ -167,7 +167,7 @@ hook_source = '''
   let g:jedi#rename_command = '<Leader>R'
   " pydoc を自動で表示しない
   autocmd FileType python setlocal completeopt-=preview
-  let g:jedi#popup_select_first = 0
+  " let g:jedi#popup_select_first = 0
 '''
 
 [[plugins]]
