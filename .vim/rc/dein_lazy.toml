@@ -157,7 +157,7 @@ on_ft = 'confluencewiki'
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
-on_ft = ['python', 'htmldjango', 'markdown']
+on_ft = ['python', 'htmldjango']
 hook_post_update = '''
   let cmd = 'pip install jedi'
   let g:dein#plugin.build = cmd
@@ -166,8 +166,11 @@ hook_source = '''
   " quickrunと被るため大文字に変更
   let g:jedi#rename_command = '<Leader>R'
   " pydoc を自動で表示しない
-  autocmd FileType python setlocal completeopt-=preview
-  let g:jedi#popup_select_first = 0
+  " autocmd FileType python setlocal completeopt-=preview
+  " let g:jedi#popup_select_first = 0
+  " let g:jedi#auto_vim_configuration = 0
+  let g:jedi#completions_enabled = 0
+  let g:jedi#smart_auto_mappings = 0
 '''
 
 [[plugins]]
@@ -187,7 +190,7 @@ hook_source = '''
 
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
-if = '''has('nvim') && (&filetype != 'python')'''
+if = '''has('nvim')'''
 depends = 'context_filetype.vim'
 on_i = 1
 hook_add = '''
@@ -206,6 +209,10 @@ hook_add = '''
     " <S-TAB>: completion back.
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
+
+[[plugins]]
+repo = 'zchee/deoplete-jedi'
+on_ft = 'python'
 
 [[plugins]]
 repo = 'carlitux/deoplete-ternjs'
