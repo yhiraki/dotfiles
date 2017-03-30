@@ -1,24 +1,15 @@
-" common
-" http://secret-garden.hatenablog.com/entry/2015/09/28/000000
-
-" 改行後に末尾のスペースを消す
-call lexima#add_rule({
-      \   "at" : '\S\+\s\+\%#$',
-      \   "char" : "<CR>",
-      \   "input" : "<ESC>diwa<CR>",
-      \})
-call lexima#add_rule({
-      \   "at" : '\S\+\s\+\%#',
-      \   "char" : "<CR>",
-      \   "input" : "<ESC>diwi<CR>",
-      \})
-
 for c in [',', ':']
   " 後にスペースを入れる
   call lexima#add_rule({
         \   'at' : '\%#',
         \   'char' : c,
         \   'input' : c . '<Space>',
+        \})
+  " 改行時にはスペースを消す
+  call lexima#add_rule({
+        \   'at' : c . ' \%#',
+        \   'char' : '<CR>',
+        \   'input' : '<BS><CR>',
         \})
   " 後にスペースを続けれないようにする
   call lexima#add_rule({
