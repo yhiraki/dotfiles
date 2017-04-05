@@ -296,6 +296,7 @@ repo = 'vim-syntastic/syntastic'
 hook_add = '''
   let g:syntastic_check_on_open = 1
   let g:syntastic_check_on_wq = 0
+  let g:syntastic_python_checkers = ['flake8', 'pep8']
 '''
 on_path = '.*'
 
@@ -318,6 +319,10 @@ hook_source = '''
   let g:dbext_default_buffer_lines = 20
   let g:dbext_default_history_file = '~/.dbext_sql_history'
 '''
+
+[[plugins]]
+repo = 'vim-scripts/sql_iabbr.vim'
+on_ft = 'sql'
 
 [[plugins]]
 repo = 'gorodinskiy/vim-coloresque'
