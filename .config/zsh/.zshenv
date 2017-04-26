@@ -1,5 +1,8 @@
-export DOTDIR=$HOME/src/github.com/coffexpr/dotfiles
-source $DOTDIR/zsh/env.zsh
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+
+source $ZDOTDIR/env.zsh
 
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
