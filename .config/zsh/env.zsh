@@ -1,8 +1,3 @@
-export ZDOTDIR=$DOTDIR/zsh
-
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-
 export TERM='xterm-256color'
 
 export LANG=ja_JP.UTF-8
