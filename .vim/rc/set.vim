@@ -15,7 +15,7 @@ set nomore
 set nocursorcolumn
 set nocursorline
 set norelativenumber
-set synmaxcol=200
+" set synmaxcol=200
 syntax sync minlines=256
 
 " return to continue を表示しない

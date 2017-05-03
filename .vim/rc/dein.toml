@@ -92,3 +92,11 @@ on_source = 'lightline.vim'
 [[plugins]]
 repo = 'cocopon/lightline-hybrid.vim'
 on_source = 'lightline.vim'
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+on_path = '.*'
+
+[[plugins]]
+repo = 'w0rp/ale'
+on_path = '.*'
