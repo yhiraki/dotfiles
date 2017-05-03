@@ -13,3 +13,5 @@ setlocal shiftwidth=4
 setlocal commentstring=#%s
 
 setlocal omnifunc=jedi#completions
+
+set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
