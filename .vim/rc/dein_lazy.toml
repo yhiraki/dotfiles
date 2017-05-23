@@ -16,8 +16,8 @@ hook_source = '''
 
 [[plugins]]
 repo = 'haya14busa/incsearch.vim'
-on_path = '.*'
-hook_post_source = '''
+on_map = ['<Plug>(incsearch-']
+hook_add = '''
   map /  <Plug>(incsearch-forward)
   map ?  <Plug>(incsearch-backward)
   map g/ <Plug>(incsearch-stay)
@@ -25,23 +25,23 @@ hook_post_source = '''
 
 [[plugins]]
 repo = 'tpope/vim-repeat'
-on_path = '.*'
+on_map = '.'
 
 [[plugins]]
 repo = 'AndrewRadev/splitjoin.vim'
-on_i = 1
+on_map = ['gJ', 'gS']
 
 [[plugins]]
 repo = 'mattn/emmet-vim'
-on_i = 1
+on_map = [['in', '<C-y>,']]
 
 [[plugins]]
 repo = 'tyru/caw.vim'
-on_path = '.*'
+on_map = 'gc'
 
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
-on_path = '.*'
+on_map = '<Plug>(EasyAlign)'
 hook_post_source = '''
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
@@ -52,36 +52,38 @@ hook_post_source = '''
 
 [[plugins]]
 repo = 'kana/vim-operator-user'
-on_path = '.*'
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'
-on_path = '.*'
 
 [[plugins]]
 repo = 'kana/vim-textobj-entire'
-on_path = '.*'
+depends = 'vim-textobj-user'
+on_map = ['ie', 'ae']
 
 [[plugins]]
 repo = 'kana/vim-textobj-indent'
-on_path = '.*'
+depends = 'vim-textobj-user'
+on_map = ['ii', 'ai']
 
 [[plugins]]
 repo = 'kana/vim-operator-replace'
-on_path = '.*'
+on_map = '<Plug>(operator-replace)'
 hook_add = '''
   nmap s <Plug>(operator-replace)
 '''
+depends = 'vim-operator-user'
 
 [[plugins]]
 repo = 'osyo-manga/vim-textobj-multiblock'
-on_path = '.*'
+on_map = '<Plug>(textobj-multiblock-'
 hook_add = '''
   omap ab <Plug>(textobj-multiblock-a)
   omap ib <Plug>(textobj-multiblock-i)
   xmap ab <Plug>(textobj-multiblock-a)
   xmap ib <Plug>(textobj-multiblock-i)
 '''
+depends = 'vim-textobj-user'
 
 [[plugins]]
 repo = 'rhysd/vim-operator-surround'
@@ -101,10 +103,13 @@ hook_add = '''
   nmap sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
   nmap srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 '''
+depends = 'vim-operator-user'
 
 [[plugins]]
 repo = 'bps/vim-textobj-python'
+depends = 'vim-textobj-user'
 on_ft = ['python', 'htmldjango', 'markdown']
+on_map = ['ac', 'ic', 'af', 'if']
 post_hook_source = '''
   call textobj#user#map('python', {
       \   'class': {
@@ -121,6 +126,7 @@ post_hook_source = '''
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
 on_ft = 'markdown'
+on_i = 1
 hook_source = '''
   let g:vim_markdown_folding_disabled = 1
 '''
@@ -130,19 +136,20 @@ hook_source = '''
 repo = 'kazuph/previm'
 rev = 'feature/add-plantuml-plugin'
 on_ft = ['markdown', 'text', 'rst']
+on_cmd = 'PrevimOpen'
 hook_source = '''
   let g:previm_enable_realtime = 1
-	let g:previm_show_header = 0
+  let g:previm_show_header = 0
 '''
+depends = 'open-browser.vim'
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
-on_path = '.*'
 
 [[plugins]]
 # repo = 'airblade/vim-gitgutter'
 repo = 'sgur/vim-lazygutter'
-on_path = '.*'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
@@ -157,7 +164,6 @@ hook_post_source = '''
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
-on_path = '.*'
 
 [[plugins]]
 repo = 'vim-scripts/confluencewiki.vim'
@@ -166,12 +172,9 @@ on_ft = 'confluencewiki'
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
 on_ft = ['python', 'htmldjango']
-hook_post_update = '''
-  let cmd = 'pip install jedi'
-  let g:dein#plugin.build = cmd
-'''
+build = 'pip install jedi'
 hook_source = '''
-  " quickrunと被るため大文字に変更
+  " quickrunと被るため変更
   let g:jedi#rename_command = '<Leader>R'
   " pydoc を自動で表示しない
   " autocmd FileType python setlocal completeopt-=preview
@@ -184,14 +187,17 @@ hook_source = '''
 [[plugins]]
 repo = 'lambdalisue/vim-django-support'
 on_ft = ['python', 'htmldjango']
+on_i = 1
 
 [[plugins]]
 repo = 'hynek/vim-python-pep8-indent'
 on_ft = ['python']
+on_i = 1
 
 [[plugins]]
 repo = 'hdima/python-syntax'
 on_ft = ['python']
+on_event = ['FocusLost', 'CursorHold']
 hook_source = '''
   let python_highlight_all = 1
 '''
@@ -211,20 +217,29 @@ hook_add = '''
 [[plugins]]
 repo = 'zchee/deoplete-jedi'
 on_ft = 'python'
+on_i = 1
+depends = 'deoplete.nvim'
 
 [[plugins]]
 repo = 'carlitux/deoplete-ternjs'
 on_ft = 'javascript'
+on_i = 1
+depends = 'deoplete.nvim'
 
 [[plugins]]
 repo = 'marijnh/tern_for_vim'
 on_ft = 'javascript'
+on_i = 1
 
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
+on_ft = 'python'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'lambdalisue/vim-pyenv'
+on_ft = 'python'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'wannesm/wmgraphviz.vim'
@@ -243,15 +258,15 @@ hook_post_source = '''
 
 [[plugins]]
 repo = 'cespare/vim-toml'
-on_ft = ['toml', 'markdown']
+on_ft = 'toml'
 
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
-on_path = '.*'
+on_event = ['FocusLost', 'CursorHold']
 hook_post_source = '''
-  let g:precious_enable_switch_CursorMoved = {
-  \   "*" : 0
-  \}
+  " let g:precious_enable_switch_CursorMoved = {
+  " \   "*" : 0
+  " \}
   let g:precious_enable_switch_CursorMoved_i = {
   \    "help" : 0
   \}
@@ -287,15 +302,16 @@ on_source = 'neosnippet'
 
 [[plugins]]
 repo = 'osyo-manga/shabadou.vim'
-on_path = '.*'
+on_source = 'quickrun'
 
 [[plugins]]
 repo = 'zchee/deoplete-zsh'
 on_ft = 'zsh'
+on_i = 1
 
 [[plugins]]
 repo = 'ekalinin/Dockerfile.vim'
-on_ft = ['dockerfile', 'markdown']
+on_ft = 'dockerfile'
 
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
@@ -334,14 +350,12 @@ repo = 'ntpeters/vim-better-whitespace'
 hook_add = '''
   let g:better_whitespace_filetypes_blacklist=['quickrun', 'dbext', 'tweetvim', 'vimfiler', 'diff', 'gitcommit', 'unite', 'qf', 'help']
 '''
-on_path = '.*'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'heavenshell/vim-pydocstring'
 hook_add = '''
   let g:pydocstring_enable_mapping = 0
-'''
-hook_post_source = '''
   nmap <silent> <C-m> <Plug>(pydocstring)
 '''
 on_ft = 'python'
@@ -358,14 +372,14 @@ repo = 'kana/vim-submode'
 hook_post_source = '''
   source ~/.vim/rc/submode.vim
 '''
-on_path = '.*'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
 hook_source = '''
   source ~/.vim/rc/quickrun.vim
 '''
-on_path = '.*'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'junegunn/fzf'
@@ -423,7 +437,7 @@ hook_post_source = '''
   endfunction
 '''
 depends = 'vim-pyenv'
-on_path = '.*'
+on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'w0ng/vim-hybrid'
@@ -435,3 +449,4 @@ on_event = 'VimEnter'
 [[plugins]]
 repo = 'stephpy/vim-yaml'
 on_ft = 'yaml'
+on_i = 1
