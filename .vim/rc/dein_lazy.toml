@@ -17,7 +17,7 @@ hook_source = '''
 [[plugins]]
 repo = 'haya14busa/incsearch.vim'
 on_path = '.*'
-hook_add = '''
+hook_post_source = '''
   map /  <Plug>(incsearch-forward)
   map ?  <Plug>(incsearch-backward)
   map g/ <Plug>(incsearch-stay)
@@ -42,13 +42,21 @@ on_path = '.*'
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
 on_path = '.*'
-hook_add = '''
+hook_post_source = '''
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
 
   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
   nmap ga <Plug>(EasyAlign)nnoremap q? <NOP>
 '''
+
+[[plugins]]
+repo = 'kana/vim-operator-user'
+on_path = '.*'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+on_path = '.*'
 
 [[plugins]]
 repo = 'kana/vim-textobj-entire'
@@ -61,14 +69,14 @@ on_path = '.*'
 [[plugins]]
 repo = 'kana/vim-operator-replace'
 on_path = '.*'
-hook_source = '''
+hook_add = '''
   nmap s <Plug>(operator-replace)
 '''
 
 [[plugins]]
 repo = 'osyo-manga/vim-textobj-multiblock'
 on_path = '.*'
-hook_source = '''
+hook_add = '''
   omap ab <Plug>(textobj-multiblock-a)
   omap ib <Plug>(textobj-multiblock-i)
   xmap ab <Plug>(textobj-multiblock-a)
@@ -79,7 +87,7 @@ hook_source = '''
 repo = 'rhysd/vim-operator-surround'
 rev = 'input_in_advance'
 on_path = '.*'
-hook_source = '''
+hook_add = '''
   nmap sa <Plug>(operator-surround-append-input-in-advance)
   nmap sd <Plug>(operator-surround-delete)
   nmap sr <Plug>(operator-surround-replace)
@@ -97,7 +105,7 @@ hook_source = '''
 [[plugins]]
 repo = 'bps/vim-textobj-python'
 on_ft = ['python', 'htmldjango', 'markdown']
-hook_post_update = '''
+hook_add = '''
   call textobj#user#map('python', {
       \   'class': {
       \     'select-a': '<buffer>ac',
@@ -229,7 +237,7 @@ on_ft = ['plantuml', 'markdown']
 [[plugins]]
 repo = 'Shougo/junkfile.vim'
 on_cmd = 'Junkfile'
-hook_source = '''
+hook_post_source = '''
   command! -nargs=0 JunkfileDiary call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
 '''
 
@@ -240,7 +248,7 @@ on_ft = ['toml', 'markdown']
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
 on_path = '.*'
-hook_source = '''
+hook_post_source = '''
   let g:precious_enable_switch_CursorMoved = {
   \   "*" : 0
   \}
@@ -261,15 +269,15 @@ hook_source = '''
     autocmd User PreciousFileType let &l:syntax = precious#context_filetype()
   augroup END
 '''
+depends = 'context_filetype.vim'
 
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
-on_source = 'vim-precious'
 
 [[plugins]]
 repo = 'Shougo/neosnippet'
 on_i = 1
-hook_source = '''
+hook_post_source = '''
   source ~/.vim/rc/neosnippet.vim
 '''
 
@@ -279,10 +287,6 @@ on_source = 'neosnippet'
 
 [[plugins]]
 repo = 'osyo-manga/shabadou.vim'
-on_path = '.*'
-
-[[plugins]]
-repo = 'dannyob/quickfixstatus'
 on_path = '.*'
 
 [[plugins]]
@@ -327,7 +331,7 @@ on_cmd = 'Tagbar'
 
 [[plugins]]
 repo = 'ntpeters/vim-better-whitespace'
-hook_source = '''
+hook_add = '''
   let g:better_whitespace_filetypes_blacklist=['quickrun', 'dbext', 'tweetvim', 'vimfiler', 'diff', 'gitcommit', 'unite', 'qf', 'help']
 '''
 on_path = '.*'
@@ -336,6 +340,8 @@ on_path = '.*'
 repo = 'heavenshell/vim-pydocstring'
 hook_add = '''
   let g:pydocstring_enable_mapping = 0
+'''
+hook_post_source = '''
   nmap <silent> <C-m> <Plug>(pydocstring)
 '''
 on_ft = 'python'
@@ -346,3 +352,47 @@ hook_add = '''
   let g:gista#client#default_username = 'coffexpr'
 '''
 on_cmd = 'Gista'
+
+[[plugins]]
+repo = 'kana/vim-submode'
+hook_post_source = '''
+  source ~/.vim/rc/submode.vim
+'''
+on_path = '.*'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+hook_post_source= '''
+  source ~/.vim/rc/quickrun.vim
+'''
+on_path = '.*'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+marged = 0
+build = '''
+  ./install --bin
+'''
+on_event = 'VimEnter'
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+hook_post_source = '''
+  source ~/.vim/rc/fzf.vim
+'''
+on_source = 'fzf'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_post_source = '''
+  source ~/.vim/rc/lightline.vim
+'''
+on_path = '.*'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+hook_post_source = '''
+  colorscheme hybrid
+'''
+on_event = 'VimEnter'

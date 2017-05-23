@@ -21,15 +21,6 @@ repo = 'lambdalisue/vim-gista'
 if = '''!has('nvim')'''
 
 [[plugins]]
-repo = 'w0ng/vim-hybrid'
-hook_add = '''
-  let g:hybrid_use_iTerm_colors = 1
-  colorscheme hybrid
-
-  syntax on
-'''
-
-[[plugins]]
 repo = 'vim-jp/vimdoc-ja'
 
 [[plugins]]
@@ -41,61 +32,11 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'kana/vim-operator-user'
-
-[[plugins]]
-repo = 'kana/vim-textobj-user'
-
-[[plugins]]
 repo = 'Shougo/neomru.vim'
 
-[[plugins]]
-repo = 'junegunn/fzf'
-marged = 0
-build = '''
-  ./install --bin
-'''
-hook_add = '''
-  source ~/.vim/rc/fzf.vim
-'''
-
-[[plugins]]
-repo = 'junegunn/fzf.vim'
-depends = 'fzf'
-
-[[plugins]]
-repo = 'kana/vim-submode'
-hook_add = '''
-  source ~/.vim/rc/submode.vim
-'''
-
-[[plugins]]
-repo = 'thinca/vim-quickrun'
-hook_add = '''
-  source ~/.vim/rc/quickrun.vim
-'''
-
-[[plugins]]
-repo = 'itchyny/lightline.vim'
-hook_add = '''
-  source ~/.vim/rc/lightline.vim
-'''
-
-[[plugins]]
-repo = 'KazuakiM/vim-qfstatusline'
-hook_add = '''
-  " :WatchdogsRun後にlightline.vimを更新
-  let g:Qfstatusline#UpdateCmd = function('lightline#update')
-'''
-on_source = 'lightline.vim'
-
-[[plugins]]
-repo = 'cocopon/lightline-hybrid.vim'
-on_source = 'lightline.vim'
-
-[[plugins]]
-repo = 'ryanoasis/vim-devicons'
-on_path = '.*'
+# [[plugins]]
+# repo = 'ryanoasis/vim-devicons'
+# on_path = '.*'
 
 [[plugins]]
 repo = 'w0rp/ale'

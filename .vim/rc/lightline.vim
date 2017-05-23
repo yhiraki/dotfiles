@@ -4,7 +4,7 @@ let g:lightline = {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'pyenv' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ],
-      \   'right': [ [ 'qfstatusline', 'lineinfo' ],
+      \   'right': [ [ 'lineinfo' ],
       \             [ 'percent' ],
       \             [ 'fileformat', 'fileencoding', 'filetype' ] ],
       \ },
@@ -20,12 +20,6 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'pyenv': 'LightLinePyenv'
-      \ },
-      \ 'component_expand': {
-      \   'qfstatusline': 'qfstatusline#Update',
-      \ },
-      \ 'component_type': {
-      \   'qfstatusline': 'error',
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '|', 'right': '|' }
