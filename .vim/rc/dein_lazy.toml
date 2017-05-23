@@ -431,3 +431,7 @@ hook_post_source = '''
   colorscheme hybrid
 '''
 on_event = 'VimEnter'
+
+[[plugins]]
+repo = 'stephpy/vim-yaml'
+on_ft = 'yaml'
