@@ -105,7 +105,7 @@ hook_add = '''
 [[plugins]]
 repo = 'bps/vim-textobj-python'
 on_ft = ['python', 'htmldjango', 'markdown']
-hook_add = '''
+post_hook_source = '''
   call textobj#user#map('python', {
       \   'class': {
       \     'select-a': '<buffer>ac',
@@ -362,7 +362,7 @@ on_path = '.*'
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
-hook_post_source= '''
+hook_source = '''
   source ~/.vim/rc/quickrun.vim
 '''
 on_path = '.*'
