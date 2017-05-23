@@ -7,8 +7,7 @@ if &runtimepath !~# '/dein.vim'
   if !isdirectory(s:dein_repo_dir)
     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
   endif
-  "execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-  set runtimepath^=~/.cache/dein/repos/github.com/Shougo/dein.vim
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
 let g:dein#install_max_processes = 16
@@ -22,7 +21,7 @@ if dein#load_state(s:dein_dir)
   call dein#load_toml(s:toml,      {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
   call dein#end()
-  call dein#save_state()
+  " call dein#save_state()
 endif
 
 if dein#check_install()

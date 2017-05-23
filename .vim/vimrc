@@ -24,17 +24,12 @@ function! s:load_rc(file)
   execute 'source ' . g:rc_dir . '/' . a:file . '.vim'
 endfunction
 
-let load_rc_list = [
-      \ 'dein',
-      \ 'set',
-      \ 'encoding',
-      \ 'filetype',
-      \ 'os',
-      \ 'mapping' ]
-
-for rc in load_rc_list
-  call s:load_rc(rc)
-endfor
+call s:load_rc('dein')
+call s:load_rc('set')
+call s:load_rc('encoding')
+call s:load_rc('filetype')
+call s:load_rc('os')
+call s:load_rc('mapping')
 
 let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python'
 
