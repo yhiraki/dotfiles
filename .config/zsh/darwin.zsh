@@ -25,10 +25,10 @@ function nas () {
     mount -t smbfs $r_dir $l_dir
   fi
 
-  # open "$l_path"
   if [ -d "$l_path" ]; then
     cd "$l_path"
   else
+    open "$l_path"
     cd "$(dirname $l_path)"
   fi
 }
