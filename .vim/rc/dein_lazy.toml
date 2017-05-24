@@ -5,7 +5,7 @@ repo = 'Shougo/unite.vim'
 repo = 'Shougo/vimfiler.vim'
 depends = 'unite.vim'
 on_cmd = 'VimFiler'
-hook_source = '''
+hook_add = '''
   let g:vimfiler_as_default_explorer = 1
   let g:vimfiler_tree_leaf_icon = ' '
   let g:vimfiler_tree_opened_icon = '▾'
@@ -103,7 +103,7 @@ hook_add = '''
   nmap sdd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
   nmap srr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 '''
-depends = 'vim-operator-user'
+depends = ['vim-operator-user', 'vim-textobj-multiblock']
 
 [[plugins]]
 repo = 'bps/vim-textobj-python'
@@ -127,7 +127,7 @@ post_hook_source = '''
 repo = 'plasticboy/vim-markdown'
 on_ft = 'markdown'
 on_i = 1
-hook_source = '''
+hook_add = '''
   let g:vim_markdown_folding_disabled = 1
 '''
 
@@ -137,7 +137,7 @@ repo = 'kazuph/previm'
 rev = 'feature/add-plantuml-plugin'
 on_ft = ['markdown', 'text', 'rst']
 on_cmd = 'PrevimOpen'
-hook_source = '''
+hook_add = '''
   let g:previm_enable_realtime = 1
   let g:previm_show_header = 0
 '''
@@ -173,7 +173,7 @@ on_ft = 'confluencewiki'
 repo = 'davidhalter/jedi-vim'
 on_ft = ['python', 'htmldjango']
 build = 'pip install jedi'
-hook_source = '''
+hook_add = '''
   " quickrunと被るため変更
   let g:jedi#rename_command = '<Leader>R'
   " pydoc を自動で表示しない
@@ -198,7 +198,7 @@ on_i = 1
 repo = 'hdima/python-syntax'
 on_ft = ['python']
 on_event = ['FocusLost', 'CursorHold']
-hook_source = '''
+hook_add = '''
   let python_highlight_all = 1
 '''
 
@@ -263,7 +263,7 @@ on_ft = 'toml'
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
 on_event = ['FocusLost', 'CursorHold']
-hook_post_source = '''
+hook_add = '''
   " let g:precious_enable_switch_CursorMoved = {
   " \   "*" : 0
   " \}
@@ -279,6 +279,8 @@ hook_post_source = '''
   \  },
   \}
   let g:context_filetype#search_offset = 300
+'''
+hook_post_source = '''
   augroup preciousSyntaxSwitch
     autocmd!
     autocmd User PreciousFileType let &l:syntax = precious#context_filetype()
@@ -316,7 +318,7 @@ on_ft = 'dockerfile'
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
 on_path = '.*'
-hook_source = '''
+hook_add = '''
   let g:dbext_default_buffer_lines = 20
   let g:dbext_default_history_file = '~/.dbext_sql_history'
 '''
@@ -376,7 +378,7 @@ on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
-hook_source = '''
+hook_post_source = '''
   source ~/.vim/rc/quickrun.vim
 '''
 on_event = ['FocusLost', 'CursorHold']
