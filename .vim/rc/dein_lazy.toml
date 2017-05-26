@@ -41,8 +41,8 @@ on_map = 'gc'
 
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
-on_map = '<Plug>(EasyAlign)'
-hook_post_source = '''
+on_map = '<Plug>(EasyAlign'
+hook_add = '''
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
 
@@ -270,14 +270,14 @@ hook_add = '''
   let g:precious_enable_switch_CursorMoved_i = {
   \    "help" : 0
   \}
-  let g:precious_enable_switchers = {
-  \  "*" : {
-  \    "setfiletype" : 1
-  \  },
-  \  "markdown" : {
-  \    "setfiletype" : 0
-  \  },
-  \}
+  " let g:precious_enable_switchers = {
+  " \  "*" : {
+  " \    "setfiletype" : 1
+  " \  },
+  " \  "markdown" : {
+  " \    "setfiletype" : 0
+  " \  },
+  " \}
   let g:context_filetype#search_offset = 300
 '''
 hook_post_source = '''
@@ -452,3 +452,7 @@ on_event = 'VimEnter'
 repo = 'stephpy/vim-yaml'
 on_ft = 'yaml'
 on_i = 1
+
+[[plugins]]
+repo = 'elzr/vim-json'
+on_ft = 'json'
