@@ -12,6 +12,7 @@ hook_add = '''
   let g:vimfiler_tree_closed_icon = '▸'
   let g:vimfiler_file_icon = '-'
   let g:vimfiler_marked_file_icon = '*'
+  nnoremap <silent> <leader>bo :<C-u>VimFilerExplorer<CR>
 '''
 
 [[plugins]]
@@ -152,8 +153,11 @@ repo = 'sgur/vim-lazygutter'
 on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
-repo = 'tpope/vim-fugitive'
-on_path = '.*'
+repo = 'lambdalisue/gina.vim'
+on_cmd = 'Gina'
+hook_add = '''
+  nnoremap <silent> <leader>gs :<C-u> :Gina status<CR>
+'''
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
@@ -252,6 +256,10 @@ on_ft = ['plantuml', 'markdown']
 [[plugins]]
 repo = 'Shougo/junkfile.vim'
 on_cmd = 'Junkfile'
+hook_add = '''
+  nnoremap <silent> <leader>jo :<C-u> :JunkfileOpen<CR>
+  nnoremap <silent> <leader>jd :<C-u> :JunkfileDiary<CR>
+'''
 hook_post_source = '''
   command! -nargs=0 JunkfileDiary call junkfile#open_immediately(strftime('%Y-%m-%d.md'))
 '''
@@ -338,6 +346,10 @@ repo = 'basyura/twibill.vim'
 repo = 'basyura/TweetVim'
 on_cmd = 'TweetVim'
 depends = 'twibill.vim'
+hook_add = '''
+  nnoremap <leader>tws :<C-u>TweetVimSwitch<Space>
+  nnoremap <silent> <leader>twu :<C-u>TweetVimSay<CR>
+'''
 
 [[plugins]]
 repo = 'rking/ag.vim'
@@ -346,6 +358,10 @@ on_cmd = 'Ag'
 [[plugins]]
 repo = 'majutsushi/tagbar'
 on_cmd = 'Tagbar'
+hook_add = '''
+  nnoremap <silent> <leader>to :<C-u>TagbarOpen<CR>
+  nnoremap <silent> <leader>tc :<C-u>TagbarClose<CR>
+'''
 
 [[plugins]]
 repo = 'ntpeters/vim-better-whitespace'
@@ -380,6 +396,12 @@ on_event = ['FocusLost', 'CursorHold']
 repo = 'thinca/vim-quickrun'
 hook_post_source = '''
   source ~/.vim/rc/quickrun.vim
+'''
+hook_add = '''
+  " quickrun ウインドウを閉じる
+  nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
+  " 実行中の quickrun を中断させる
+  nnoremap <expr><silent> <Leader>c quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 '''
 on_event = ['FocusLost', 'CursorHold']
 
