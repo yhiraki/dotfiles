@@ -87,6 +87,11 @@ hook_add = '''
 depends = 'vim-textobj-user'
 
 [[plugins]]
+repo = 'coderifous/textobj-word-column.vim'
+depends = 'vim-textobj-user'
+on_map = ['ic', 'ac']
+
+[[plugins]]
 repo = 'rhysd/vim-operator-surround'
 rev = 'input_in_advance'
 on_path = '.*'
@@ -110,12 +115,12 @@ depends = ['vim-operator-user', 'vim-textobj-multiblock']
 repo = 'bps/vim-textobj-python'
 depends = 'vim-textobj-user'
 on_ft = ['python', 'htmldjango', 'markdown']
-on_map = ['ac', 'ic', 'af', 'if']
+on_map = ['al', 'il', 'af', 'if']
 post_hook_source = '''
   call textobj#user#map('python', {
       \   'class': {
-      \     'select-a': '<buffer>ac',
-      \     'select-i': '<buffer>ic',
+      \     'select-a': '<buffer>al',
+      \     'select-i': '<buffer>il',
       \   },
       \   'function': {
       \     'select-a': '<buffer>af',
@@ -148,8 +153,7 @@ depends = 'open-browser.vim'
 repo = 'tyru/open-browser.vim'
 
 [[plugins]]
-# repo = 'airblade/vim-gitgutter'
-repo = 'sgur/vim-lazygutter'
+repo = 'mhinz/vim-signify'
 on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
@@ -480,3 +484,10 @@ on_i = 1
 [[plugins]]
 repo = 'elzr/vim-json'
 on_ft = 'json'
+
+[[plugins]]
+repo = 'AndrewRadev/switch.vim'
+on_map = '-'
+hook_add = '''
+  let g:switch_mapping = "-"
+'''
