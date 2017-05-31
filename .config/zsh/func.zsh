@@ -40,6 +40,7 @@ gitroot(){
 v() {
   local files
     files=$(tail -n +2 $XDG_CACHE_HOME/neomru/file \
+      | grep -vE "\w+:\/\/" \
       | $FZF_CMD -d -m -q "$*" -1) && $EDITOR ${files}
 }
 

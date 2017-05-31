@@ -32,7 +32,7 @@ command! FZFTags call s:tags()
 
 " mru search
 command! FZFMru call fzf#run({
-      \ 'source':  'tail -n +2 $XDG_CACHE_HOME/neomru/file',
+      \ 'source':  'tail -n +2 $XDG_CACHE_HOME/neomru/file | grep -vE "\w+:\/\/"',
       \ 'sink':    'edit',
       \ 'options': '-m -x +s',
       \ 'down':    '40%' })
@@ -82,7 +82,7 @@ command! -nargs=1 FZFLocate call fzf#run(
 
 " mappings
 nnoremap <silent> <leader>fe :<C-u>FZFFind .<CR>
-" nnoremap <silent> <leader>fa :<C-u>FZFLocate 
+" nnoremap <silent> <leader>fa :<C-u>FZFLocate
 nnoremap <silent> <leader>fm :<C-u>FZFMru<CR>
 nnoremap <silent> <leader>fl :<C-u>FZFLines<CR>
 nnoremap <silent> <leader>ft :<C-u>FZFTags<CR>
