@@ -157,6 +157,8 @@ repo = 'lambdalisue/gina.vim'
 on_cmd = 'Gina'
 hook_add = '''
   nnoremap <silent> <leader>gs :<C-u> :Gina status<CR>
+  nnoremap <silent> <leader>gc :<C-u> :Gina commit<CR>
+  nnoremap <silent> <leader>gca :<C-u> :Gina commit --amend<CR>
 '''
 
 [[plugins]]
