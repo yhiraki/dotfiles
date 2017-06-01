@@ -491,3 +491,7 @@ on_map = '-'
 hook_add = '''
   let g:switch_mapping = "-"
 '''
+
+[[plugins]]
+repo = 'jeffkreeftmeijer/vim-numbertoggle'
+on_path = '.*'
