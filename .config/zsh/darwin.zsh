@@ -11,8 +11,7 @@ function nas () {
       | tr -d '\n' \
       | sed -e 's/^  *//g' \
             -e 's/  *$//g' \
-            -e 's://*:/:g'
-  )"
+            -e 's://*:/:g')"
   local r_dir="/$(echo $r_path | cut -d '/' -f-3)"
   local l_root="/Volumes"
   local l_dir="$l_root/$(echo $r_path | cut -d '/' -f2-3 | tr '/' '_')"

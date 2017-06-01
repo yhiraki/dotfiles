@@ -94,10 +94,10 @@ fsql(){
   psql $(cat ~/.pgpass \
      | sed -E 's/:[^:]+$//' \
      | $FZF_CMD -q "$*" \
-     | sed 's/^/-h /' \
-     | sed 's/:/ -p /' \
-     | sed 's/:/ -d /' \
-     | sed 's/:/ -U /')
+     | sed -e 's/^/-h /' \
+       -e 's/:/ -p /' \
+       -e 's/:/ -d /' \
+       -e 's/:/ -U /')
 }
 
 _select-files-in-dir(){
