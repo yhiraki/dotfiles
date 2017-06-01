@@ -160,15 +160,24 @@ repo = 'tyru/open-browser.vim'
 repo = 'mhinz/vim-signify'
 on_event = ['FocusLost', 'CursorHold']
 
+# [[plugins]]
+# repo = 'lambdalisue/gina.vim'
+# on_cmd = 'Gina'
+# hook_add = '''
+#   nnoremap <silent> <leader>gs :<C-u> :Gina status<CR>
+#   nnoremap <silent> <leader>gc :<C-u> :Gina commit<CR>
+#   nnoremap <silent> <leader>gca :<C-u> :Gina commit --amend<CR>
+#   nnoremap <silent> <leader>gp :<C-u> :Gina push<CR>
+# '''
+
 [[plugins]]
-repo = 'lambdalisue/gina.vim'
-on_cmd = 'Gina'
+repo = 'tpope/vim-fugitive'
 hook_add = '''
-  nnoremap <silent> <leader>gs :<C-u> :Gina status<CR>
-  nnoremap <silent> <leader>gc :<C-u> :Gina commit<CR>
-  nnoremap <silent> <leader>gca :<C-u> :Gina commit --amend<CR>
-  nnoremap <silent> <leader>gp :<C-u> :Gina push<CR>
+   nnoremap <silent> <leader>gs :<C-u> :Gstatus<CR>
+   nnoremap <silent> <leader>gc :<C-u> :Gcommit<CR>
+   nnoremap <silent> <leader>gp :<C-u> :Gpush<CR>
 '''
+on_path = '.*'
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
@@ -289,14 +298,14 @@ hook_add = '''
   let g:precious_enable_switch_CursorMoved_i = {
   \    "help" : 0
   \}
-  " let g:precious_enable_switchers = {
-  " \  "*" : {
-  " \    "setfiletype" : 1
-  " \  },
-  " \  "markdown" : {
-  " \    "setfiletype" : 0
-  " \  },
-  " \}
+  let g:precious_enable_switchers = {
+  \  "*" : {
+  \    "setfiletype" : 1
+  \  },
+  \  "markdown" : {
+  \    "setfiletype" : 0
+  \  },
+  \}
   let g:context_filetype#search_offset = 300
 '''
 hook_post_source = '''
@@ -441,11 +450,10 @@ on_source = 'fzf'
 repo = 'itchyny/lightline.vim'
 hook_add = '''
   let g:lightline = {
-        " \ 'colorscheme': 'hybrid',
         \ 'active': {
         \   'left': [ [ 'mode', 'paste' ],
-        \             [ 'pyenv' ],
-        \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ],
+        \             [ 'readonly', 'filename', 'modified' ],
+        \             [ 'fugitive', 'pyenv' ] ],
         \   'right': [ [ 'lineinfo' ],
         \             [ 'percent' ],
         \             [ 'fileformat', 'fileencoding', 'filetype' ] ],
@@ -466,8 +474,7 @@ hook_add = '''
         \ 'separator': { 'left': '', 'right': '' },
         \ 'subseparator': { 'left': '|', 'right': '|' }
         \ }
-'''
-hook_post_source = '''
+
   function! LightLinePyenv()
     if &filetype == "python"
       return pyenv#pyenv#get_activated_env()
@@ -476,8 +483,15 @@ hook_post_source = '''
     endif
   endfunction
 '''
-depends = 'vim-pyenv'
-on_event = ['FocusLost', 'CursorHold']
+on_event = 'VimEnter'
+
+[[plugins]]
+repo = 'cocopon/lightline-hybrid.vim'
+on_path = '.*'
+depends = 'lightline.vim'
+hook_source = '''
+  let g:lightline.colorscheme = 'hybrid'
+'''
 
 [[plugins]]
 repo = 'w0ng/vim-hybrid'
