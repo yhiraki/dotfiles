@@ -172,12 +172,12 @@ on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
-hook_add = '''
+hook_post_source = '''
    nnoremap <silent> <leader>gs :<C-u> :Gstatus<CR>
    nnoremap <silent> <leader>gc :<C-u> :Gcommit<CR>
    nnoremap <silent> <leader>gp :<C-u> :Gpush<CR>
 '''
-on_path = '.*'
+on_map = '<leader>g'
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
