@@ -177,7 +177,7 @@ hook_post_source = '''
    nnoremap <silent> <leader>gc :<C-u> :Gcommit<CR>
    nnoremap <silent> <leader>gp :<C-u> :Gpush<CR>
 '''
-on_map = '<leader>g'
+on_map = '<leader>gs'
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
