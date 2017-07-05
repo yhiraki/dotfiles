@@ -83,7 +83,7 @@ call lexima#add_rule({
 
 " 演算子直後の=
 call lexima#add_rule({
-      \   'at' : '\S\+[-+\\*/%=]\%#',
+      \   'at' : '\S\+[\!-+\\*/%=]\%#',
       \   'char' : '=',
       \   'input' : '<Left> <Right>=<Space>',
       \})

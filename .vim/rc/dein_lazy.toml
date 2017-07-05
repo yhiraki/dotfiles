@@ -17,6 +17,7 @@ hook_add = '''
   let g:vimfiler_file_icon = '-'
   let g:vimfiler_marked_file_icon = '*'
   nnoremap <silent> <leader>bo :<C-u>VimFilerExplorer<CR>
+  let g:vimfiler_ignore_pattern = ['^\.', '\%(\.pyc\|__pycache__\)$']
 '''
 
 [[plugins]]
@@ -64,12 +65,24 @@ repo = 'kana/vim-textobj-user'
 [[plugins]]
 repo = 'kana/vim-textobj-entire'
 depends = 'vim-textobj-user'
-on_map = ['ie', 'ae']
+on_map = '<Plug>(textobj-entire-'
+hook_add = '''
+  omap ae <Plug>(textobj-entire-a)
+  omap ie <Plug>(textobj-entire-i)
+  xmap ae <Plug>(textobj-entire-a)
+  xmap ie <Plug>(textobj-entire-i)
+'''
 
 [[plugins]]
 repo = 'kana/vim-textobj-indent'
 depends = 'vim-textobj-user'
-on_map = ['ii', 'ai']
+on_map = '<Plug>(textobj-indent-'
+hook_add = '''
+  omap ai <Plug>(textobj-indent-a)
+  omap ii <Plug>(textobj-indent-i)
+  xmap ai <Plug>(textobj-indent-a)
+  xmap ii <Plug>(textobj-indent-i)
+'''
 
 [[plugins]]
 repo = 'kana/vim-operator-replace'
@@ -91,14 +104,9 @@ hook_add = '''
 depends = 'vim-textobj-user'
 
 [[plugins]]
-repo = 'coderifous/textobj-word-column.vim'
-depends = 'vim-textobj-user'
-on_map = ['ic', 'ac']
-
-[[plugins]]
 repo = 'rhysd/vim-operator-surround'
 rev = 'input_in_advance'
-on_path = '.*'
+on_map = '<Plug>(textobj-surrount-'
 hook_add = '''
   nmap sa <Plug>(operator-surround-append-input-in-advance)
   nmap sd <Plug>(operator-surround-delete)
@@ -119,18 +127,16 @@ depends = ['vim-operator-user', 'vim-textobj-multiblock']
 repo = 'bps/vim-textobj-python'
 depends = 'vim-textobj-user'
 on_ft = ['python', 'htmldjango', 'markdown']
-on_map = ['al', 'il', 'af', 'if']
+on_map = '<Plug>(textobj-python-'
 post_hook_source = '''
-  call textobj#user#map('python', {
-      \   'class': {
-      \     'select-a': '<buffer>al',
-      \     'select-i': '<buffer>il',
-      \   },
-      \   'function': {
-      \     'select-a': '<buffer>af',
-      \     'select-i': '<buffer>if',
-      \   }
-      \ })
+  xmap aC <Plug>(textobj-python-class-a)
+  omap aC <Plug>(textobj-python-class-a)
+  xmap iC <Plug>(textobj-python-class-i)
+  omap iC <Plug>(textobj-python-class-i)
+  xmap aF <Plug>(textobj-python-function-a)
+  omap aF <Plug>(textobj-python-function-a)
+  xmap iF <Plug>(textobj-python-function-i)
+  omap iF <Plug>(textobj-python-function-i)
 '''
 
 [[plugins]]
