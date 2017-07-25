@@ -531,3 +531,7 @@ on_cmd = 'help'
 [[plugins]]
 repo = 'w0rp/ale'
 on_path = '.*'
+
+[[plugins]]
+repo = 'jceb/vim-orgmode'
+on_ft = 'org'
