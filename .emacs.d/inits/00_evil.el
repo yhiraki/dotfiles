@@ -36,8 +36,9 @@
   "fgh" 'helm-ghq
   "fgl" 'helm-ls-git-ls
   "fgg" 'helm-git-grep
+  "fb" 'helm-mini
   "gs" 'magit-status
-  "el" 'eflycheck-error-list)
+  "el" 'flycheck-error-list)
 
 ;; neotree
 (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)

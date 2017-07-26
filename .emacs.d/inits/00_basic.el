@@ -74,3 +74,9 @@
 (projectile-mode)
 
 (rainbow-delimiters-mode)
+
+;; font
+(set-frame-font "ricty-13")
+
+;; タブにスペースを使用する
+(setq-default tab-width 4 indent-tabs-mode nil)
