@@ -81,6 +81,7 @@
 (el-get-bundle magit)
 (el-get-bundle git-modes)
 (el-get-bundle open-junk-file)
+(el-get-bundle markdown-mode)
 (el-get-bundle web-mode)
 (el-get-bundle restart-emacs)
 (el-get-bundle rainbow-delimiters)
