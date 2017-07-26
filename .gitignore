@@ -9,4 +9,5 @@
 .emacs.d/network-security.data
 .emacs.d/recentf
 .emacs.d/.python-environments
+.emacs.d/undohist
 *~
