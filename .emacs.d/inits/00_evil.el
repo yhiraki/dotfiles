@@ -33,6 +33,7 @@
   "fr" 'helm-recentf
   "ft" 'neotree-toggle
   "fj" 'open-junk-file
+  "fc" 'org-capture
   "fgh" 'helm-ghq
   "fgl" 'helm-ls-git-ls
   "fgg" 'helm-git-grep
