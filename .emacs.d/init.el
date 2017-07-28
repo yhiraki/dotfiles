@@ -14,8 +14,10 @@
     (eval-print-last-sexp)))
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '(("gnu" . "http://elpa.gnu.org/packages/")
+               ("melpa" . "http://melpa.org/packages/")
+               ("marmalade" . "http://marmalade-repo.org/packages/")))
 
 (require 'el-get)
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
@@ -84,6 +86,9 @@
 (el-get-bundle pyenv-mode)
 (el-get-bundle projectile)
 (el-get-bundle elscreen)
+(el-get-bundle plantuml-mode)
+(el-get-bundle org-mode
+  :type github :pkgname "jwiegley/org-mode")
 
 
 ;;;;;;;;;;;;;;;;;
@@ -480,11 +485,24 @@ to next line."
 
 (require 'org)
 
+(add-to-list 'load-path "~/.emacs.d/el-get/org-mode/contrib/lisp")
+
+(setq org-startup-with-inline-images t)
 (setq org-src-fontify-natively t)
+
+(setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
+
+(require 'ox-confluence)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))
+ '((python . t) (plantuml . t))
+ )
+
+;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (member lang '("python" "sh" "plantuml"))))
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
 ;; org-default-notes-fileのディレクトリ
 (setq org-directory "~/org/")
@@ -538,6 +556,14 @@ to next line."
 (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 
 
+;;;;;;;;;;;;;;
+;; plantuml ;;
+;;;;;;;;;;;;;;
+
+(setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
+(add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode))
+(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+
 ;;;;;;;;;;;
 ;; miscs ;;
 ;;;;;;;;;;;
@@ -552,9 +578,6 @@ to next line."
 ;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; yasnippet
-(add-to-list 'load-path
-              "~/.emacs.d/plugins/yasnippet")
 ; (require 'yasnippet)
 (yas-global-mode 1)
 

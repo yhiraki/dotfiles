@@ -14,5 +14,7 @@
 .emacs.d/company-statistics-cache
 .emacs.d/eshell
 .emacs.d/projectile-bookmarks
+.emacs.d/company-statistics-cache.el
+.emacs.d/projectile-bookmarks.eld
 *~
 \#*.*\#
