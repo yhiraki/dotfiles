@@ -45,7 +45,9 @@
   "fb" 'helm-mini
   "gs" 'magit-status
   "r" 'quickrun
-  "el" 'flycheck-error-list)
+  "el" 'flycheck-error-list
+  "\\R" 'restart-emacs
+  )
 
 ;; neotree
 (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
@@ -99,3 +101,28 @@ to next line."
     (error (if (eq this-command 'evil-paste-pop-next)
                (call-interactively 'next-line)
              (signal (car err) (cdr err))))))
+
+(setq fill-column 65)
+(auto-fill-mode 1)
+(require 'org)
+(add-hook 'org-mode-hook
+    '(lambda ()
+       (setq fill-column 65)
+       (auto-fill-mode 1)))
+(add-hook 'org-mode-hook
+          '(lambda () (
+                     ;; https://github.com/kluge/spacemacs.d/blob/264a3d3d3b6dc93e7e57212a149be396da79775f/layers/kluge/funcs.el#L12
+                     (defun kluge-org-meta-return ()
+                       "org-meta-return and insert state"
+                       (interactive)
+                       (end-of-line)
+                       (org-meta-return)
+                       (evil-insert 1))
+
+                     (evil-define-key 'normal org-mode-map
+                       (kbd "M-<return>") 'kluge-org-meta-return)
+                     ))
+          )
+
+(provide '00_evil)
+;;; 00_evil.el ends here
