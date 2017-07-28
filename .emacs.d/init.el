@@ -88,6 +88,7 @@
 (el-get-bundle undohist)
 (el-get-bundle pyenv-mode)
 (el-get-bundle projectile)
+(el-get-bundle elscreen)
 
 (require 'init-loader)
 (setq init-loader-show-log-after-init nil)

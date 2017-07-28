@@ -11,3 +11,4 @@
 .emacs.d/.python-environments
 .emacs.d/undohist
 *~
+\#*.*\#

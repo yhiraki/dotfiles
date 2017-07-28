@@ -30,6 +30,11 @@
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
+  "bs" 'elscreen-start
+  "bc" 'elscreen-create
+  "bn" 'elscreen-next
+  "bp" 'elscreen-previous
+  "bk" 'elscreen-kill
   "fr" 'helm-recentf
   "ft" 'neotree-toggle
   "fj" 'open-junk-file
@@ -39,6 +44,7 @@
   "fgg" 'helm-git-grep
   "fb" 'helm-mini
   "gs" 'magit-status
+  "r" 'quickrun
   "el" 'flycheck-error-list)
 
 ;; neotree
