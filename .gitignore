@@ -10,5 +10,9 @@
 .emacs.d/recentf
 .emacs.d/.python-environments
 .emacs.d/undohist
+.emacs.d/bookmarks
+.emacs.d/company-statistics-cache
+.emacs.d/eshell
+.emacs.d/projectile-bookmarks
 *~
 \#*.*\#
