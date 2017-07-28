@@ -41,6 +41,8 @@
 (el-get-bundle evil-args)
 (el-get-bundle tarao-evil-plugins
   :type github :pkgname "tarao/evil-plugins")
+(el-get-bundle tarao-elisps
+  :type github :pkgname "tarao/elisp")
 (el-get-bundle epc)
 (el-get-bundle jedi-core)
 (el-get-bundle color-moccur)
@@ -88,15 +90,6 @@
 (el-get-bundle pyenv-mode)
 (el-get-bundle projectile)
 (el-get-bundle elscreen)
-
-
-;;;;;;;;;;;;;;;;;
-;; init loader ;;
-;;;;;;;;;;;;;;;;;
-
-;; (require 'init-loader)
-;; (setq init-loader-show-log-after-init nil)
-;; (init-loader-load "~/.emacs.d/inits")
 
 
 ;;;;;;;;;;;;;;;;;
@@ -285,7 +278,6 @@
 (setq elscreen-tab-display-control nil)
 
 
-
 ;;;;;;;;;;
 ;; evil ;;
 ;;;;;;;;;;
@@ -306,12 +298,9 @@
 
 (evil-commentary-mode)
 
-;; (require 'evil-operator-moccur)
-;; (global-evil-operator-moccur-mode 1)
+(require 'evil-relative-linum)
 
-;; (require 'evil-relative-linum)
-
-;; (require 'evil-textobj-between)
+(require 'evil-textobj-between)
 
 (require 'open-junk-file)
 (setq open-junk-file-format "~/Dropbox/memo/junk/%Y/%m/%Y-%m%d-%H%M%S.")
@@ -342,12 +331,14 @@
   )
 
 ;; neotree
-(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "gi") 'neotree-quick-look)
-(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-(evil-define-key 'normal neotree-mode-map (kbd ".") 'neotree-hidden-file-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "N") 'neotree-create-node)
+(evil-define-key 'normal neotree-mode-map
+  (kbd "TAB") 'neotree-enter
+  (kbd "RET") 'neotree-enter
+  (kbd "gi") 'neotree-quick-look
+  (kbd "q") 'neotree-hide
+  (kbd ".") 'neotree-hidden-file-toggle
+  (kbd "N") 'neotree-create-node
+  )
 
 ;; python
 (evil-define-key 'normal python-mode-map
@@ -398,17 +389,27 @@ to next line."
 (auto-fill-mode 1)
 
 ;; https://github.com/kluge/spacemacs.d/blob/264a3d3d3b6dc93e7e57212a149be396da79775f/layers/kluge/funcs.el#L12
-(defun kluge-org-meta-return ()
+(defun my-org-meta-return ()
   "org-meta-return and insert state"
   (interactive)
   (end-of-line)
   (org-meta-return)
   (evil-insert 1))
 
-(add-hook 'org-mode-hook
-          '(lambda ()
-             (evil-define-key 'normal org-mode-map
-               (kbd "M-<return>") 'kluge-org-meta-return)))
+(defun my-org-insert-todo-heading ()
+  (interactive)
+  (end-of-line)
+  (org-insert-todo-heading)
+  (evil-insert 1))
+
+(defun evil-org-mode-hooks ()
+  (evil-define-key 'normal org-mode-map
+    (kbd "M-<return>") 'my-org-meta-return
+    (kbd "M-S-<return>") 'my-org-insert-todo-heading
+    (kbd "\\x") 'org-toggle-checkbox
+    ))
+
+(add-hook 'org-mode-hook 'evil-org-mode-hooks)
 
 
 ;;;;;;;;;;
@@ -423,10 +424,10 @@ to next line."
 (setq helm-completion-in-region-fuzzy-match t)
 (setq helm-M-x-fuzzy-match t)
 (helm-fuzzier-mode 1)
-(define-key global-map (kbd "M-x")     'helm-M-x)
+(define-key global-map (kbd "M-x") 'helm-M-x)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+(define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
 
 (helm-flx-mode +1)
 
@@ -525,18 +526,18 @@ to next line."
 
 ;; (require 'pyenv-mode)
 
-;; (add-hook 'python-mode-hook
-;;           #'(lambda ()
-;;               (pyenv-mode)))
+(add-hook 'python-mode-hook
+          #'(lambda ()
+              (pyenv-mode)))
 
-;; (defun projectile-pyenv-mode-set ()
-;;     "Set pyenv version matching project name."
-;;     (let ((project (projectile-project-name)))
-;;     (if (member project (pyenv-mode-versions))
-;;         (pyenv-mode-set project)
-;;     (pyenv-mode-unset))))
+(defun projectile-pyenv-mode-set ()
+    "Set pyenv version matching project name."
+    (let ((project (projectile-project-name)))
+    (if (member project (pyenv-mode-versions))
+        (pyenv-mode-set project)
+    (pyenv-mode-unset))))
 
-;; (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
+(add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 
 
 ;;;;;;;;;;;
