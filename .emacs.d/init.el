@@ -1,11 +1,5 @@
 ;;; init.el --- Emacs configurations
 
-;;; Commentary:
-;; My Emacs init.el
-
-;;; Code:
-
-
 ;;;;;;;;;;;;
 ;; el-get ;;
 ;;;;;;;;;;;;
@@ -223,14 +217,15 @@
 ;; global modes ;;
 ;;;;;;;;;;;;;;;;;;
 
-(add-hook 'after-init-hook
-          '(lambda ()
-            (projectile-mode)
-            (rainbow-delimiters-mode)
-            (smartparens-global-mode t)
-            (global-whitespace-mode 1)
-            (global-company-mode)
-            ))
+(defun my-global-mode-init-hooks ()
+  (projectile-mode)
+  (rainbow-delimiters-mode)
+  (smartparens-global-mode t)
+  (global-whitespace-mode 1)
+  (global-company-mode)
+  )
+
+(add-hook 'after-init-hook 'my-global-mode-init-hooks)
 
 
 ;;;;;;;;;;;;;
@@ -338,6 +333,9 @@
   (kbd "q") 'neotree-hide
   (kbd ".") 'neotree-hidden-file-toggle
   (kbd "N") 'neotree-create-node
+  (kbd "D") 'neotree-delete-node
+  (kbd "R") 'neotree-rename-node
+  (kbd "r") 'neotree-refresh
   )
 
 ;; python
