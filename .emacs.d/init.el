@@ -1,5 +1,7 @@
 ;;; init.el --- Emacs configurations
 
+(require 'cl)
+
 ;;;;;;;;;;;;
 ;; el-get ;;
 ;;;;;;;;;;;;
@@ -65,7 +67,7 @@
 (el-get-bundle pyenv-mode)
 (el-get-bundle which-key)
 (el-get-bundle quickrun)
-(el-get-bundle jbeans-theme)
+(el-get-bundle material-theme)
 (el-get-bundle key-combo
   :type github :pkgname "uk-ar/key-combo")
 (el-get-bundle init-loader)
@@ -124,11 +126,21 @@
 ;; files ;;
 ;;;;;;;;;;;
 
+;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
+;; http://qiita.com/itiut@github/items/d917eafd6ab255629346
+(defmacro with-suppressed-message (&rest body)
+  "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
+  (declare (indent 0))
+  (let ((message-log-max nil))
+    `(with-temp-message (or (current-message) "") ,@body)))
+
 ;; recent
-(setq recentf-max-saved-items 2000) ;; 2000ファイルまで履歴保存する
+(setq recentf-save-file (expand-file-name ".recentf" user-emacs-directory))
+(setq recentf-max-saved-items 2000)
+(setq recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
 (setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
-(setq recentf-exclude '("/recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
-(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
+(run-with-idle-timer 30 t '(lambda ()
+                             (with-suppressed-message (recentf-save-list))))
 (recentf-mode 1)
 
 ;; backup
@@ -224,7 +236,6 @@
 
 (defun my-global-mode-init-hooks ()
   (projectile-mode)
-  (rainbow-delimiters-mode)
   (smartparens-global-mode t)
   (global-whitespace-mode 1)
   (global-company-mode)
@@ -256,17 +267,24 @@
   (require 'company-statistics)
   (company-statistics-mode)
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
-
-  ;; python
-  (require 'jedi-core)
-  (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t)
-  (defun my/python-mode-hook ()
-    (add-to-list 'company-backends 'company-jedi))
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
   )
 
 (add-hook 'company-mode-hook 'company-mode-hooks)
+
+
+;;;;;;;;;;;;
+;; python ;;
+;;;;;;;;;;;;
+
+;; python
+(require 'jedi-core)
+(setq jedi:complete-on-dot t)
+(setq jedi:use-shortcuts t)
+(defun my/python-mode-hook ()
+  (add-to-list 'company-backends 'company-jedi)
+  (rainbow-delimiters-mode)
+  )
+(add-hook 'python-mode-hook 'my/python-mode-hook)
 
 
 ;;;;;;;;;;;;;;
@@ -594,8 +612,7 @@ to next line."
 ;; theme ;;
 ;;;;;;;;;;;
 
-(require 'jbeans-theme)
-(load-theme 'jbeans t)
+(load-theme 'material t)
 
 
 (provide 'init)
