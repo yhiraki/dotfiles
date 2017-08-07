@@ -1,4 +1,4 @@
-;;; init.el --- Emacs configurations
+;; init.el --- Emacs configurations
 
 (require 'cl)
 
@@ -42,10 +42,12 @@
 (el-get-bundle tarao-elisps
   :type github :pkgname "tarao/elisp")
 (el-get-bundle epc)
+(el-get-bundle flx)
 (el-get-bundle jedi-core)
 (el-get-bundle color-moccur)
 (el-get-bundle company-statistics)
 (el-get-bundle company-flx)
+(el-get-bundle company-racer)
 (el-get-bundle company-jedi :depends (company-mode))
 (el-get-bundle exec-path-from-shell)
 (el-get-bundle git-gutter-fringe)
@@ -58,6 +60,7 @@
 (el-get-bundle helm-git-grep)
 (el-get-bundle helm-gtags)
 (el-get-bundle flycheck)
+(el-get-bundle flycheck-rust)
 (el-get-bundle popup)
 (el-get-bundle popup-pos-tip)
 (el-get-bundle smartparens)
@@ -91,6 +94,11 @@
 (el-get-bundle plantuml-mode)
 (el-get-bundle org-mode
   :type github :pkgname "jwiegley/org-mode")
+(el-get-bundle rust-mode)
+(el-get-bundle emacs-racer)
+(el-get-bundle ob-rust
+  :type github :pkgname  "micanzhang/ob-rust")
+(el-get-bundle toml-mode)
 
 
 ;;;;;;;;;;;;;;;;;
@@ -190,7 +198,23 @@
                          empty          ; 先頭/末尾の空行
                          space-mark     ; 表示のマッピング
                          tab-mark
-                         ))
+ ;;; racerやrustfmt、コンパイラにパスを通す
+(add-to-list 'exec-path (expand-file-name "~/.cargo/bin/"))
+;;; rust-modeでrust-format-on-saveをtにすると自動でrustfmtが走る
+(eval-after-load "rust-mode"
+  '(setq-default rust-format-on-save t))
+;;; rustのファイルを編集するときにracerとflycheckを起動する
+(add-hook 'rust-mode-hook (lambda ()
+                            (racer-mode)
+                            (flycheck-rust-setup)))
+;;; racerのeldocサポートを使う
+(add-hook 'racer-mode-hook #'eldoc-mode)
+;;; racerの補完サポートを使う
+(add-hook 'racer-mode-hook (lambda ()
+                             (company-mode)
+                             ;;; この辺の設定はお好みで
+                             (set (make-variable-buffer-local 'company-idle-delay) 0.1)
+                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))                        ))
 
 (setq whitespace-display-mappings
       '((space-mark ?\u3000 [?\u25a1])
@@ -285,6 +309,39 @@
   (rainbow-delimiters-mode)
   )
 (add-hook 'python-mode-hook 'my/python-mode-hook)
+
+
+;;;;;;;;;;
+;; rust ;;
+;;;;;;;;;;
+
+;; http://keens.github.io/blog/2016/12/29/kizuitararustnokankyoukouchikugakanarirakuninatteta/
+
+;;; racerやrustfmt、コンパイラにパスを通す
+(add-to-list 'exec-path (expand-file-name "~/.cargo/bin/"))
+;;; rust-modeでrust-format-on-saveをtにすると自動でrustfmtが走る
+(eval-after-load "rust-mode"
+  '(setq-default rust-format-on-save t))
+;;; rustのファイルを編集するときにracerとflycheckを起動する
+(add-hook 'rust-mode-hook (lambda ()
+                            (racer-mode)
+                            (flycheck-rust-setup)))
+;;; racerのeldocサポートを使う
+(add-hook 'racer-mode-hook #'eldoc-mode)
+;;; racerの補完サポートを使う
+(add-hook 'racer-mode-hook (lambda ()
+                             (company-mode)
+                             ;;; この辺の設定はお好みで
+                             (set (make-variable-buffer-local 'company-idle-delay) 0.1)
+                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))
+
+(defun my/rust-mode-hook ()
+  (add-to-list 'company-backends 'company-racer)
+  (racer-mode)
+  (rustfmt-enable-on-save)
+  (rainbow-delimiters-mode)
+  )
+(add-hook 'rust-mode-hook 'my/rust-mode-hook)
 
 
 ;;;;;;;;;;;;;;
@@ -514,12 +571,12 @@ to next line."
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t) (plantuml . t))
+ '((python . t) (plantuml . t) (rust . t))
  )
 
 ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
 (defun my-org-confirm-babel-evaluate (lang body)
-  (not (member lang '("python" "sh" "plantuml"))))
+  (not (member lang '("python" "sh" "plantuml" "rust"))))
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
 ;; org-default-notes-fileのディレクトリ
@@ -582,6 +639,30 @@ to next line."
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode))
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 
+
+;;;;;;;;;;;;;;;
+;; yasnippet ;;
+;;;;;;;;;;;;;;;
+
+(yas-global-mode 1)
+
+(eval-after-load 'yasnippet
+  '(progn
+     (define-key yas-keymap (kbd "<tab>") nil)
+     (define-key yas-keymap (kbd "TAB") nil)
+     (define-key yas-keymap (kbd "RET") 'yas-next-field-or-maybe-expand)))
+
+
+;;;;;;;;;;;;;;
+;; quickrun ;;
+;;;;;;;;;;;;;;
+
+(quickrun-add-command "rust/script"
+  '((:command . "cargo")
+    (:exec    . ("%c script %o %s")))
+  :default "rust")
+
+
 ;;;;;;;;;;;
 ;; miscs ;;
 ;;;;;;;;;;;
@@ -595,9 +676,6 @@ to next line."
 
 ;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
-
-; (require 'yasnippet)
-(yas-global-mode 1)
 
 ; ;; which key
 (require 'which-key)
