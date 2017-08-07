@@ -11,6 +11,10 @@ export SAVEHIST=100000
 
 export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
+
+export RUSTPATH=$HOME/.cargo
+export PATH=$PATH:$RUSTPATH/bin
+
 export DOTDIR=$GOPATH/src/github.com/coffexpr/dotfiles
 
 export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
