@@ -18,8 +18,11 @@
 (require 'package)
 (add-to-list 'package-archives
              '(("gnu" . "http://elpa.gnu.org/packages/")
+               ("ELPA" . "http://tromey.com/elpa/")
                ("melpa" . "http://melpa.org/packages/")
-               ("marmalade" . "http://marmalade-repo.org/packages/")))
+               ("marmalade" . "http://marmalade-repo.org/packages/")
+               ("SC" . "http://joseito.republika.pl/sunrise-commander/")
+               ("org" . "http://orgmode.org/elpa/")))
 
 (require 'el-get)
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
@@ -92,13 +95,14 @@
 (el-get-bundle projectile)
 (el-get-bundle elscreen)
 (el-get-bundle plantuml-mode)
-(el-get-bundle org-confluence
-  :type github :pkgname "hgschmie/org-confluence")
+(el-get-bundle org)
+(el-get-bundle org-mode
+  :type github :pkgname "jwiegley/org-mode")
 (el-get-bundle ox-gfm)
 (el-get-bundle rust-mode)
 (el-get-bundle emacs-racer)
 (el-get-bundle ob-rust
-  :type github :pkgname  "micanzhang/ob-rust")
+  :type github :pkgname "micanzhang/ob-rust")
 (el-get-bundle toml-mode)
 
 
@@ -590,16 +594,12 @@ to next line."
 ;; org ;;
 ;;;;;;;;;
 
-(require 'org)
-
 (add-to-list 'load-path "~/.emacs.d/el-get/org-mode/contrib/lisp")
 
 (setq org-startup-with-inline-images t)
 (setq org-src-fontify-natively t)
 
 (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
-
-;; (require 'ox-confluence)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -644,6 +644,7 @@ to next line."
 
 (require 'ox-md nil t)
 (require 'ox-gfm nil t)
+(require 'ox-confluence nil t)
 
 
 ;;;;;;;;;;;;;;
@@ -677,14 +678,6 @@ to next line."
   '((:command . "cargo")
     (:exec    . ("%c script %o %s")))
   :default "rust")
-
-
-;;;;;;;;;;;;;;;;
-;; confluence ;;
-;;;;;;;;;;;;;;;;
-
-;; (require 'confluence)
-;; (require 'org-confluence)
 
 
 ;;;;;;;;;;;
