@@ -165,6 +165,9 @@
 (undohist-initialize)
 (setq undohist-ignored-files '("/tmp/" "COMMIT_EDITMSG"))
 
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
 
 ;;;;;;;;;
 ;; ime ;;
@@ -307,8 +310,18 @@
 (defun my/python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi)
   (rainbow-delimiters-mode)
-  )
+  (pyenv-mode)
+  (electric-indent-mode +1))
 (add-hook 'python-mode-hook 'my/python-mode-hook)
+
+(defun projectile-pyenv-mode-set ()
+    "Set pyenv version matching project name."
+    (let ((project (projectile-project-name)))
+    (if (member project (pyenv-mode-versions))
+        (pyenv-mode-set project)
+    (pyenv-mode-unset))))
+
+(add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 
 
 ;;;;;;;;;;
@@ -342,6 +355,16 @@
   (rainbow-delimiters-mode)
   )
 (add-hook 'rust-mode-hook 'my/rust-mode-hook)
+
+
+;;;;;;;;;;;;;;;;
+;; emacs lisp ;;
+;;;;;;;;;;;;;;;;
+
+(defun my/emacs-lisp-mode-hook ()
+  (rainbow-delimiters-mode)
+  )
+(add-hook 'emacs-lisp-mode-hook 'my/emacs-lisp-mode-hook)
 
 
 ;;;;;;;;;;;;;;
@@ -382,6 +405,11 @@
 
 (require 'evil-magit)
 
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
 (require 'evil-leader)
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
@@ -398,6 +426,7 @@
   "fgh" 'helm-ghq
   "fgl" 'helm-ls-git-ls
   "fgg" 'helm-git-grep
+  "fI" 'find-user-init-file
   "fb" 'helm-mini
   "gs" 'magit-status
   "r" 'quickrun
@@ -611,26 +640,6 @@ to next line."
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
 
-;;;;;;;;;;;;
-;; python ;;
-;;;;;;;;;;;;
-
-;; (require 'pyenv-mode)
-
-(add-hook 'python-mode-hook
-          #'(lambda ()
-              (pyenv-mode)))
-
-(defun projectile-pyenv-mode-set ()
-    "Set pyenv version matching project name."
-    (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-    (pyenv-mode-unset))))
-
-(add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
-
-
 ;;;;;;;;;;;;;;
 ;; plantuml ;;
 ;;;;;;;;;;;;;;
@@ -650,6 +659,7 @@ to next line."
   '(progn
      (define-key yas-keymap (kbd "<tab>") nil)
      (define-key yas-keymap (kbd "TAB") nil)
+     (define-key yas-keymap (kbd "<S-return>") 'yas-prev-field)
      (define-key yas-keymap (kbd "RET") 'yas-next-field-or-maybe-expand)))
 
 
