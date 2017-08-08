@@ -92,8 +92,9 @@
 (el-get-bundle projectile)
 (el-get-bundle elscreen)
 (el-get-bundle plantuml-mode)
-(el-get-bundle org-mode
-  :type github :pkgname "jwiegley/org-mode")
+(el-get-bundle org-confluence
+  :type github :pkgname "hgschmie/org-confluence")
+(el-get-bundle ox-gfm)
 (el-get-bundle rust-mode)
 (el-get-bundle emacs-racer)
 (el-get-bundle ob-rust
@@ -286,6 +287,8 @@
   (setq company-selection-wrap-around t)
 
   ;; mappings
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
 
@@ -596,7 +599,7 @@ to next line."
 
 (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
 
-(require 'ox-confluence)
+;; (require 'ox-confluence)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -639,6 +642,9 @@ to next line."
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
+(require 'ox-md nil t)
+(require 'ox-gfm nil t)
+
 
 ;;;;;;;;;;;;;;
 ;; plantuml ;;
@@ -671,6 +677,14 @@ to next line."
   '((:command . "cargo")
     (:exec    . ("%c script %o %s")))
   :default "rust")
+
+
+;;;;;;;;;;;;;;;;
+;; confluence ;;
+;;;;;;;;;;;;;;;;
+
+;; (require 'confluence)
+;; (require 'org-confluence)
 
 
 ;;;;;;;;;;;
