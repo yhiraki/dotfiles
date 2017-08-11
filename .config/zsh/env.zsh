@@ -23,3 +23,8 @@ export ZPLUG_HOME=$HOME/.zplug
 export PLANTUML_LIMIT_SIZE=8192
 
 export FZF_CMD='fzf-tmux'
+
+export CLOUDSDK_ROOT_DIR=$HOME/src/others/google/google-cloud-sdk
+export CLOUDSDK_PYTHON=$HOME/.pyenv/versions/gcloud/bin/python
+export CLOUDSDK_PYTHON_SITEPACKAGES=$HOME/.pyenv/versions/gcloud/lib/python2.7/site-packages
+export PATH=$PATH:$CLOUDSDK_ROOT_DIR/bin
