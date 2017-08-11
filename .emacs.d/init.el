@@ -30,6 +30,7 @@
 
 ;; packages
 (require 'el-get)
+(el-get-bundle anzu)
 (el-get-bundle evil)
 (el-get-bundle evil-surround)
 (el-get-bundle evil-numbers)
@@ -134,6 +135,8 @@
 (setq require-final-newline t)
 (modify-syntax-entry ?_ "w" (standard-syntax-table))
 
+;; スタートアップページを表示しない
+(setq inhibit-startup-message t)
 
 ;;;;;;;;;;;
 ;; files ;;
@@ -205,24 +208,7 @@
                          spaces         ; スペース
                          empty          ; 先頭/末尾の空行
                          space-mark     ; 表示のマッピング
-                         tab-mark
- ;;; racerやrustfmt、コンパイラにパスを通す
-(add-to-list 'exec-path (expand-file-name "~/.cargo/bin/"))
-;;; rust-modeでrust-format-on-saveをtにすると自動でrustfmtが走る
-(eval-after-load "rust-mode"
-  '(setq-default rust-format-on-save t))
-;;; rustのファイルを編集するときにracerとflycheckを起動する
-(add-hook 'rust-mode-hook (lambda ()
-                            (racer-mode)
-                            (flycheck-rust-setup)))
-;;; racerのeldocサポートを使う
-(add-hook 'racer-mode-hook #'eldoc-mode)
-;;; racerの補完サポートを使う
-(add-hook 'racer-mode-hook (lambda ()
-                             (company-mode)
-                             ;;; この辺の設定はお好みで
-                             (set (make-variable-buffer-local 'company-idle-delay) 0.1)
-                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))                        ))
+                         tab-mark))
 
 (setq whitespace-display-mappings
       '((space-mark ?\u3000 [?\u25a1])
@@ -267,6 +253,8 @@
 ;;;;;;;;;;;;;;;;;;
 
 (defun my-global-mode-init-hooks ()
+  (require 'anzu)
+  (global-anzu-mode +1)
   (projectile-mode)
   (smartparens-global-mode t)
   (global-whitespace-mode 1)
@@ -283,16 +271,15 @@
 ;; http://qiita.com/sune2/items/b73037f9e85962f5afb7
 
 (defun company-mode-hooks ()
-  (company-flx-mode +1)
-
   ;; vars
-  (setq company-idle-delay 0)
+  (setq company-auto-complete nil)
+  (setq company-idle-delay 0.2)
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
 
   ;; mappings
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "<return>") nil)
+  (define-key company-active-map (kbd "<tab>") nil)
+  ;; (define-key company-active-map (kbd "<C-return>") 'company-complete-selection)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
 
@@ -316,6 +303,7 @@
 (setq jedi:use-shortcuts t)
 (defun my/python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi)
+  (company-flx-mode +1)
   (rainbow-delimiters-mode)
   (pyenv-mode)
   (electric-indent-mode +1))
@@ -349,11 +337,11 @@
 ;;; racerのeldocサポートを使う
 (add-hook 'racer-mode-hook #'eldoc-mode)
 ;;; racerの補完サポートを使う
-(add-hook 'racer-mode-hook (lambda ()
-                             (company-mode)
-                             ;;; この辺の設定はお好みで
-                             (set (make-variable-buffer-local 'company-idle-delay) 0.1)
-                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))
+; (add-hook 'racer-mode-hook (lambda ()
+;                              (company-mode)
+;                              ;;; この辺の設定はお好みで
+;                              (set (make-variable-buffer-local 'company-idle-delay) 0.1)
+;                              (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))
 
 (defun my/rust-mode-hook ()
   (add-to-list 'company-backends 'company-racer)
@@ -402,8 +390,6 @@
 (global-evil-surround-mode 1)
 
 (evil-commentary-mode)
-
-(require 'evil-relative-linum)
 
 (require 'evil-textobj-between)
 
@@ -664,11 +650,37 @@ to next line."
 
 (eval-after-load 'yasnippet
   '(progn
-     (define-key yas-keymap (kbd "<tab>") nil)
-     (define-key yas-keymap (kbd "TAB") nil)
-     (define-key yas-keymap (kbd "<S-return>") 'yas-prev-field)
+     ; (define-key yas-minor-mode-map (kbd "TAB") nil)
+     (define-key yas-minor-mode-map (kbd "C-k") 'yas-expand)
      (define-key yas-keymap (kbd "RET") 'yas-next-field-or-maybe-expand)))
 
+;;; use popup menu for yas-choose-value
+;;; https://www.emacswiki.org/emacs/Yasnippet
+(require 'popup)
+
+;; add some shotcuts in popup menu mode
+(define-key popup-menu-keymap (kbd "C-n") 'popup-next)
+(define-key popup-menu-keymap (kbd "TAB") 'popup-next)
+(define-key popup-menu-keymap (kbd "<tab>") 'popup-next)
+(define-key popup-menu-keymap (kbd "<backtab>") 'popup-previous)
+(define-key popup-menu-keymap (kbd "C-p") 'popup-previous)
+
+(defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
+  (when (featurep 'popup)
+    (popup-menu*
+     (mapcar
+      (lambda (choice)
+        (popup-make-item
+         (or (and display-fn (funcall display-fn choice))
+             choice)
+         :value choice))
+      choices)
+     :prompt prompt
+     ;; start isearch mode immediately
+     :isearch t
+     )))
+
+(setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
 
 ;;;;;;;;;;;;;;
 ;; quickrun ;;
