@@ -1,4 +1,4 @@
-;; init.el --- Emacs configurations
+; init.el --- Emacs configurations
 
 (require 'cl)
 
@@ -105,6 +105,12 @@
 (el-get-bundle ob-rust
   :type github :pkgname "micanzhang/ob-rust")
 (el-get-bundle toml-mode)
+(el-get-bundle pig-mode)
+;; (el-get-bundle emacs-sql-indent
+;;   :type github :pkgname "alex-hhh/emacs-sql-indent")
+(el-get-bundle sql-upcase)
+;; (el-get-bundle sql-indent)
+(el-get-bundle web-mode)
 
 
 ;;;;;;;;;;;;;;;;;
@@ -115,11 +121,12 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (column-number-mode t)
-(global-linum-mode t)
+;; (global-linum-mode t)
 (global-hl-line-mode t)
 (show-paren-mode 1) ;; 対応する括弧を光らせる
 (scroll-bar-mode 0)
 (setq indicate-buffer-boundaries 'left) ;; バッファの終端を表示
+(setq indicate-empty-lines t) ;; バッファの終端以降を可視化
 (set-frame-font "ricty-13")
 
 ;; scroll
@@ -383,8 +390,9 @@
       evil-ex-search-vim-style-regexp t)
 
 (add-to-list 'load-path "~/.emacs.d/evil")
-(require 'evil)
 (evil-mode 1)
+
+(require 'evil)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -512,6 +520,18 @@ to next line."
 (add-hook 'org-mode-hook 'evil-org-mode-hooks)
 
 
+;;;;;;;;;;;;
+;; popwin ;;
+;;;;;;;;;;;;
+
+;; popwin
+(require 'popwin)
+(add-to-list 'popwin:special-display-config '("^\\*helm.*\\*$" :regexp t))
+;; (push '("^\\*helm.*\\*$" :regexp t) 'popwin:special-display-config)
+(add-to-list 'popwin:special-display-config '("*quickrun*"))
+;; (push '("*quickrun*") popwin:special-display-config)
+
+
 ;;;;;;;;;;
 ;; helm ;;
 ;;;;;;;;;;
@@ -530,11 +550,6 @@ to next line."
 (define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
 
 (helm-flx-mode +1)
-
-;; popwin
-(require 'popwin)
-
-(add-to-list 'popwin:special-display-config '("^\\*helm.*\\*$" :regexp t))
 
 (defun helm-popwin-help-mode-off ()
   "Turn `popwin-mode' off for *Help* buffers."
@@ -690,6 +705,49 @@ to next line."
   '((:command . "cargo")
     (:exec    . ("%c script %o %s")))
   :default "rust")
+
+
+;;;;;;;;;
+;; web ;;
+;;;;;;;;;
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(add-hook 'web-mode-hook
+          '(lambda ()
+             (setq web-mode-attr-indent-offset nil)
+             (setq web-mode-markup-indent-offset 2)
+             (setq web-mode-css-indent-offset 2)
+             (setq web-mode-code-indent-offset 2)
+             (setq web-mode-sql-indent-offset 2)
+             (setq indent-tabs-mode nil)
+             (setq tab-width 2)
+          ))
+
+
+;;;;;;;;;
+;; sql ;;
+;;;;;;;;;
+
+;; (eval-after-load "sql"
+;;   '(load-library "sql-indent"))
+
+(add-hook 'sql-mode-hook
+    (lambda ()
+       (sql-upcase-mode)
+       (setq sql-indent-offset 2)
+       (setq indent-tabs-mode nil)
+       (sql-set-product "postgres")
+       ))
+
+;; (add-hook 'sql-interactive-mode-hook 'sql-upcase-mode)
 
 
 ;;;;;;;;;;;
