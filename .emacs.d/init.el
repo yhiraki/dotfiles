@@ -111,6 +111,9 @@
 (el-get-bundle sql-upcase)
 ;; (el-get-bundle sql-indent)
 (el-get-bundle web-mode)
+(el-get-bundle org-reveal)
+(el-get-bundle ein :depends (skewer-mode))
+(el-get-bundle pangu-spacing)
 
 
 ;;;;;;;;;;;;;;;;;
@@ -121,7 +124,14 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (column-number-mode t)
+
 ;; (global-linum-mode t)
+;; ;; linumに起因する高速化
+;; ;; http://d.hatena.ne.jp/daimatz/20120215/1329248780
+;; (setq linum-delay t)
+;; (defadvice linum-schedule (around my-linum-schedule () activate)
+;;   (run-with-idle-timer 0.2 nil #'linum-update-current))
+
 (global-hl-line-mode t)
 (show-paren-mode 1) ;; 対応する括弧を光らせる
 (scroll-bar-mode 0)
@@ -144,6 +154,10 @@
 
 ;; スタートアップページを表示しない
 (setq inhibit-startup-message t)
+
+;; 終了時に確認する
+(setq confirm-kill-emacs 'y-or-n-p)
+
 
 ;;;;;;;;;;;
 ;; files ;;
@@ -526,10 +540,29 @@ to next line."
 
 ;; popwin
 (require 'popwin)
-(add-to-list 'popwin:special-display-config '("^\\*helm.*\\*$" :regexp t))
-;; (push '("^\\*helm.*\\*$" :regexp t) 'popwin:special-display-config)
-(add-to-list 'popwin:special-display-config '("*quickrun*"))
-;; (push '("*quickrun*") popwin:special-display-config)
+
+(setq display-buffer-function 'popwin:display-buffer)
+(setq popwin:popup-window-position 'bottom)
+
+(push '("*quickrun*") popwin:special-display-config)
+(push '("^\*helm[\- ].+\*$" :regexp t) popwin:special-display-config)
+(push '("^\*magit: .*$" :regexp t) popwin:special-display-config)
+
+;; (defun helm-popwin-help-mode-off ()
+;;   "Turn `popwin-mode' off for *Help* buffers."
+;;   (when (boundp 'popwin:special-display-config)
+;;     (popwin:display-buffer helm-buffer t)
+;;     (customize-set-variable 'popwin:special-display-config
+;;                             (delq 'help-mode popwin:special-display-config))))
+
+;; (defun helm-popwin-help-mode-on ()
+;;   "Turn `popwin-mode' on for *Help* buffers."
+;;   (when (boundp 'popwin:special-display-config)
+;;     (customize-set-variable 'popwin:special-display-config
+;;                             (add-to-list 'popwin:special-display-config 'help-mode nil #'eq))))
+
+;; (add-hook 'helm-after-initialize-hook #'helm-popwin-help-mode-off)
+;; (add-hook 'helm-cleanup-hook #'helm-popwin-help-mode-on)
 
 
 ;;;;;;;;;;
@@ -550,22 +583,6 @@ to next line."
 (define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
 
 (helm-flx-mode +1)
-
-(defun helm-popwin-help-mode-off ()
-  "Turn `popwin-mode' off for *Help* buffers."
-  (when (boundp 'popwin:special-display-config)
-    (popwin:display-buffer helm-buffer t)
-    (customize-set-variable 'popwin:special-display-config
-                            (delq 'help-mode popwin:special-display-config))))
-
-(defun helm-popwin-help-mode-on ()
-  "Turn `popwin-mode' on for *Help* buffers."
-  (when (boundp 'popwin:special-display-config)
-    (customize-set-variable 'popwin:special-display-config
-                            (add-to-list 'popwin:special-display-config 'help-mode nil #'eq))))
-
-(add-hook 'helm-after-initialize-hook #'helm-popwin-help-mode-off)
-(add-hook 'helm-cleanup-hook #'helm-popwin-help-mode-on)
 
 (when (featurep 'golden-ratio)
   (add-to-list 'golden-ratio-inhibit-functions 'helm-alive-p))
@@ -646,6 +663,8 @@ to next line."
 (require 'ox-md nil t)
 (require 'ox-gfm nil t)
 (require 'ox-confluence nil t)
+
+(setq org-html-htmlize-output-type 'css)
 
 
 ;;;;;;;;;;;;;;
@@ -771,6 +790,66 @@ to next line."
 
 ;; all-the-icons
 ;; (require 'all-the-icons)
+
+
+;;;;;;;;;;;;;
+;; revewal ;;
+;;;;;;;;;;;;;
+
+(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+
+
+;;;;;;;;;
+;; ein ;;
+;;;;;;;;;
+
+(add-hook 'ein:notebook-mode-hook #'python-mode)
+
+(defun user-ein-reply-callback (args content -metadata-not-used-)
+    (let ((callback (plist-get args :callback))
+            (candidates (plist-get content :matches)))
+        (funcall callback candidates)))
+
+(defun user-company-ein-callback (callback)
+    (ein:kernel-complete
+        (ein:get-kernel)
+        (thing-at-point 'line)
+        (current-column)
+        (list :complete_reply
+            (cons #'user-ein-reply-callback (list :callback callback))))
+    )
+
+(defun user-company-ein-backend (command &optional arg &rest ignored)
+    (interactive (list 'interactive))
+    (case command
+        (interactive (company-begin-backend 'user-company-ein-backend))
+        (prefix (company-anaconda-prefix))
+        (candidates (cons :async #'user-company-ein-callback))
+        (location nil)
+        (sorted t)
+        )
+    )
+
+
+;;;;;;;;;;;;;;;;;;;
+;; pangu-spacing ;;
+;;;;;;;;;;;;;;;;;;;
+
+;; http://onemoreduoa.phpapps.jp/emacs/org-mode
+;;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
+(defvar pangu-spacing-chinese-before-english-regexp)
+(setq pangu-spacing-chinese-before-english-regexp
+  (rx (group-n 1 (category japanese))
+      (group-n 2 (in "a-zA-Z0-9"))))
+(defvar pangu-spacing-chinese-after-english-regexp)
+(setq pangu-spacing-chinese-after-english-regexp
+  (rx (group-n 1 (in "a-zA-Z0-9"))
+      (group-n 2 (category japanese))))
+;;; 見た目ではなくて実際にスペースを入れる
+(defvar pangu-spacing-real-insert-separtor)
+(setq pangu-spacing-real-insert-separtor t)
+;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
+(add-hook 'text-mode-hook 'pangu-spacing-mode)
 
 
 ;;;;;;;;;;;
