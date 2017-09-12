@@ -19,6 +19,7 @@
 (add-to-list 'package-archives
              '(("gnu" . "http://elpa.gnu.org/packages/")
                ("ELPA" . "http://tromey.com/elpa/")
+               ("elpy" . "https://jorgenschaefer.github.io/packages/")
                ("melpa" . "http://melpa.org/packages/")
                ("marmalade" . "http://marmalade-repo.org/packages/")
                ("SC" . "http://joseito.republika.pl/sunrise-commander/")
@@ -31,6 +32,7 @@
 ;; packages
 (require 'el-get)
 (el-get-bundle anzu)
+(el-get-bundle elpy)
 (el-get-bundle evil)
 (el-get-bundle evil-surround)
 (el-get-bundle evil-numbers)
@@ -52,9 +54,9 @@
 (el-get-bundle company-statistics)
 (el-get-bundle company-flx)
 (el-get-bundle company-racer)
-(el-get-bundle company-jedi :depends (company-mode))
+;; (el-get-bundle company-jedi :depends (company-mode))
 (el-get-bundle exec-path-from-shell)
-(el-get-bundle git-gutter-fringe)
+(el-get-bundle git-gutter-fringe+)
 (el-get-bundle helm)
 (el-get-bundle helm-fuzzier)
 (el-get-bundle helm-flx)
@@ -71,7 +73,6 @@
 (el-get-bundle emmet-mode)
 (el-get-bundle volatile-highlights)
 (el-get-bundle yasnippet)
-(el-get-bundle pyenv-mode)
 (el-get-bundle which-key)
 (el-get-bundle quickrun)
 (el-get-bundle material-theme)
@@ -92,7 +93,6 @@
 (el-get-bundle restart-emacs)
 (el-get-bundle rainbow-delimiters)
 (el-get-bundle undohist)
-(el-get-bundle pyenv-mode)
 (el-get-bundle projectile)
 (el-get-bundle elscreen)
 (el-get-bundle plantuml-mode)
@@ -114,6 +114,9 @@
 (el-get-bundle org-reveal)
 (el-get-bundle ein :depends (skewer-mode))
 (el-get-bundle pangu-spacing)
+(el-get-bundle pyenv-mode)
+;; (el-get-bundle pyenv-mode-auto :depends (pyenv-mode s f))
+;; (el-get-bundle auto-virtualenvwrapper :depends (cl-lib s virtualenvwrapper))
 
 
 ;;;;;;;;;;;;;;;;;
@@ -125,12 +128,15 @@
 (tool-bar-mode -1)
 (column-number-mode t)
 
-;; (global-linum-mode t)
-;; ;; linumに起因する高速化
-;; ;; http://d.hatena.ne.jp/daimatz/20120215/1329248780
-;; (setq linum-delay t)
-;; (defadvice linum-schedule (around my-linum-schedule () activate)
-;;   (run-with-idle-timer 0.2 nil #'linum-update-current))
+(add-hook 'prog-mode-hook
+          '(lambda ()
+             (global-linum-mode t)
+             ;; linumに起因する高速化
+             ;; http://d.hatena.ne.jp/daimatz/20120215/1329248780
+             (setq linum-delay t)
+             (defadvice linum-schedule (around my-linum-schedule () activate)
+               (run-with-idle-timer 0.2 nil #'linum-update-current))
+             ))
 
 (global-hl-line-mode t)
 (show-paren-mode 1) ;; 対応する括弧を光らせる
@@ -148,7 +154,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; editor
-(setq-default tab-width 4 indent-tabs-mode nil) ; タブにスペースを使用
+(setq-default indent-tabs-mode nil) ; タブにスペースを使用
+(setq-default tab-width 2)
+(setq-default c-basic-offset 4     ;;基本インデント量4
+              tab-width 4          ;;タブ幅4
+              indent-tabs-mode nil)  ;;インデントをタブでするかスペースでするか
 (setq require-final-newline t)
 (modify-syntax-entry ?_ "w" (standard-syntax-table))
 
@@ -157,6 +167,9 @@
 
 ;; 終了時に確認する
 (setq confirm-kill-emacs 'y-or-n-p)
+
+;; auto-complete は無効
+(global-auto-complete-mode -1)
 
 
 ;;;;;;;;;;;
@@ -246,7 +259,7 @@
 ;; set nbsp:%
 (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?%])
 
-;; スペースは全角のみを可視化
+; スペースは全角のみを可視化
 (setq whitespace-space-regexp "\\(\u3000+\\)")
 
 ;; 保存前に自動でクリーンアップ
@@ -320,24 +333,28 @@
 
 ;; python
 (require 'jedi-core)
+; (require 'pyenv-mode-auto)
+
 (setq jedi:complete-on-dot t)
 (setq jedi:use-shortcuts t)
 (defun my/python-mode-hook ()
+  (elpy-enable)
   (add-to-list 'company-backends 'company-jedi)
   (company-flx-mode +1)
   (rainbow-delimiters-mode)
   (pyenv-mode)
-  (electric-indent-mode +1))
+  (electric-indent-mode +1)
+  )
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 
-(defun projectile-pyenv-mode-set ()
-    "Set pyenv version matching project name."
-    (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-    (pyenv-mode-unset))))
+;; (defun projectile-pyenv-mode-set ()
+;;     "Set pyenv version matching project name."
+;;     (let ((project (projectile-project-name)))
+;;     (if (member project (pyenv-mode-versions))
+;;         (pyenv-mode-set project)
+;;     (pyenv-mode-unset))))
 
-(add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
+;; (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 
 
 ;;;;;;;;;;
@@ -396,17 +413,17 @@
 ;; evil ;;
 ;;;;;;;;;;
 
+(add-to-list 'load-path "~/.emacs.d/evil")
+(evil-mode 1)
+
+(require 'evil)
+
 ;; vim に近い操作モードを再現
 ;; http://tarao.hatenablog.com/entry/20130304/evil_config
 (setq evil-want-C-u-scroll t
       evil-want-fine-undo t
       evil-search-module 'evil-search
       evil-ex-search-vim-style-regexp t)
-
-(add-to-list 'load-path "~/.emacs.d/evil")
-(evil-mode 1)
-
-(require 'evil)
 
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -424,6 +441,9 @@
   "Edit the `user-init-file', in another window."
   (interactive)
   (find-file-other-window user-init-file))
+
+(define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)
 
 (require 'evil-leader)
 (global-evil-leader-mode)
@@ -545,6 +565,8 @@ to next line."
 (setq popwin:popup-window-position 'bottom)
 
 (push '("*quickrun*") popwin:special-display-config)
+(push '("*Warnings*") popwin:special-display-config)
+(push '("*el-get packages*") popwin:special-display-config)
 (push '("^\*helm[\- ].+\*$" :regexp t) popwin:special-display-config)
 (push '("^\*magit: .*$" :regexp t) popwin:special-display-config)
 
@@ -675,6 +697,12 @@ to next line."
 (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode))
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 
+(add-hook 'plantuml-mode-hook
+          '(lambda ()
+             (setq indent-tabs-mode nil)
+             (setq tab-width 2)
+          ))
+
 
 ;;;;;;;;;;;;;;;
 ;; yasnippet ;;
@@ -725,6 +753,7 @@ to next line."
     (:exec    . ("%c script %o %s")))
   :default "rust")
 
+(setq quickrun-timeout-seconds 30)
 
 ;;;;;;;;;
 ;; web ;;
@@ -766,7 +795,9 @@ to next line."
        (sql-set-product "postgres")
        ))
 
-;; (add-hook 'sql-interactive-mode-hook 'sql-upcase-mode)
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (toggle-truncate-lines t)))
 
 
 ;;;;;;;;;;;
@@ -778,7 +809,8 @@ to next line."
   (exec-path-from-shell-initialize))
 
 ;; git gutter
-(global-git-gutter-mode +1)
+(require 'git-gutter-fringe+)
+(global-git-gutter+-mode)
 
 ;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
