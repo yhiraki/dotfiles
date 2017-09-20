@@ -1,27 +1,25 @@
 _fzf-select-repo-dir(){
   local gitroot=$(ghq root)
   local reporoot=$( \
-      find $gitroot -mindepth 3 -maxdepth 3 \
-          | sed s:$gitroot/::g \
-          | $FZF_CMD -q "$*")
-  if [ "$reporoot" != "" ]
-  then echo $gitroot/$reporoot
-  fi
+    find $gitroot -mindepth 3 -maxdepth 3 \
+        | sed s:$gitroot/::g \
+        | $FZF_CMD -q "$*") &&
+    echo $gitroot/$reporoot
 }
 
 # repo - cd to repogitory dir
 repo() {
   local repodir=$(_fzf-select-repo-dir "$*")
-  if [ "$repodir" != "" ];then
-    cd $repodir
+  if [ ! -z $repodir ]
+  then cd $repodir
   fi
 }
 
 _fzf-select-branch(){
   local branches branch
   branches=$(git branch --all -vv) &&
-  branch=$(echo "$branches" | $FZF_CMD +m -q "$*") &&
-  echo $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
+    branch=$(echo "$branches" | $FZF_CMD +m -q "$*") &&
+    echo $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
 }
 
 # fbr - checkout git branch
