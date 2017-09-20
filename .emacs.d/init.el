@@ -154,10 +154,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; editor
-(setq-default indent-tabs-mode nil) ; タブにスペースを使用
-(setq-default tab-width 2)
-(setq-default c-basic-offset 4     ;;基本インデント量4
-              tab-width 4          ;;タブ幅4
+(setq-default c-basic-offset 2     ;;基本インデント量
+              tab-width 2          ;;タブ幅
               indent-tabs-mode nil)  ;;インデントをタブでするかスペースでするか
 (setq require-final-newline t)
 (modify-syntax-entry ?_ "w" (standard-syntax-table))
@@ -407,6 +405,7 @@
 (require 'elscreen)
 (setq elscreen-tab-display-kill-screen nil) ;; タブ全消しをしない
 (setq elscreen-tab-display-control nil)
+(elscreen-start)
 
 
 ;;;;;;;;;;
