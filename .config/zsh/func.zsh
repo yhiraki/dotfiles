@@ -1,11 +1,20 @@
 _fzf-select-repo-dir(){
   local gitroot=$(ghq root)
-  echo $gitroot/$(find $gitroot -mindepth 3 -maxdepth 3 | sed s:$gitroot/::g | $FZF_CMD -q "$*")
+  local reporoot=$( \
+      find $gitroot -mindepth 3 -maxdepth 3 \
+          | sed s:$gitroot/::g \
+          | $FZF_CMD -q "$*")
+  if [ "$reporoot" != "" ]
+  then echo $gitroot/$reporoot
+  fi
 }
 
 # repo - cd to repogitory dir
 repo() {
-  cd $(_fzf-select-repo-dir "$*")
+  local repodir=$(_fzf-select-repo-dir "$*")
+  if [ "$repodir" != "" ];then
+    cd $repodir
+  fi
 }
 
 _fzf-select-branch(){
