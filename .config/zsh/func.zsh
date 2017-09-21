@@ -1,7 +1,6 @@
 _fzf-select-repo-dir(){
   local gitroot=$(ghq root)
-  local reporoot=$( \
-    find $gitroot -mindepth 3 -maxdepth 3 \
+  local reporoot=$(ghq list \
         | sed s:$gitroot/::g \
         | $FZF_CMD -q "$*") &&
     echo $gitroot/$reporoot
