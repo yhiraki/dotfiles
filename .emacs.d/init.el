@@ -106,10 +106,11 @@
   :type github :pkgname "micanzhang/ob-rust")
 (el-get-bundle toml-mode)
 (el-get-bundle pig-mode)
-;; (el-get-bundle emacs-sql-indent
-;;   :type github :pkgname "alex-hhh/emacs-sql-indent")
+(el-get-bundle emacs-sql-indent
+  :type github :pkgname "alex-hhh/emacs-sql-indent")
 (el-get-bundle sql-upcase)
 ;; (el-get-bundle sql-indent)
+;; (el-get-bundle edbi)
 (el-get-bundle web-mode)
 (el-get-bundle org-reveal)
 (el-get-bundle ein :depends (skewer-mode))
@@ -795,17 +796,35 @@ to next line."
 ;; (eval-after-load "sql"
 ;;   '(load-library "sql-indent"))
 
+;; emacs-sql-indent
+(require 'sql-indent)
+(defvar my-sql-indentation-offsets-alist
+  `((select-clause 0)
+    (insert-clause 0)
+    (delete-clause 0)
+    (update-clause 0)
+    ,@sqlind-default-indentation-offsets-alist))
+(add-hook 'sqlind-minor-mode-hook
+    (lambda ()
+       (setq sqlind-indentation-offsets-alist
+             my-sql-indentation-offsets-alist)))
+
 (add-hook 'sql-mode-hook
     (lambda ()
        (sql-upcase-mode)
+       (sqlind-minor-mode)
        (setq sql-indent-offset 2)
        (setq indent-tabs-mode nil)
+       (setq c-basic-offset 2)
+       (setq tab-width 2)
        (sql-set-product "postgres")
        ))
 
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (toggle-truncate-lines t)))
+
+;; (require 'edbi)
 
 
 ;;;;;;;;;;;
