@@ -80,7 +80,8 @@
   :type github :pkgname "uk-ar/key-combo")
 (el-get-bundle init-loader)
 (el-get-bundle open-junk-file)
-(el-get-bundle neotree)
+;; (el-get-bundle neotree)
+(el-get-bundle direx)
 (el-get-bundle evil-commentary)
 (el-get-bundle all-the-icons
   :type github :pkgname "domtronn/all-the-icons.el")
@@ -455,7 +456,8 @@
   "bp" 'elscreen-previous
   "bk" 'elscreen-kill
   "fr" 'helm-recentf
-  "ft" 'neotree-toggle
+  ;; "ft" 'neotree-toggle
+  "fd" 'direx:jump-to-directory-other-window
   "fj" 'open-junk-file
   "fc" 'org-capture
   "fgh" 'helm-ghq
@@ -469,18 +471,18 @@
   "\\R" 'restart-emacs
   )
 
-;; neotree
-(evil-define-key 'normal neotree-mode-map
-  (kbd "TAB") 'neotree-enter
-  (kbd "RET") 'neotree-enter
-  (kbd "gi") 'neotree-quick-look
-  (kbd "q") 'neotree-hide
-  (kbd ".") 'neotree-hidden-file-toggle
-  (kbd "N") 'neotree-create-node
-  (kbd "D") 'neotree-delete-node
-  (kbd "R") 'neotree-rename-node
-  (kbd "r") 'neotree-refresh
-  )
+;; ;; neotree
+;; (evil-define-key 'normal neotree-mode-map
+;;   (kbd "TAB") 'neotree-enter
+;;   (kbd "RET") 'neotree-enter
+;;   (kbd "gi") 'neotree-quick-look
+;;   (kbd "q") 'neotree-hide
+;;   (kbd ".") 'neotree-hidden-file-toggle
+;;   (kbd "N") 'neotree-create-node
+;;   (kbd "D") 'neotree-delete-node
+;;   (kbd "R") 'neotree-rename-node
+;;   (kbd "r") 'neotree-refresh
+;;   )
 
 ;; python
 (evil-define-key 'normal python-mode-map
@@ -544,14 +546,16 @@ to next line."
   (org-insert-todo-heading)
   (evil-insert 1))
 
-(defun evil-org-mode-hooks ()
+(defun org-mode-hooks ()
   (evil-define-key 'normal org-mode-map
     (kbd "M-<return>") 'my-org-meta-return
     (kbd "M-S-<return>") 'my-org-insert-todo-heading
     (kbd "\\x") 'org-toggle-checkbox
-    ))
+    )
+  (linum-mode -1)
+  )
 
-(add-hook 'org-mode-hook 'evil-org-mode-hooks)
+(add-hook 'org-mode-hook 'org-mode-hooks)
 
 
 ;;;;;;;;;;;;
@@ -564,11 +568,16 @@ to next line."
 (setq display-buffer-function 'popwin:display-buffer)
 (setq popwin:popup-window-position 'bottom)
 
+(add-hook 'dired-load-hook (lambda () (load "dired-x")))
+
 (push '("*quickrun*") popwin:special-display-config)
 (push '("*Warnings*") popwin:special-display-config)
 (push '("*el-get packages*") popwin:special-display-config)
 (push '("^\*helm[\- ].+\*$" :regexp t) popwin:special-display-config)
 (push '("^\*magit: .*$" :regexp t) popwin:special-display-config)
+(push '(direx:direx-mode :position top :dedicated t)
+      popwin:special-display-config)
+(push '(dired-mode :position top) popwin:special-display-config)
 
 ;; (defun helm-popwin-help-mode-off ()
 ;;   "Turn `popwin-mode' off for *Help* buffers."
@@ -610,17 +619,35 @@ to next line."
   (add-to-list 'golden-ratio-inhibit-functions 'helm-alive-p))
 
 
+;;;;;;;;;;;
+;; direx ;;
+;;;;;;;;;;;
+
+(setq direx:leaf-icon "  "
+      direx:open-icon "▾ "
+      direx:closed-icon "▸ ")
+
+(evil-define-key 'normal direx:direx-mode-map (kbd "D") 'direx:do-delete-files)
+(evil-define-key 'normal direx:direx-mode-map (kbd "r") 'direx:do-rename-file)
+(evil-define-key 'normal direx:direx-mode-map (kbd "j") 'direx:next-item)
+(evil-define-key 'normal direx:direx-mode-map (kbd "k") 'direx:previous-item)
+(evil-define-key 'normal direx:direx-mode-map (kbd "C-j") 'direx:next-sibling-item)
+(evil-define-key 'normal direx:direx-mode-map (kbd "C-k") 'direx:previous-sibling-item)
+(evil-define-key 'normal direx:direx-mode-map (kbd "SPC") 'direx:toggle-item)
+(evil-define-key 'normal direx:direx-mode-map (kbd "RET") 'direx:find-item)
+
+
 ;;;;;;;;;;;;;
 ;; neotree ;;
 ;;;;;;;;;;;;;
 
 ;; http://kiririmode.hatenablog.jp/entry/20150806/1438786800
 
-;; 隠しファイル
-(setq neo-hidden-regexp-list '("^\\." "\\.cs\\.meta$" "\\.pyc$" "__pycache__" "~$" "^#.*#$" "\\.elc$" "\\.qrinput$"))
+;; ;; 隠しファイル
+;; (setq neo-hidden-regexp-list '("^\\." "\\.cs\\.meta$" "\\.pyc$" "__pycache__" "~$" "^#.*#$" "\\.elc$" "\\.qrinput$"))
 
-;; neotree ウィンドウを表示する毎に current file のあるディレクトリを表示する
-(setq neo-smart-open t)
+;; ;; neotree ウィンドウを表示する毎に current file のあるディレクトリを表示する
+;; (setq neo-smart-open t)
 
 ;; ;; popwin との共存
 ;; (when neo-persist-show
