@@ -629,6 +629,7 @@ to next line."
 
 (evil-define-key 'normal direx:direx-mode-map (kbd "D") 'direx:do-delete-files)
 (evil-define-key 'normal direx:direx-mode-map (kbd "r") 'direx:do-rename-file)
+(evil-define-key 'normal direx:direx-mode-map (kbd "c") 'direx:do-copy-files)
 (evil-define-key 'normal direx:direx-mode-map (kbd "j") 'direx:next-item)
 (evil-define-key 'normal direx:direx-mode-map (kbd "k") 'direx:previous-item)
 (evil-define-key 'normal direx:direx-mode-map (kbd "C-j") 'direx:next-sibling-item)
