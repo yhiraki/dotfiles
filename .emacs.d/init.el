@@ -1,4 +1,4 @@
-; init.el --- Emacs configurations
+ ;; init.el --- Emacs configurations
 
 (require 'cl)
 
@@ -80,7 +80,6 @@
   :type github :pkgname "uk-ar/key-combo")
 (el-get-bundle init-loader)
 (el-get-bundle open-junk-file)
-;; (el-get-bundle neotree)
 (el-get-bundle direx)
 (el-get-bundle evil-commentary)
 (el-get-bundle all-the-icons
@@ -116,8 +115,8 @@
 (el-get-bundle org-reveal)
 (el-get-bundle ein :depends (skewer-mode))
 (el-get-bundle pangu-spacing)
-(el-get-bundle pyenv-mode)
-;; (el-get-bundle pyenv-mode-auto :depends (pyenv-mode s f))
+(el-get-bundle pyenv-mode :depends (pythonic))
+(el-get-bundle pyenv-mode-auto :depends (s f pyenv-mode))
 ;; (el-get-bundle auto-virtualenvwrapper :depends (cl-lib s virtualenvwrapper))
 
 
@@ -307,7 +306,7 @@
 (defun company-mode-hooks ()
   ;; vars
   (setq company-auto-complete nil)
-  (setq company-idle-delay 0.2)
+  (setq company-idle-delay 0.1)
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
 
@@ -333,7 +332,7 @@
 
 ;; python
 (require 'jedi-core)
-; (require 'pyenv-mode-auto)
+(require 'pyenv-mode-auto)
 
 (setq jedi:complete-on-dot t)
 (setq jedi:use-shortcuts t)
@@ -438,10 +437,11 @@
 
 (require 'evil-magit)
 
+;; http://emacsredux.com/blog/2013/05/18/instant-access-to-init-dot-el/
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
-  (find-file-other-window user-init-file))
+  (find-file user-init-file))
 
 (define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)
@@ -456,7 +456,6 @@
   "bp" 'elscreen-previous
   "bk" 'elscreen-kill
   "fr" 'helm-recentf
-  ;; "ft" 'neotree-toggle
   "fd" 'direx:jump-to-directory-other-window
   "fj" 'open-junk-file
   "fc" 'org-capture
@@ -468,21 +467,8 @@
   "gs" 'magit-status
   "r" 'quickrun
   "el" 'flycheck-error-list
-  "\\R" 'restart-emacs
+  "\\r" 'restart-emacs
   )
-
-;; ;; neotree
-;; (evil-define-key 'normal neotree-mode-map
-;;   (kbd "TAB") 'neotree-enter
-;;   (kbd "RET") 'neotree-enter
-;;   (kbd "gi") 'neotree-quick-look
-;;   (kbd "q") 'neotree-hide
-;;   (kbd ".") 'neotree-hidden-file-toggle
-;;   (kbd "N") 'neotree-create-node
-;;   (kbd "D") 'neotree-delete-node
-;;   (kbd "R") 'neotree-rename-node
-;;   (kbd "r") 'neotree-refresh
-;;   )
 
 ;; python
 (evil-define-key 'normal python-mode-map
@@ -575,8 +561,7 @@ to next line."
 (push '("*el-get packages*") popwin:special-display-config)
 (push '("^\*helm[\- ].+\*$" :regexp t) popwin:special-display-config)
 (push '("^\*magit: .*$" :regexp t) popwin:special-display-config)
-(push '(direx:direx-mode :position top :dedicated t)
-      popwin:special-display-config)
+(push '(direx:direx-mode :position top :dedicated t) popwin:special-display-config)
 (push '(dired-mode :position top) popwin:special-display-config)
 
 ;; (defun helm-popwin-help-mode-off ()
@@ -635,27 +620,9 @@ to next line."
 (evil-define-key 'normal direx:direx-mode-map (kbd "C-j") 'direx:next-sibling-item)
 (evil-define-key 'normal direx:direx-mode-map (kbd "C-k") 'direx:previous-sibling-item)
 (evil-define-key 'normal direx:direx-mode-map (kbd "SPC") 'direx:toggle-item)
+(evil-define-key 'normal direx:direx-mode-map (kbd "o") 'direx:maybe-find-item)
 (evil-define-key 'normal direx:direx-mode-map (kbd "RET") 'direx:find-item)
-
-
-;;;;;;;;;;;;;
-;; neotree ;;
-;;;;;;;;;;;;;
-
-;; http://kiririmode.hatenablog.jp/entry/20150806/1438786800
-
-;; ;; 隠しファイル
-;; (setq neo-hidden-regexp-list '("^\\." "\\.cs\\.meta$" "\\.pyc$" "__pycache__" "~$" "^#.*#$" "\\.elc$" "\\.qrinput$"))
-
-;; ;; neotree ウィンドウを表示する毎に current file のあるディレクトリを表示する
-;; (setq neo-smart-open t)
-
-;; ;; popwin との共存
-;; (when neo-persist-show
-;;   (add-hook 'popwin:before-popup-hook
-;;             (lambda () (setq neo-persist-show nil)))
-;;   (add-hook 'popwin:after-popup-hook
-;;             (lambda () (setq neo-persist-show t))))
+(evil-define-key 'normal direx:direx-mode-map (kbd "P") 'direx-project:jump-to-project-root)
 
 
 ;;;;;;;;;
@@ -839,7 +806,7 @@ to next line."
 
 (add-hook 'sql-mode-hook
     (lambda ()
-       (sql-upcase-mode)
+       ;; (sql-upcase-mode)
        (sqlind-minor-mode)
        (setq sql-indent-offset 2)
        (setq indent-tabs-mode nil)
@@ -851,8 +818,6 @@ to next line."
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (toggle-truncate-lines t)))
-
-;; (require 'edbi)
 
 
 ;;;;;;;;;;;
