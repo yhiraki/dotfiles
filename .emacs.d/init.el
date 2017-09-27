@@ -108,7 +108,7 @@
 (el-get-bundle pig-mode)
 (el-get-bundle emacs-sql-indent
   :type github :pkgname "alex-hhh/emacs-sql-indent")
-(el-get-bundle sql-upcase)
+(el-get-bundle sqlup-mode)
 ;; (el-get-bundle sql-indent)
 ;; (el-get-bundle edbi)
 (el-get-bundle web-mode)
@@ -117,7 +117,6 @@
 (el-get-bundle pangu-spacing)
 (el-get-bundle pyenv-mode :depends (pythonic))
 (el-get-bundle pyenv-mode-auto :depends (s f pyenv-mode))
-;; (el-get-bundle auto-virtualenvwrapper :depends (cl-lib s virtualenvwrapper))
 
 
 ;;;;;;;;;;;;;;;;;
@@ -806,7 +805,6 @@ to next line."
 
 (add-hook 'sql-mode-hook
     (lambda ()
-       ;; (sql-upcase-mode)
        (sqlind-minor-mode)
        (setq sql-indent-offset 2)
        (setq indent-tabs-mode nil)
@@ -818,6 +816,24 @@ to next line."
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (toggle-truncate-lines t)))
+
+;; sqlup-mode
+(add-hook 'sql-mode-hook 'sqlup-mode)
+(add-hook 'sql-interactive-mode-hook 'sqlup-mode)
+(add-hook 'redis-mode-hook 'sqlup-mode)
+
+;; https://github.com/xlighting/happy-emacs.d/blob/12e8369cd7934600703b61bb1c278d77dab0c3a2/modules/init-sql.el
+(defun sql-add-newline-first (output)
+  "In a SQLi buffer,The table formatting is ugly because the top boundary of the
+    table is printed on the same row as the the prompt,This fixes it"
+  (replace-regexp-in-string "\\(\\w+[ ]?\\[\\((?[[:alpha:]])?\\|_\\)+\\][#>][ ]?\\)\\(.*[#>] \\)?" "\\1\n" output))
+
+(defun sqli-add-hooks ()
+  "Add hooks to `sql-interactive-mode-hook'."
+  (add-hook 'comint-preoutput-filter-functions
+            'sql-add-newline-first))
+
+(add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
 
 
 ;;;;;;;;;;;
