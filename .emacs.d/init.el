@@ -345,15 +345,6 @@
   )
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 
-;; (defun projectile-pyenv-mode-set ()
-;;     "Set pyenv version matching project name."
-;;     (let ((project (projectile-project-name)))
-;;     (if (member project (pyenv-mode-versions))
-;;         (pyenv-mode-set project)
-;;     (pyenv-mode-unset))))
-
-;; (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
-
 
 ;;;;;;;;;;
 ;; rust ;;
@@ -561,6 +552,7 @@ to next line."
 (push '("^\*helm[\- ].+\*$" :regexp t) popwin:special-display-config)
 (push '("^\*magit: .*$" :regexp t) popwin:special-display-config)
 (push '(direx:direx-mode :position top :dedicated t) popwin:special-display-config)
+(push '(direx:direx-project :position top :dedicated t) popwin:special-display-config)
 (push '(dired-mode :position top) popwin:special-display-config)
 
 ;; (defun helm-popwin-help-mode-off ()
@@ -797,6 +789,9 @@ to next line."
     (insert-clause 0)
     (delete-clause 0)
     (update-clause 0)
+    (select-join-condition 0)
+    (in-select-clause + sqlind-lineup-close-paren-to-open-indentation)
+    (select-table-continuation + sqlind-lineup-close-paren-to-open-indentation)
     ,@sqlind-default-indentation-offsets-alist))
 (add-hook 'sqlind-minor-mode-hook
     (lambda ()
@@ -821,6 +816,24 @@ to next line."
 (add-hook 'sql-mode-hook 'sqlup-mode)
 (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
 (add-hook 'redis-mode-hook 'sqlup-mode)
+
+(add-hook 'sqlup-mode-hook
+          (lambda ()
+ (add-to-list 'sqlup-blacklist "id")
+ (add-to-list 'sqlup-blacklist "name")
+ (add-to-list 'sqlup-blacklist "user")
+ (add-to-list 'sqlup-blacklist "data")
+ (add-to-list 'sqlup-blacklist "type")
+ (add-to-list 'sqlup-blacklist "prefix")
+ (add-to-list 'sqlup-blacklist "a")
+ (add-to-list 'sqlup-blacklist "c")
+ (add-to-list 'sqlup-blacklist "g")
+ (add-to-list 'sqlup-blacklist "k")
+ (add-to-list 'sqlup-blacklist "m")
+ (add-to-list 'sqlup-blacklist "p")
+ (add-to-list 'sqlup-blacklist "t")
+ ))
+
 
 ;; https://github.com/xlighting/happy-emacs.d/blob/12e8369cd7934600703b61bb1c278d77dab0c3a2/modules/init-sql.el
 (defun sql-add-newline-first (output)
