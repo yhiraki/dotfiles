@@ -305,7 +305,7 @@
 (defun company-mode-hooks ()
   ;; vars
   (setq company-auto-complete nil)
-  (setq company-idle-delay 0.1)
+  (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
   (setq company-selection-wrap-around t)
 
@@ -320,6 +320,8 @@
   (require 'company-statistics)
   (company-statistics-mode)
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
+
+  (setq company-dabbrev-downcase nil)
   )
 
 (add-hook 'company-mode-hook 'company-mode-hooks)
@@ -690,6 +692,13 @@ to next line."
           ))
 
 
+;;;;;;;;;;;
+;; shell ;;
+;;;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))
+
+
 ;;;;;;;;;;;;;;;
 ;; yasnippet ;;
 ;;;;;;;;;;;;;;;
@@ -763,6 +772,7 @@ to next line."
              (setq web-mode-sql-indent-offset 2)
              (setq indent-tabs-mode nil)
              (setq tab-width 2)
+             (rainbow-delimiters-mode)
           ))
 
 
@@ -812,27 +822,28 @@ to next line."
           (lambda ()
             (toggle-truncate-lines t)))
 
-;; sqlup-mode
-(add-hook 'sql-mode-hook 'sqlup-mode)
-(add-hook 'sql-interactive-mode-hook 'sqlup-mode)
-(add-hook 'redis-mode-hook 'sqlup-mode)
+;; ;; sqlup-mode
+;; (add-hook 'sql-mode-hook 'sqlup-mode)
+;; (add-hook 'sql-interactive-mode-hook 'sqlup-mode)
+;; (add-hook 'redis-mode-hook 'sqlup-mode)
 
-(add-hook 'sqlup-mode-hook
-          (lambda ()
- (add-to-list 'sqlup-blacklist "id")
- (add-to-list 'sqlup-blacklist "name")
- (add-to-list 'sqlup-blacklist "user")
- (add-to-list 'sqlup-blacklist "data")
- (add-to-list 'sqlup-blacklist "type")
- (add-to-list 'sqlup-blacklist "prefix")
- (add-to-list 'sqlup-blacklist "a")
- (add-to-list 'sqlup-blacklist "c")
- (add-to-list 'sqlup-blacklist "g")
- (add-to-list 'sqlup-blacklist "k")
- (add-to-list 'sqlup-blacklist "m")
- (add-to-list 'sqlup-blacklist "p")
- (add-to-list 'sqlup-blacklist "t")
- ))
+;; (add-hook 'sqlup-mode-hook
+;;           (lambda ()
+;;  (add-to-list 'sqlup-blacklist "id")
+;;  (add-to-list 'sqlup-blacklist "name")
+;;  (add-to-list 'sqlup-blacklist "user")
+;;  (add-to-list 'sqlup-blacklist "data")
+;;  (add-to-list 'sqlup-blacklist "type")
+;;  (add-to-list 'sqlup-blacklist "prefix")
+;;  (add-to-list 'sqlup-blacklist "content")
+;;  (add-to-list 'sqlup-blacklist "a")
+;;  (add-to-list 'sqlup-blacklist "c")
+;;  (add-to-list 'sqlup-blacklist "g")
+;;  (add-to-list 'sqlup-blacklist "k")
+;;  (add-to-list 'sqlup-blacklist "m")
+;;  (add-to-list 'sqlup-blacklist "p")
+;;  (add-to-list 'sqlup-blacklist "t")
+;;  ))
 
 
 ;; https://github.com/xlighting/happy-emacs.d/blob/12e8369cd7934600703b61bb1c278d77dab0c3a2/modules/init-sql.el
