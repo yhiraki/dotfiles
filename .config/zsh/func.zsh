@@ -2,13 +2,16 @@ _fzf-select-repo-dir(){
   local gitroot=$(ghq root)
   local reporoot=$(ghq list \
         | sed s:$gitroot/::g \
-        | $FZF_CMD -q "$*") &&
-    echo $gitroot/$reporoot
+        | $FZF_CMD -q "$*")
+  if [ ! -z $reporoot ]
+  then echo $gitroot/$reporoot
+  fi
 }
 
 # repo - cd to repogitory dir
 repo() {
   local repodir=$(_fzf-select-repo-dir "$*")
+  echo $repodir
   if [ ! -z $repodir ]
   then cd $repodir
   fi
