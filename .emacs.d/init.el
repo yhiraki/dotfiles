@@ -208,6 +208,9 @@
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 
+;; TAGS ファイルを自動で再読込
+(setq tags-revert-without-query 1)
+
 
 ;;;;;;;;;
 ;; ime ;;
