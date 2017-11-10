@@ -758,6 +758,12 @@ to next line."
 ;; yasnippet ;;
 ;;;;;;;;;;;;;;;
 
+;; (push '("~/.emacs.d/snippets" "~/.yasnippet") yas-snippet-dirs)
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets" "~/.yasnippet"
+        yas-installed-snippets-dir
+        ))
+
 (yas-global-mode 1)
 
 (eval-after-load 'yasnippet
