@@ -117,6 +117,8 @@
 (el-get-bundle pangu-spacing)
 (el-get-bundle pyenv-mode :depends (pythonic))
 (el-get-bundle pyenv-mode-auto :depends (s f pyenv-mode))
+(el-get-bundle yaml-mode)
+(el-get-bundle dockerfile-mode)
 
 
 ;;;;;;;;;;;;;;;;;
@@ -231,7 +233,7 @@
 
 
 ;;;;;;;;;;;;;;
-;; fluypell ;;
+;; flyspell ;;
 ;;;;;;;;;;;;;;
 
 ;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
@@ -945,11 +947,31 @@ to next line."
 ;; (require 'all-the-icons)
 
 
+;;;;;;;;;;
+;; yaml ;;
+;;;;;;;;;;
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+
+(add-hook 'yaml-mode-hook
+          '(lambda ()
+             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
 ;;;;;;;;;;;;;
 ;; revewal ;;
 ;;;;;;;;;;;;;
 
 (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+
+
+;;;;;;;;;;;;;;;;
+;; dockerfile ;;
+;;;;;;;;;;;;;;;;
+
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 
 
 ;;;;;;;;;
