@@ -1,0 +1,65 @@
+(el-get-bundle anzu)
+(el-get-bundle rainbow-delimiters)
+
+(el-get-bundle! which-key
+  (which-key-mode)
+  (which-key-setup-side-window-bottom)
+  )
+
+;; startup page disabled
+(setq inhibit-startup-message t)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq confirm-kill-emacs 'y-or-n-p)
+
+;; scroll
+(setq scroll-conservatively 1)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(scroll-bar-mode 0)
+
+;; menu
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(column-number-mode t)
+
+;; cursor
+(global-hl-line-mode t)
+(show-paren-mode 1) ;; 対応する括弧を光らせる
+
+;; buffer
+(setq indicate-buffer-boundaries 'left) ;; バッファの終端を表示
+(setq indicate-empty-lines t) ;; バッファの終端以降を可視化
+
+;; line number
+(add-hook 'prog-mode-hook
+          '(lambda ()
+             (global-linum-mode t)
+             ;; linumに起因する高速化
+             ;; http://d.hatena.ne.jp/daimatz/20120215/1329248780
+             (setq linum-delay t)
+             (defadvice linum-schedule (around my-linum-schedule () activate)
+               (run-with-idle-timer 0.2 nil #'linum-update-current))
+             ))
+
+;; indent
+(setq-default c-basic-offset 2      ;;基本インデント量
+              tab-width 2           ;;タブ幅
+              indent-tabs-mode nil) ;;インデントをタブでするかスペースでするか
+(setq require-final-newline t)
+
+(el-get-bundle restart-emacs)
+
+;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
+;; http://qiita.com/itiut@github/items/d917eafd6ab255629346
+(defmacro with-suppressed-message (&rest body)
+  "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
+  (declare (indent 0))
+  (let ((message-log-max nil))
+    `(with-temp-message (or (current-message) "") ,@body)))
+
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+;; TAGS ファイルを自動で再読込
+;; (setq tags-revert-without-query 1)
