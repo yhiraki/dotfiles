@@ -5,7 +5,7 @@
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t) (plantuml . t) (rust . t))
+ '((python . t) (plantuml . t) )
  )
 
 ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
