@@ -13,6 +13,6 @@
 
 ;; init-loader
 (el-get-bundle init-loader
-  (setq-default init-loader-show-log-after-init t)
-                ;; init-loader-byte-compile t)
+  (setq-default init-loader-show-log-after-init nil
+                init-loader-byte-compile t)
   (init-loader-load (locate-user-emacs-file "init-loader")))
