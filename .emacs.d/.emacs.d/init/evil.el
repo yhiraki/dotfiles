@@ -36,19 +36,19 @@
     "r" 'quickrun
     "el" 'flycheck-list-errors
     "\\r" 'restart-emacs
-    "fp" 'counsel-ghq
     "ff" 'counsel-find-file
     "fr" 'counsel-recentf
     "us" 'counsel-unicode-char
+    "gp" 'counsel-ghq
     "gf" 'counsel-git
     "gg" 'counsel-git-grep
     "ag" 'counsel-ag
     "lo" 'counsel-locate
+    "df" 'counsel-describe-function
+    "dv" 'counsel-describe-variable
+    "ll" 'counsel-load-library
+    "ls" 'counsel-info-lookup-symbol
     )
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "df" 'counsel-describe-function)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "dv" 'counsel-describe-variable)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ll" 'counsel-load-library)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ls" 'counsel-info-lookup-symbol)
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
   (evil-mode 1)
