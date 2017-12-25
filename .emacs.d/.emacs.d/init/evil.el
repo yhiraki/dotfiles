@@ -21,6 +21,7 @@
   )
 
 (el-get-bundle evil-leader
+  (require 'counsel)
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
     "bs" 'elscreen-start
@@ -37,6 +38,7 @@
     "el" 'flycheck-list-errors
     "\\r" 'restart-emacs
     "ff" 'counsel-find-file
+    "fb" 'ivy-switch-buffer
     "fr" 'counsel-recentf
     "us" 'counsel-unicode-char
     "gp" 'counsel-ghq
