@@ -3,7 +3,19 @@
               evil-search-module 'evil-search
               evil-ex-search-vim-style-regexp t)
 
-(el-get-bundle! evil)
+(el-get-bundle evil
+  (evil-define-key 'normal direx:direx-mode-map (kbd "D") 'direx:do-delete-files)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "r") 'direx:do-rename-file)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "c") 'direx:do-copy-files)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "j") 'direx:next-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "k") 'direx:previous-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "C-j") 'direx:next-sibling-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "C-k") 'direx:previous-sibling-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "SPC") 'direx:toggle-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "o") 'direx:maybe-find-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "RET") 'direx:find-item)
+  (evil-define-key 'normal direx:direx-mode-map (kbd "P") 'direx-project:jump-to-project-root)
+  )
 
 (el-get-bundle evil-leader
   (evil-leader/set-leader "<SPC>")
@@ -41,9 +53,8 @@
     (kbd "K") 'jedi:show-doc)
   )
 
-(el-get-bundle evil-nerd-commenter)
 (el-get-bundle evil-exchange)
-(el-get-bundle evil-magit)
+(el-get-bundle! evil-magit)
 ;; (el-get-bundle evil-args)
 ;; (el-get-bundle tarao-evil-plugins
 ;;   :type github :pkgname "tarao/evil-plugins")
