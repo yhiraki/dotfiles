@@ -2,6 +2,7 @@
 (el-get-bundle company-jedi)
 (el-get-bundle s)
 (el-get-bundle f)
+(el-get-bundle switch-buffer-functions)
 (require 's)
 (require 'f)
 (defun switch-jedi-server ()
@@ -13,7 +14,8 @@
               (setq-default my/current-virtual-env (concat "~/.pyenv/versions/" (s-trim (f-read-text pyenv-version-path 'utf-8)))
                             jedi:server-args (list "--virtual-env" my/current-virtual-env))
               ))))))
-(add-hook 'python-mode-hook 'switch-jedi-server)
+(add-hook 'switch-buffer-functions
+          (lambda (prev cur) (switch-jedi-server)))
 
 (setq-default my/current-virtual-env (concat "~/.pyenv/versions/" (s-trim (f-read-text "~/.pyenv/version" 'utf-8)))
               jedi:server-args (list "--virtual-env" my/current-virtual-env))

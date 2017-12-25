@@ -49,9 +49,6 @@
 (setq require-final-newline t)
 
 ;; editor
-(el-get-bundle! anzu
-  (global-anzu-mode +1)
-  )
 (el-get-bundle smartparens
   (smartparens-global-mode t)
   )
@@ -69,13 +66,27 @@
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 ;; TAGS ファイルを自動で再読込
-;; (setq tags-revert-without-query 1)
+(setq tags-revert-without-query 1)
 
 
 ;; junkfile
 (el-get-bundle! open-junk-file
   (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
   )
+;; https://github.com/yewton/.emacs.d
+(defun my/open-junk-file (&optional arg)
+  "Open junk file using ivy.
+
+When ARG is non-nil search in junk files."
+  (interactive "P")
+  (let* ((fname (format-time-string open-junk-file-format (current-time)))
+         (rel-fname (file-name-nondirectory fname))
+         (junk-dir (file-name-directory fname))
+         (default-directory junk-dir))
+    (cond (arg
+           (counsel-ag nil junk-dir "" "[junk]"))
+          (t
+           (counsel-find-file rel-fname)))))
 
 ;; highlights
 (el-get-bundle! volatile-highlights
