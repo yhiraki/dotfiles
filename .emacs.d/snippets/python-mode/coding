@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: coding
+# key: coding
+# group: Header
+# --
+# -*- coding: utf-8 -*-

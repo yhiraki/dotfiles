@@ -1,4 +1,3 @@
-(el-get-bundle anzu)
 (el-get-bundle rainbow-delimiters)
 
 (el-get-bundle! which-key
@@ -49,6 +48,14 @@
               indent-tabs-mode nil) ;;インデントをタブでするかスペースでするか
 (setq require-final-newline t)
 
+;; editor
+(el-get-bundle! anzu
+  (global-anzu-mode +1)
+  )
+(el-get-bundle smartparens
+  (smartparens-global-mode t)
+  )
+
 (el-get-bundle restart-emacs)
 
 ;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
@@ -63,3 +70,19 @@
 (setq large-file-warning-threshold 100000000)
 ;; TAGS ファイルを自動で再読込
 ;; (setq tags-revert-without-query 1)
+
+
+;; junkfile
+(el-get-bundle! open-junk-file
+  (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
+  )
+
+;; highlights
+(el-get-bundle! volatile-highlights
+  (volatile-highlights-mode t)
+  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
+                        'evil-paste-pop 'evil-move)
+  (vhl/install-extension 'evil)
+  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+  (vhl/install-extension 'undo-tree)
+  )
