@@ -1,4 +1,4 @@
-(el-get-bundle counsel
-  (ivy-mode 1)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  )
+(el-get-bundle counsel)
+(el-get-bundle swiper)
+(el-get-bundle windymelt/counsel-ghq)
+(ivy-mode 1)

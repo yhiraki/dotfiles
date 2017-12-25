@@ -4,6 +4,7 @@
               evil-ex-search-vim-style-regexp t)
 
 (el-get-bundle evil
+  ;; direx
   (evil-define-key 'normal direx:direx-mode-map (kbd "D") 'direx:do-delete-files)
   (evil-define-key 'normal direx:direx-mode-map (kbd "r") 'direx:do-rename-file)
   (evil-define-key 'normal direx:direx-mode-map (kbd "c") 'direx:do-copy-files)
@@ -15,6 +16,8 @@
   (evil-define-key 'normal direx:direx-mode-map (kbd "o") 'direx:maybe-find-item)
   (evil-define-key 'normal direx:direx-mode-map (kbd "RET") 'direx:find-item)
   (evil-define-key 'normal direx:direx-mode-map (kbd "P") 'direx-project:jump-to-project-root)
+  ;; swiper
+  (define-key evil-normal-state-map (kbd "/") 'swiper)
   )
 
 (el-get-bundle evil-leader
@@ -25,20 +28,27 @@
     "bn" 'elscreen-next
     "bp" 'elscreen-previous
     "bk" 'elscreen-kill
-    "fr" 'helm-recentf
     "fd" 'direx:jump-to-directory-other-window
-    "fj" 'open-junk-file
+    "fj" 'my/open-junk-file
     "fc" 'org-capture
-    "fgh" 'helm-ghq
-    "fgl" 'helm-ls-git-ls
-    "fgg" 'helm-git-grep
     "fI" 'find-user-init-file
-    "fb" 'helm-mini
     "gs" 'magit-status
     "r" 'quickrun
-    "el" 'flycheck-error-list
+    "el" 'flycheck-list-errors
     "\\r" 'restart-emacs
+    "fp" 'counsel-ghq
+    "ff" 'counsel-find-file
+    "fr" 'counsel-recentf
+    "us" 'counsel-unicode-char
+    "gf" 'counsel-git
+    "gg" 'counsel-git-grep
+    "ag" 'counsel-ag
+    "lo" 'counsel-locate
     )
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "df" 'counsel-describe-function)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "dv" 'counsel-describe-variable)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ll" 'counsel-load-library)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ls" 'counsel-info-lookup-symbol)
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
   (evil-mode 1)
@@ -46,11 +56,6 @@
 
 (el-get-bundle evil-surround
   (global-evil-surround-mode 1)
-
-  ;; python
-  (evil-define-key 'normal python-mode-map
-    (kbd "gd") 'jedi:goto-definition
-    (kbd "K") 'jedi:show-doc)
   )
 
 (el-get-bundle evil-exchange)
@@ -66,27 +71,10 @@
   (global-evil-matchit-mode 1)
   )
 
-;; ;; https://github.com/kluge/spacemacs.d/blob/264a3d3d3b6dc93e7e57212a149be396da79775f/layers/kluge/funcs.el#L12
-;; (defun my-org-meta-return ()
-;;   "org-meta-return and insert state"
-;;   (interactive)
-;;   (end-of-line)
-;;   (org-meta-return)
-;;   (evil-insert 1))
+;; python
+(evil-define-key 'normal python-mode-map
+  (kbd "gd") 'jedi:goto-definition
+  (kbd "K") 'jedi:show-doc)
 
-;; (defun my-org-insert-todo-heading ()
-;;   (interactive)
-;;   (end-of-line)
-;;   (org-insert-todo-heading)
-;;   (evil-insert 1))
-
-;; (defun org-mode-hooks ()
-;;   (evil-define-key 'normal evil-org-mode-map
-;;     (kbd "M-<return>") 'my-org-meta-return
-;;     (kbd "M-S-<return>") 'my-org-insert-todo-heading
-;;     (kbd "\\x") 'org-toggle-checkbox
-;;     )
-;;   (linum-mode -1)
-;;   )
-
-;; (add-hook 'org-mode-hook 'org-mode-hooks)
+(el-get-bundle evil-org-mode)
+(require 'evil-org)
