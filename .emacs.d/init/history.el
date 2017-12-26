@@ -1,5 +1,4 @@
-;; recentf
-(setq recentf-save-file (expand-file-name ".recentf" user-emacs-directory))
+(setq recentf-save-file "~/.cache/emacs/recentf")
 (setq recentf-max-saved-items 2000)
 (setq recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
 (setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
@@ -16,8 +15,8 @@
         (make-directory dirname t))
     (concat dirname (file-name-nondirectory FILE))))
 
-                                        ; history
+;; history
 (el-get-bundle! undohist
   (undohist-initialize)
-  (setq undohist-ignored-files '("/tmp/" "COMMIT_EDITMSG"))
+  (setq undohist-ignored-files '("COMMIT_EDITMSG"))
   )
