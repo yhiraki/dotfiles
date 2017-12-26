@@ -78,5 +78,4 @@
   (kbd "gd") 'jedi:goto-definition
   (kbd "K") 'jedi:show-doc)
 
-(el-get-bundle evil-org-mode)
-(require 'evil-org)
+;; (el-get-bundle! somelauw/evil-org)
