@@ -164,7 +164,6 @@ repo = 'tyru/open-browser.vim'
 
 [[plugins]]
 repo = 'mhinz/vim-signify'
-on_event = ['FocusLost', 'CursorHold']
 
 # [[plugins]]
 # repo = 'lambdalisue/gina.vim'
@@ -227,7 +226,6 @@ on_i = 1
 [[plugins]]
 repo = 'hdima/python-syntax'
 on_ft = ['python']
-on_event = ['FocusLost', 'CursorHold']
 hook_add = '''
   let python_highlight_all = 1
 '''
@@ -264,12 +262,10 @@ on_i = 1
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
 on_ft = 'python'
-on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'lambdalisue/vim-pyenv'
 on_ft = 'python'
-on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'wannesm/wmgraphviz.vim'
@@ -296,7 +292,6 @@ on_ft = 'toml'
 
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
-on_event = ['FocusLost', 'CursorHold']
 hook_add = '''
   " let g:precious_enable_switch_CursorMoved = {
   " \   "*" : 0
@@ -394,7 +389,6 @@ repo = 'ntpeters/vim-better-whitespace'
 hook_add = '''
   let g:better_whitespace_filetypes_blacklist=['quickrun', 'dbext', 'tweetvim', 'vimfiler', 'diff', 'gitcommit', 'unite', 'qf', 'help']
 '''
-on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'heavenshell/vim-pydocstring'
@@ -416,7 +410,6 @@ repo = 'kana/vim-submode'
 hook_post_source = '''
   source ~/.vim/rc/submode.vim
 '''
-on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'Shougo/vimproc.vim'
@@ -433,7 +426,6 @@ hook_add = '''
   " 実行中の quickrun を中断させる
   nnoremap <expr><silent> <Leader>c quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 '''
-on_event = ['FocusLost', 'CursorHold']
 depends = 'vimproc.vim'
 
 [[plugins]]
@@ -489,7 +481,6 @@ hook_add = '''
     endif
   endfunction
 '''
-on_event = ['FocusLost', 'CursorHold']
 
 [[plugins]]
 repo = 'cocopon/lightline-hybrid.vim'
