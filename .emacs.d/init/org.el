@@ -1,6 +1,5 @@
-(setq org-startup-with-inline-images t)
-(setq org-src-fontify-natively t)
-
+(setq org-startup-with-inline-images t
+      org-src-fontify-natively t)
 (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
 
 (org-babel-do-load-languages
@@ -43,9 +42,9 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
-(require 'ox-md nil t)
-(require 'ox-gfm nil t)
-(require 'ox-confluence nil t)
+(use-package ox-md)
+(use-package ox-gfm)
+(use-package ox-confluence)
 
 (setq org-html-htmlize-output-type 'css)
 
