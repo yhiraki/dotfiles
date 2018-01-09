@@ -1,3 +1,3 @@
 (use-package sh
-             :mode
-             ("\\.zsh\\'" . shell-script-mode))
+  :mode
+  ("\\.zsh\\'" . shell-script-mode))

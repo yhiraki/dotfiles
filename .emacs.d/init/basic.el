@@ -1,13 +1,13 @@
 (use-package rainbow-delimiters
-             :ensure t
-             :config
-             (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package which-key
-              :ensure t
-              :config
-              (which-key-mode)
-              (which-key-setup-side-window-bottom))
+  :ensure t
+  :config
+  (which-key-mode)
+  (which-key-setup-side-window-bottom))
 
 ;; startup page disabled
 (setq inhibit-startup-message t)
@@ -47,19 +47,19 @@
              ))
 
 ;; indent
-(setq-default c-basic-offset 2      ;;基本インデント量
-              tab-width 2           ;;タブ幅
-              indent-tabs-mode nil) ;;インデントをタブでするかスペースでするか
+(setq c-basic-offset 2      ;;基本インデント量
+      tab-width 2           ;;タブ幅
+      indent-tabs-mode nil) ;;インデントをタブでするかスペースでするか
 (setq require-final-newline t)
 
 ;; editor
 (use-package smartparens
-             :ensure t
-             :config
-             (smartparens-global-mode t))
+  :ensure t
+  :config
+  (smartparens-global-mode t))
 
 (use-package restart-emacs
-             :ensure t)
+  :ensure t)
 
 ;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
 ;; http://qiita.com/itiut@github/items/d917eafd6ab255629346
@@ -77,33 +77,33 @@
 
 ;; junkfile
 (use-package open-junk-file
-             :ensure t
-             :config
-             (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
-             ;; https://github.com/yewton/.emacs.d
-             (defun my/open-junk-file (&optional arg)
-               "Open junk file using ivy.
+  :ensure t
+  :config
+  (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
+  ;; https://github.com/yewton/.emacs.d
+  (defun my/open-junk-file (&optional arg)
+    "Open junk file using ivy.
 
 When ARG is non-nil search in junk files."
-               (interactive "P")
-               (let* ((fname (format-time-string open-junk-file-format (current-time)))
-                      (rel-fname (file-name-nondirectory fname))
-                      (junk-dir (file-name-directory fname))
-                      (default-directory junk-dir))
-                 (cond (arg
-                        (counsel-ag nil junk-dir "" "[junk]"))
-                       (t
-                        (counsel-find-file rel-fname)))))
-             )
+    (interactive "P")
+    (let* ((fname (format-time-string open-junk-file-format (current-time)))
+           (rel-fname (file-name-nondirectory fname))
+           (junk-dir (file-name-directory fname))
+           (default-directory junk-dir))
+      (cond (arg
+             (counsel-ag nil junk-dir "" "[junk]"))
+            (t
+             (counsel-find-file rel-fname)))))
+  )
 
 
 ;; highlights
 (use-package volatile-highlights
-             :ensure t
-             :config
-             (volatile-highlights-mode t)
-             (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
-                                   'evil-paste-pop 'evil-move)
-             (vhl/install-extension 'evil)
-             (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-             (vhl/install-extension 'undo-tree))
+  :ensure t
+  :config
+  (volatile-highlights-mode t)
+  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
+                        'evil-paste-pop 'evil-move)
+  (vhl/install-extension 'evil)
+  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+  (vhl/install-extension 'undo-tree))

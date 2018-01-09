@@ -17,7 +17,7 @@
 
 ;; history
 (use-package undohist
-             :ensure t
-             :config
-             (undohist-initialize)
-             (setq undohist-ignored-files '("COMMIT_EDITMSG")))
+  :ensure t
+  :config
+  (undohist-initialize)
+  (setq undohist-ignored-files '("COMMIT_EDITMSG")))
