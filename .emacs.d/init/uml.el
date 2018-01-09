@@ -1,11 +1,9 @@
-(el-get-bundle plantuml-mode
-  (add-to-list 'auto-mode-alist '("\\.uml\\'" . plantuml-mode))
-  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-  )
-
-(setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
-(add-hook 'plantuml-mode-hook
-          '(lambda ()
-             (setq indent-tabs-mode nil)
-             (setq tab-width 2)
-          ))
+(use-package plantuml-mode
+             :ensure t
+             :config
+             (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
+             (setq indent-tabs-mode nil
+                   tab-width 2)
+             :mode
+             ("\\.uml\\'" . plantuml-mode)
+             ("\\.plantuml\\'" . plantuml-mode))

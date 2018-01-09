@@ -1,3 +1,4 @@
-(el-get-bundle flycheck
-  (global-flycheck-mode)
-  )
+(use-package flycheck
+             :ensure t
+             :config
+             (global-flycheck-mode))

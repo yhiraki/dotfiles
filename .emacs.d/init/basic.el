@@ -1,9 +1,13 @@
-(el-get-bundle rainbow-delimiters)
+(use-package rainbow-delimiters
+             :ensure t
+             :config
+             (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-(el-get-bundle! which-key
-  (which-key-mode)
-  (which-key-setup-side-window-bottom)
-  )
+(use-package which-key
+              :ensure t
+              :config
+              (which-key-mode)
+              (which-key-setup-side-window-bottom))
 
 ;; startup page disabled
 (setq inhibit-startup-message t)
@@ -12,10 +16,10 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 
 ;; scroll
-(setq scroll-conservatively 1)
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-conservatively 1
+      mouse-wheel-scroll-amount '(1 ((shift) . 1)) ; one line at a time
+      mouse-wheel-progressive-speed nil ; don't accelerate scrolling
+      mouse-wheel-follow-mouse 't) ; scroll window under mouse
 (scroll-bar-mode 0)
 
 ;; menu
@@ -49,11 +53,13 @@
 (setq require-final-newline t)
 
 ;; editor
-(el-get-bundle smartparens
-  (smartparens-global-mode t)
-  )
+(use-package smartparens
+             :ensure t
+             :config
+             (smartparens-global-mode t))
 
-(el-get-bundle restart-emacs)
+(use-package restart-emacs
+             :ensure t)
 
 ;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
 ;; http://qiita.com/itiut@github/items/d917eafd6ab255629346
@@ -70,30 +76,34 @@
 
 
 ;; junkfile
-(el-get-bundle! open-junk-file
-  (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
-  )
-;; https://github.com/yewton/.emacs.d
-(defun my/open-junk-file (&optional arg)
-  "Open junk file using ivy.
+(use-package open-junk-file
+             :ensure t
+             :config
+             (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
+             ;; https://github.com/yewton/.emacs.d
+             (defun my/open-junk-file (&optional arg)
+               "Open junk file using ivy.
 
 When ARG is non-nil search in junk files."
-  (interactive "P")
-  (let* ((fname (format-time-string open-junk-file-format (current-time)))
-         (rel-fname (file-name-nondirectory fname))
-         (junk-dir (file-name-directory fname))
-         (default-directory junk-dir))
-    (cond (arg
-           (counsel-ag nil junk-dir "" "[junk]"))
-          (t
-           (counsel-find-file rel-fname)))))
+               (interactive "P")
+               (let* ((fname (format-time-string open-junk-file-format (current-time)))
+                      (rel-fname (file-name-nondirectory fname))
+                      (junk-dir (file-name-directory fname))
+                      (default-directory junk-dir))
+                 (cond (arg
+                        (counsel-ag nil junk-dir "" "[junk]"))
+                       (t
+                        (counsel-find-file rel-fname)))))
+             )
+
 
 ;; highlights
-(el-get-bundle! volatile-highlights
-  (volatile-highlights-mode t)
-  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
-                        'evil-paste-pop 'evil-move)
-  (vhl/install-extension 'evil)
-  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-  (vhl/install-extension 'undo-tree)
-  )
+(use-package volatile-highlights
+             :ensure t
+             :config
+             (volatile-highlights-mode t)
+             (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
+                                   'evil-paste-pop 'evil-move)
+             (vhl/install-extension 'evil)
+             (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+             (vhl/install-extension 'undo-tree))

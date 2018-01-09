@@ -1,10 +1,7 @@
-(el-get-bundle jedi-core)
-(el-get-bundle company-jedi)
-(el-get-bundle s)
-(el-get-bundle f)
-(el-get-bundle switch-buffer-functions)
-(require 's)
-(require 'f)
+(use-package jedi-core :ensure t)
+(use-package company-jedi :ensure t)
+(use-package switch-buffer-functions :ensure t)
+
 (defun switch-jedi-server ()
   "Automatically activates pyenv version if .python-version file exists."
   (f-traverse-upwards
@@ -19,12 +16,11 @@
 
 (setq-default my/current-virtual-env (concat "~/.pyenv/versions/" (s-trim (f-read-text "~/.pyenv/version" 'utf-8)))
               jedi:server-args (list "--virtual-env" my/current-virtual-env))
-(defun my/python-mode-hook ()
-  (setq-default jedi:complete-on-dot t
-                jedi:use-shortcuts t)
-  (add-to-list 'company-backends 'company-jedi)
-  ;; (company-flx-mode +1)
-  (rainbow-delimiters-mode)
-  (electric-indent-mode +1)
-  )
-(add-hook 'python-mode-hook 'my/python-mode-hook)
+
+(use-package python
+             :config
+             (setq jedi:complete-on-dot t
+                   jedi:use-shortcuts t)
+             (add-to-list 'company-backends 'company-jedi)
+             (rainbow-delimiters-mode)
+             (electric-indent-mode +1))

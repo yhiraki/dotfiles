@@ -1,7 +1,7 @@
-(setq recentf-save-file "~/.cache/emacs/recentf")
-(setq recentf-max-saved-items 2000)
-(setq recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
-(setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
+(setq recentf-save-file "~/.cache/emacs/recentf"
+      recentf-max-saved-items 2000
+      recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/")
+      recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
 (run-with-idle-timer 30 t '(lambda ()
                              (with-suppressed-message (recentf-save-list))))
 (recentf-mode 1)
@@ -16,7 +16,8 @@
     (concat dirname (file-name-nondirectory FILE))))
 
 ;; history
-(el-get-bundle! undohist
-  (undohist-initialize)
-  (setq undohist-ignored-files '("COMMIT_EDITMSG"))
-  )
+(use-package undohist
+             :ensure t
+             :config
+             (undohist-initialize)
+             (setq undohist-ignored-files '("COMMIT_EDITMSG")))

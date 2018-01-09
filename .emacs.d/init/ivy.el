@@ -1,6 +1,7 @@
-(el-get-bundle counsel)
-(el-get-bundle swiper)
-(el-get-bundle windymelt/counsel-ghq)
+(use-package counsel :ensure t)
+(use-package swiper :ensure t)
+(use-package counsel-ghq
+             :init (el-get-bundle windymelt/counsel-ghq))
 (ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
+(setq ivy-use-virtual-buffers t
+      enable-recursive-minibuffers t)
