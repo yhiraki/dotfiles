@@ -1,6 +1,6 @@
-(el-get-bundle magit)
-(el-get-bundle git-modes)
+(use-package magit :ensure t)
 
-(el-get-bundle! git-gutter-fringe+
-  (global-git-gutter+-mode)
-  )
+(use-package git-gutter-fringe+
+             :ensure t
+             :config
+             (global-git-gutter+-mode))

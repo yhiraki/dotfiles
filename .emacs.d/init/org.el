@@ -49,6 +49,6 @@
 
 (setq org-html-htmlize-output-type 'css)
 
-(el-get-bundle org-reveal
-  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-  )
+;; (use-package org-reveal
+;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+;;   )

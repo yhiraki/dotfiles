@@ -1,3 +1,4 @@
-(el-get-bundle material-theme
-  (load-theme 'material t)
-  )
+(use-package material-theme
+             :ensure t
+             :config
+             (load-theme 'material t))

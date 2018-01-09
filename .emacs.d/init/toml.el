@@ -1,1 +1,1 @@
-(el-get-bundle! toml-mode)
+(use-package toml-mode :ensure t)
