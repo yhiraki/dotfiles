@@ -42,12 +42,13 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
 
-(use-package ox-md)
-(use-package ox-gfm)
-(use-package ox-confluence)
-
 (setq org-html-htmlize-output-type 'css)
 
 ;; (use-package org-reveal
 ;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
 ;;   )
+
+;; (use-package org
+;;   :ensure org-plus-contrib
+;;   :config
+;;   (require 'ox-confluence))
