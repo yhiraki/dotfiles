@@ -6,6 +6,10 @@
 (use-package evil
   :ensure t
   :config
+  ;; global
+  (define-key evil-normal-state-map
+    (kbd "C-l") 'evil-ex-nohighlight
+    (kbd "/") 'swiper)
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "D") 'direx:do-delete-files
@@ -19,8 +23,6 @@
     (kbd "o") 'direx:maybe-find-item
     (kbd "RET") 'direx:find-item
     (kbd "P") 'direx-project:jump-to-project-root)
-  ;; swiper
-  (define-key evil-normal-state-map (kbd "/") 'swiper)
   ;; python
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'jedi:goto-definition
