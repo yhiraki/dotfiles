@@ -10,3 +10,100 @@ repo = 'Shougo/denite.nvim'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'mhinz/vim-signify'
+
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+hook_add = '''
+  " let g:precious_enable_switch_CursorMoved = {
+  " \   "*" : 0
+  " \}
+  let g:precious_enable_switch_CursorMoved_i = {
+  \    "help" : 0
+  \}
+  let g:precious_enable_switchers = {
+  \  "*" : {
+  \    "setfiletype" : 1
+  \  },
+  \  "markdown" : {
+  \    "setfiletype" : 0
+  \  },
+  \}
+  let g:context_filetype#search_offset = 300
+'''
+hook_post_source = '''
+  augroup preciousSyntaxSwitch
+    autocmd!
+    autocmd User PreciousFileType let &l:syntax = precious#context_filetype()
+  augroup END
+'''
+depends = 'context_filetype.vim'
+
+[[plugins]]
+repo = 'ntpeters/vim-better-whitespace'
+hook_add = '''
+  let g:better_whitespace_filetypes_blacklist=['quickrun', 'dbext', 'tweetvim', 'vimfiler', 'diff', 'gitcommit', 'unite', 'qf', 'help']
+'''
+
+[[plugins]]
+repo = 'kana/vim-submode'
+hook_post_source = '''
+  source ~/.vim/rc/submode.vim
+'''
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+hook_post_source = '''
+  source ~/.vim/rc/quickrun.vim
+'''
+hook_add = '''
+  " quickrun ウインドウを閉じる
+  nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
+  " 実行中の quickrun を中断させる
+  nnoremap <expr><silent> <Leader>c quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+'''
+depends = 'vimproc.vim'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  let g:lightline = {
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \             [ 'readonly', 'filename', 'modified' ],
+        \             [ 'fugitive', 'pyenv' ] ],
+        \   'right': [ [ 'lineinfo' ],
+        \             [ 'percent' ],
+        \             [ 'fileformat', 'fileencoding', 'filetype' ] ],
+        \ },
+        \ 'component': {
+        \   'readonly': '%{&readonly?"RO":""}',
+        \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+        \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+        \ },
+        \ 'component_visible_condition': {
+        \   'readonly': '(&filetype!="help"&& &readonly)',
+        \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+        \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
+        \ },
+        \ 'component_function': {
+        \   'pyenv': 'LightLinePyenv'
+        \ },
+        \ 'separator': { 'left': '', 'right': '' },
+        \ 'subseparator': { 'left': '|', 'right': '|' },
+        \ 'colorscheme': 'hybrid'
+        \ }
+
+  function! LightLinePyenv()
+    if &filetype == "python"
+      return pyenv#pyenv#get_activated_env()
+    else
+      return ""
+    endif
+  endfunction
+'''
+
+[[plugins]]
+repo = 'cocopon/lightline-hybrid.vim'
