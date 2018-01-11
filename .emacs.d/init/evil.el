@@ -7,9 +7,8 @@
   :ensure t
   :config
   ;; global
-  (define-key evil-normal-state-map
-    (kbd "C-l") 'evil-ex-nohighlight
-    (kbd "/") 'swiper)
+  (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
+  (define-key evil-normal-state-map (kbd "/") 'swiper)
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "D") 'direx:do-delete-files
