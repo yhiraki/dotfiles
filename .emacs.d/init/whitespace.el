@@ -35,6 +35,7 @@
   (set-face-attribute 'whitespace-trailing nil
                       :background my/bg-color
                       :foreground "DeepPink"
+                      :inverse-video nil
                       :underline t)
   (set-face-attribute 'whitespace-tab nil
                       :background my/bg-color
@@ -45,6 +46,9 @@
                       :foreground "GreenYellow"
                       :weight 'bold)
   (set-face-attribute 'whitespace-empty nil
-                      :background my/bg-color)
+                      :background my/bg-color
+                      :foreground "DeepPink"
+                      :inverse-video nil
+                      :underline t)
 
   (global-whitespace-mode 1))
