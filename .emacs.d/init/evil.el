@@ -3,6 +3,11 @@
       evil-search-module 'evil-search
       evil-ex-search-vim-style-regexp t)
 
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file-other-window user-init-file))
+
 (use-package evil
   :ensure t
   :config
@@ -11,8 +16,10 @@
   (define-key evil-normal-state-map (kbd "/") 'swiper)
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
+    (kbd "q") 'evil-window-delete
     (kbd "D") 'direx:do-delete-files
-    (kbd "r") 'direx:do-rename-file
+    (kbd "r") 'direx:refresh-whole-tree
+    (kbd "R") 'direx:do-rename-file
     (kbd "c") 'direx:do-copy-files
     (kbd "j") 'direx:next-item
     (kbd "k") 'direx:previous-item
@@ -22,6 +29,9 @@
     (kbd "o") 'direx:maybe-find-item
     (kbd "RET") 'direx:find-item
     (kbd "P") 'direx-project:jump-to-project-root)
+  ;; quickrun
+  (evil-define-key 'normal quickrun--mode-map
+    (kbd "q") 'evil-window-delete)
   ;; python
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'jedi:goto-definition
@@ -32,32 +42,33 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    "bs" 'elscreen-start
+    "\\e" 'val-buffer
+    "\\i" 'find-user-init-file
+    "\\r" 'restart-emacs
+    "ag" 'counsel-ag
     "bc" 'elscreen-create
+    "bk" 'elscreen-kill
     "bn" 'elscreen-next
     "bp" 'elscreen-previous
-    "bk" 'elscreen-kill
-    "fd" 'direx:jump-to-directory-other-window
-    "fj" 'my/open-junk-file
-    "fc" 'org-capture
-    "fI" 'find-user-init-file
-    "gs" 'magit-status
-    "r" 'quickrun
-    "el" 'flycheck-list-errors
-    "\\r" 'restart-emacs
-    "ff" 'counsel-find-file
-    "fb" 'ivy-switch-buffer
-    "fr" 'counsel-recentf
-    "us" 'counsel-unicode-char
-    "gp" 'counsel-ghq
-    "gf" 'counsel-git
-    "gg" 'counsel-git-grep
-    "ag" 'counsel-ag
-    "lo" 'counsel-locate
+    "bs" 'elscreen-start
     "df" 'counsel-describe-function
     "dv" 'counsel-describe-variable
+    "el" 'flycheck-list-errors
+    "fb" 'ivy-switch-buffer
+    "fc" 'org-capture
+    "fd" 'direx:jump-to-directory-other-window
+    "ff" 'counsel-find-file
+    "fj" 'my/open-junk-file
+    "fr" 'counsel-recentf
+    "gf" 'counsel-git
+    "gg" 'counsel-git-grep
+    "gp" 'counsel-ghq
+    "gs" 'magit-status
     "ll" 'counsel-load-library
+    "lo" 'counsel-locate
     "ls" 'counsel-info-lookup-symbol
+    "r" 'quickrun
+    "us" 'counsel-unicode-char
     )
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
