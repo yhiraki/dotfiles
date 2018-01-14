@@ -47,10 +47,10 @@
              ))
 
 ;; indent
-(setq c-basic-offset 2      ;;基本インデント量
-      tab-width 2           ;;タブ幅
-      indent-tabs-mode nil) ;;インデントをタブでするかスペースでするか
-(setq require-final-newline t)
+(setq-default c-basic-offset 2        ;基本インデント量
+              tab-width 2             ;タブ幅
+              indent-tabs-mode nil    ;インデントをタブでするかスペースでするか
+              require-final-newline t)
 
 ;; editor
 (use-package smartparens
