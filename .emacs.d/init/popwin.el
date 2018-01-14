@@ -1,21 +1,3 @@
-;; (use-package! popwin
-
-;;   (setq display-buffer-alist 'popwin:display-buffer)
-;;   (setq popwin:popup-window-position 'bottom)
-
-;;   (add-hook 'dired-load-hook (lambda () (load "dired-x")))
-
-;;   (push '("*quickrun*") popwin:special-display-config)
-;;   (push '("*Warnings*") popwin:special-display-config)
-;;   (push '("*el-get packages*") popwin:special-display-config)
-;;   (push '("^\*helm[\- ].+\*$" :regexp t) popwin:special-display-config)
-;;   (push '("^\*magit: .*$" :regexp t) popwin:special-display-config)
-;;   (push '(direx:direx-mode :position top :dedicated t) popwin:special-display-config)
-;;   (push '(direx:direx-project :position top :dedicated t) popwin:special-display-config)
-;;   (push '(dired-mode :position top) popwin:special-display-config)
-;;   )
-
-
 (use-package shackle
   :ensure t
   :config
