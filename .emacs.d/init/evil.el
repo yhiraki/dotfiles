@@ -35,7 +35,16 @@
   ;; python
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'jedi:goto-definition
-    (kbd "K") 'jedi:show-doc))
+    (kbd "K") 'jedi:show-doc)
+  ;; markdown
+  (evil-define-key 'normal markdown-mode-map
+    (kbd "1") 'markdown-insert-header-setext-1
+    (kbd "2") 'markdown-insert-header-setext-2
+    (kbd "3") 'markdown-insert-header-atx-3
+    (kbd "4") 'markdown-insert-header-atx-4
+    (kbd "5") 'markdown-insert-header-atx-5
+    (kbd "-") 'markdown-insert-hr
+  ))
 
 (use-package evil-leader
   :ensure t
