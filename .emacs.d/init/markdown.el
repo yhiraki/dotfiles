@@ -9,3 +9,5 @@
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
   ("README\\.md\\'" . gfm-mode))
+
+(use-package edit-indirect :ensure t)
