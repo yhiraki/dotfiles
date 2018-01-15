@@ -38,12 +38,13 @@
     (kbd "K") 'jedi:show-doc)
   ;; markdown
   (evil-define-key 'normal markdown-mode-map
-    (kbd "1") 'markdown-insert-header-setext-1
-    (kbd "2") 'markdown-insert-header-setext-2
-    (kbd "3") 'markdown-insert-header-atx-3
-    (kbd "4") 'markdown-insert-header-atx-4
-    (kbd "5") 'markdown-insert-header-atx-5
-    (kbd "-") 'markdown-insert-hr
+    (kbd ",1") 'markdown-insert-header-setext-1
+    (kbd ",2") 'markdown-insert-header-setext-2
+    (kbd ",3") 'markdown-insert-header-atx-3
+    (kbd ",4") 'markdown-insert-header-atx-4
+    (kbd ",5") 'markdown-insert-header-atx-5
+    (kbd ",-") 'markdown-insert-hr
+    (kbd ",C") 'markdown-insert-gfm-code-block
   ))
 
 (use-package evil-leader
@@ -51,9 +52,6 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    "\\e" 'val-buffer
-    "\\i" 'find-user-init-file
-    "\\r" 'restart-emacs
     "ag" 'counsel-ag
     "bc" 'elscreen-create
     "bk" 'elscreen-kill
@@ -78,6 +76,9 @@
     "ls" 'counsel-info-lookup-symbol
     "r" 'quickrun
     "us" 'counsel-unicode-char
+    "ze" 'eval-buffer
+    "zi" 'find-user-init-file
+    "zr" 'restart-emacs
     )
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
