@@ -5,10 +5,11 @@
         (list
          (locate-user-emacs-file "snippets")
          "~/.yasnippet"
-         ;; 'yas-installed-snippets-dir
+         'yas-installed-snippets-dir
          ))
   (yas-global-mode 1)
   (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
+  (add-to-list 'company-backends 'company-yasnippet)
   :bind (:map yas-keymap
               ("RET" . yas-next-field-or-maybe-expand))
   )
