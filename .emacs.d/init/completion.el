@@ -11,10 +11,11 @@
         company-minimum-prefix-length 1
         company-selection-wrap-around t
         company-dabbrev-downcase nil)
-  (with-eval-after-load 'company
-    (define-key company-active-map (kbd "<tab>") nil)
-    (define-key company-active-map (kbd "C-n") 'company-select-next)
-    (define-key company-active-map (kbd "C-p") 'company-select-previous)))
+  :bind
+  (:map company-active-map
+        ("<tab>" . nil)
+        ("C-n" . 'company-select-next)
+        ("C-p" . 'company-select-previous)))
 
 (use-package company-statistics
   :ensure t
