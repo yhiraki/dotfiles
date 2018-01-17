@@ -44,6 +44,7 @@
     (kbd ",4") 'markdown-insert-header-atx-4
     (kbd ",5") 'markdown-insert-header-atx-5
     (kbd ",-") 'markdown-insert-hr
+    (kbd ",c") 'markdown-insert-code
     (kbd ",C") 'markdown-insert-gfm-code-block
   ))
 
@@ -102,3 +103,10 @@
   (global-evil-matchit-mode 1))
 
 ;; (use-package somelauw/evil-org)
+
+(use-package evil-lion
+  :ensure t
+  :config
+  (evil-lion-mode))
+
+(use-package evil-escape :ensure t)
