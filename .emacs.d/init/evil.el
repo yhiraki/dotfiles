@@ -14,6 +14,7 @@
   ;; global
   (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
   (define-key evil-normal-state-map (kbd "/") 'swiper)
+  (define-key evil-insert-state-map (kbd "C-k") 'company-yasnippet)
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "q") 'evil-window-delete
