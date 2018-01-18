@@ -61,6 +61,10 @@
 (use-package restart-emacs
   :ensure t)
 
+;; 単語境界をvim風に
+;; http://tarao.hatenablog.com/entry/20130304/evil_config#vim-word
+(modify-syntax-entry ?_ "w" (standard-syntax-table))
+
 ;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
 ;; http://qiita.com/itiut@github/items/d917eafd6ab255629346
 (defmacro with-suppressed-message (&rest body)
