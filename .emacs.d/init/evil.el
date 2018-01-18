@@ -77,6 +77,8 @@
     "lo" 'counsel-locate
     "ls" 'counsel-info-lookup-symbol
     "r" 'quickrun
+    "th" 'twit
+    "tu" 'twittering-update-status-interactive
     "us" 'counsel-unicode-char
     "ze" 'eval-buffer
     "zi" 'find-user-init-file
