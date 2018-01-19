@@ -25,14 +25,14 @@
 (setq org-default-notes-file "notes.org")
 ;; org-capture のテンプレート
 (setq org-capture-templates
-      '(("t" "Task" entry (file (expand-file-name (concat org-directory "/task.org")))
-         "* TODO %?\n    %i\n   %a\n    %T")
-        ("n" "Note" entry (file (expand-file-name (concat org-directory "/notes.org")))
-         "* %?\n   %a\n    %T")
-        ("r" "Reading" entry (file (expand-file-name (concat org-directory "/reading.org")))
-         "* %?\n   %a\n    %T")
+      '(("t" "Task" entry (file+headline (expand-file-name (concat org-directory "/task.org")) "Tasks")
+         "* TODO %?%i\n  %a\n  %T")
+        ("n" "Note" entry (file+headline (expand-file-name (concat org-directory "/notes.org")) "Notes")
+         "* %?\n  %a\n  %T")
+        ("r" "Reading" entry (file+headline (expand-file-name (concat org-directory "/reading.org")) "Readings")
+         "* %?\n  %c\n  %T")
         ("j" "Journal" entry (file+datetree (expand-file-name (concat org-directory "/journal.org")))
-         "* %?\nEntered on %U\n  %i\n  %a")))
+         "* %?\n  %a\n  Entered on %U")))
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 ;; 見出しの余分な*を消す
