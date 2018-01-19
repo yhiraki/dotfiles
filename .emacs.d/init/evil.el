@@ -75,14 +75,16 @@
     "ll" 'counsel-load-library
     "lo" 'counsel-locate
     "ls" 'counsel-info-lookup-symbol
+    "oa" 'org-agenda
+    "ob" 'org-switchb
+    "ol" 'org-store-link
     "r" 'quickrun
     "th" 'twit
     "tu" 'twittering-update-status-interactive
     "us" 'counsel-unicode-char
     "ze" 'eval-buffer
     "zi" 'find-user-init-file
-    "zr" 'restart-emacs
-    )
+    "zr" 'restart-emacs)
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
   (evil-mode 1))
@@ -104,7 +106,14 @@
   :config
   (global-evil-matchit-mode 1))
 
-;; (use-package somelauw/evil-org)
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme '(textobjects insert navigation additional shift todo)))))
 
 (use-package evil-lion
   :ensure t

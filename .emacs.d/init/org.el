@@ -37,11 +37,6 @@
 ;; DONEの時刻を記録
 (setq org-log-done 'time)
 
-;;; ハイパーリンク
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c b") 'org-iswitchb)
-
 (setq org-html-htmlize-output-type 'css)
 
 ;; (use-package org-reveal
