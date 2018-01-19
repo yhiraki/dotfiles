@@ -27,6 +27,8 @@
 (setq org-capture-templates
       '(("t" "Task" entry (file+headline (expand-file-name (concat org-directory "/task.org")) "Tasks")
          "* TODO %?%i\n  %a\n  %T")
+        ("m" "Mail" entry (file+datetree (expand-file-name (concat org-directory "/mail.org")) "Mails")
+         "* %?\n  %c\n  %T")
         ("n" "Note" entry (file+headline (expand-file-name (concat org-directory "/notes.org")) "Notes")
          "* %?\n  %a\n  %T")
         ("r" "Reading" entry (file+headline (expand-file-name (concat org-directory "/reading.org")) "Readings")
