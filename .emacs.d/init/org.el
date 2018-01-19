@@ -14,6 +14,8 @@
 
 ;; org-default-notes-fileのディレクトリ
 (setq org-directory "~/org/")
+;; agenda ディレクトリ
+(setq org-agenda-files '("~/org"))
 ;; org-default-notes-fileのファイル名
 (setq org-default-notes-file "notes.org")
 ;; org-capture のテンプレート
