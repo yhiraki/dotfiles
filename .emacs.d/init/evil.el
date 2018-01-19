@@ -47,6 +47,9 @@
     (kbd ",-") 'markdown-insert-hr
     (kbd ",c") 'markdown-insert-code
     (kbd ",C") 'markdown-insert-gfm-code-block)
+  ;; org-evil
+  (evil-define-key 'normal evil-org-mode-map
+    (kbd "gp") 'org-priority)
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
@@ -179,7 +182,7 @@
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
             (lambda ()
-              (evil-org-set-key-theme '(textobjects insert navigation additional shift todo)))))
+              (evil-org-set-key-theme '(textobjects insert navigation additional todo)))))
 
 (use-package evil-lion
   :ensure t
