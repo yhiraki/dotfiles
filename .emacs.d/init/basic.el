@@ -32,8 +32,8 @@
 (show-paren-mode 1) ;; 対応する括弧を光らせる
 
 ;; buffer
-(setq indicate-buffer-boundaries 'left) ;; バッファの終端を表示
-(setq indicate-empty-lines t) ;; バッファの終端以降を可視化
+(setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
+(setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
 
 ;; line number
 (add-hook 'prog-mode-hook
