@@ -48,6 +48,9 @@
 
 (setq org-html-htmlize-output-type 'css)
 
+;; syntax highlight
+(setq org-src-fontify-natively t)
+
 ;; (use-package org-reveal
 ;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
 ;;   )
