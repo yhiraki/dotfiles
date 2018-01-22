@@ -2,11 +2,11 @@
   :ensure t
   :init
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
+  (add-hook 'markdown-mode-hook
+            '(lambda ()
+               (hide-sublevels 3)))
   :commands
   (markdown-mode gfm-mode)
-  :config
-  ;; fold level
-  (hide-sublevels 3)
   :bind
   (:map markdown-mode-map
         ("<tab>" . 'markdown-cycle)
