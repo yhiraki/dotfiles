@@ -1,7 +1,7 @@
 (use-package sh
   :mode
   ("\\.zsh\\'" . shell-script-mode)
-  :config
+  :init
   (setq sh-basic-offset 4
         sh-indentation 4
         sh-indent-for-case-label 0

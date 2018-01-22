@@ -1,10 +1,14 @@
-(setq recentf-save-file "~/.cache/emacs/recentf"
-      recentf-max-saved-items 2000
-      recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/")
-      recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
-(run-with-idle-timer 30 t '(lambda ()
-                             (with-suppressed-message (recentf-save-list))))
-(recentf-mode 1)
+(use-package recentf
+  :init
+  (setq recentf-save-file "~/.cache/emacs/recentf"
+        recentf-max-saved-items 2000
+        recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/")
+        recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
+  :config
+  (run-with-idle-timer 30 t '(lambda ()
+                               (with-suppressed-message (recentf-save-list))))
+  (recentf-mode 1)
+  )
 
 ;; backup
 ;; https://www.emacswiki.org/emacs/BackupDirectory#toc3
@@ -18,6 +22,7 @@
 ;; history
 (use-package undohist
   :ensure t
+  :init
+  (setq undohist-ignored-files '("COMMIT_EDITMSG"))
   :config
-  (undohist-initialize)
-  (setq undohist-ignored-files '("COMMIT_EDITMSG")))
+  (undohist-initialize))

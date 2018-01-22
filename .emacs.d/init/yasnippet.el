@@ -1,14 +1,13 @@
 (use-package yasnippet
   :ensure t
+  :init
+  (setq yas-snippet-dirs (list
+                          (locate-user-emacs-file "snippets")
+                          "~/.yasnippet"
+                          'yas-installed-snippets-dir)
+        yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
   :config
-  (setq yas-snippet-dirs
-        (list
-         (locate-user-emacs-file "snippets")
-         "~/.yasnippet"
-         'yas-installed-snippets-dir
-         ))
   (yas-global-mode 1)
-  (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
   :bind (:map yas-keymap
               ("RET" . yas-next-field-or-maybe-expand))
   )
