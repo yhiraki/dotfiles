@@ -9,15 +9,14 @@
                         'mode-line-position-face)))
    ; emacsclient [default -- keep?]
    mode-line-client
-   "  "
    ; read-only or modified status
    (:eval
-    (cond (buffer-read-only
-           (propertize " RO " 'face 'mode-line-read-only-face))
-          ((buffer-modified-p)
-           (propertize " ** " 'face 'mode-line-modified-face))
-          (t "      ")))
-   "    "
+    (concat "  "
+            (cond (buffer-read-only
+                   (propertize " RO " 'face 'mode-line-read-only-face))
+                  ((buffer-modified-p)
+                   (propertize " ** " 'face 'mode-line-modified-face)))))
+   "  "
    ; directory and buffer/file name
    (:propertize (:eval (shorten-directory default-directory 15))
                 face mode-line-folder-face)
