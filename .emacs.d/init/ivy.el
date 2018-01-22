@@ -9,4 +9,3 @@
 (use-package swiper :ensure t)
 (use-package counsel-ghq
   :init (el-get-bundle windymelt/counsel-ghq))
-
