@@ -1,15 +1,15 @@
 ;; Mode line setup
 (setq-default
  mode-line-format
- '(; Position, including warning for 80 columns
+ '(;; Position, including warning for 80 columns
    (:propertize "%4l:" face mode-line-position-face)
    (:eval (propertize "%3c" 'face
                       (if (>= (current-column) 80)
                           'mode-line-80col-face
                         'mode-line-position-face)))
-   ; emacsclient [default -- keep?]
+   ;; emacsclient [default -- keep?]
    mode-line-client
-   ; read-only or modified status
+   ;; read-only or modified status
    (:eval
     (concat "  "
             (cond (buffer-read-only
@@ -17,14 +17,14 @@
                   ((buffer-modified-p)
                    (propertize " ** " 'face 'mode-line-modified-face)))))
    "  "
-   ; directory and buffer/file name
+   ;; directory and buffer/file name
    (:propertize (:eval (shorten-directory default-directory 15))
                 face mode-line-folder-face)
    (:propertize "%b"
                 face mode-line-filename-face)
-   ; narrow [default -- keep?]
+   ;; narrow [default -- keep?]
    " %n "
-   ; mode indicators: vc, recursive edit, major mode, minor modes, process, global
+   ;; mode indicators: vc, recursive edit, major mode, minor modes, process, global
    (vc-mode vc-mode)
    "  %["
    (:propertize mode-name
