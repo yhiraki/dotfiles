@@ -1,6 +1,6 @@
-(use-package symon
-  :init (el-get-bundle zk-phi/symon)
-  :config (symon-mode))
+;; (use-package symon
+;;   :init (el-get-bundle zk-phi/symon)
+;;   :config (symon-mode))
 
 ;; バッテリ残量をおしゃれに表示
 ;; https://qiita.com/zk_phi/items/76c950c89428a54ec67d
