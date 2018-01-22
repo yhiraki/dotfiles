@@ -45,8 +45,7 @@
     (kbd ",4") 'markdown-insert-header-atx-4
     (kbd ",5") 'markdown-insert-header-atx-5
     (kbd ",-") 'markdown-insert-hr
-    (kbd ",c") 'markdown-insert-code
-    (kbd ",C") 'markdown-insert-gfm-code-block)
+    (kbd ",c") 'markdown-insert-gfm-code-block)
   ;; org-evil
   (evil-define-key 'normal evil-org-mode-map
     (kbd "gp") 'org-priority)
