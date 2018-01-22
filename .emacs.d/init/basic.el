@@ -38,7 +38,7 @@
 ;; line number
 (add-hook 'prog-mode-hook
           '(lambda ()
-             (global-linum-mode t)
+             (linum-mode)
              ;; linumに起因する高速化
              ;; http://d.hatena.ne.jp/daimatz/20120215/1329248780
              (setq linum-delay t)
