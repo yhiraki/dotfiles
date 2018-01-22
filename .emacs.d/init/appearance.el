@@ -12,8 +12,9 @@
                              ((> bat 12)  "▂") (t           "▁")))))
 
 (use-package sky-color-clock
-  :init (el-get-bundle zk-phi/sky-color-clock)
-  :config
+  :init
+  (el-get-bundle zk-phi/sky-color-clock)
   (setq sky-color-clock-enable-emoji-icon nil
         sky-color-clock-format "%m/%d %H:%M")
+  :config
   (sky-color-clock-initialize 35))

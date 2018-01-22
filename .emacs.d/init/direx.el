@@ -1,6 +1,6 @@
 (use-package direx
   :ensure t
-  :config
+  :init
   (setq direx:leaf-icon "  "
         direx:open-icon "▾ "
         direx:closed-icon "▸ "))

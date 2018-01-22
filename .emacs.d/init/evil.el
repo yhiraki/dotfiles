@@ -1,8 +1,3 @@
-(setq evil-want-C-u-scroll t
-      evil-want-fine-undo t
-      evil-search-module 'evil-search
-      evil-ex-search-vim-style-regexp t)
-
 (defun find-user-init-file ()
   "Edit the `user-init-file', in another window."
   (interactive)
@@ -10,11 +5,17 @@
 
 (use-package evil
   :ensure t
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-fine-undo t
+        evil-search-module 'evil-search
+        evil-ex-search-vim-style-regexp t)
+  :bind
+  (:map evil-normal-state-map
+        ( "C-l" . 'evil-ex-nohighlight)
+        ( "/" . 'swiper)
+        ( "C-k" . 'company-yasnippet))
   :config
-  ;; global
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-ex-nohighlight)
-  (define-key evil-normal-state-map (kbd "/") 'swiper)
-  (define-key evil-insert-state-map (kbd "C-k") 'company-yasnippet)
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "q") 'evil-window-delete

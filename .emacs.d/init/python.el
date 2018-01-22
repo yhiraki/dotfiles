@@ -18,8 +18,9 @@
               jedi:server-args (list "--virtual-env" my/current-virtual-env))
 
 (use-package python
-  :config
+  :init
   (setq jedi:complete-on-dot t
         jedi:use-shortcuts t)
+  :config
   (add-to-list 'company-backends 'company-jedi)
   (electric-indent-mode +1))
