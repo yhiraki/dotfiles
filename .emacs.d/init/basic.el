@@ -111,3 +111,10 @@ When ARG is non-nil search in junk files."
   (vhl/install-extension 'evil)
   (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
   (vhl/install-extension 'undo-tree))
+
+
+;; eldoc
+(use-package eldoc
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (add-hook 'lisp-mode-hook 'eldoc-mode))
