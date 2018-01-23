@@ -59,3 +59,17 @@
 ;;   :ensure org-plus-contrib
 ;;   :config
 ;;   (require 'ox-confluence))
+
+(setq org-publish-project-alist
+      '(
+        ("all"
+         ;; Path to org files
+         :base-directory "~/org/"
+         :base-extension "org"
+         :publishing-directory "/tmp/org/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :auto-sitemap t
+         )
+        ))
+
