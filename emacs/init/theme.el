@@ -1,4 +1,4 @@
-(use-package material-theme
+(use-package zenburn-theme
   :ensure t
   :config
-  (load-theme 'material t))
+  (load-theme 'zenburn t))
