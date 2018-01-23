@@ -34,7 +34,7 @@
         ("r" "Reading" entry (file+headline (expand-file-name (concat org-directory "/reading.org")) "Readings")
          "* %?\n  %c\n  %T")
         ("j" "Journal" entry (file+datetree (expand-file-name (concat org-directory "/journal.org")))
-         "* %?\n  %a\n  Entered on %U")))
+         "* %?\n  %a\n  Entered on %T")))
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 ;; 見出しの余分な*を消す
