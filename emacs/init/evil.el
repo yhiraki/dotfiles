@@ -13,7 +13,8 @@
   :bind
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
-        ( "/" . 'swiper)
+        ( "/" . 'swiper))
+  (:map evil-insert-state-map
         ( "C-k" . 'company-yasnippet))
   :config
   ;; direx
