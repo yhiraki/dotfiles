@@ -26,7 +26,7 @@
 ;; org-capture のテンプレート
 (setq org-capture-templates
       '(("t" "Task" entry (file+headline (expand-file-name (concat org-directory "/task.org")) "Tasks")
-         "* TODO %?%i\n  %a\n  %T")
+         "* TODO %?%i\n  %a")
         ("m" "Mail" entry (file+datetree (expand-file-name (concat org-directory "/mail.org")) "Mails")
          "* %?\n  %c\n  %T")
         ("n" "Note" entry (file+headline (expand-file-name (concat org-directory "/notes.org")) "Notes")
@@ -34,7 +34,7 @@
         ("r" "Reading" entry (file+headline (expand-file-name (concat org-directory "/reading.org")) "Readings")
          "* %?\n  %c\n  %T")
         ("j" "Journal" entry (file+datetree (expand-file-name (concat org-directory "/journal.org")))
-         "* %?\n  %a\n  Entered on %T")))
+         "* %?\n  %a\n  Entered on %U")))
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 ;; 見出しの余分な*を消す
@@ -42,7 +42,7 @@
 
 ;; TODO状態
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SOMEDAY(s)")))
+      '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
 ;; DONEの時刻を記録
 (setq org-log-done 'time)
 
