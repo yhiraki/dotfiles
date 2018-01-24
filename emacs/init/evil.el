@@ -19,41 +19,43 @@
   :config
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
-    (kbd "q") 'evil-window-delete
-    (kbd "D") 'direx:do-delete-files
-    (kbd "r") 'direx:refresh-whole-tree
-    (kbd "R") 'direx:do-rename-file
-    (kbd "c") 'direx:do-copy-files
-    (kbd "j") 'direx:next-item
-    (kbd "k") 'direx:previous-item
-    (kbd "C-j") 'direx:next-sibling-item
-    (kbd "C-k") 'direx:previous-sibling-item
-    (kbd "SPC") 'direx:toggle-item
-    (kbd "o") 'direx:maybe-find-item
-    (kbd "RET") 'direx:find-item
-    (kbd "P") 'direx-project:jump-to-project-root)
+    "q" 'evil-window-delete
+    "D" 'direx:do-delete-files
+    "r" 'direx:refresh-whole-tree
+    "R" 'direx:do-rename-file
+    "c" 'direx:do-copy-files
+    "j" 'direx:next-item
+    "k" 'direx:previous-item
+    "C-j" 'direx:next-sibling-item
+    "C-k" 'direx:previous-sibling-item
+    "SPC" 'direx:toggle-item
+    "o" 'direx:maybe-find-item
+    "RET" 'direx:find-item
+    "P" 'direx-project:jump-to-project-root)
   ;; quickrun
   (evil-define-key 'normal quickrun--mode-map
-    (kbd "q") 'evil-window-delete)
+    "q" 'evil-window-delete)
   ;; python
   (evil-define-key 'normal python-mode-map
-    (kbd "gd") 'jedi:goto-definition
-    (kbd "K") 'jedi:show-doc)
+    "gd" 'jedi:goto-definition
+    "K" 'jedi:show-doc)
   ;; markdown
   (evil-define-key 'normal markdown-mode-map
-    (kbd ",1") 'markdown-insert-header-setext-1
-    (kbd ",2") 'markdown-insert-header-setext-2
-    (kbd ",-") 'markdown-insert-hr
-    (kbd ",c") 'markdown-insert-gfm-code-block)
+    ",1" 'markdown-insert-header-setext-1
+    ",2" 'markdown-insert-header-setext-2
+    ",-" 'markdown-insert-hr
+    ",c" 'markdown-insert-gfm-code-block)
   ;; org-evil
-  (evil-define-key 'normal evil-org-mode-map
-    (kbd "gp") 'org-priority)
+  (evil-define-key 'normal org-mode-map
+    ",p" 'org-priority
+    ",t" 'org-todo
+    ",q" 'org-priority)
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
   (evil-define-key 'normal org-agenda-mode-map
-    (kbd "<RET>") 'org-agenda-switch-to
-    (kbd "\t") 'org-agenda-goto
+    "<RET>" 'org-agenda-switch-to
+    "\t" 'org-agenda-goto
     "q" 'org-agenda-quit
     "r" 'org-agenda-redo
     "S" 'org-save-all-org-buffers
@@ -130,7 +132,6 @@
     "dv" 'counsel-describe-variable
     "el" 'flycheck-list-errors
     "fb" 'ivy-switch-buffer
-    "fc" 'org-capture
     "fd" 'direx:jump-to-directory-other-window
     "ff" 'counsel-find-file
     "fj" 'my/open-junk-file
@@ -144,6 +145,7 @@
     "ls" 'counsel-info-lookup-symbol
     "oa" 'org-agenda
     "ob" 'org-switchb
+    "oc" 'org-capture
     "ol" 'org-store-link
     "r" 'quickrun
     "th" 'twit
