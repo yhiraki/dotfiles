@@ -1,4 +1,4 @@
-(use-package zenburn-theme
+(use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
-  (load-theme 'zenburn t))
+  (color-theme-sanityinc-tomorrow--define-theme eighties))
