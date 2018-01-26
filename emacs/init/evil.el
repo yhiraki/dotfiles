@@ -19,141 +19,140 @@
   :config
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
-    "q" 'evil-window-delete
-    "D" 'direx:do-delete-files
-    "r" 'direx:refresh-whole-tree
-    "R" 'direx:do-rename-file
-    "c" 'direx:do-copy-files
-    "j" 'direx:next-item
-    "k" 'direx:previous-item
-    "C-j" 'direx:next-sibling-item
-    "C-k" 'direx:previous-sibling-item
-    "SPC" 'direx:toggle-item
-    "o" 'direx:maybe-find-item
-    "RET" 'direx:find-item
-    "P" 'direx-project:jump-to-project-root)
+    (kbd "q") 'evil-window-delete
+    (kbd "D") 'direx:do-delete-files
+    (kbd "r") 'direx:refresh-whole-tree
+    (kbd "R") 'direx:do-rename-file
+    (kbd "c") 'direx:do-copy-files
+    (kbd "j") 'direx:next-item
+    (kbd "k") 'direx:previous-item
+    (kbd "C-j") 'direx:next-sibling-item
+    (kbd "C-k") 'direx:previous-sibling-item
+    (kbd "SPC") 'direx:toggle-item
+    (kbd "o") 'direx:maybe-find-item
+    (kbd "RET") 'direx:find-item
+    (kbd "P") 'direx-project:jump-to-project-root)
   ;; quickrun
   (evil-define-key 'normal quickrun--mode-map
-    "q" 'evil-window-delete)
+    (kbd "q") 'evil-window-delete)
   ;; python
   (evil-define-key 'normal python-mode-map
-    "gd" 'jedi:goto-definition
-    "K" 'jedi:show-doc)
+    (kbd "gd") 'jedi:goto-definition
+    (kbd "K") 'jedi:show-doc)
   ;; markdown
   (evil-define-key 'normal markdown-mode-map
-    ",1" 'markdown-insert-header-setext-1
-    ",2" 'markdown-insert-header-setext-2
-    ",-" 'markdown-insert-hr
-    ",c" 'markdown-insert-gfm-code-block)
+    (kbd ",1") 'markdown-insert-header-setext-1
+    (kbd ",2") 'markdown-insert-header-setext-2
+    (kbd ",-") 'markdown-insert-hr
+    (kbd ",c") 'markdown-insert-gfm-code-block)
   ;; org-evil
   (evil-define-key 'normal org-mode-map
-    ",p" 'org-priority
-    ",t" 'org-todo
-    ",q" 'org-priority)
+    (kbd ",p") 'org-priority
+    (kbd ",t") 'org-todo
+    (kbd ",q") 'org-set-tags-command)
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
   (evil-define-key 'normal org-agenda-mode-map
-    "<RET>" 'org-agenda-switch-to
-    "\t" 'org-agenda-goto
-    "q" 'org-agenda-quit
-    "r" 'org-agenda-redo
-    "S" 'org-save-all-org-buffers
-    "gj" 'org-agenda-goto-date
-    "gJ" 'org-agenda-clock-goto
-    "gm" 'org-agenda-bulk-mark
-    "go" 'org-agenda-open-link
-    "s" 'org-agenda-schedule
-    "+" 'org-agenda-priority-up
-    "," 'org-agenda-priority
-    "-" 'org-agenda-priority-down
-    "y" 'org-agenda-todo-yesterday
-    "n" 'org-agenda-add-note
-    "t" 'org-agenda-todo
-    ":" 'org-agenda-set-tags
-    ";" 'org-timer-set-timer
-    "I" 'helm-org-task-file-headings
-    "i" 'org-agenda-clock-in-avy
-    "O" 'org-agenda-clock-out-avy
-    "u" 'org-agenda-bulk-unmark
-    "x" 'org-agenda-exit
-    "j"  'org-agenda-next-line
-    "k"  'org-agenda-previous-line
-    "vt" 'org-agenda-toggle-time-grid
-    "va" 'org-agenda-archives-mode
-    "vw" 'org-agenda-week-view
-    "vl" 'org-agenda-log-mode
-    "vd" 'org-agenda-day-view
-    "vc" 'org-agenda-show-clocking-issues
-    "g/" 'org-agenda-filter-by-tag
-    "o" 'delete-other-windows
-    "gh" 'org-agenda-holiday
-    "gv" 'org-agenda-view-mode-dispatch
-    "f" 'org-agenda-later
-    "b" 'org-agenda-earlier
-    "c" 'helm-org-capture-templates
-    "e" 'org-agenda-set-effort
-    "n" nil  ; evil-search-next
-    "{" 'org-agenda-manipulate-query-add-re
-    "}" 'org-agenda-manipulate-query-subtract-re
-    "A" 'org-agenda-toggle-archive-tag
-    "." 'org-agenda-goto-today
-    "0" 'evil-digit-argument-or-evil-beginning-of-line
-    "<" 'org-agenda-filter-by-category
-    ">" 'org-agenda-date-prompt
-    "F" 'org-agenda-follow-mode
-    "D" 'org-agenda-deadline
-    "H" 'org-agenda-holidays
-    "J" 'org-agenda-next-date-line
-    "K" 'org-agenda-previous-date-line
-    "L" 'org-agenda-recenter
-    "P" 'org-agenda-show-priority
-    "R" 'org-agenda-clockreport-mode
-    "Z" 'org-agenda-sunrise-sunset
-    "T" 'org-agenda-show-tags
-    "X" 'org-agenda-clock-cancel
-    "[" 'org-agenda-manipulate-query-add
-    "g\\" 'org-agenda-filter-by-tag-refine
-    "]" 'org-agenda-manipulate-query-subtract)
-  )
+    (kbd "<RET>") 'org-agenda-switch-to
+    (kbd "\t") 'org-agenda-goto
+    (kbd "q") 'org-agenda-quit
+    (kbd "r") 'org-agenda-redo
+    (kbd "S") 'org-save-all-org-buffers
+    (kbd "gj") 'org-agenda-goto-date
+    (kbd "gJ") 'org-agenda-clock-goto
+    (kbd "gm") 'org-agenda-bulk-mark
+    (kbd "go") 'org-agenda-open-link
+    (kbd "s") 'org-agenda-schedule
+    (kbd "+") 'org-agenda-priority-up
+    (kbd ",") 'org-agenda-priority
+    (kbd "-") 'org-agenda-priority-down
+    (kbd "y") 'org-agenda-todo-yesterday
+    (kbd "n") 'org-agenda-add-note
+    (kbd "t") 'org-agenda-todo
+    (kbd ":") 'org-agenda-set-tags
+    (kbd ";") 'org-timer-set-timer
+    (kbd "I") 'helm-org-task-file-headings
+    (kbd "i") 'org-agenda-clock-in-avy
+    (kbd "O") 'org-agenda-clock-out-avy
+    (kbd "u") 'org-agenda-bulk-unmark
+    (kbd "x") 'org-agenda-exit
+    (kbd "j")  'org-agenda-next-line
+    (kbd "k")  'org-agenda-previous-line
+    (kbd "vt") 'org-agenda-toggle-time-grid
+    (kbd "va") 'org-agenda-archives-mode
+    (kbd "vw") 'org-agenda-week-view
+    (kbd "vl") 'org-agenda-log-mode
+    (kbd "vd") 'org-agenda-day-view
+    (kbd "vc") 'org-agenda-show-clocking-issues
+    (kbd "g/") 'org-agenda-filter-by-tag
+    (kbd "o") 'delete-other-windows
+    (kbd "gh") 'org-agenda-holiday
+    (kbd "gv") 'org-agenda-view-mode-dispatch
+    (kbd "f") 'org-agenda-later
+    (kbd "b") 'org-agenda-earlier
+    (kbd "c") 'helm-org-capture-templates
+    (kbd "e") 'org-agenda-set-effort
+    (kbd "n") nil  ; evil-search-next
+    (kbd "{") 'org-agenda-manipulate-query-add-re
+    (kbd "}") 'org-agenda-manipulate-query-subtract-re
+    (kbd "A") 'org-agenda-toggle-archive-tag
+    (kbd ".") 'org-agenda-goto-today
+    (kbd "0") 'evil-digit-argument-or-evil-beginning-of-line
+    (kbd "<") 'org-agenda-filter-by-category
+    (kbd ">") 'org-agenda-date-prompt
+    (kbd "F") 'org-agenda-follow-mode
+    (kbd "D") 'org-agenda-deadline
+    (kbd "H") 'org-agenda-holidays
+    (kbd "J") 'org-agenda-next-date-line
+    (kbd "K") 'org-agenda-previous-date-line
+    (kbd "L") 'org-agenda-recenter
+    (kbd "P") 'org-agenda-show-priority
+    (kbd "R") 'org-agenda-clockreport-mode
+    (kbd "Z") 'org-agenda-sunrise-sunset
+    (kbd "T") 'org-agenda-show-tags
+    (kbd "X") 'org-agenda-clock-cancel
+    (kbd "[") 'org-agenda-manipulate-query-add
+    (kbd "g\\") 'org-agenda-filter-by-tag-refine
+    (kbd "]") 'org-agenda-manipulate-query-subtract))
 
 (use-package evil-leader
   :ensure t
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    "ag" 'counsel-ag
-    "bc" 'elscreen-create
-    "bk" 'elscreen-kill
-    "bn" 'elscreen-next
-    "bp" 'elscreen-previous
-    "bs" 'elscreen-start
-    "df" 'counsel-describe-function
-    "dv" 'counsel-describe-variable
-    "el" 'flycheck-list-errors
-    "fb" 'ivy-switch-buffer
-    "fd" 'direx:jump-to-directory-other-window
-    "ff" 'counsel-find-file
-    "fj" 'my/open-junk-file
-    "fr" 'counsel-recentf
-    "gf" 'counsel-git
-    "gg" 'counsel-git-grep
-    "gp" 'counsel-ghq
-    "gs" 'magit-status
-    "ll" 'counsel-load-library
-    "lo" 'counsel-locate
-    "ls" 'counsel-info-lookup-symbol
-    "oa" 'org-agenda
-    "ob" 'org-switchb
-    "oc" 'org-capture
-    "ol" 'org-store-link
-    "r" 'quickrun
-    "th" 'twit
-    "tu" 'twittering-update-status-interactive
-    "us" 'counsel-unicode-char
-    "ze" 'eval-buffer
-    "zi" 'find-user-init-file
-    "zr" 'restart-emacs)
+    (kbd "ag") 'counsel-ag
+    (kbd "bc") 'elscreen-create
+    (kbd "bk") 'elscreen-kill
+    (kbd "bn") 'elscreen-next
+    (kbd "bp") 'elscreen-previous
+    (kbd "bs") 'elscreen-start
+    (kbd "df") 'counsel-describe-function
+    (kbd "dv") 'counsel-describe-variable
+    (kbd "el") 'flycheck-list-errors
+    (kbd "fb") 'ivy-switch-buffer
+    (kbd "fd") 'direx:jump-to-directory-other-window
+    (kbd "ff") 'counsel-find-file
+    (kbd "fj") 'my/open-junk-file
+    (kbd "fr") 'counsel-recentf
+    (kbd "gf") 'counsel-git
+    (kbd "gg") 'counsel-git-grep
+    (kbd "gp") 'counsel-ghq
+    (kbd "gs") 'magit-status
+    (kbd "ll") 'counsel-load-library
+    (kbd "lo") 'counsel-locate
+    (kbd "ls") 'counsel-info-lookup-symbol
+    (kbd "oa") 'org-agenda
+    (kbd "ob") 'org-switchb
+    (kbd "oc") 'org-capture
+    (kbd "ol") 'org-store-link
+    (kbd "r") 'quickrun
+    (kbd "th") 'twit
+    (kbd "tu") 'twittering-update-status-interactive
+    (kbd "us") 'counsel-unicode-char
+    (kbd "ze") 'eval-buffer
+    (kbd "zi") 'find-user-init-file
+    (kbd "zr") 'restart-emacs)
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
   (evil-mode 1))
