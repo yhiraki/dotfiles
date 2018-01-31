@@ -49,7 +49,8 @@
   (evil-define-key 'normal org-mode-map
     (kbd ",p") 'org-priority
     (kbd ",t") 'org-todo
-    (kbd ",q") 'org-set-tags-command)
+    (kbd ",q") 'org-set-tags-command
+    (kbd ",x") 'org-toggle-checkbox)
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
