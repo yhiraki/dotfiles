@@ -7,7 +7,7 @@
   :init
   (setq company-auto-complete nil
         company-idle-delay 0
-        company-minimum-prefix-length 1
+        company-minimum-prefix-length 3
         company-selection-wrap-around t
         company-dabbrev-downcase nil)
   :config
