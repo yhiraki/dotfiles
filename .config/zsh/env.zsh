@@ -1,5 +1,8 @@
 export TERM='xterm-256color'
 
+# for alacritty
+export PATH=/usr/local/bin:$PATH
+
 export LANG=ja_JP.UTF-8
 
 export EDITOR=nvim
@@ -16,6 +19,7 @@ export RUSTPATH=$HOME/.cargo
 export PATH=$PATH:$RUSTPATH/bin
 
 export DOTDIR=$GOPATH/src/github.com/coffexpr/dotfiles
+export PATH=$PATH:$DOTDIR/bin
 
 export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
 export ZPLUG_HOME=$HOME/.zplug
