@@ -25,16 +25,11 @@
 (setq org-default-notes-file "notes.org")
 ;; org-capture のテンプレート
 (setq org-capture-templates
-      '(("t" "Task" entry (file+headline (expand-file-name (concat org-directory "/task.org")) "Tasks")
-         "* TODO %?%i\n  %a")
-        ("m" "Mail" entry (file+datetree (expand-file-name (concat org-directory "/mail.org")) "Mails")
-         "* %?\n  %c\n  %T")
-        ("n" "Note" entry (file+headline (expand-file-name (concat org-directory "/notes.org")) "Notes")
-         "* %?\n  %a\n  %T")
-        ("r" "Reading" entry (file+headline (expand-file-name (concat org-directory "/reading.org")) "Readings")
-         "* %?\n  %c\n  %T")
-        ("j" "Journal" entry (file+datetree (expand-file-name (concat org-directory "/journal.org")))
-         "* %?\n  %a\n  Entered on %U")))
+      '(("t" "Task" entry (file "~/org/task.org") "* TODO %?%i\n  %a")
+        ("m" "Mail" entry (file+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
+        ("n" "Note" entry (file "~/org/notes.org") "* %?\n  %a\n  %T")
+        ("r" "Reading" entry (file+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
+        ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?\n  %a\n  Entered on %U")))
 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 ;; 見出しの余分な*を消す
@@ -55,11 +50,10 @@
 ;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
 ;;   )
 
-;; (use-package org
-;;   :ensure org-plus-contrib
-;;   :config
-;;   (require 'ox-confluence))
+(use-package org :ensure org-plus-contrib)
+(use-package ox-confluence)
 
+(use-package ox-gfm :ensure t)
 (setq org-publish-project-alist
       '(
         ("all"
