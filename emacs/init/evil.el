@@ -38,7 +38,10 @@
   ;; python
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'jedi:goto-definition
-    (kbd "K") 'jedi:show-doc)
+    (kbd "K") 'jedi:show-doc
+    (kbd ",f") 'py-autopep8)
+  (evil-define-key 'visual python-mode-map
+    (kbd ",f") 'py-autopep8-region)
   ;; markdown
   (evil-define-key 'normal markdown-mode-map
     (kbd ",1") 'markdown-insert-header-setext-1
