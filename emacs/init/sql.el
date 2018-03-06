@@ -22,6 +22,7 @@
                             indent-tabs-mode nil
                             c-basic-offset 2
                             tab-width 2)
+              (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
               (sql-set-product "postgres")
               ))
 
