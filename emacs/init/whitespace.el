@@ -27,7 +27,7 @@
   (set-display-table-slot standard-display-table 'truncation ?<)
 
   ;; set nbsp:%
-  (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?%])
+  (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_])
 
   (defvar my/bg-color "#232323")
   (set-face-attribute 'whitespace-trailing nil
