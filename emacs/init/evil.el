@@ -50,10 +50,15 @@
     (kbd ",c") 'markdown-insert-gfm-code-block)
   ;; org-evil
   (evil-define-key 'normal org-mode-map
+    (kbd ",c.") 'org-time-stamp
+    (kbd ",cd") 'org-deadline
+    (kbd ",cs") 'org-schedule
+    (kbd ",o") 'org-open-at-point
     (kbd ",p") 'org-priority
-    (kbd ",t") 'org-todo
     (kbd ",q") 'org-set-tags-command
-    (kbd ",x") 'org-toggle-checkbox)
+    (kbd ",t") 'org-todo
+    (kbd ",x") 'org-toggle-checkbox
+    )
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
