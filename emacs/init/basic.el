@@ -35,6 +35,11 @@
 (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
 (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
 
+;; シンボリックリンクの読み込みを許可
+(setq vc-follow-symlinks t)
+;; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
+(setq auto-revert-check-vc-info t)
+
 ;; line number
 (add-hook 'prog-mode-hook
           '(lambda ()
