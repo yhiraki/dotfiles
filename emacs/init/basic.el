@@ -1,14 +1,3 @@
-(use-package rainbow-delimiters
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode)
-  (which-key-setup-side-window-bottom))
-
 ;; startup page disabled
 (setq inhibit-startup-message t)
 
@@ -57,15 +46,6 @@
               indent-tabs-mode nil    ;インデントをタブでするかスペースでするか
               require-final-newline t)
 
-;; editor
-(use-package smartparens
-  :ensure t
-  :config
-  (smartparens-global-mode t))
-
-(use-package restart-emacs
-  :ensure t)
-
 ;; 単語境界をvim風に
 ;; http://tarao.hatenablog.com/entry/20130304/evil_config#vim-word
 (modify-syntax-entry ?_ "w" (standard-syntax-table))
@@ -83,8 +63,6 @@
 ;; TAGS ファイルを自動で再読込
 (setq tags-revert-without-query 1)
 
-
-;; junkfile
 (use-package open-junk-file
   :ensure t
   :config
@@ -105,8 +83,6 @@ When ARG is non-nil search in junk files."
              (counsel-find-file rel-fname)))))
   )
 
-
-;; highlights
 (use-package volatile-highlights
   :ensure t
   :config
@@ -117,9 +93,26 @@ When ARG is non-nil search in junk files."
   (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
   (vhl/install-extension 'undo-tree))
 
-
-;; eldoc
 (use-package eldoc
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'lisp-mode-hook 'eldoc-mode))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode)
+  (which-key-setup-side-window-bottom))
+
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode t))
+
+(use-package restart-emacs
+  :ensure t)
