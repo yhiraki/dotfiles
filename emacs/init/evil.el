@@ -60,6 +60,18 @@
     (kbd ",t") 'org-todo
     (kbd ",x") 'org-toggle-checkbox
     )
+  (evil-define-key 'insert org-mode-map
+    (kbd "M-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-h") 'org-metaleft
+    (kbd "M-l") 'org-metaright
+    )
+  (evil-define-key 'visual org-mode-map
+    (kbd "M-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-h") 'org-metaleft
+    (kbd "M-l") 'org-metaright
+    )
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
