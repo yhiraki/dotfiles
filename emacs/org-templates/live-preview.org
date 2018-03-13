@@ -1,0 +1,4 @@
+# Local variables:
+# after-save-hook: org-html-export-to-html
+# end:
+#+HTML_HEAD: <script>setTimeout("location.reload()" ,5000);</script>
