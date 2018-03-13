@@ -6,7 +6,8 @@ alias updatedb='/usr/libexec/locate.updatedb'
 
 function nas () {
   local r_path="$(
-    echo -E /$1 \
+    echo -E $1 \
+      | awk '{$1=$1; print}' \
       | tr '\' '/' \
       | tr -d '\n' \
       | sed -e 's/^  *//g' \
