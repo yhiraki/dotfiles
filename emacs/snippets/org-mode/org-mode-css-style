@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: org mode css style
-# key: css 
-# --
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://demo.thi.ng/org-spec/css/style.css"/>
