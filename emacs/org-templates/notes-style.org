@@ -1,6 +1,9 @@
 # Turn off default internal styles
 #+OPTIONS: html-style:nil html5-fancy:t
 
+# export priority
+#+OPTIONS: pri:t
+
 # Exporting to HTML5
 #+HTML_DOCTYPE: html5
 #+HTML_HEAD: <meta http-equiv="X-UA-Compatible" content="IE=edge">
