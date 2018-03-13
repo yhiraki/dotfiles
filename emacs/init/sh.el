@@ -2,7 +2,7 @@
   :mode
   ("\\.zsh\\'" . shell-script-mode)
   :init
-  (setq sh-basic-offset 4
-        sh-indentation 4
+  (setq sh-basic-offset 2
+        sh-indentation 2
         sh-indent-for-case-label 0
         sh-indent-for-case-alt '+))
