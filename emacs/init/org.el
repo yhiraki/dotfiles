@@ -67,3 +67,12 @@
          )
         ))
 
+;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
+(defun toggle-org-html-export-on-save ()
+  (interactive)
+  (if (memq 'org-html-export-to-html after-save-hook)
+      (progn
+        (remove-hook 'after-save-hook 'org-html-export-to-html t)
+        (message "Disabled org html export on save for current buffer..."))
+    (add-hook 'after-save-hook 'org-html-export-to-html nil t)
+    (message "Enabled org html export on save for current buffer...")))
