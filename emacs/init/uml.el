@@ -5,5 +5,7 @@
         indent-tabs-mode nil
         tab-width 2)
   :mode
+  ("\\.pu\\'" . plantuml-mode)
   ("\\.uml\\'" . plantuml-mode)
+  ("\\.puml\\'" . plantuml-mode)
   ("\\.plantuml\\'" . plantuml-mode))
