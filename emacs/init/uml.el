@@ -2,6 +2,7 @@
   :ensure t
   :init
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
+  (setq plantuml-java-options "")
   (setq plantuml-options "-charset UTF-8")
   ;; plantumlをpngで保存する関数
   (defun plantuml-save-png ()
