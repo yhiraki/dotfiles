@@ -4,8 +4,6 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq confirm-kill-emacs 'y-or-n-p)
 
-(global-set-key "\C-h" 'delete-backward-char)
-
 ;; scroll
 (setq scroll-conservatively 1
       mouse-wheel-scroll-amount '(1 ((shift) . 1)) ; one line at a time
