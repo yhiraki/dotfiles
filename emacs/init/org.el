@@ -1,4 +1,4 @@
-(setq org-startup-with-inline-images t
+(setq org-startup-with-inline-images nil
       org-src-fontify-natively t)
 (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
 
@@ -73,6 +73,8 @@
   (if (memq 'org-html-export-to-html after-save-hook)
       (progn
         (remove-hook 'after-save-hook 'org-html-export-to-html t)
+        (setq org-export-in-background nil)
         (message "Disabled org html export on save for current buffer..."))
     (add-hook 'after-save-hook 'org-html-export-to-html nil t)
+    (setq org-export-in-background t)
     (message "Enabled org html export on save for current buffer...")))
