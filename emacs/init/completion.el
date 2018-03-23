@@ -16,7 +16,10 @@
   (:map company-active-map
         ("<tab>" . nil)
         ("C-n" . 'company-select-next)
-        ("C-p" . 'company-select-previous)))
+        ("C-p" . 'company-select-previous)
+        ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
+        ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
+        ))
 
 (use-package company-statistics
   :ensure t
