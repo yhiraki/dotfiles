@@ -5,4 +5,4 @@ alias ....='cd ../../..'
 
 alias e=$EDITOR
 
-alias gcloud="PYTHONPATH=~/lib/python gcloud"
+alias gcloud="gcbase gcloud"
