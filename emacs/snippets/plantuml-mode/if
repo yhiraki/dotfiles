@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: if
+# key: if
+# --
+if (${1:condition?}) then (${2:yes})
+   ${3::process soemthing;}
+else (${4:no})
+   ${5::process soemthing;}
+endif
