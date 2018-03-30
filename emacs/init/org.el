@@ -17,10 +17,17 @@
 ;; agenda ディレクトリ
 ;; https://www.reddit.com/r/orgmode/comments/6q6cdk/adding_files_to_the_agenda_list_recursively/
 (setq org-agenda-files
-      (f-files "~/org"
-               (lambda (f)
-                 (string= (f-ext f) "org"))
-               'recursive))
+      (concatenate
+       'list
+       (f-files "~/org"
+                (lambda (f)
+                  (string= (f-ext f) "org"))
+                'recursive)
+       (f-files "~/.cache/junkfile"
+                (lambda (f)
+                  (string= (f-ext f) "org"))
+                'recursive))
+      )
 ;; org-default-notes-fileのファイル名
 (setq org-default-notes-file "notes.org")
 ;; org-capture のテンプレート
