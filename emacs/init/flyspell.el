@@ -42,4 +42,6 @@
      text-mode-hook
      prog-mode-hook
      ))
+  :bind
+  ("C-;" . nil)
   )
