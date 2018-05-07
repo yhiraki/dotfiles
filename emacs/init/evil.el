@@ -136,7 +136,12 @@
     (kbd "X") 'org-agenda-clock-cancel
     (kbd "[") 'org-agenda-manipulate-query-add
     (kbd "g\\") 'org-agenda-filter-by-tag-refine
-    (kbd "]") 'org-agenda-manipulate-query-subtract))
+    (kbd "]") 'org-agenda-manipulate-query-subtract)
+  ;; flycheck
+  (evil-define-key 'normal prog-mode-map
+    (kbd "[e") 'flycheck-previous-error
+    (kbd "]e") 'flycheck-next-error)
+  )
 
 (use-package evil-leader
   :ensure t
