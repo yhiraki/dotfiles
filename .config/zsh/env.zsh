@@ -29,3 +29,7 @@ export PLANTUML_LIMIT_SIZE=8192
 export FZF_CMD='fzf-tmux'
 
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
+# requires source-highlight
+export LESS='-R'
+export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
