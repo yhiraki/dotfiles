@@ -1,8 +1,15 @@
+# updatedb settings
+export FCODES=$HOME/var/db/locate.database
+export FILESYSTEMS="hfs ufs smbfs"
+mnt_list=($HOME/mnt/*)
+export SEARCHPATHS="/ $mnt_list"
+
 alias ls="ls -G"
 alias ll="ls -lG"
 alias la="ls -laG"
 alias sed="gsed"
-alias updatedb='/usr/libexec/locate.updatedb'
+alias updatedb='nice -n 10 /usr/libexec/locate.updatedb'
+alias locate="locate -d $FCODES"
 
 function nas () {
   local r_path="$(
