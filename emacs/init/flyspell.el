@@ -72,5 +72,6 @@
      ;; ここに書いたモードでは flyspell-mode が有効になる
      text-mode-hook
      prog-mode-hook
+     twittering-edit-mode-hook
      ))
   )
