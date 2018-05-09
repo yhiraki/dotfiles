@@ -1,9 +1,3 @@
-# updatedb settings
-export FCODES=$HOME/var/db/locate.database
-export FILESYSTEMS="hfs ufs smbfs"
-mnt_list=($HOME/mnt/*)
-export SEARCHPATHS="/ $mnt_list"
-
 alias ls="ls -G"
 alias ll="ls -lG"
 alias la="ls -laG"
@@ -11,49 +5,27 @@ alias sed="gsed"
 alias updatedb='nice -n 10 /usr/libexec/locate.updatedb'
 alias locate="locate -d $FCODES"
 
-function nas () {
-  local r_path="$(
-    echo -E $1 \
-      | awk '{$1=$1; print}' \
-      | tr '\' '/' \
-      | tr -d '\n' \
-      | sed -e 's/^  *//g' \
-            -e 's/  *$//g' \
-            -e 's://*:/:g')"
-  local r_dir="/$(echo $r_path | cut -d '/' -f-3)"
-  local l_root="/Volumes"
-  local l_dir="$l_root/$(echo $r_path | cut -d '/' -f2-3 | tr '/' '_')"
-  local l_path="$l_dir/$(echo $r_path | cut -d '/' -f4-)"
+# updatedb settings
+mnt_list=($HOME/mnt/*)
+export FCODES="$HOME/var/db/locate.database"
+export LOCATE_PATH=$FCODES
+export FILESYSTEMS="hfs ufs smbfs"
+export PRUNEPATHS="/private/tmp /private/var/folders /private/var/tmp */Backups.backupdb */.git"
+export SEARCHPATHS="/ $mnt_list"
 
-  if [ ! -d $l_dir ]; then
-    mkdir $l_dir
-  fi
-  if ! mount | grep $l_dir > /dev/null; then
-    mount -t smbfs $r_dir $l_dir
-  fi
+mkdir -p $(dirname $FCODES)
 
-  if [ -d "$l_path" ]; then
-    cd "$l_path"
+last_update_path=/var/tmp/updatedb_last_attempt
+time_past_updated=$(expr $(date +%s) - $(cat $last_update_path))
+update_interval=$(expr 60 \* 60 \* 24)
+if [ ! -f $last_update_path ] || [ $time_past_updated -gt $update_interval ]
+then
+  if echo $mnt_list | tr ' ' '\n' | head -1 | ls > /dev/null 2&>1
+  then
+    nohup "updatedb && date +%s > $last_update_path" > /dev/null &
+    echo updatedb is started
   else
-    open "$l_path"
-    cd "$(dirname $l_path)"
+    date +%s > $last_update_path
+    echo updatedb is postponed
   fi
-}
-
-function winpath () {
-  local _dir _file
-
-  if [ $# -eq 1 ]; then
-    _file=$1
-  fi
-
-  _dir=$(pwd)
-
-  if echo $_dir | grep '^/Volumes/' > /dev/null; then
-    _dir=$(echo $_dir | sed s/Volumes// | sed s:_:/:)
-  fi
-
-  echo $_dir/$_file | tr '/' '\\'
-}
-
-# vim:ft=zsh
+fi
