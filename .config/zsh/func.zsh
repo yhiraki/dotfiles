@@ -132,3 +132,8 @@ alias -g junkf='$(_select-files-in-dir ~/.cache/junkfile/)'
 alias -g repod='$(_select-dirs-in-repo)'
 alias -g repof='$(_select-files-in-repo)'
 alias -g bra='$(_fzf-select-branch)'
+
+
+function locatecd () {
+  cd $(locate $* F dirname)
+}
