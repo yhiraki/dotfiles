@@ -3,6 +3,7 @@ if has('win32unix') || has('win64unix') || has('unix')
   set backup
   set backupdir=/tmp
   set directory=/tmp
+  set backupskip=/tmp/*,/private/tmp/*
 
   set encoding=utf-8
 
