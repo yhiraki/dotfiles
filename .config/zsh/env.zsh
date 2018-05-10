@@ -26,10 +26,24 @@ export ZPLUG_HOME=$HOME/.zplug
 
 export PLANTUML_LIMIT_SIZE=8192
 
+if which pygmentize > /dev/null
+then
+  highlight_cmd='pygmentize'
+elif which /usr/bin/src-hilite-lesspipe.sh > /dev/null
+then
+  highlight_cmd='/usr/bin/src-hilite-lesspipe.sh'
+else
+  highlight_cmd='cat'
+fi
+
 export FZF_CMD='fzf-tmux'
+export FZF_PREVIEW_CMD='pygmentize {} | head -500'
 
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
 # requires source-highlight
 export LESS='-R'
-export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
+export LESSOPEN='| pygmentize %s'
+
+# locate
+export LOCATE_PATH=$HOME/var/db/locate.database

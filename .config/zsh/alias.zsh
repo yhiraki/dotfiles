@@ -5,5 +5,5 @@ alias ....='cd ../../..'
 
 alias e=$EDITOR
 
-alias -g F='| fzf | xargs'
-alias -g O='F open'
+alias -g F="| fzf --preview '$FZF_PREVIEW_CMD'"
+alias -g O='F | xargs open'
