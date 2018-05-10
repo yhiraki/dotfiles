@@ -39,3 +39,11 @@
               ("<tab>" . popup-next)
               ("<backtab>" . popup-previous)
               ("C-p" . popup-previous)))
+
+;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
+(use-package yatemplate
+  :ensure t
+  :init
+  (yatemplate-fill-alist)
+  (auto-insert-mode 1)
+  )
