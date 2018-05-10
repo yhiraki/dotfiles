@@ -61,18 +61,8 @@
 (use-package ox-confluence)
 
 (use-package ox-gfm :ensure t)
-(setq org-publish-project-alist
-      '(
-        ("all"
-         ;; Path to org files
-         :base-directory "~/org/"
-         :base-extension "org"
-         :publishing-directory "/tmp/org/"
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :auto-sitemap t
-         )
-        ))
+
+(setq org-publish-directory "~/public_html/")
 
 ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
 (defun toggle-org-html-export-on-save ()
