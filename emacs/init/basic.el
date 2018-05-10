@@ -23,6 +23,7 @@
 ;; buffer
 (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
 (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; シンボリックリンクの読み込みを許可
 (setq vc-follow-symlinks t)
