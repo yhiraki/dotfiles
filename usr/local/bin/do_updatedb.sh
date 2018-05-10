@@ -2,7 +2,7 @@
 
 updatedb='nice -n 10 /usr/libexec/locate.updatedb'
 log_file=/tmp/updatedb.log
-mnt_list=$(ls $HOME/mnt)
+mnt_list=$(find $HOME/mnt -maxdepth 1 -type d)
 
 FCODES="$HOME/var/db/locate.database"
 LOCATE_PATH=$FCODES
@@ -13,7 +13,7 @@ mkdir -p $(dirname $FCODES)
 
 for d in $mnt_list
 do
-  if ! ls $d > /dev/null 2>&1
+  if ! find $d -maxdepth 1 > /dev/null 2>&1
   then
     echo could not access to dir: $d
     echo updatedb canceled
