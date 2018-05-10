@@ -21,7 +21,7 @@ export PATH=$PATH:$RUSTPATH/bin
 export DOTDIR=$GOPATH/src/github.com/coffexpr/dotfiles
 export PATH=$PATH:$DOTDIR/bin
 
-export FZF_DEFAULT_OPTS="--ansi --select-1 --exit-0"
+export FZF_DEFAULT_OPTS="-e --ansi --select-1 --exit-0"
 export ZPLUG_HOME=$HOME/.zplug
 
 export PLANTUML_LIMIT_SIZE=8192
