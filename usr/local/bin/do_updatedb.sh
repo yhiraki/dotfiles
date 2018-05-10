@@ -7,7 +7,8 @@ mnt_list=$(find $HOME/mnt -maxdepth 1 -type d)
 FCODES="$HOME/var/db/locate.database"
 LOCATE_PATH=$FCODES
 FILESYSTEMS="hfs ufs smbfs"
-PRUNEPATHS="/Applications /System /private/tmp /private/var/folders /private/var/tmp */Backups.backupdb */.git */*.lnk"
+PRUNEPATHS="/Applications /Library /System /private/tmp /private/var/folders /private/var/tmp */Backups.backupdb */.git */*.lnk $HOME/.cache $HOME/Library"
+PRUNEPATHS="$PRUNEPATHS $(cat $HOME/.gitexclude | sed -e 's/#.*//' | tr '[:space:]' ' ' | xargs)"
 SEARCHPATHS="/ $mnt_list"
 mkdir -p $(dirname $FCODES)
 
