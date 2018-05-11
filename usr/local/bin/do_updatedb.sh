@@ -5,6 +5,8 @@ log_file=/tmp/updatedb.log
 
 mkdir -p $(dirname $FCODES)
 
+source /etc/locate.rc
+
 for d in $SEARCHPATHS
 do
   if ! find $d -maxdepth 1 > /dev/null 2>&1
