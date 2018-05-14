@@ -3,9 +3,8 @@
 updatedb='nice -n 10 /usr/libexec/locate.updatedb'
 log_file=/tmp/updatedb.log
 
-mkdir -p $(dirname $FCODES)
-
 source /etc/locate.rc
+mkdir -p $(dirname $FCODES)
 
 for d in $SEARCHPATHS
 do
