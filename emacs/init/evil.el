@@ -51,9 +51,12 @@
     (kbd ",c") 'markdown-insert-gfm-code-block)
   ;; org-evil
   (evil-define-key 'normal org-mode-map
-    (kbd ",c.") 'org-time-stamp
-    (kbd ",cd") 'org-deadline
-    (kbd ",cs") 'org-schedule
+    (kbd ",u.") (kbd "i C-u C-c .")  ; org-time-stamp with datetime
+    (kbd ",u!") (kbd "i C-u C-c !")  ; org-time-stamp-inactive with datetime
+    (kbd ",.") 'org-time-stamp
+    (kbd ",!") 'org-time-stamp-inactive
+    (kbd ",d") 'org-deadline
+    (kbd ",s") 'org-schedule
     (kbd ",o") 'org-open-at-point
     (kbd ",p") 'org-priority
     (kbd ",q") 'org-set-tags-command
