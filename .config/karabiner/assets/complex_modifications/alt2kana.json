@@ -1,0 +1,52 @@
+{
+  "title": "Japanese kana settings for US keyboard",
+  "rules": [
+    {
+      "description": "left_option -> eisuu, right_option -> kana",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_option",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "left_option"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "japanese_eisuu"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_option",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "right_option"
+            }
+          ],
+          "to_if_alone": [
+            {
+              "key_code": "japanese_kana"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
