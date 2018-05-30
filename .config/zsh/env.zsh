@@ -39,8 +39,6 @@ fi
 export FZF_CMD='fzf-tmux'
 export FZF_PREVIEW_CMD='pygmentize {} | head -500'
 
-export CLOUDSDK_PYTHON_SITEPACKAGES=1
-
 # requires source-highlight
 export LESS='-R'
 export LESSOPEN='| pygmentize %s'
