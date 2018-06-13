@@ -1,8 +1,51 @@
+# zmodload zsh/zprof && zprof
+
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-source $ZDOTDIR/env.zsh
+export TERM='xterm-256color'
+
+# for alacritty
+export PATH=/usr/local/bin:$PATH
+
+export LANG=ja_JP.UTF-8
+
+export EDITOR=nvim
+# export EDITOR=vim
+
+export HISTFILE=${HOME}/.zsh_history
+export HISTSIZE=10000
+export SAVEHIST=100000
+
+export GOPATH=$HOME
+export PATH=$PATH:$GOPATH/bin
+
+export RUSTPATH=$HOME/.cargo
+export PATH=$PATH:$RUSTPATH/bin
+
+export DOTDIR=$GOPATH/src/github.com/coffexpr/dotfiles
+export PATH=$PATH:$DOTDIR/bin
+
+export FZF_DEFAULT_OPTS="-e --ansi --select-1 --exit-0"
+export ZPLUG_HOME=$HOME/.zplug
+
+export PLANTUML_LIMIT_SIZE=8192
+
+export FZF_CMD='fzf-tmux'
+export FZF_PREVIEW_CMD=" cat | head -500"
+
+export LESS='-R'
+# export LESSOPEN="| pygmentize %s"
+
+# locate
+export LOCATE_PATH=$HOME/var/db/locate.database
+
+# gcloud
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
+
+ANYENV_ROOT=$HOME/.anyenv
 
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups

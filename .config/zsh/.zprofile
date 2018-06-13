@@ -1,11 +1,13 @@
-# anyenv
-# https://qiita.com/luckypool/items/f1e756e9d3e9786ad9ea
-if [ -d ${HOME}/.anyenv ]
+ANYENV_INIT_CMD=$ANYENV_ROOT/anyenv-init.sh
+if [ ! -f $ANYENV_INIT_CMD ]
 then
-    export PATH="$HOME/.anyenv/bin:$PATH"
-    eval "$(anyenv init -  --no-rehash)"
-    for D in `ls $HOME/.anyenv/envs`
-    do
-        export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
-    done
+  anyenv init - --no-rehash > $ANYENV_INIT_CMD
 fi
+
+if [ -d $ANYENV_ROOT ]
+then
+    export PATH="$ANYENV_ROOT/bin:$PATH"
+    source $ANYENV_INIT_CMD
+fi
+
+source $HOME/bin/google-cloud-sdk/path.zsh.inc
