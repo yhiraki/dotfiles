@@ -1,7 +1,7 @@
 (use-package tide
   :ensure t
   :defer t
-  :command (typescript-mode)
+  :commands (typescript-mode)
   )
 
 (use-package typescript-mode
