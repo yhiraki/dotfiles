@@ -149,14 +149,12 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    (kbd "a") 'org-agenda
     (kbd "ag") 'counsel-ag
     (kbd "bc") 'elscreen-create
     (kbd "bk") 'elscreen-kill
     (kbd "bn") 'elscreen-next
     (kbd "bp") 'elscreen-previous
     (kbd "bs") 'elscreen-start
-    (kbd "c") 'org-capture
     (kbd "df") 'counsel-describe-function
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
@@ -194,7 +192,10 @@
   :config
   (global-evil-surround-mode 1))
 
-(use-package evil-magit :ensure t)
+(use-package evil-magit
+  :ensure t
+  :after magit
+  )
 
 (use-package evil-commentary
   :ensure t
