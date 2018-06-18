@@ -97,7 +97,6 @@
     (kbd "t") 'org-agenda-todo
     (kbd ":") 'org-agenda-set-tags
     (kbd ";") 'org-timer-set-timer
-    (kbd "I") 'helm-org-task-file-headings
     (kbd "i") 'org-agenda-clock-in-avy
     (kbd "O") 'org-agenda-clock-out-avy
     (kbd "u") 'org-agenda-bulk-unmark
@@ -116,7 +115,6 @@
     (kbd "gv") 'org-agenda-view-mode-dispatch
     (kbd "f") 'org-agenda-later
     (kbd "b") 'org-agenda-earlier
-    (kbd "c") 'helm-org-capture-templates
     (kbd "e") 'org-agenda-set-effort
     (kbd "n") nil  ; evil-search-next
     (kbd "{") 'org-agenda-manipulate-query-add-re
@@ -151,12 +149,14 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
+    (kbd "a") 'org-agenda
     (kbd "ag") 'counsel-ag
     (kbd "bc") 'elscreen-create
     (kbd "bk") 'elscreen-kill
     (kbd "bn") 'elscreen-next
     (kbd "bp") 'elscreen-previous
     (kbd "bs") 'elscreen-start
+    (kbd "c") 'org-capture
     (kbd "df") 'counsel-describe-function
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
