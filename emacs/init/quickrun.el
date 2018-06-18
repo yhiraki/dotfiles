@@ -1,5 +1,6 @@
 (use-package quickrun
   :ensure t
+  :defer t
   :init
   (setq quickrun-timeout-seconds 30)
   :config

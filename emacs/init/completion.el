@@ -1,17 +1,20 @@
 ;; (use-package company-flx)
 ;; (use-package company-racer)
 
-;; http://qiita.com/sune2/items/b73037f9e85962f5afb7
+;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
 (use-package company
   :ensure t
+  :defer t
   :init
   (setq company-auto-complete nil
         company-idle-delay 0
         company-minimum-prefix-length 3
         company-selection-wrap-around t
         company-dabbrev-downcase nil)
-  :config
-  (global-company-mode)
+  (add-hook 'find-file-hook
+            '(lambda()
+               (global-company-mode)
+               ))
   :bind
   (:map company-active-map
         ("<tab>" . nil)
@@ -23,6 +26,7 @@
 
 (use-package company-statistics
   :ensure t
+  :after company
   :init
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   :config
