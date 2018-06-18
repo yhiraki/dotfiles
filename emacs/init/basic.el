@@ -17,8 +17,26 @@
 (column-number-mode t)
 
 ;; cursor
-(global-hl-line-mode t)
 (show-paren-mode 1) ;; 対応する括弧を光らせる
+
+(use-package hl-line
+  :init
+  (add-hook 'find-file-hook
+            '(lambda()
+               (global-hl-line-mode t)
+               ))
+  :config
+  ;; http://emacs.rubikitch.com/global-hl-line-mode-timer/
+  (defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
+  (defun global-hl-line-timer-function ()
+    (unless (memq major-mode global-hl-line-timer-exclude-modes)
+      (global-hl-line-unhighlight-all)
+      (let ((global-hl-line-mode t))
+        (global-hl-line-highlight))))
+  (setq global-hl-line-timer
+        (run-with-idle-timer 0.03 t 'global-hl-line-timer-function))
+  ;; (cancel-timer global-hl-line-timer)
+  )
 
 ;; buffer
 (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
@@ -66,6 +84,8 @@
 
 (use-package open-junk-file
   :ensure t
+  :defer t
+  :commands (my/open-junk-file)
   :config
   (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
   ;; https://github.com/yewton/.emacs.d
@@ -86,6 +106,8 @@ When ARG is non-nil search in junk files."
 
 (use-package volatile-highlights
   :ensure t
+  :defer t
+  :commands (evil-mode)
   :config
   (volatile-highlights-mode t)
   (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
@@ -95,14 +117,18 @@ When ARG is non-nil search in junk files."
   (vhl/install-extension 'undo-tree))
 
 (use-package eldoc
+  :defer t
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-  (add-hook 'lisp-mode-hook 'eldoc-mode))
+  (add-hook 'lisp-mode-hook 'eldoc-mode)
+  )
 
 (use-package rainbow-delimiters
   :ensure t
+  :defer t
   :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  )
 
 (use-package which-key
   :ensure t

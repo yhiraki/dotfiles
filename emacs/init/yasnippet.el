@@ -1,5 +1,6 @@
 (use-package yasnippet
   :ensure t
+  :commands (company-yasnippet)
   :init
   (setq yas-snippet-dirs (list
                           (locate-user-emacs-file "snippets")
@@ -9,10 +10,14 @@
   :config
   (yas-global-mode 1)
   :bind (:map yas-keymap
+              ("<tab>" . popup-next)
               ("RET" . yas-next-field-or-maybe-expand))
   )
 
-(use-package yasnippet-snippets :ensure t)
+(use-package yasnippet-snippets
+  :ensure t
+  :defer t
+  )
 
 ;; use popup menu for yas-choose-value
 ;; https://www.emacswiki.org/emacs/Yasnippet
@@ -43,7 +48,8 @@
 ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
 (use-package yatemplate
   :ensure t
-  :init
+  :defer t
+  :config
   (yatemplate-fill-alist)
   (auto-insert-mode 1)
   )

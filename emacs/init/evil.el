@@ -185,10 +185,13 @@
     (kbd "zr") 'restart-emacs)
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
   (global-evil-leader-mode)
-  (evil-mode 1))
+  (evil-mode 1)
+  )
 
 (use-package evil-surround
   :ensure t
+  :defer t
+  :after evil
   :config
   (global-evil-surround-mode 1))
 
@@ -196,16 +199,21 @@
 
 (use-package evil-commentary
   :ensure t
+  :defer t
+  :after evil
   :config
   (evil-commentary-mode))
 
 (use-package evil-matchit
   :ensure t
+  :defer t
+  :after evil
   :config
   (global-evil-matchit-mode 1))
 
 (use-package evil-org
   :ensure t
+  :defer t
   :after org
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
@@ -215,7 +223,13 @@
 
 (use-package evil-lion
   :ensure t
+  :defer t
+  :after evil
   :config
   (evil-lion-mode))
 
-(use-package evil-escape :ensure t)
+(use-package evil-escape
+  :ensure t
+  :defer t
+  :after evil
+  )

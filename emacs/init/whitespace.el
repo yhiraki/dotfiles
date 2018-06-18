@@ -29,22 +29,19 @@
   ;; set nbsp:%
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_])
 
-  (defvar my/bg-color "#232323")
   (set-face-attribute 'whitespace-trailing nil
-                      :background my/bg-color
                       :foreground "DeepPink"
+                      :background nil
                       :inverse-video nil
                       :underline t)
   (set-face-attribute 'whitespace-tab nil
-                      :background my/bg-color
-                      :foreground "LightSkyBlue"
-                      :underline t)
+                      :background nil)
   (set-face-attribute 'whitespace-space nil
-                      :background my/bg-color
+                      :background nil
                       :foreground "GreenYellow"
                       :weight 'bold)
   (set-face-attribute 'whitespace-empty nil
-                      :background my/bg-color
+                      :background nil
                       :foreground "DeepPink"
                       :inverse-video nil
                       :underline t)
