@@ -15,11 +15,11 @@
         org-plantuml-jar-path "~/lib/java/plantuml.jar"
         org-default-notes-file "notes.org"
         org-capture-templates
-        '(("t" "Task" entry (file "~/org/task.org") "* TODO %?%i\n  %a")
-          ("m" "Mail" entry (file+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
-          ("n" "Note" entry (file "~/org/notes.org") "* %?\n  %a\n  %T")
-          ("r" "Reading" entry (file+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?\n  %a\n  Entered on %U"))
+        '(("t" "Task\t\t- TODOs" entry (file "~/org/task.org") "* TODO %?%i\n  %a")
+          ("m" "Mail\t\t- Mail or text message drafts" entry (file+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
+          ("n" "Note\t\t- Notes" entry (file "~/org/notes.org") "* %?\n  %a\n  %T")
+          ("r" "Reading\t- Web surfing" entry (file+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
+          ("j" "Journal\t- Short logs like Twitter" entry (file+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U"))
         org-hide-leading-stars t ; 見出しの余分な*を消す
         org-todo-keywords ; TODO状態
         '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)"))
