@@ -4,14 +4,8 @@
 
 (use-package org
   :defer t
-  :mode (("\\.org\\'" . org-mode))
-  )
-
-(use-package org-plus-contrib
   :ensure org-plus-contrib
-  :defer t
-  :commands (org-mode)
-  :config
+  :init
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "sh" "plantuml" "rust"))))
@@ -55,14 +49,17 @@
    'org-babel-load-languages
    '((python . t) (plantuml . t) )
    )
+  :mode (("\\.org\\'" . org-mode))
   )
 
 (use-package ox-confluence
-  :defer t)
+  :after org
+  )
 
 (use-package ox-gfm
   :ensure t
-  :defer t)
+  :after org
+  )
 
 ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
 (defun toggle-org-html-export-on-save ()
