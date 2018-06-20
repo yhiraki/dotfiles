@@ -1,14 +1,15 @@
 (use-package yasnippet
   :ensure t
-  :commands (company-yasnippet)
   :init
   (setq yas-snippet-dirs (list
                           (locate-user-emacs-file "snippets")
                           "~/.yasnippet"
                           'yas-installed-snippets-dir)
         yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
-  :config
-  (yas-global-mode 1)
+  (add-hook 'find-file-hook
+            '(lambda()
+               (yas-global-mode 1)
+               ))
   :bind (:map yas-keymap
               ("<tab>" . popup-next)
               ("RET" . yas-next-field-or-maybe-expand))
@@ -23,6 +24,7 @@
 ;; https://www.emacswiki.org/emacs/Yasnippet
 (use-package popup
   :ensure t
+  :after yasnippet
   :config
   (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
     (when (featurep 'popup)
@@ -48,7 +50,7 @@
 ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
 (use-package yatemplate
   :ensure t
-  :defer t
+  :after yasnippet
   :config
   (yatemplate-fill-alist)
   (auto-insert-mode 1)
