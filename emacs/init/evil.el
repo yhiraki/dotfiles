@@ -7,9 +7,12 @@
   :ensure t
   :init
   (setq evil-want-C-u-scroll t
+        evil-want-C-i-jump t
         evil-want-fine-undo t
         evil-search-module 'evil-search
-        evil-ex-search-vim-style-regexp t)
+        evil-ex-search-vim-style-regexp t
+        )
+  (modify-syntax-entry ?_ "w" (standard-syntax-table))
   :bind
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
@@ -39,6 +42,7 @@
   ;; python
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'jedi:goto-definition
+    (kbd "gb") 'jedi:goto-definition-pop-marker
     (kbd "K") 'jedi:show-doc
     (kbd ",f") 'py-autopep8)
   (evil-define-key 'visual python-mode-map
@@ -225,6 +229,11 @@
   (evil-lion-mode))
 
 (use-package evil-escape
+  :ensure t
+  :after evil
+  )
+
+(use-package evil-numbers
   :ensure t
   :after evil
   )
