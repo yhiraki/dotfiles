@@ -14,16 +14,24 @@
         org-src-fontify-natively t
         org-plantuml-jar-path "~/lib/java/plantuml.jar"
         org-default-notes-file "notes.org"
+
         org-capture-templates
         '(("t" "Task\t\t- TODOs" entry (file "~/org/task.org") "* TODO %?%i\n  %a")
           ("m" "Mail\t\t- Mail or text message drafts" entry (file+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
           ("n" "Note\t\t- Notes" entry (file "~/org/notes.org") "* %?\n  %a\n  %T")
           ("r" "Reading\t- Web surfing" entry (file+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U"))
-        org-hide-leading-stars t ; 見出しの余分な*を消す
-        org-todo-keywords ; TODO状態
+
+        ;; 見出しの余分な*を消す
+        org-hide-leading-stars t
+
+        ;; TODO状態
+        org-todo-keywords
         '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)"))
-        org-log-done 'time ; DONEの時刻を記録
+
+        ;; DONEの時刻を記録
+        org-log-done 'time
+
         org-html-htmlize-output-type 'css
         org-src-fontify-natively t
         org-publish-directory "~/public_html/"
@@ -39,10 +47,11 @@
                                    (lambda (f)
                                      (string= (f-ext f) "org"))
                                    'recursive)
-                          (f-files "~/.cache/junkfile"
-                                   (lambda (f)
-                                     (string= (f-ext f) "org"))
-                                   'recursive))
+                          ;; (f-files "~/.cache/junkfile"
+                          ;;          (lambda (f)
+                          ;;            (string= (f-ext f) "org"))
+                          ;;          'recursive)
+                          )
         org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
   (org-babel-do-load-languages
