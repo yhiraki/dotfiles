@@ -6,7 +6,7 @@
                           "~/.yasnippet"
                           'yas-installed-snippets-dir)
         yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
-  (add-hook 'find-file-hook
+  (add-hook 'after-init-hook
             '(lambda()
                (yas-global-mode 1)
                ))
