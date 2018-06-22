@@ -11,7 +11,7 @@
         company-minimum-prefix-length 3
         company-selection-wrap-around t
         company-dabbrev-downcase nil)
-  (add-hook 'find-file-hook
+  (add-hook 'after-init-hook
             '(lambda()
                (global-company-mode)
                ))

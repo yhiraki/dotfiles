@@ -21,7 +21,7 @@
 
 (use-package hl-line
   :init
-  (add-hook 'find-file-hook
+  (add-hook 'after-init-hook
             '(lambda()
                (global-hl-line-mode t)
                ))
