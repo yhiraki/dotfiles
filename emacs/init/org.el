@@ -5,10 +5,24 @@
 (use-package org
   :defer t
   :ensure org-plus-contrib
-  :init
+  :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "sh" "plantuml" "rust"))))
+
+  (defun org-hugo-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
 
   (setq org-startup-with-inline-images nil
         org-src-fontify-natively t
@@ -16,11 +30,15 @@
         org-default-notes-file "notes.org"
 
         org-capture-templates
-        '(("t" "Task\t\t- TODOs" entry (file "~/org/task.org") "* TODO %?%i\n  %a")
+        '(("t" "Task\t\t- TODOs" entry (file "~/org/task.org") "** TODO %?%i\n  %a")
           ("m" "Mail\t\t- Mail or text message drafts" entry (file+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
-          ("n" "Note\t\t- Notes" entry (file "~/org/notes.org") "* %?\n  %a\n  %T")
+          ("n" "Note\t\t- Notes" entry (file "~/org/notes.org") "** %?\n  %a\n  %T")
           ("r" "Reading\t- Web surfing" entry (file+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
-          ("j" "Journal\t- Short logs like Twitter" entry (file+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U"))
+          ("j" "Journal\t- Short logs like Twitter" entry (file+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
+          ;; https://ox-hugo.scripter.co/doc/org-capture-setup
+          ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
+           (function org-hugo-new-subtree-post-capture-template))
+          )
 
         ;; 見出しの余分な*を消す
         org-hide-leading-stars t
@@ -69,6 +87,10 @@
   :ensure t
   :after org
   )
+
+(use-package ox-hugo
+  :ensure t
+  :after ox)
 
 ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
 (defun toggle-org-html-export-on-save ()
