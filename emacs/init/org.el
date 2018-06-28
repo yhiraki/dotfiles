@@ -24,15 +24,18 @@ See `org-capture-templates' for more information."
                    "%?\n")          ;Place the cursor here finally
                  "\n")))
 
+  ;; delete whitespaces on save
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+
   (setq org-startup-with-inline-images nil
         org-src-fontify-natively t
         org-plantuml-jar-path "~/lib/java/plantuml.jar"
         org-default-notes-file "notes.org"
 
         org-capture-templates
-        '(("t" "Task\t\t- TODOs" entry (file "~/org/task.org") "** TODO %?%i\n  %a")
+        '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
           ("m" "Mail\t\t- Mail or text message drafts" entry (file+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
-          ("n" "Note\t\t- Notes" entry (file "~/org/notes.org") "** %?\n  %a\n  %T")
+          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n  %a\n  %T")
           ("r" "Reading\t- Web surfing" entry (file+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
           ;; https://ox-hugo.scripter.co/doc/org-capture-setup
