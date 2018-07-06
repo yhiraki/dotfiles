@@ -1,6 +1,7 @@
 ;;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
 
 (use-package whitespace
+  :defer t
   :init
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
@@ -22,28 +23,28 @@
   ;; スペースは全角のみを可視化
   (setq whitespace-space-regexp "\\(\u3000+\\)")
 
-  :config
   ;; set lcs=extends:<,precedes:<
   (set-display-table-slot standard-display-table 'truncation ?<)
 
   ;; set nbsp:%
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_])
 
-  (set-face-attribute 'whitespace-trailing nil
-                      :foreground "DeepPink"
-                      :background nil
-                      :inverse-video nil
-                      :underline t)
-  (set-face-attribute 'whitespace-tab nil
-                      :background nil)
-  (set-face-attribute 'whitespace-space nil
-                      :background nil
-                      :foreground "GreenYellow"
-                      :weight 'bold)
-  (set-face-attribute 'whitespace-empty nil
-                      :background nil
-                      :foreground "DeepPink"
-                      :inverse-video nil
-                      :underline t)
-
-  (global-whitespace-mode 1))
+  (add-hook 'find-file-hook
+            '(lambda()
+               (global-whitespace-mode 1)
+               (set-face-attribute 'whitespace-trailing nil
+                                   :foreground "DeepPink"
+                                   :background nil
+                                   :underline t)
+               (set-face-attribute 'whitespace-tab nil
+                                   :background nil)
+               (set-face-attribute 'whitespace-space nil
+                                   :background nil
+                                   :foreground "GreenYellow"
+                                   :weight 'bold)
+               (set-face-attribute 'whitespace-empty nil
+                                   :background nil
+                                   :foreground "DeepPink"
+                                   :underline t)
+               ))
+  )
