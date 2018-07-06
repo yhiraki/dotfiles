@@ -11,7 +11,7 @@ export PATH=/usr/local/bin:$PATH
 
 export LANG=ja_JP.UTF-8
 
-export EDITOR=nvim
+export EDITOR="emacsclient -nw"
 # export EDITOR=vim
 
 export HISTFILE=${HOME}/.zsh_history
