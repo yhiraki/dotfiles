@@ -10,10 +10,6 @@
 
 (use-package git-gutter-fringe+
   :ensure t
-  :defer t
   :init
-  (add-hook 'after-save-hook
-            '(lambda()
-               (global-git-gutter+-mode)
-               ))
+  (global-git-gutter+-mode)
   )
