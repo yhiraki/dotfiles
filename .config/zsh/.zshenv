@@ -47,6 +47,8 @@ export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
 
 ANYENV_ROOT=$HOME/.anyenv
 
+export PIPENV_VENV_IN_PROJECT=true
+
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
