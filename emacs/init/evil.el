@@ -158,7 +158,6 @@
     (kbd "bk") 'elscreen-kill
     (kbd "bn") 'elscreen-next
     (kbd "bp") 'elscreen-previous
-    (kbd "bs") 'elscreen-start
     (kbd "df") 'counsel-describe-function
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
@@ -182,6 +181,7 @@
     (kbd "th") 'twit
     (kbd "tu") 'twittering-update-status-interactive
     (kbd "us") 'counsel-unicode-char
+    (kbd "x") 'counsel-M-x
     (kbd "ze") 'eval-buffer
     (kbd "zi") 'find-user-init-file
     (kbd "zr") 'restart-emacs)

@@ -25,7 +25,8 @@ See `org-capture-templates' for more information."
                  "\n")))
 
   ;; delete whitespaces on save
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook 'whitespace-cleanup)
+
 
   (setq org-startup-with-inline-images nil
         org-src-fontify-natively t
