@@ -20,6 +20,8 @@
         ( "Y" . "y$"))
   (:map evil-insert-state-map
         ( "C-k" . 'company-yasnippet))
+  (:map evil-visual-state-map
+        ( "gs" . 'google-this-region))
   :config
   ;; direx
   (evil-define-key 'normal direx:direx-mode-map
@@ -48,7 +50,7 @@
   (evil-define-key 'visual python-mode-map
     (kbd ",f") 'py-autopep8-region)
   ;; go
-  (evil-define-key 'normal python-mode-map
+  (evil-define-key 'normal go-mode-map
     (kbd "gd") 'godef-jump)
   ;; markdown
   (evil-define-key 'normal markdown-mode-map
