@@ -47,6 +47,9 @@
     (kbd ",f") 'py-autopep8)
   (evil-define-key 'visual python-mode-map
     (kbd ",f") 'py-autopep8-region)
+  ;; go
+  (evil-define-key 'normal python-mode-map
+    (kbd "gd") 'godef-jump)
   ;; markdown
   (evil-define-key 'normal markdown-mode-map
     (kbd ",1") 'markdown-insert-header-setext-1
