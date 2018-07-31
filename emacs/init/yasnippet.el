@@ -11,7 +11,7 @@
                (yas-global-mode 1)
                ))
   :bind (:map yas-keymap
-              ("<tab>" . popup-next)
+              ("<tab>" . nil)
               ("RET" . yas-next-field-or-maybe-expand))
   )
 
