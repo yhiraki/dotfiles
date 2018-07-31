@@ -10,6 +10,7 @@ export TERM='xterm-256color'
 export PATH=/usr/local/bin:$PATH
 
 export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
 
 export EDITOR="emacsclient -nw"
 # export EDITOR=vim
