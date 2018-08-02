@@ -41,3 +41,9 @@
 (use-package py-autopep8
   :ensure t
   )
+
+(use-package py-yapf
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
+)
