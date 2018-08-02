@@ -4,9 +4,10 @@
   :init
   (custom-set-variables
    '(company-go-insert-arguments nil))
+  (setq gofmt-command "goimports")
+  (add-hook 'before-save-hook 'gofmt-before-save)
   :config
   (add-to-list 'company-backends 'company-go)
-  (add-hook 'before-save-hook 'gofmt-before-save)
 )
 
 (use-package company-go
