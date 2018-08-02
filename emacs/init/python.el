@@ -1,26 +1,36 @@
 (use-package switch-buffer-functions
   :ensure t
   :init
-  (defvar pyenv-dir "~/.anyenv/envs/pyenv/")
-  (setq my/current-virtual-env (concat pyenv-dir "versions/" (s-trim (f-read-text (concat pyenv-dir "/version") 'utf-8)))
-        jedi:server-args (list "--virtual-env" my/current-virtual-env))
+  (setq pyenv-dir (expand-file-name "~/.anyenv/envs/pyenv/"))
+  (setq pyenv-jedi-env-args (list))
+
   (defun switch-jedi-server ()
     "Automatically activates pyenv version if .python-version file exists."
     (f-traverse-upwards
      (lambda (path)
        (let ((pyenv-version-path (f-expand ".python-version" path)))
          (cond ((f-exists? pyenv-version-path)
-                (setq-default my/current-virtual-env (concat pyenv-dir "versions/" (s-trim (f-read-text pyenv-version-path 'utf-8)))
-                              jedi:server-args (list "--virtual-env" my/current-virtual-env))
+                (let ((jedi-env (s-trim (f-read-text pyenv-version-path 'utf-8))))
+                  (setq my/current-virtual-env (concat pyenv-dir "versions/" jedi-env))
+                  (add-to-list 'pyenv-jedi-env-args (list "--virtual-env" my/current-virtual-env) t)
+                  (delq nil (delete-dups pyenv-jedi-env-args)) ;; uniq
+                  (setq jedi:server-args (apply #'append pyenv-jedi-env-args)  ;; flatten
+                        jedi:environment-root jedi-env
+                        python-environment-default-root-name jedi-env
+                        )
+                  )
+                (jedi:stop-server)
+
                 ))))))
 
-  (add-hook 'switch-buffer-functions
-            (lambda (prev cur) (switch-jedi-server)))
+  (add-hook 'python-mode-hook 'switch-jedi-server)
   )
 
 
 (use-package python
+  :ensure t
   :init
+  (setq python-environment-directory "~/.anyenv/envs/pyenv/versions/")
   :defer t
   :config
   (add-to-list 'company-backends 'company-jedi)
@@ -29,16 +39,12 @@
 
 (use-package jedi-core
   :ensure t
-  )
-
-(use-package company-jedi
-  :ensure t
   :init
   (setq jedi:complete-on-dot t
         jedi:use-shortcuts t)
   )
 
-(use-package py-autopep8
+(use-package company-jedi
   :ensure t
   )
 
