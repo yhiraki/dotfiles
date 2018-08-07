@@ -53,3 +53,9 @@
   :init
   (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
 )
+
+(use-package py-isort
+  :ensure t
+  :init
+  (add-hook 'before-save-hook 'py-isort-before-save)
+  )
