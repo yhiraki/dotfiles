@@ -25,7 +25,7 @@ export PATH=$PATH:$GOPATH/bin
 export RUSTPATH=$HOME/.cargo
 export PATH=$PATH:$RUSTPATH/bin
 
-export DOTDIR=$GOPATH/src/github.com/coffexpr/dotfiles
+export DOTDIR=$GOPATH/src/github.com/yhiraki/dotfiles
 export PATH=$PATH:$DOTDIR/bin
 
 export FZF_DEFAULT_OPTS="-e --ansi --select-1 --exit-0"
