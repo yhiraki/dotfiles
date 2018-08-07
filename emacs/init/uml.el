@@ -1,9 +1,10 @@
 (use-package plantuml-mode
   :ensure t
   :init
-  (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
-  (setq plantuml-java-options "")
-  (setq plantuml-options "-charset UTF-8")
+  (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")
+        plantuml-java-options "-Djava.awt.headless=true"
+        plantuml-options "-charset UTF-8")
+  ;; (setq plantuml-output-type "svg")
   ;; plantumlをpngで保存する関数
   (defun plantuml-save-png ()
     (interactive)
