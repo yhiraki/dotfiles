@@ -10,6 +10,10 @@
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "sh" "plantuml" "rust"))))
 
+  ;; https://github.com/skuro/plantuml-mode
+  (add-to-list
+   'org-src-lang-modes '("plantuml" . plantuml))
+
   (defun org-hugo-new-subtree-post-capture-template ()
     "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
@@ -55,7 +59,6 @@ See `org-capture-templates' for more information."
         org-log-done 'time
 
         org-html-htmlize-output-type 'css
-        org-src-fontify-natively t
         org-publish-directory "~/public_html/"
 
         ;; org-default-notes-fileのディレクトリ
