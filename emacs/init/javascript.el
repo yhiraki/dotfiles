@@ -2,8 +2,12 @@
   :ensure t
   :defer t
   :init
-  (setq company-tern-property-marker "")
   (add-hook 'js-mode-hook 'tern-mode)
+  )
+
+(use-package js
+  :init
+  :defer t
   :config
-  (add-to-list 'company-backends 'company-tern) ; backendに追加
+  (add-to-list 'company-backends 'company-tern)
   )
