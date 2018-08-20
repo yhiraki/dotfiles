@@ -1,23 +1,19 @@
 (use-package tide
   :ensure t
   :defer t
-  :commands (typescript-mode)
+  :hook (typescript-mode)
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)
+        tide-completion-ignore-case t)
+  (tide-setup)
+  (flycheck-mode +1)
+  (eldoc-mode +1)
+  (company-mode 1)
   )
 
 (use-package typescript-mode
   :ensure t
   :defer t
-  :init
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode t)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode t)
-    (setq tide-completion-ignore-case t)
-    (company-mode-on))
-  (add-hook 'before-save-hook 'tide-format-before-save)
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
   :mode
-  ("\\.ts\\'" . typescript-mode)
+  (("\\.ts\\'" . typescript-mode))
   )
