@@ -35,6 +35,7 @@
   :config
   (add-to-list 'company-backends 'company-jedi)
   (electric-indent-mode +1)
+  (add-hook 'before-save-hook 'py-isort-before-save)
   )
 
 (use-package jedi-core
@@ -56,6 +57,4 @@
 
 (use-package py-isort
   :ensure t
-  :init
-  (add-hook 'before-save-hook 'py-isort-before-save)
   )
