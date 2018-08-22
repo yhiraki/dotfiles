@@ -12,7 +12,9 @@
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
+        ("org" . "http://orgmode.org/elpa/")
+        ("emacswiki" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/emacswiki/")
+        ))
 
 (unless package-archive-contents
   (package-refresh-contents))
