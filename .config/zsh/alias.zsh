@@ -5,7 +5,7 @@ alias ....='cd ../../..'
 
 function emacsclient-gui {
   local filename=$1
-  emacsclient -c $filename & disown
+  $EMACSCLIENT -c $filename & disown
 }
 alias e="$EDITOR"
 alias ge="emacsclient-gui"
