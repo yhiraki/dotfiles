@@ -8,7 +8,7 @@
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("python" "sh" "plantuml" "rust"))))
+    (not (member lang '("python" "shell" "plantuml" "rust"))))
 
   ;; https://github.com/skuro/plantuml-mode
   (add-to-list
@@ -81,7 +81,7 @@ See `org-capture-templates' for more information."
   (add-hook 'org-mode-hook 'turn-on-font-lock)
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (plantuml . t) )
+   '((python . t) (plantuml . t) (shell . t))
    )
   :mode (("\\.org\\'" . org-mode))
   )
