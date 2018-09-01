@@ -18,3 +18,9 @@
         sky-color-clock-format "%m/%d %H:%M")
   :config
   (sky-color-clock-initialize 35))
+
+(use-package emojify
+  :ensure t
+  :init
+  (global-emojify-mode)
+  )
