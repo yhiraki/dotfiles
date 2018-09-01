@@ -72,10 +72,6 @@ See `org-capture-templates' for more information."
                                    (lambda (f)
                                      (string= (f-ext f) "org"))
                                    'recursive)
-                          ;; (f-files "~/.cache/junkfile"
-                          ;;          (lambda (f)
-                          ;;            (string= (f-ext f) "org"))
-                          ;;          'recursive)
                           )
         org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
