@@ -6,6 +6,8 @@
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2
         web-mode-sql-indent-offset 2
+        web-mode-enable-current-element-highlight t
+        web-mode-enable-current-column-highlight t
         indent-tabs-mode nil
         tab-width 2)
   :mode
@@ -14,4 +16,5 @@
   ("\\.as[cp]x\\'" . web-mode)
   ("\\.erb\\'" . web-mode)
   ("\\.mustache\\'" . web-mode)
-  ("\\.djhtml\\'" . web-mode))
+  ("\\.djhtml\\'" . web-mode)
+  ("\\.html?\\'" . web-mode))
