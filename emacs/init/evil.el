@@ -84,6 +84,11 @@
     (kbd "M-h") 'org-metaleft
     (kbd "M-l") 'org-metaright
     )
+  ;; js
+  (evil-define-key 'normal js2-mode-map
+    (kbd "zc") 'js2-mode-hide-element
+    (kbd "zo") 'js2-mode-show-element
+    )
   ;; org-agenda
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
