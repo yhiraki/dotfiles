@@ -14,7 +14,8 @@
                   (setq my/current-virtual-env (concat pyenv-dir "versions/" jedi-env))
                   (add-to-list 'pyenv-jedi-env-args (list "--virtual-env" my/current-virtual-env) t)
                   (delq nil (delete-dups pyenv-jedi-env-args)) ;; uniq
-                  (setq jedi:server-args (apply #'append pyenv-jedi-env-args)  ;; flatten
+                  (setq jedi:server-command (list "python" jedi:server-script)
+                        jedi:server-args (apply #'append pyenv-jedi-env-args)  ;; flatten
                         jedi:environment-root jedi-env
                         python-environment-default-root-name jedi-env
                         )
