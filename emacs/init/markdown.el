@@ -5,7 +5,7 @@
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
   (add-hook 'markdown-mode-hook
             '(lambda ()
-               (hide-sublevels 3)))
+               (hide-sublevels)))
   :commands
   (markdown-mode gfm-mode)
   :mode
