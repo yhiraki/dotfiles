@@ -57,7 +57,11 @@
     (kbd ",1") 'markdown-insert-header-setext-1
     (kbd ",2") 'markdown-insert-header-setext-2
     (kbd ",-") 'markdown-insert-hr
-    (kbd ",c") 'markdown-insert-gfm-code-block)
+    (kbd ",c") 'markdown-insert-gfm-code-block
+    (kbd "zc") 'markdown-hide-subtree
+    (kbd "zo") 'markdown-show-subtree
+    (kbd "TAB") 'markdown-cycle
+    )
   ;; org-evil
   (evil-define-key 'normal org-mode-map
     (kbd ",u.") (kbd "i C-u C-c .")  ; org-time-stamp with datetime
