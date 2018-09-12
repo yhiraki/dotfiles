@@ -29,7 +29,7 @@
   ;; set nbsp:%
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_])
 
-  (add-hook 'find-file-hook
+  (add-hook 'after-init-hook
             '(lambda()
                (global-whitespace-mode 1)
                (set-face-attribute 'whitespace-trailing nil

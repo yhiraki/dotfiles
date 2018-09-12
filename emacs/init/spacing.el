@@ -14,7 +14,6 @@
   ;; 見た目ではなくて実際にスペースを入れる
   (defvar pangu-spacing-real-insert-separtor)
   (setq pangu-spacing-real-insert-separtor t)
-  :config
   ;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
   (add-hook 'text-mode-hook 'pangu-spacing-mode)
   (add-hook 'twittering-edit-mode-hook 'pangu-spacing-mode)

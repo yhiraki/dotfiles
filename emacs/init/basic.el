@@ -23,27 +23,26 @@
 
 (use-package hl-line
   :init
-  (add-hook 'after-init-hook
-            '(lambda()
-               (global-hl-line-mode t)
-               ))
-  :config
   ;; http://emacs.rubikitch.com/global-hl-line-mode-timer/
-  (defvar global-hl-line-timer-exclude-modes '(todotxt-mode))
   (defun global-hl-line-timer-function ()
     (unless (memq major-mode global-hl-line-timer-exclude-modes)
       (global-hl-line-unhighlight-all)
       (let ((global-hl-line-mode t))
         (global-hl-line-highlight))))
-  (setq global-hl-line-timer
-        (run-with-idle-timer 0.03 t 'global-hl-line-timer-function))
+  (setq defvar global-hl-line-timer-exclude-modes '(todotxt-mode)
+        global-hl-line-timer (run-with-idle-timer 0.03 t 'global-hl-line-timer-function)
+        )
+  (add-hook 'after-init-hook
+            '(lambda()
+               (global-hl-line-mode t)
+               ))
   ;; (cancel-timer global-hl-line-timer)
   )
 
 ;; buffer
 (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
 (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
-(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; シンボリックリンクの読み込みを許可
 (setq vc-follow-symlinks t)
@@ -111,14 +110,17 @@ When ARG is non-nil search in junk files."
 (use-package volatile-highlights
   :ensure t
   :defer t
-  :commands (evil-mode)
-  :config
-  (volatile-highlights-mode t)
-  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
-                        'evil-paste-pop 'evil-move)
-  (vhl/install-extension 'evil)
-  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-  (vhl/install-extension 'undo-tree))
+  :init
+  (add-hook 'evil-mode-hook
+            '(lambda()
+               (volatile-highlights-mode t)
+               (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
+                                     'evil-paste-pop 'evil-move)
+               (vhl/install-extension 'evil)
+               (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+               (vhl/install-extension 'undo-tree)
+               ))
+  )
 
 (use-package eldoc
   :defer t

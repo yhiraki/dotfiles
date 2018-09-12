@@ -36,5 +36,9 @@
 (use-package flycheck-plantuml
   :ensure t
   :after plantuml-mode
-  :config
-  (flycheck-plantuml-setup))
+  :init
+  (add-hook 'plantuml-mode-hook
+            '(lambda()
+               (flycheck-plantuml-setup)
+               ))
+  )
