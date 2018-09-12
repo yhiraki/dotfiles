@@ -1,6 +1,6 @@
 (use-package sql-indent
-  :init (el-get-bundle alex-hhh/emacs-sql-indent)
-  :config
+  :init
+  (el-get-bundle alex-hhh/emacs-sql-indent)
   (defvar my-sql-indentation-offsets-alist
     `((select-clause 0)
       (insert-clause 0)
@@ -11,12 +11,12 @@
       (select-table-continuation + sqlind-lineup-close-paren-to-open-indentation)
       ,@sqlind-default-indentation-offsets-alist))
   (add-hook 'sqlind-minor-mode-hook
-            (lambda ()
+            '(lambda ()
               (setq sqlind-indentation-offsets-alist
                     my-sql-indentation-offsets-alist)))
 
   (add-hook 'sql-mode-hook
-            (lambda ()
+            '(lambda ()
               (sqlind-minor-mode)
               (setq-default sql-indent-offset 2
                             indent-tabs-mode nil
@@ -27,7 +27,7 @@
               ))
 
   (add-hook 'sql-interactive-mode-hook
-            (lambda ()
+            '(lambda ()
               (toggle-truncate-lines t)))
 
   ;; https://github.com/xlighting/happy-emacs.d/blob/12e8369cd7934600703b61bb1c278d77dab0c3a2/modules/init-sql.el

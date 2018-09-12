@@ -5,14 +5,16 @@
 (use-package org
   :defer t
   :ensure org-plus-contrib
-  :config
+  :init
+  ;; delete whitespaces on save
+  (add-hook 'org-mode-hook
+            '(lambda()
+               (add-hook 'write-contents-functions 'whitespace-cleanup)
+               ))
+
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml" "rust"))))
-
-  ;; https://github.com/skuro/plantuml-mode
-  (add-to-list
-   'org-src-lang-modes '("plantuml" . plantuml))
 
   (defun org-hugo-new-subtree-post-capture-template ()
     "Returns `org-capture' template string for new Hugo post.
@@ -28,9 +30,17 @@ See `org-capture-templates' for more information."
                    "%?\n")          ;Place the cursor here finally
                  "\n")))
 
-  ;; delete whitespaces on save
-  (add-hook 'before-save-hook 'whitespace-cleanup)
-
+  ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
+  (defun toggle-org-html-export-on-save ()
+    (interactive)
+    (if (memq 'org-html-export-to-html after-save-hook)
+        (progn
+          (remove-hook 'after-save-hook 'org-html-export-to-html t)
+          (setq org-export-in-background nil)
+          (message "Disabled org html export on save for current buffer..."))
+      (add-hook 'after-save-hook 'org-html-export-to-html nil t)
+      (setq org-export-in-background t)
+      (message "Enabled org html export on save for current buffer...")))
 
   (setq org-startup-with-inline-images nil
         org-src-fontify-natively t
@@ -75,6 +85,11 @@ See `org-capture-templates' for more information."
                           )
         org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
+
+  :config
+  ;; https://github.com/skuro/plantuml-mode
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t) (plantuml . t) (shell . t))
@@ -94,15 +109,3 @@ See `org-capture-templates' for more information."
 (use-package ox-hugo
   :ensure t
   :after ox)
-
-;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
-(defun toggle-org-html-export-on-save ()
-  (interactive)
-  (if (memq 'org-html-export-to-html after-save-hook)
-      (progn
-        (remove-hook 'after-save-hook 'org-html-export-to-html t)
-        (setq org-export-in-background nil)
-        (message "Disabled org html export on save for current buffer..."))
-    (add-hook 'after-save-hook 'org-html-export-to-html nil t)
-    (setq org-export-in-background t)
-    (message "Enabled org html export on save for current buffer...")))

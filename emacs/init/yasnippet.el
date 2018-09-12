@@ -25,7 +25,7 @@
 (use-package popup
   :ensure t
   :after yasnippet
-  :config
+  :init
   (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
     (when (featurep 'popup)
       (popup-menu*

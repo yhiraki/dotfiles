@@ -1,22 +1,27 @@
+(use-package tern
+  :ensure t
+  :hook ((js2-mode web-mode) . tern-mode)
+  :config
+  (setq tern-command (append tern-command '("--no-port-file")))
+  (define-key tern-mode-keymap (kbd "M-.") nil)
+  (define-key tern-mode-keymap (kbd "M-,") nil)
+  )
+
 (use-package company-tern
   :ensure t
-  :init
-  (add-hook 'js2-mode-hook 'tern-mode)
   )
 
 (use-package js2-mode
   :ensure t
+  :defer t
   :init
   (setq js2-basic-offset 2)
-  ;; Better imenu
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  :defer t
+  (add-hook 'js2-mode-hook
+            '(lambda()
+               (add-to-list 'company-backends 'company-tern)
+               ))
   :mode (("\\.js\\'" . js2-mode))
-  :config
-  (add-to-list 'company-backends 'company-tern)
-  (tern-mode)
-  (define-key tern-mode-keymap (kbd "M-.") nil)
-  (define-key tern-mode-keymap (kbd "M-,") nil)
   )
 
 (use-package js2-refactor
@@ -34,15 +39,14 @@
   :ensure t
   :defer t
   :init
-  (add-hook
-   'js2-mode-hook
-   (lambda ()
-     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+  (add-hook 'js2-mode-hook
+            '(lambda ()
+               (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
   )
 
 (use-package add-node-modules-path
   :ensure t
-  :hook (js-mode typescript-mode)
+  :hook (js2-mode typescript-mode)
   )
 
 (use-package vue-mode
