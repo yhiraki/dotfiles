@@ -23,28 +23,28 @@
   ;; スペースは全角のみを可視化
   (setq whitespace-space-regexp "\\(\u3000+\\)")
 
+  ;; 保存時に自動でクリーンアップ
+  (setq whitespace-action '(auto-cleanup))
+
   ;; set lcs=extends:<,precedes:<
   (set-display-table-slot standard-display-table 'truncation ?<)
 
   ;; set nbsp:%
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_])
 
-  (add-hook 'after-init-hook
-            '(lambda()
-               (global-whitespace-mode 1)
-               (set-face-attribute 'whitespace-trailing nil
-                                   :foreground "DeepPink"
-                                   :background nil
-                                   :underline t)
-               (set-face-attribute 'whitespace-tab nil
-                                   :background nil)
-               (set-face-attribute 'whitespace-space nil
-                                   :background nil
-                                   :foreground "GreenYellow"
-                                   :weight 'bold)
-               (set-face-attribute 'whitespace-empty nil
-                                   :background nil
-                                   :foreground "DeepPink"
-                                   :underline t)
-               ))
+  (global-whitespace-mode 1)
+  (set-face-attribute 'whitespace-trailing nil
+                      :foreground "DeepPink"
+                      :background nil
+                      :underline t)
+  (set-face-attribute 'whitespace-tab nil
+                      :background nil)
+  (set-face-attribute 'whitespace-space nil
+                      :background nil
+                      :foreground "GreenYellow"
+                      :weight 'bold)
+  (set-face-attribute 'whitespace-empty nil
+                      :background nil
+                      :foreground "DeepPink"
+                      :underline t)
   )

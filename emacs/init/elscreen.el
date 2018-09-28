@@ -6,5 +6,6 @@
   (add-hook 'elscreen-screen-update-hook
             '(lambda ()
                (setq elscreen-display-tab (if (elscreen-one-screen-p) nil t))))
+  :config
   (add-hook 'after-init-hook 'elscreen-start)
   )
