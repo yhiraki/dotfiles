@@ -5,7 +5,10 @@
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
   (add-hook 'markdown-mode-hook
             '(lambda ()
-               (hide-sublevels 1)))
+               (hide-sublevels 1)
+               ;; whitespace-cleanup を無効にする
+               (set (make-local-variable 'whitespace-action) nil)
+               ))
   :commands
   (markdown-mode gfm-mode)
   :mode

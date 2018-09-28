@@ -6,12 +6,6 @@
   :defer t
   :ensure org-plus-contrib
   :init
-  ;; delete whitespaces on save
-  (add-hook 'org-mode-hook
-            '(lambda()
-               (add-hook 'write-contents-functions 'whitespace-cleanup)
-               ))
-
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml" "rust"))))
