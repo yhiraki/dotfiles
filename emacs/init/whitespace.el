@@ -1,7 +1,6 @@
 ;;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
 
 (use-package whitespace
-  :defer t
   :init
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
@@ -32,19 +31,22 @@
   ;; set nbsp:%
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_])
 
-  (global-whitespace-mode 1)
-  (set-face-attribute 'whitespace-trailing nil
-                      :foreground "DeepPink"
-                      :background nil
-                      :underline t)
-  (set-face-attribute 'whitespace-tab nil
-                      :background nil)
-  (set-face-attribute 'whitespace-space nil
-                      :background nil
-                      :foreground "GreenYellow"
-                      :weight 'bold)
-  (set-face-attribute 'whitespace-empty nil
-                      :background nil
-                      :foreground "DeepPink"
-                      :underline t)
+  (add-hook 'after-init-hook
+            '(lambda()
+               (global-whitespace-mode 1)
+               (set-face-attribute 'whitespace-trailing nil
+                                   :foreground "DeepPink"
+                                   :background nil
+                                   :underline t)
+               (set-face-attribute 'whitespace-tab nil
+                                   :background nil)
+               (set-face-attribute 'whitespace-space nil
+                                   :background nil
+                                   :foreground "GreenYellow"
+                                   :weight 'bold)
+               (set-face-attribute 'whitespace-empty nil
+                                   :background nil
+                                   :foreground "DeepPink"
+                                   :underline t)
+               ))
   )
