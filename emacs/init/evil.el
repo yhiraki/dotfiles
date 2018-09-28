@@ -6,7 +6,7 @@
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-C-u-scroll t
+  (setq evil-want-C-u-scroll nil
         evil-want-C-i-jump t
         evil-want-fine-undo t
         evil-search-module 'evil-search
