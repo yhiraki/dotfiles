@@ -1,4 +1,5 @@
 (use-package pangu-spacing
+  :disabled t
   :ensure t
   :init
   ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
