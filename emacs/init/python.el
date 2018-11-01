@@ -34,11 +34,15 @@
             '(lambda()
                (electric-indent-mode +1)
                (add-to-list 'company-backends 'company-jedi)
-               (add-hook 'write-contents-functions
-                         '(lambda()
-                            (py-yapf-buffer)
-                            (py-isort-buffer)
-                            ))))
+               ;; (add-hook 'write-contents-functions
+               ;;           '(lambda()
+               ;;              (unless (string-match "command not found" (shell-command-to-string "yapf -v"))
+               ;;                (py-yapf-buffer)
+               ;;                )
+               ;;              (unless (string-match "command not found" (shell-command-to-string "isort -v"))
+               ;;                (py-isort-buffer)
+               ;;                )
+               ;;              ))))
   )
 
 (use-package jedi-core
