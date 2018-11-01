@@ -46,7 +46,7 @@
     (kbd "gd") 'jedi:goto-definition
     (kbd "gb") 'jedi:goto-definition-pop-marker
     (kbd "K") 'jedi:show-doc
-    (kbd ",f") 'py-autopep8)
+    (kbd ",f") (lambda() (interactive) (py-yapf-buffer) (py-isort-buffer)))
   (evil-define-key 'visual python-mode-map
     (kbd ",f") 'py-autopep8-region)
   ;; go
