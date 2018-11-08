@@ -43,6 +43,7 @@
                ;;                (py-isort-buffer)
                ;;                )
                ;;              ))))
+               ))
   )
 
 (use-package jedi-core
