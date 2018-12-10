@@ -198,6 +198,7 @@
     (kbd "ol") 'org-store-link
     (kbd "r") 'quickrun
     (kbd "th") 'twit
+    (kbd "tm") 'twittering-mentions-timeline
     (kbd "tu") 'twittering-update-status-interactive
     (kbd "us") 'counsel-unicode-char
     (kbd "x") 'counsel-M-x
