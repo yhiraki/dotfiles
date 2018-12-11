@@ -1,5 +1,10 @@
 # zmodload zsh/zprof && zprof
 
+if [ -z $ZSH_ENV_LOADED ]
+then
+
+export ZSH_ENV_LOADED="1"
+
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
@@ -42,10 +47,12 @@ export LESS='-R'
 export LOCATE_PATH=$HOME/var/db/locate.database
 
 # gcloud
-export CLOUDSDK_PYTHON_SITEPACKAGES=1
-export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
+# export CLOUDSDK_PYTHON_SITEPACKAGES=1
+# export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
 
 export PIPENV_VENV_IN_PROJECT=true
+
+export PATH="$HOME/.anyenv/bin:$PATH"
 
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
@@ -121,3 +128,5 @@ alias zmv='noglob zmv -W'
 setopt prompt_subst
 
 autoload -U promptinit && promptinit
+
+fi
