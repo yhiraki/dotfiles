@@ -1,9 +1,6 @@
-source $ZDOTDIR/global.zsh
-
 # anyenv
-export PATH=$ANYENV_ROOT/bin:$PATH
-ANYENV_CMD=$ANYENV_ROOT/bin/anyenv
-eval "$($ANYENV_CMD init -)"
+export PATH="$HOME/.anyenv/bin:$PATH"
+eval "$(anyenv init -)"
 
 # gcloud
-source $HOME/bin/google-cloud-sdk/path.zsh.inc
+# source $HOME/bin/google-cloud-sdk/path.zsh.inc

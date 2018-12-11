@@ -45,8 +45,6 @@ export LOCATE_PATH=$HOME/var/db/locate.database
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
 
-ANYENV_ROOT=$HOME/.anyenv
-
 export PIPENV_VENV_IN_PROJECT=true
 
 setopt hist_ignore_dups
