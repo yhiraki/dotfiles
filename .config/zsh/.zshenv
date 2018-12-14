@@ -1,15 +1,12 @@
 # zmodload zsh/zprof && zprof
 
-if [ -z $ZSH_ENV_LOADED ]
-then
-
 export ZSH_ENV_LOADED="1"
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-export TERM='xterm-256color'
+export TERM=xterm-256color
 
 # for alacritty
 export PATH=/usr/local/bin:$PATH
@@ -128,5 +125,3 @@ alias zmv='noglob zmv -W'
 setopt prompt_subst
 
 autoload -U promptinit && promptinit
-
-fi
