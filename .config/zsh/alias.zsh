@@ -19,3 +19,7 @@ alias f=locate-and-open
 alias -g F="| fzf "
 alias -g FP="| fzf --preview '$FZF_PREVIEW_CMD'"
 alias -g O='F | xargs open'
+
+alias gcloud='_gcloud gcloud'
+alias gsutil='_gcloud gsutil'
+alias bq='_gcloud bq'
