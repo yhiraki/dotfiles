@@ -86,7 +86,7 @@ See `org-capture-templates' for more information."
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (plantuml . t) (shell . t))
+   '((python . t) (plantuml . t) (shell . t) (dot . t))
    )
   :mode (("\\.org\\'" . org-mode))
   )
@@ -101,5 +101,9 @@ See `org-capture-templates' for more information."
   )
 
 (use-package ox-hugo
+  :ensure t
+  :after ox)
+
+(use-package ox-rst
   :ensure t
   :after ox)
