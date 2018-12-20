@@ -2,20 +2,13 @@
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
 (require 'package)
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
-;;;;; add melpa and orgmode for packages
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")
         ("emacswiki" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/emacswiki/")
         ))
-
+(package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
 
