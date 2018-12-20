@@ -64,8 +64,8 @@
     )
   ;; org-evil
   (evil-define-key 'normal org-mode-map
-    (kbd ",u.") (kbd "i C-u C-c .")  ; org-time-stamp with datetime
-    (kbd ",u!") (kbd "i C-u C-c !")  ; org-time-stamp-inactive with datetime
+    (kbd ",u.") (kbd "\\ C-u C-c .")  ; org-time-stamp with datetime
+    (kbd ",u!") (kbd "\\ C-u C-c !")  ; org-time-stamp-inactive with datetime
     (kbd ",.") 'org-time-stamp
     (kbd ",!") 'org-time-stamp-inactive
     (kbd ",d") 'org-deadline
