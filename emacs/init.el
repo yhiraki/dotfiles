@@ -213,17 +213,21 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package macos :no-require
-  :config
-  (when (memq window-system '(mac ns))
-    (setq initial-frame-alist
-          (append
-           '((ns-transparent-titlebar . t) ;; タイトルバーを透過
-             (vertical-scroll-bars . nil) ;; スクロールバーを消す
-             (ns-appearance . dark) ;; 26.1 {light, dark}
-             (internal-border-width . 0))) ;; 余白を消す
-          )
-    (setq default-frame-alist initial-frame-alist)
-    )
+  :init
+  (add-hook 'after-make-frame-functions
+	    '(lambda (frame)
+	       (when (memq window-system '(mac ns))
+		 (setq initial-frame-alist
+		       (append
+			'((ns-transparent-titlebar . t) ;; タイトルバーを透過
+			  (vertical-scroll-bars . nil) ;; スクロールバーを消す
+			  (ns-appearance . dark) ;; 26.1 {light, dark}
+			  (internal-border-width . 0) ;; 余白を消す
+		       ))
+		       )
+		 )
+	       (setq default-frame-alist initial-frame-alist)
+	       ))
   )
 
 (use-package appearance :no-require :disabled t
@@ -1298,6 +1302,12 @@ See `org-capture-templates' for more information."
   )
 
 (use-package color-theme-sanityinc-tomorrow :ensure t
+  :init
+  ;; after emacsclient load
+  (add-hook 'after-make-frame-functions
+	    '(lambda(frame)
+	       (load-theme 'sanityinc-tomorrow-night t)
+	       ))
   :config
   (load-theme 'sanityinc-tomorrow-night t)
   )
@@ -1326,22 +1336,40 @@ See `org-capture-templates' for more information."
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
 
+  (add-hook 'after-make-frame-functions
+  	    '(lambda(frame)
+  	       (set-face-attribute 'whitespace-trailing nil
+  	    			   :foreground "DeepPink"
+  	    			   :background nil
+  	    			   :underline t)
+  	       (set-face-attribute 'whitespace-tab nil
+  	    			   :background nil)
+  	       (set-face-attribute 'whitespace-space nil
+  	    			   :background nil
+  	    			   :foreground "GreenYellow"
+  	    			   :weight 'bold)
+  	       (set-face-attribute 'whitespace-empty nil
+  	    			   :background nil
+  	    			   :foreground "DeepPink"
+  	    			   :underline t))
+	       (global-whitespace-mode 1)
+  	    )
   :config
-  (global-whitespace-mode 1)
   (set-face-attribute 'whitespace-trailing nil
-                      :foreground "DeepPink"
-                      :background nil
-                      :underline t)
+		      :foreground "DeepPink"
+		      :background nil
+		      :underline t)
   (set-face-attribute 'whitespace-tab nil
-                      :background nil)
+		      :background nil)
   (set-face-attribute 'whitespace-space nil
-                      :background nil
-                      :foreground "GreenYellow"
-                      :weight 'bold)
+		      :background nil
+		      :foreground "GreenYellow"
+		      :weight 'bold)
   (set-face-attribute 'whitespace-empty nil
-                      :background nil
-                      :foreground "DeepPink"
-                      :underline t)
+		      :background nil
+		      :foreground "DeepPink"
+  		      :underline t)
+  (global-whitespace-mode 1)
   )
 
 (use-package yasnippet :ensure t :defer t
