@@ -23,10 +23,9 @@
   (package-install 'use-package))
 (require 'use-package)
 
-;; init-loader
-(use-package init-loader :ensure t :disabled t
-  :config
-  (init-loader-load (locate-user-emacs-file "init-loader")))
+;; (use-package init-loader :ensure t
+;;   :config
+;;   (init-loader-load (locate-user-emacs-file "init-loader")))
 
 (use-package startup :no-require
   :config
@@ -92,10 +91,10 @@
 
 (use-package indent :no-require
   :config
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
-  (setq indent-tabs-mode nil)
-  (setq require-final-newline t)
+  (setq-default c-basic-offset 2)
+  (setq-default tab-width 2)
+  (setq-default indent-tabs-mode nil)
+  (setq-default require-final-newline t)
   )
 
 (use-package syntax :no-require
@@ -212,34 +211,26 @@ When ARG is non-nil search in junk files."
   (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
   )
 
-(use-package macos :no-require
-  :init
-  (add-hook 'after-make-frame-functions
-	    '(lambda (frame)
-	       (when (memq window-system '(mac ns))
-		 (setq initial-frame-alist
-		       (append
-			'((ns-transparent-titlebar . t) ;; タイトルバーを透過
-			  (vertical-scroll-bars . nil) ;; スクロールバーを消す
-			  (ns-appearance . dark) ;; 26.1 {light, dark}
-			  (internal-border-width . 0) ;; 余白を消す
-		       ))
-		       )
-		 )
-	       (setq default-frame-alist initial-frame-alist)
-	       ))
-  )
-
-(use-package appearance :no-require :disabled t
+(use-package appearance :no-require
   :config
+  (setq initial-frame-alist
+        (append
+         '((ns-transparent-titlebar . t) ;; タイトルバーを透過
+           (vertical-scroll-bars . nil) ;; スクロールバーを消す
+           (ns-appearance . dark) ;; 26.1 {light, dark}
+           (internal-border-width . 0) ;; 余白を消す
+           ))
+        )
+  (setq default-frame-alist initial-frame-alist)
   ;; バッテリ残量をおしゃれに表示
   ;; https://qiita.com/zk_phi/items/76c950c89428a54ec67d
-  (add-to-list 'mode-line-format
-               '(:eval (let ((bat (read (cdr (assoc ?p (funcall battery-status-function))))))
-                         (cond ((> bat 87)  "█") ((> bat 75)  "▇")
-                               ((> bat 62)  "▆") ((> bat 50)  "▅")
-                               ((> bat 37)  "▄") ((> bat 25)  "▃")
-                               ((> bat 12)  "▂") (t           "▁")))))
+  ;; (add-to-list
+  ;;  'mode-line-format
+  ;;  '(:eval (let ((bat (read (cdr (assoc ?p (funcall battery-status-function))))))
+  ;;            (cond ((> bat 87)  "█") ((> bat 75)  "▇")
+  ;;                  ((> bat 62)  "▆") ((> bat 50)  "▅")
+  ;;                  ((> bat 37)  "▄") ((> bat 25)  "▃")
+  ;;                  ((> bat 12)  "▂") (t           "▁")))))
   )
 
 (use-package sky-color-clock
@@ -255,23 +246,23 @@ When ARG is non-nil search in junk files."
   (global-emojify-mode)
   )
 
-(use-package dimmer :ensure t :disabled t
-  :init
-  ;; https://qiita.com/takaxp/items/6ec37f9717e362bef35f
-  ;; カーソルのあるバッファを強調
-  (setq dimmer-fraction 0.6)
-  ;; (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
-  :config
-  (dimmer-mode 1)
-  (defun dimmer-off ()
-    (dimmer-mode -1)
-    (dimmer-process-all))
-  (defun dimmer-on ()
-    (dimmer-mode 1)
-    (dimmer-process-all))
-  (add-hook 'focus-out-hook #'dimmer-off)
-  (add-hook 'focus-in-hook #'dimmer-on)
-  )
+;; (use-package dimmer :ensure t
+;;   :init
+;;   ;; https://qiita.com/takaxp/items/6ec37f9717e362bef35f
+;;   ;; カーソルのあるバッファを強調
+;;   (setq dimmer-fraction 0.6)
+;;   ;; (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
+;;   :config
+;;   (dimmer-mode 1)
+;;   (defun dimmer-off ()
+;;     (dimmer-mode -1)
+;;     (dimmer-process-all))
+;;   (defun dimmer-on ()
+;;     (dimmer-mode 1)
+;;     (dimmer-process-all))
+;;   (add-hook 'focus-out-hook #'dimmer-off)
+;;   (add-hook 'focus-in-hook #'dimmer-on)
+;;   )
 
 (use-package direx :ensure t :defer t
   :init
@@ -386,6 +377,11 @@ When ARG is non-nil search in junk files."
      ))
   )
 
+(use-package flyspell-lazy :ensure t
+  :config
+  (flyspel-lazy-mode 1)
+  )
+
 (use-package magit :ensure t :defer t
   :commands (magit-status)
   :config
@@ -394,7 +390,7 @@ When ARG is non-nil search in junk files."
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   )
 
-(use-package git-gutter-fringe+ :ensure t :defer t
+(use-package git-gutter-fringe+ :ensure t
   :config
   (global-git-gutter+-mode)
   )
@@ -458,25 +454,25 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (set-exec-path-from-shell-PATH)
   )
 
-(use-package pangu-spacing :ensure t :disabled t
-  :init
-  ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
-  ;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
-  (defvar pangu-spacing-chinese-before-english-regexp)
-  (setq pangu-spacing-chinese-before-english-regexp
-        (rx (group-n 1 (category japanese))
-            (group-n 2 (in "a-zA-Z0-9"))))
-  (defvar pangu-spacing-chinese-after-english-regexp)
-  (setq pangu-spacing-chinese-after-english-regexp
-        (rx (group-n 1 (in "a-zA-Z0-9"))
-            (group-n 2 (category japanese))))
-  ;; 見た目ではなくて実際にスペースを入れる
-  (defvar pangu-spacing-real-insert-separtor)
-  (setq pangu-spacing-real-insert-separtor t)
-  ;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
-  (add-hook 'text-mode-hook 'pangu-spacing-mode)
-  (add-hook 'twittering-edit-mode-hook 'pangu-spacing-mode)
-  )
+;; (use-package pangu-spacing :ensure t
+;;   :init
+;;   ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
+;;   ;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
+;;   (defvar pangu-spacing-chinese-before-english-regexp)
+;;   (setq pangu-spacing-chinese-before-english-regexp
+;;         (rx (group-n 1 (category japanese))
+;;             (group-n 2 (in "a-zA-Z0-9"))))
+;;   (defvar pangu-spacing-chinese-after-english-regexp)
+;;   (setq pangu-spacing-chinese-after-english-regexp
+;;         (rx (group-n 1 (in "a-zA-Z0-9"))
+;;             (group-n 2 (category japanese))))
+;;   ;; 見た目ではなくて実際にスペースを入れる
+;;   (defvar pangu-spacing-real-insert-separtor)
+;;   (setq pangu-spacing-real-insert-separtor t)
+;;   ;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
+;;   (add-hook 'text-mode-hook 'pangu-spacing-mode)
+;;   (add-hook 'twittering-edit-mode-hook 'pangu-spacing-mode)
+;;   )
 
 (use-package twittering-mode :ensure t :defer t
   :init
@@ -513,9 +509,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (add-hook 'after-init-hook 'company-statistics-mode)
   )
 
-(use-package company-flx :disabled t)
+;; (use-package company-flx :disabled t)
 
-(use-package company-racer :disabled t)
+;; (use-package company-racer :disabled t)
 
 (use-package modeline :no-require
   :config
@@ -645,6 +641,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package dockerfile-mode :ensure t :defer t
   :mode
   ("Dockerfile\\'" . dockerfile-mode))
+
+(use-package elisp-mode :defer t
+  :init
+  (add-hook 'emacs-lisp-mode-hook
+            '(lambda()
+               (hs-minor-mode)
+               (hs-hide-all)
+               ))
+  )
 
 (use-package go-mode :ensure t :defer t
   :init
@@ -804,10 +809,10 @@ See `org-capture-templates' for more information."
   :mode (("\\.org\\'" . org-mode))
   )
 
-(use-package org-reveal :ensure t :disabled t
-  :init
-  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-  )
+;; (use-package org-reveal :ensure t :disabled t
+;;   :init
+;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+;;   )
 
 (use-package ox-confluence :defer t
   :after org
@@ -893,7 +898,7 @@ See `org-capture-templates' for more information."
   ("\\.zsh\\'" . shell-script-mode)
   )
 
-(use-package sql-indent :disabled t
+(use-package sql-indent
   :init
   (el-get-bundle alex-hhh/emacs-sql-indent)
   (defvar my-sql-indentation-offsets-alist
@@ -1029,7 +1034,6 @@ See `org-capture-templates' for more information."
   ("\\.yaml\\'" . yaml-mode)
   )
 
-
 (use-package emmet-mode :ensure t :defer t
   :hook (sgml-mode css-mode web-mode xml-mode)
 )
@@ -1040,7 +1044,7 @@ See `org-capture-templates' for more information."
   (setq evil-search-module 'evil-search)
   (setq evil-want-C-i-jump t)
   (setq evil-want-C-u-scroll nil)
-  (setq evil-want-fine-undo t)
+  (setq evil-want-fine-undo 'fine)
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   :bind
   (:map evil-normal-state-map
@@ -1250,7 +1254,7 @@ See `org-capture-templates' for more information."
 (use-package evil-org :ensure t
   :after org
   :init
-  (add-hook 'org-mode-hook 'evil-org-mode)
+  ;; (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
             (lambda ()
               (evil-org-set-key-theme
@@ -1305,9 +1309,10 @@ See `org-capture-templates' for more information."
   :init
   ;; after emacsclient load
   (add-hook 'after-make-frame-functions
-	    '(lambda(frame)
-	       (load-theme 'sanityinc-tomorrow-night t)
-	       ))
+            '(lambda(frame)
+               (load-theme 'sanityinc-tomorrow-night t)
+               (my/init-whitespace-mode)
+               ))
   :config
   (load-theme 'sanityinc-tomorrow-night t)
   )
@@ -1336,40 +1341,26 @@ See `org-capture-templates' for more information."
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
 
-  (add-hook 'after-make-frame-functions
-  	    '(lambda(frame)
-  	       (set-face-attribute 'whitespace-trailing nil
-  	    			   :foreground "DeepPink"
-  	    			   :background nil
-  	    			   :underline t)
-  	       (set-face-attribute 'whitespace-tab nil
-  	    			   :background nil)
-  	       (set-face-attribute 'whitespace-space nil
-  	    			   :background nil
-  	    			   :foreground "GreenYellow"
-  	    			   :weight 'bold)
-  	       (set-face-attribute 'whitespace-empty nil
-  	    			   :background nil
-  	    			   :foreground "DeepPink"
-  	    			   :underline t))
-	       (global-whitespace-mode 1)
-  	    )
+  (defun my/init-whitespace-mode ()
+    (interactive)
+    (set-face-attribute 'whitespace-trailing nil
+                        :foreground "DeepPink"
+                        :background nil
+                        :underline t)
+    (set-face-attribute 'whitespace-tab nil
+                        :background nil)
+    (set-face-attribute 'whitespace-space nil
+                        :background nil
+                        :foreground "GreenYellow"
+                        :weight 'bold)
+    (set-face-attribute 'whitespace-empty nil
+                        :background nil
+                        :foreground "DeepPink"
+                        :underline t)
+    (global-whitespace-mode 1)
+    )
   :config
-  (set-face-attribute 'whitespace-trailing nil
-		      :foreground "DeepPink"
-		      :background nil
-		      :underline t)
-  (set-face-attribute 'whitespace-tab nil
-		      :background nil)
-  (set-face-attribute 'whitespace-space nil
-		      :background nil
-		      :foreground "GreenYellow"
-		      :weight 'bold)
-  (set-face-attribute 'whitespace-empty nil
-		      :background nil
-		      :foreground "DeepPink"
-  		      :underline t)
-  (global-whitespace-mode 1)
+  (my/init-whitespace-mode)
   )
 
 (use-package yasnippet :ensure t :defer t
@@ -1427,4 +1418,5 @@ See `org-capture-templates' for more information."
 (use-package key-binding :no-require
   :config
   (global-set-key "\C-h" (kbd "<backspace>"))
+  (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
   )
