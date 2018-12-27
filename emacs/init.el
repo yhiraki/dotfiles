@@ -23,10 +23,6 @@
   (package-install 'use-package))
 (require 'use-package)
 
-;; (use-package init-loader :ensure t
-;;   :config
-;;   (init-loader-load (locate-user-emacs-file "init-loader")))
-
 (use-package startup :no-require
   :config
   (setq inhibit-startup-message t)
@@ -246,24 +242,6 @@ When ARG is non-nil search in junk files."
   (global-emojify-mode)
   )
 
-;; (use-package dimmer :ensure t
-;;   :init
-;;   ;; https://qiita.com/takaxp/items/6ec37f9717e362bef35f
-;;   ;; カーソルのあるバッファを強調
-;;   (setq dimmer-fraction 0.6)
-;;   ;; (setq dimmer-exclusion-regexp "^\\*helm\\|^ \\*Minibuf\\|^\\*Calendar")
-;;   :config
-;;   (dimmer-mode 1)
-;;   (defun dimmer-off ()
-;;     (dimmer-mode -1)
-;;     (dimmer-process-all))
-;;   (defun dimmer-on ()
-;;     (dimmer-mode 1)
-;;     (dimmer-process-all))
-;;   (add-hook 'focus-out-hook #'dimmer-off)
-;;   (add-hook 'focus-in-hook #'dimmer-on)
-;;   )
-
 (use-package direx :ensure t :defer t
   :init
   (setq direx:leaf-icon "  ")
@@ -280,21 +258,6 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flycheck :ensure t :defer t
-  :init
-  ;; https://github.com/lunaryorn/old-emacs-configuration/blob/master/lisp/flycheck-virtualenv.el
-  (declare-function python-shell-calculate-exec-path "python")
-
-  (defun flycheck-virtualenv-executable-find (executable)
-    "Find an EXECUTABLE in the current virtualenv if any."
-    (if (bound-and-true-p python-shell-virtualenv-root)
-        (let ((exec-path (python-shell-calculate-exec-path)))
-          (executable-find executable))
-      (executable-find executable)))
-
-  (defun flycheck-virtualenv-setup ()
-    "Setup Flycheck for the current virtualenv."
-    (setq-local flycheck-executable-find #'flycheck-virtualenv-executable-find))
-
   :config
   (global-flycheck-mode)
   )
@@ -379,7 +342,7 @@ When ARG is non-nil search in junk files."
 
 (use-package flyspell-lazy :ensure t
   :config
-  (flyspel-lazy-mode 1)
+  (flyspell-lazy-mode 1)
   )
 
 (use-package magit :ensure t :defer t
@@ -671,11 +634,17 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package js2-mode :ensure t :defer t
   :init
+  (setq js2-basic-offset 2)
+  (setq js2-highlight-external-variables nil)
+  (setq js2-include-browser-externs nil)
+  (setq js2-include-jslint-globals nil)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   (add-hook 'js2-mode-hook
             '(lambda()
-               (setq js2-basic-offset 2)
                (add-to-list 'company-backends 'company-tern)
+               (flycheck-mode 1)
                ))
   :mode (("\\.js\\'" . js2-mode))
   )
@@ -709,6 +678,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package add-node-modules-path :ensure t :defer t
   :hook (js2-mode typescript-mode)
   )
+
+(use-package eslint-fix :ensure t :defer t)
 
 (use-package vue-mode :ensure t :defer t
   :mode (("\\.vue\\'" . vue-mode))
@@ -860,6 +831,7 @@ See `org-capture-templates' for more information."
             '(lambda()
                (electric-indent-mode +1)
                (add-to-list 'company-backends 'company-jedi)
+               (flycheck-mode 1)
                ;; (add-hook 'write-contents-functions
                ;;           '(lambda()
                ;;              (unless (string-match "command not found" (shell-command-to-string "yapf -v"))
@@ -1118,6 +1090,7 @@ See `org-capture-templates' for more information."
   (evil-define-key 'normal js2-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
+    (kbd ",f") 'eslint-fix
     )
   (evil-define-key 'normal web-mode-map
     (kbd "zc") 'web-mode-fold-or-unfold
@@ -1273,10 +1246,6 @@ See `org-capture-templates' for more information."
   :after evil
   )
 
-(use-package prettier-js :ensure t :defer t
-  :hook ((js-mode typescript-mode markdown-mode) . prettier-js-mode)
-  )
-
 (use-package shackle :ensure t
   :init
   (setq shackle-rules
@@ -1289,7 +1258,8 @@ See `org-capture-templates' for more information."
           (direx:direx-mode :popup t :align left :ratio 32)
           ("*Warnings*" :popup t :align below :ratio 0.1)
           )
-        shackle-lighter "")
+        )
+  (setq shackle-lighter "")
   :config
   (shackle-mode 1)
   )
