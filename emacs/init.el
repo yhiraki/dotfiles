@@ -260,6 +260,9 @@ When ARG is non-nil search in junk files."
 (use-package flycheck :ensure t :defer t
   :config
   (global-flycheck-mode)
+  (flycheck-add-mode 'javascript-eslint 'vue-mode)
+  (flycheck-add-mode 'javascript-eslint 'vue-html-mode)
+  (flycheck-add-mode 'javascript-eslint 'css-mode)
   )
 
 (use-package flyspell
@@ -666,7 +669,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package tern :ensure t :defer t
-  :hook ((js2-mode web-mode) . tern-mode)
+  :hook ((js2-mode web-mode vue-mode) . tern-mode)
   :config
   (setq tern-command (append tern-command '("--no-port-file")))
   (define-key tern-mode-keymap (kbd "M-.") nil)
