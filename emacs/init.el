@@ -637,7 +637,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package js2-mode :ensure t :defer t
   :init
-  (setq js2-basic-offset 2)
+  (setq-default js2-basic-offset 2)
   (setq js2-highlight-external-variables nil)
   (setq js2-include-browser-externs nil)
   (setq js2-include-jslint-globals nil)
@@ -679,7 +679,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package company-tern :ensure t)
 
 (use-package add-node-modules-path :ensure t :defer t
-  :hook (js2-mode typescript-mode)
+  :hook (js-mode js2-mode typescript-mode vue-mode)
   )
 
 (use-package eslint-fix :ensure t :defer t)
@@ -1091,6 +1091,11 @@ See `org-capture-templates' for more information."
     (kbd "M-l") 'org-metaright
     )
   (evil-define-key 'normal js2-mode-map
+    (kbd "zc") 'js2-mode-hide-element
+    (kbd "zo") 'js2-mode-show-element
+    (kbd ",f") 'eslint-fix
+    )
+  (evil-define-key 'normal js-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
     (kbd ",f") 'eslint-fix
