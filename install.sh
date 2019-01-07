@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DOTFILES_REMOTE=https://github.com/coffexpr/dotfiles
-DOTDIR=$HOME/src/github.com/coffexpr/dotfiles
+DOTFILES_REMOTE=https://github.com/yhiaki/dotfiles
+DOTDIR=$HOME/src/github.com/yhiraki/dotfiles
 
 # install packages
 if which apt-get > /dev/null; then
@@ -32,11 +32,10 @@ fi
 
 
 # execute installers
-source $DOTDIR/install.d/link.sh
-source $DOTDIR/install.d/go.sh
-source $DOTDIR/install.d/ghq.sh
-source $DOTDIR/install.d/pyenv.sh
-source $DOTDIR/install.d/plantuml.sh
+bash $DOTDIR/install.d/link.sh
+bash $DOTDIR/install.d/go.sh
+bash $DOTDIR/install.d/ghq.sh
+bash $DOTDIR/install.d/plantuml.sh
 
 sudo chsh $USER --shell $(which zsh)
 

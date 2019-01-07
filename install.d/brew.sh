@@ -1,18 +1,14 @@
 #!/bin/bash
 
-BREW_CMD="brew install"
-
 # commons
-$BREW_CMD git zsh golang ctags tmux tree vim wget
-
-# python
-$BREW_CMD pyenv pyenv-virtualenvjawshooah/pyenv/pyenv-default-packages
+brew install git zsh ctags tmux tree vim wget
 
 # neovim
-$BREW_CMD neovim/neovim/neovim
+brew install neovim/neovim/neovim
 
 # for dot / plantuml
-$BREW_CMD graphviz
+brew install graphviz
 
 # utils
-$BREW_CMD gnu-sed
+brew tap homebrew/dupes
+brew install coreutil findutils gnu-sed gnu-tar grep

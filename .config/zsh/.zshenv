@@ -2,35 +2,35 @@
 
 export ZSH_ENV_LOADED="1"
 
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 export TERM=xterm-256color
 
 # for alacritty
-export PATH=/usr/local/bin:$PATH
+export PATH="/usr/local/bin:$PATH"
 
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
 
 export EDITOR=vim
 
-export HISTFILE=${HOME}/.zsh_history
+export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=100000
 
-export GOPATH=$HOME
-export PATH=$PATH:$GOPATH/bin
+export GOPATH="$HOME"
+export PATH="$PATH:$GOPATH/bin"
 
-export RUSTPATH=$HOME/.cargo
-export PATH=$PATH:$RUSTPATH/bin
+export RUSTPATH="$HOME/.cargo"
+export PATH="$PATH:$RUSTPATH/bin"
 
-export DOTDIR=$GOPATH/src/github.com/yhiraki/dotfiles
-export PATH=$PATH:$DOTDIR/bin
+export DOTDIR="$GOPATH/src/github.com/yhiraki/dotfiles"
+export PATH="$PATH:$DOTDIR/bin"
 
 export FZF_DEFAULT_OPTS="-e --ansi --select-1 --exit-0"
-export ZPLUG_HOME=$HOME/.zplug
+export ZPLUG_HOME="$HOME/.zplug"
 
 export PLANTUML_LIMIT_SIZE=8192
 
@@ -41,7 +41,7 @@ export LESS='-R'
 # export LESSOPEN="| pygmentize %s"
 
 # locate
-export LOCATE_PATH=$HOME/var/db/locate.database
+export LOCATE_PATH="$HOME/var/db/locate.database"
 
 # gcloud
 # export CLOUDSDK_PYTHON_SITEPACKAGES=1
@@ -50,6 +50,38 @@ export LOCATE_PATH=$HOME/var/db/locate.database
 export PIPENV_VENV_IN_PROJECT=true
 
 export PATH="$HOME/.anyenv/bin:$PATH"
+
+# for gnu commands
+if [ -d /usr/local/opt/coreutils/ ]
+then
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+
+if which gsed > /dev/null
+then
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
+fi
+
+if which gfind > /dev/null
+then
+  PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+  MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+fi
+
+if which gtar > /dev/null
+then
+  PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+  MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
+fi
+
+if which ggrep > /dev/null
+then
+  PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+  MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
+fi
+
 
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
