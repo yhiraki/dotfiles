@@ -351,7 +351,7 @@ When ARG is non-nil search in junk files."
 (use-package magit :ensure t :defer t
   :commands (magit-status)
   :config
-  ;; magit-commmit 時に diff が開くのをやめる
+  ;; magit-commit 時に diff が開くのをやめる
   ;; https://qiita.com/egg_chicken/items/948f8df70069334e8296
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   )
@@ -637,15 +637,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package js2-mode :ensure t :defer t
   :init
-  (setq-default js2-basic-offset 2)
-  (setq js2-highlight-external-variables nil)
-  (setq js2-include-browser-externs nil)
-  (setq js2-include-jslint-globals nil)
-  (setq js2-mode-show-parse-errors nil)
-  (setq js2-mode-show-strict-warnings nil)
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   (add-hook 'js2-mode-hook
             '(lambda()
+               (setq js2-basic-offset 2)
+               (setq js2-highlight-external-variables nil)
+               (setq js2-include-browser-externs nil)
+               (setq js2-include-jslint-globals nil)
+               (setq js2-mode-show-parse-errors nil)
+               (setq js2-mode-show-strict-warnings nil)
                (add-to-list 'company-backends 'company-tern)
                (flycheck-mode 1)
                ))
