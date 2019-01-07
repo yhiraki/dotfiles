@@ -763,10 +763,9 @@ See `org-capture-templates' for more information."
 
   (defun my/update-org-agenda-files ()
     (interactive)
-    (setq org-agenda-files (my/get-org-agenda-files)
-          )
-
-    (my/update-org-agenda-files)
+    (setq org-agenda-files (my/get-org-agenda-files))
+    )
+  (my/update-org-agenda-files)
 
   (setq org-startup-with-inline-images nil)
   (setq org-src-fontify-natively t)
@@ -847,7 +846,6 @@ See `org-capture-templates' for more information."
 (use-package python :ensure t :defer t
   :init
   (setq python-environment-directory "~/.anyenv/envs/pyenv/versions/")
-  :config
   (add-hook 'python-mode-hook
             '(lambda()
                (electric-indent-mode +1)
@@ -862,6 +860,12 @@ See `org-capture-templates' for more information."
                ;;                (py-isort-buffer)
                ;;                )
                ;;              ))))
+               ))
+  (add-hook 'org-mode-hook
+            '(lambda()
+               (add-to-list 'company-backends 'company-capf)
+               (add-hook 'completion-at-point-functions
+                         'pcomplete-completions-at-point nil t)
                ))
   )
 
@@ -881,12 +885,12 @@ See `org-capture-templates' for more information."
 (use-package py-isort :ensure t :defer t
   :after python)
 
-(use-package sh :defer t
-  :init
-  (setq sh-basic-offset 2
-        sh-indentation 2
-        sh-indent-for-case-label 0
-        sh-indent-for-case-alt '+)
+(use-package shell :defer t
+  :config
+  (setq-default sh-basic-offset 2)
+  (setq-default sh-indentation 2)
+  (setq-default sh-indent-for-case-label 0)
+  (setq-default sh-indent-for-case-alt '+)
   :mode
   ("\\.zsh\\'" . shell-script-mode)
   )
@@ -1250,14 +1254,14 @@ See `org-capture-templates' for more information."
   :config
   (global-evil-matchit-mode 1))
 
-(use-package evil-org :ensure t
-  :after org
-  :init
-  ;; (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme
-               '(textobjects insert navigation additional todo return)))))
+;; (use-package evil-org :ensure t
+;;   :after org
+;;   :init
+;;   ;; (add-hook 'org-mode-hook 'evil-org-mode)
+;;   (add-hook 'evil-org-mode-hook
+;;             (lambda ()
+;;               (evil-org-set-key-theme
+;;                '(textobjects insert navigation additional todo return)))))
 
 (use-package evil-lion :ensure t
   :after evil
