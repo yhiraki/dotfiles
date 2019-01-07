@@ -741,6 +741,33 @@ See `org-capture-templates' for more information."
       (setq org-export-in-background t)
       (message "Enabled org html export on save for current buffer...")))
 
+  (defun my/get-org-agenda-files ()
+    (concatenate
+     'list
+     (f-files "~/org"
+              (lambda (f)
+                (string= (f-ext f) "org"))
+              'recursive))
+    )
+
+  (setq org-directory "~/org/")
+
+  (defun my/get-org-agenda-files ()
+    (concatenate
+     'list
+     (f-files org-directory
+              (lambda (f)
+                (string= (f-ext f) "org"))
+              'recursive))
+    )
+
+  (defun my/update-org-agenda-files ()
+    (interactive)
+    (setq org-agenda-files (my/get-org-agenda-files)
+          )
+
+    (my/update-org-agenda-files)
+
   (setq org-startup-with-inline-images nil)
   (setq org-src-fontify-natively t)
   (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
@@ -762,15 +789,6 @@ See `org-capture-templates' for more information."
   (setq org-log-done 'time) ; DONEの時刻を記録
   (setq org-html-htmlize-output-type 'css)
   (setq org-publish-directory "~/public_html/")
-  (setq org-directory "~/org/") ; org-default-notes-fileのディレクトリ
-  (setq org-agenda-files
-        (concatenate
-         'list
-         (f-files "~/org"
-                  (lambda (f)
-                    (string= (f-ext f) "org"))
-                  'recursive))
-        ) ; agenda ディレクトリ https://www.reddit.com/r/orgmode/comments/6q6cdk/adding_files_to_the_agenda_list_recursively/
   (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
   :config
