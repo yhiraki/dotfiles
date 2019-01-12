@@ -260,8 +260,7 @@ When ARG is non-nil search in junk files."
 (use-package flycheck :ensure t :defer t
   :config
   (global-flycheck-mode)
-  (flycheck-add-mode 'javascript-eslint 'vue-mode)
-  (flycheck-add-mode 'javascript-eslint 'vue-html-mode)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
   )
 
@@ -637,15 +636,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package js2-mode :ensure t :defer t
   :init
+  (setq-default js2-basic-offset 2)
+  (setq-default js2-highlight-external-variables nil)
+  (setq-default js2-include-browser-externs nil)
+  (setq-default js2-include-jslint-globals nil)
+  (setq-default js2-mode-show-parse-errors nil)
+  (setq-default js2-mode-show-strict-warnings nil)
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   (add-hook 'js2-mode-hook
             '(lambda()
-               (setq js2-basic-offset 2)
-               (setq js2-highlight-external-variables nil)
-               (setq js2-include-browser-externs nil)
-               (setq js2-include-jslint-globals nil)
-               (setq js2-mode-show-parse-errors nil)
-               (setq js2-mode-show-strict-warnings nil)
                (add-to-list 'company-backends 'company-tern)
                (flycheck-mode 1)
                ))
@@ -669,7 +668,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package tern :ensure t :defer t
-  :hook ((js2-mode web-mode vue-mode) . tern-mode)
+  :hook ((js2-mode web-mode) . tern-mode)
   :config
   (setq tern-command (append tern-command '("--no-port-file")))
   (define-key tern-mode-keymap (kbd "M-.") nil)
@@ -679,14 +678,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package company-tern :ensure t)
 
 (use-package add-node-modules-path :ensure t :defer t
-  :hook (js-mode js2-mode typescript-mode vue-mode)
+  :hook (js-mode js2-mode typescript-mode web-mode)
   )
 
 (use-package eslint-fix :ensure t :defer t)
-
-(use-package vue-mode :ensure t :defer t
-  :mode (("\\.vue\\'" . vue-mode))
-  )
 
 (use-package json-mode :ensure t :defer t)
 
@@ -1004,15 +999,18 @@ See `org-capture-templates' for more information."
 
 (use-package web-mode :ensure t :defer t
   :init
-  (setq indent-tabs-mode nil)
-  (setq tab-width 2)
-  (setq web-mode-attr-indent-offset nil)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-enable-current-column-highlight t)
-  (setq web-mode-enable-current-element-highlight t)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-sql-indent-offset 2)
+  (setq-default web-mode-attr-indent-offset nil)
+  (setq-default web-mode-code-indent-offset 2)
+  (setq-default web-mode-css-indent-offset 2)
+  (setq-default web-mode-enable-current-column-highlight t)
+  (setq-default web-mode-enable-current-element-highlight t)
+  (setq-default web-mode-markup-indent-offset 2)
+  (setq-default web-mode-sql-indent-offset 2)
+  (add-hook 'web-mode-hook
+            '(lambda()
+               (add-to-list 'company-backends 'company-tern)
+               (flycheck-mode 1)
+               ))
   :mode
   ("\\.[agj]sp\\'" . web-mode)
   ("\\.as[cp]x\\'" . web-mode)
@@ -1021,6 +1019,7 @@ See `org-capture-templates' for more information."
   ("\\.html?\\'" . web-mode)
   ("\\.mustache\\'" . web-mode)
   ("\\.tpl\\.php\\'" . web-mode)
+  ("\\.vue\\'" . web-mode)
   )
 
 (use-package yaml-mode :ensure t :defer t
@@ -1047,26 +1046,29 @@ See `org-capture-templates' for more information."
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
         ( "/" . 'swiper)
-        ( "Y" . "y$"))
+        ( "Y" . "y$")
+        ( kbd("\\") . nil)
+        )
   (:map evil-insert-state-map
         ( "C-k" . 'company-yasnippet))
   (:map evil-visual-state-map
         ( "gs" . 'google-this-region))
   :config
   (evil-define-key 'normal direx:direx-mode-map
-    (kbd "q") 'evil-window-delete
+    (kbd "C-j") 'direx:next-sibling-item
+    (kbd "C-k") 'direx:previous-sibling-item
     (kbd "D") 'direx:do-delete-files
-    (kbd "r") 'direx:refresh-whole-tree
+    (kbd "P") 'direx-project:jump-to-project-root
     (kbd "R") 'direx:do-rename-file
+    (kbd "RET") 'direx:find-item
+    (kbd "SPC") 'direx:toggle-item
     (kbd "c") 'direx:do-copy-files
     (kbd "j") 'direx:next-item
     (kbd "k") 'direx:previous-item
-    (kbd "C-j") 'direx:next-sibling-item
-    (kbd "C-k") 'direx:previous-sibling-item
-    (kbd "SPC") 'direx:toggle-item
     (kbd "o") 'direx:maybe-find-item
-    (kbd "RET") 'direx:find-item
-    (kbd "P") 'direx-project:jump-to-project-root)
+    (kbd "q") 'evil-window-delete
+    (kbd "r") 'direx:refresh-whole-tree
+    )
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete)
   (evil-define-key 'normal python-mode-map
@@ -1088,6 +1090,7 @@ See `org-capture-templates' for more information."
     (kbd "TAB") 'markdown-cycle
     )
   (evil-define-key 'normal org-mode-map
+    (kbd "t") 'org-todo
     (kbd ",u.") (kbd "\\ C-u C-c .")  ; org-time-stamp with datetime
     (kbd ",u!") (kbd "\\ C-u C-c !")  ; org-time-stamp-inactive with datetime
     (kbd ",.") 'org-time-stamp
@@ -1125,6 +1128,7 @@ See `org-capture-templates' for more information."
   (evil-define-key 'normal web-mode-map
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
+    (kbd ",f") 'eslint-fix
     )
   (evil-define-key 'normal org-agenda-mode-map
     (kbd "<RET>") 'org-agenda-switch-to
