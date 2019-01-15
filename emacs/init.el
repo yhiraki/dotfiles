@@ -880,7 +880,7 @@ See `org-capture-templates' for more information."
 (use-package py-isort :ensure t :defer t
   :after python)
 
-(use-package shell :defer t
+(use-package sh-script :defer t
   :config
   (setq-default sh-basic-offset 2)
   (setq-default sh-indentation 2)
