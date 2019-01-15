@@ -3,6 +3,12 @@
 if [ -z "$ZSH_ENV_LOADED" ]
 then
 
+# /etc/profile を無効化
+setopt no_global_rcs
+if [ -x /usr/libexec/path_helper ]; then
+  eval `/usr/libexec/path_helper -s`
+fi
+
 export ZSH_ENV_LOADED="1"
 
 export XDG_CONFIG_HOME="$HOME/.config"
