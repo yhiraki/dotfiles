@@ -1,5 +1,8 @@
 # zmodload zsh/zprof && zprof
 
+if [ -z "$ZSH_ENV_LOADED" ]
+then
+
 export ZSH_ENV_LOADED="1"
 
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -7,9 +10,6 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 export TERM=xterm-256color
-
-# for alacritty
-export PATH="/usr/local/bin:$PATH"
 
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
@@ -66,22 +66,26 @@ fi
 
 if which gfind > /dev/null
 then
-  PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-  MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+  export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
 fi
 
 if which gtar > /dev/null
 then
-  PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
-  MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
+  export PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
 fi
 
 if which ggrep > /dev/null
 then
-  PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
-  MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
+  export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
 fi
 
+if [ -d /usr/local/opt/openssl/ ]
+then
+  export PATH="/usr/local/opt/openssl/bin:$PATH"
+fi
 
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
@@ -157,3 +161,5 @@ alias zmv='noglob zmv -W'
 setopt prompt_subst
 
 autoload -U promptinit && promptinit
+
+fi
