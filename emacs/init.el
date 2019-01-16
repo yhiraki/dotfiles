@@ -800,7 +800,7 @@ See `org-capture-templates' for more information."
 ;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
 ;;   )
 
-(use-package ox-confluence :defer t
+(use-package ox-confluence
   :after org
   )
 
