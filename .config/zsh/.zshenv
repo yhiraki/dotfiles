@@ -82,36 +82,3 @@ setopt prompt_subst
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-
-if [ -x /usr/libexec/path_helper ]; then
-  eval `/usr/libexec/path_helper -s`
-fi
-
-export GOPATH="$HOME"
-export PATH="$PATH:$GOPATH/bin"
-
-export RUSTPATH="$HOME/.cargo"
-export PATH="$PATH:$RUSTPATH/bin"
-
-export DOTDIR="$GOPATH/src/github.com/yhiraki/dotfiles"
-export PATH="$PATH:$DOTDIR/bin"
-
-# gcloud
-# export CLOUDSDK_PYTHON_SITEPACKAGES=1
-# export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
-
-export PATH="$HOME/.anyenv/bin:$PATH"
-
-for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}
-do
-  if [ -d /usr/local/opt/$i/libexec ]
-  then
-    export PATH="/usr/local/opt/$i/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/$i/libexec/gnuman:$MANPATH"
-  fi
-done
-
-if [ -d /usr/local/opt/openssl/ ]
-then
-  export PATH="/usr/local/opt/openssl/bin:$PATH"
-fi
