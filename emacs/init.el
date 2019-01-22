@@ -1075,7 +1075,7 @@ See `org-capture-templates' for more information."
     (kbd "gd") 'jedi:goto-definition
     (kbd "gb") 'jedi:goto-definition-pop-marker
     (kbd "K") 'jedi:show-doc
-    (kbd "\\f") (lambda() (py-yapf-buffer) (py-isort-buffer))
+    (kbd "\\f") '(lambda() (interactive) (py-yapf-buffer) (py-isort-buffer))
     )
   (evil-define-key 'visual python-mode-map
     (kbd "\\f") 'py-autopep8-region
@@ -1092,6 +1092,12 @@ See `org-capture-templates' for more information."
     (kbd "TAB") 'markdown-cycle
     )
   (evil-define-key 'normal org-mode-map
+    (kbd "C-k") 'org-metaup
+    (kbd "C-j") 'org-metadown
+    (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+    (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+    (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
+    (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
     (kbd "t") 'org-todo
     (kbd "\\.") 'org-time-stamp
     (kbd "\\!") 'org-time-stamp-inactive
@@ -1118,6 +1124,7 @@ See `org-capture-templates' for more information."
     (kbd "M-k") 'org-metaup
     (kbd "M-h") 'org-metaleft
     (kbd "M-l") 'org-metaright
+    (kbd "RET") 'org-return-indent
     )
   (evil-define-key 'visual org-mode-map
     (kbd "M-j") 'org-metadown
@@ -1217,6 +1224,7 @@ See `org-capture-templates' for more information."
     (kbd "bn") 'elscreen-next
     (kbd "bp") 'elscreen-previous
     (kbd "df") 'counsel-describe-function
+    (kbd "dk") 'describe-key
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
