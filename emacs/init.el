@@ -1069,38 +1069,49 @@ See `org-capture-templates' for more information."
     (kbd "r") 'direx:refresh-whole-tree
     )
   (evil-define-key 'normal quickrun--mode-map
-    (kbd "q") 'evil-window-delete)
+    (kbd "q") 'evil-window-delete
+    )
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'jedi:goto-definition
     (kbd "gb") 'jedi:goto-definition-pop-marker
     (kbd "K") 'jedi:show-doc
-    (kbd ",f") (lambda() (interactive) (py-yapf-buffer) (py-isort-buffer)))
+    (kbd "\\f") (lambda() (py-yapf-buffer) (py-isort-buffer))
+    )
   (evil-define-key 'visual python-mode-map
-    (kbd ",f") 'py-autopep8-region)
+    (kbd "\\f") 'py-autopep8-region
+    )
   (evil-define-key 'normal go-mode-map
     (kbd "gd") 'godef-jump)
   (evil-define-key 'normal markdown-mode-map
-    (kbd ",1") 'markdown-insert-header-setext-1
-    (kbd ",2") 'markdown-insert-header-setext-2
-    (kbd ",-") 'markdown-insert-hr
-    (kbd ",c") 'markdown-insert-gfm-code-block
+    (kbd "\\1") 'markdown-insert-header-setext-1
+    (kbd "\\2") 'markdown-insert-header-setext-2
+    (kbd "\\-") 'markdown-insert-hr
+    (kbd "\\c") 'markdown-insert-gfm-code-block
     (kbd "zc") 'markdown-hide-subtree
     (kbd "zo") 'markdown-show-subtree
     (kbd "TAB") 'markdown-cycle
     )
   (evil-define-key 'normal org-mode-map
     (kbd "t") 'org-todo
-    (kbd ",u.") (kbd "\\ C-u C-c .")  ; org-time-stamp with datetime
-    (kbd ",u!") (kbd "\\ C-u C-c !")  ; org-time-stamp-inactive with datetime
-    (kbd ",.") 'org-time-stamp
-    (kbd ",!") 'org-time-stamp-inactive
-    (kbd ",d") 'org-deadline
-    (kbd ",s") 'org-schedule
-    (kbd ",o") 'org-open-at-point
-    (kbd ",p") 'org-priority
-    (kbd ",q") 'org-set-tags-command
-    (kbd ",t") 'org-todo
-    (kbd ",x") 'org-toggle-checkbox
+    (kbd "\\.") 'org-time-stamp
+    (kbd "\\!") 'org-time-stamp-inactive
+    (kbd "\\d") 'org-deadline
+    (kbd "\\s") 'org-schedule
+    (kbd "\\o") 'org-open-at-point
+    (kbd "\\p") 'org-priority
+    (kbd "\\q") 'org-set-tags-command
+    (kbd "\\t") 'org-todo
+    (kbd "\\x") 'org-toggle-checkbox
+    (kbd "<") 'org-metaleft
+    (kbd ">") 'org-metaright
+    (kbd "gh") 'outline-up-heading
+    (kbd "gp") 'outline-previous-heading
+    (kbd "}") (if (fboundp 'org-forward-same-level)
+                  'org-forward-same-level
+                'org-forward-heading-same-level)
+    (kbd "{") (if (fboundp 'org-backward-same-level)
+                  'org-backward-same-level
+                'org-backward-heading-same-level)
     )
   (evil-define-key 'insert org-mode-map
     (kbd "M-j") 'org-metadown
@@ -1117,78 +1128,78 @@ See `org-capture-templates' for more information."
   (evil-define-key 'normal js2-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
-    (kbd ",f") 'eslint-fix
+    (kbd "\\f") 'eslint-fix
     )
   (evil-define-key 'normal js-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
-    (kbd ",f") 'eslint-fix
+    (kbd "\\f") 'eslint-fix
     )
   (evil-define-key 'normal web-mode-map
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
-    (kbd ",f") 'eslint-fix
+    (kbd "\\f") 'eslint-fix
     )
   (evil-define-key 'normal org-agenda-mode-map
-    (kbd "<RET>") 'org-agenda-switch-to
-    (kbd "\t") 'org-agenda-goto
-    (kbd "q") 'org-agenda-quit
-    (kbd "r") 'org-agenda-redo
-    (kbd "S") 'org-save-all-org-buffers
-    (kbd "gj") 'org-agenda-goto-date
-    (kbd "gJ") 'org-agenda-clock-goto
-    (kbd "gm") 'org-agenda-bulk-mark
-    (kbd "go") 'org-agenda-open-link
-    (kbd "s") 'org-agenda-schedule
     (kbd "+") 'org-agenda-priority-up
-    (kbd ",") 'org-agenda-priority
     (kbd "-") 'org-agenda-priority-down
-    (kbd "y") 'org-agenda-todo-yesterday
-    (kbd "n") 'org-agenda-add-note
-    (kbd "t") 'org-agenda-todo
-    (kbd ":") 'org-agenda-set-tags
-    (kbd ";") 'org-timer-set-timer
-    (kbd "i") 'org-agenda-clock-in-avy
-    (kbd "O") 'org-agenda-clock-out-avy
-    (kbd "u") 'org-agenda-bulk-unmark
-    (kbd "x") 'org-agenda-exit
-    (kbd "j")  'org-agenda-next-line
-    (kbd "k")  'org-agenda-previous-line
-    (kbd "vt") 'org-agenda-toggle-time-grid
-    (kbd "va") 'org-agenda-archives-mode
-    (kbd "vw") 'org-agenda-week-view
-    (kbd "vl") 'org-agenda-log-mode
-    (kbd "vd") 'org-agenda-day-view
-    (kbd "vc") 'org-agenda-show-clocking-issues
-    (kbd "g/") 'org-agenda-filter-by-tag
-    (kbd "o") 'delete-other-windows
-    (kbd "gh") 'org-agenda-holiday
-    (kbd "gv") 'org-agenda-view-mode-dispatch
-    (kbd "f") 'org-agenda-later
-    (kbd "b") 'org-agenda-earlier
-    (kbd "e") 'org-agenda-set-effort
-    (kbd "n") nil  ; evil-search-next
-    (kbd "{") 'org-agenda-manipulate-query-add-re
-    (kbd "}") 'org-agenda-manipulate-query-subtract-re
-    (kbd "A") 'org-agenda-toggle-archive-tag
     (kbd ".") 'org-agenda-goto-today
     (kbd "0") 'evil-digit-argument-or-evil-beginning-of-line
+    (kbd ":") 'org-agenda-set-tags
+    (kbd ";") 'org-timer-set-timer
     (kbd "<") 'org-agenda-filter-by-category
+    (kbd "<RET>") 'org-agenda-switch-to
     (kbd ">") 'org-agenda-date-prompt
-    (kbd "F") 'org-agenda-follow-mode
+    (kbd "A") 'org-agenda-toggle-archive-tag
     (kbd "D") 'org-agenda-deadline
+    (kbd "F") 'org-agenda-follow-mode
     (kbd "H") 'org-agenda-holidays
     (kbd "J") 'org-agenda-next-date-line
     (kbd "K") 'org-agenda-previous-date-line
     (kbd "L") 'org-agenda-recenter
+    (kbd "O") 'org-agenda-clock-out-avy
     (kbd "P") 'org-agenda-show-priority
     (kbd "R") 'org-agenda-clockreport-mode
-    (kbd "Z") 'org-agenda-sunrise-sunset
+    (kbd "S") 'org-save-all-org-buffers
     (kbd "T") 'org-agenda-show-tags
     (kbd "X") 'org-agenda-clock-cancel
+    (kbd "Z") 'org-agenda-sunrise-sunset
     (kbd "[") 'org-agenda-manipulate-query-add
+    (kbd "\\t") 'org-agenda-goto
+    (kbd "]") 'org-agenda-manipulate-query-subtract
+    (kbd "b") 'org-agenda-earlier
+    (kbd "e") 'org-agenda-set-effort
+    (kbd "f") 'org-agenda-later
+    (kbd "g/") 'org-agenda-filter-by-tag
+    (kbd "gJ") 'org-agenda-clock-goto
     (kbd "g\\") 'org-agenda-filter-by-tag-refine
-    (kbd "]") 'org-agenda-manipulate-query-subtract)
+    (kbd "gh") 'org-agenda-holiday
+    (kbd "gj") 'org-agenda-goto-date
+    (kbd "gm") 'org-agenda-bulk-mark
+    (kbd "go") 'org-agenda-open-link
+    (kbd "gv") 'org-agenda-view-mode-dispatch
+    (kbd "i") 'org-agenda-clock-in-avy
+    (kbd "j")  'org-agenda-next-line
+    (kbd "k")  'org-agenda-previous-line
+    (kbd "n") 'org-agenda-add-note
+    (kbd "o") 'delete-other-windows
+    (kbd "p") 'org-agenda-priority
+    (kbd "q") 'org-agenda-quit
+    (kbd "r") 'org-agenda-redo
+    (kbd "s") 'org-agenda-schedule
+    (kbd "t") 'org-agenda-todo
+    (kbd "u") 'org-agenda-bulk-unmark
+    (kbd "va") 'org-agenda-archives-mode
+    (kbd "vc") 'org-agenda-show-clocking-issues
+    (kbd "vd") 'org-agenda-day-view
+    (kbd "vl") 'org-agenda-log-mode
+    (kbd "vt") 'org-agenda-toggle-time-grid
+    (kbd "vw") 'org-agenda-week-view
+    (kbd "x") 'org-agenda-exit
+    (kbd "y") 'org-agenda-todo-yesterday
+    (kbd "{") 'org-agenda-manipulate-query-add-re
+    (kbd "}") 'org-agenda-manipulate-query-subtract-re
+    )
   (evil-define-key 'normal prog-mode-map
     (kbd "[e") 'flycheck-previous-error
     (kbd "]e") 'flycheck-next-error)
