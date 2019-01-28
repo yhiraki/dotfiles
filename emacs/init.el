@@ -445,6 +445,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (setq twittering-use-master-password t))
 
+(use-package eglot :ensure t :defer t
+  )
+
 (use-package company :ensure t :defer t
   :init
   ;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
@@ -465,6 +468,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
         ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
         ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
         )
+  )
+
+(use-package company-lsp :ensure t :defer t
+  :after (eglot company)
+  :config
+  (push 'company-lsp company-backends)
   )
 
 (use-package company-statistics :ensure t :defer t
@@ -785,6 +794,12 @@ See `org-capture-templates' for more information."
   (setq org-publish-directory "~/public_html/")
   (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
+  (add-hook 'org-mode-hook
+            '(lambda()
+               (add-to-list 'company-backends 'company-capf)
+               (add-hook 'completion-at-point-functions
+                         'pcomplete-completions-at-point nil t)
+               ))
   :config
   ;; https://github.com/skuro/plantuml-mode
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
@@ -814,65 +829,15 @@ See `org-capture-templates' for more information."
 (use-package ox-rst :ensure t :defer t
   :after ox)
 
-(use-package switch-buffer-functions :ensure t
-  :init
-  (setq pyenv-dir (expand-file-name "~/.anyenv/envs/pyenv/"))
-  (setq pyenv-jedi-env-args (list))
-
-  (defun switch-jedi-server ()
-    "Automatically activates pyenv version if .python-version file exists."
-    (f-traverse-upwards
-     (lambda (path)
-       (let ((pyenv-version-path (f-expand ".python-version" path)))
-         (cond ((f-exists? pyenv-version-path)
-                (let ((jedi-env (s-trim (f-read-text pyenv-version-path 'utf-8))))
-                  (setq my/current-virtual-env (concat pyenv-dir "versions/" jedi-env))
-                  (set (make-local-variable 'jedi:server-command) (list "python" jedi:server-script))
-                  (set (make-local-variable 'jedi:server-args) (list "--virtual-env" my/current-virtual-env))
-                  ;; python-environment-default-root-name jedi-env
-                  ;; jedi:environment-root jedi-env
-                  )
-                  )
-                ;; (jedi:stop-server)
-                )))))
-  (add-hook 'python-mode-hook 'switch-jedi-server)
-  )
-
 (use-package python :ensure t :defer t
   :init
-  (setq python-environment-directory "~/.anyenv/envs/pyenv/versions/")
   (add-hook 'python-mode-hook
             '(lambda()
                (electric-indent-mode +1)
-               (add-to-list 'company-backends 'company-jedi)
                (flycheck-mode 1)
-               ;; (add-hook 'write-contents-functions
-               ;;           '(lambda()
-               ;;              (unless (string-match "command not found" (shell-command-to-string "yapf -v"))
-               ;;                (py-yapf-buffer)
-               ;;                )
-               ;;              (unless (string-match "command not found" (shell-command-to-string "isort -v"))
-               ;;                (py-isort-buffer)
-               ;;                )
-               ;;              ))))
                ))
-  (add-hook 'org-mode-hook
-            '(lambda()
-               (add-to-list 'company-backends 'company-capf)
-               (add-hook 'completion-at-point-functions
-                         'pcomplete-completions-at-point nil t)
-               ))
+  (add-hook 'python-mode-hook 'eglot-ensure)
   )
-
-(use-package jedi-core :ensure t :defer t
-  :after python
-  :init
-  (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t)
-  )
-
-(use-package company-jedi :ensure t :defer t
-  :after jedi-core)
 
 (use-package py-yapf :ensure t :defer t
   :after python)
@@ -888,6 +853,12 @@ See `org-capture-templates' for more information."
   (setq-default sh-indent-for-case-alt '+)
   :mode
   ("\\.zsh\\'" . shell-script-mode)
+  )
+
+(use-package sql :defer t
+  :init
+  (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
+  (setq sql-postgres-login-params (append sql-postgres-login-params '(port)))
   )
 
 (use-package sql-indent :ensure t
@@ -1073,9 +1044,8 @@ See `org-capture-templates' for more information."
     (kbd "q") 'evil-window-delete
     )
   (evil-define-key 'normal python-mode-map
-    (kbd "gd") 'jedi:goto-definition
-    (kbd "gb") 'jedi:goto-definition-pop-marker
-    (kbd "K") 'jedi:show-doc
+    (kbd "gd") 'xref-find-definitions
+    (kbd "K") 'eglot-help-at-point
     (kbd "\\f") '(lambda() (interactive) (py-yapf-buffer) (py-isort-buffer))
     )
   (evil-define-key 'visual python-mode-map
