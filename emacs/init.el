@@ -1046,7 +1046,8 @@ See `org-capture-templates' for more information."
   (evil-define-key 'normal python-mode-map
     (kbd "gd") 'xref-find-definitions
     (kbd "K") 'eglot-help-at-point
-    (kbd "\\f") '(lambda() (interactive) (py-yapf-buffer) (py-isort-buffer))
+    (kbd "\\f") 'eglot-format
+    (kbd "\\i") 'py-isort-buffer
     )
   (evil-define-key 'visual python-mode-map
     (kbd "\\f") 'py-autopep8-region
