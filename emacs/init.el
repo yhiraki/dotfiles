@@ -259,7 +259,6 @@ When ARG is non-nil search in junk files."
 
 (use-package flycheck :ensure t :defer t
   :config
-  (global-flycheck-mode)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
   )
@@ -834,7 +833,6 @@ See `org-capture-templates' for more information."
   (add-hook 'python-mode-hook
             '(lambda()
                (electric-indent-mode +1)
-               (flycheck-mode 1)
                ))
   (add-hook 'python-mode-hook 'eglot-ensure)
   )
@@ -1044,13 +1042,15 @@ See `org-capture-templates' for more information."
     (kbd "q") 'evil-window-delete
     )
   (evil-define-key 'normal python-mode-map
-    (kbd "gd") 'xref-find-definitions
     (kbd "K") 'eglot-help-at-point
     (kbd "\\f") 'eglot-format
     (kbd "\\i") 'py-isort-buffer
+    (kbd "gd") 'xref-find-definitions
+    (kbd "gr") 'eglot-rename
     )
   (evil-define-key 'visual python-mode-map
-    (kbd "\\f") 'py-autopep8-region
+    (kbd "\\f") 'eglot-format
+    (kbd "\\i") 'py-isort-region
     )
   (evil-define-key 'normal go-mode-map
     (kbd "gd") 'godef-jump)
