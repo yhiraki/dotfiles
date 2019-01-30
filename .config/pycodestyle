@@ -1,0 +1,4 @@
+[pycodestyle]
+ignore = E203,E221,E241,E272,I100,I201
+max_line_length = 99
+exclude = .venv/
