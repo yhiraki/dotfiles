@@ -844,6 +844,8 @@ See `org-capture-templates' for more information."
   :after python)
 
 (use-package sh-script :defer t
+  :init
+  (add-hook 'sh-mode-hook 'eglot-ensure)
   :config
   (setq-default sh-basic-offset 2)
   (setq-default sh-indentation 2)
@@ -1040,6 +1042,10 @@ See `org-capture-templates' for more information."
     )
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete
+    )
+  (evil-define-key 'normal sh-mode-map
+    (kbd "K") 'eglot-help-at-point
+    (kbd "gd") 'xref-find-definitions
     )
   (evil-define-key 'normal python-mode-map
     (kbd "K") 'eglot-help-at-point
