@@ -26,8 +26,8 @@
 (use-package startup :no-require
   :config
   (setq inhibit-startup-message t)
-  (fset 'yes-or-no-p 'y-or-n-p)
   (setq confirm-kill-emacs 'y-or-n-p)
+  (fset 'yes-or-no-p 'y-or-n-p)
   )
 
 (use-package scroll :no-require
@@ -157,22 +157,25 @@ When ARG is non-nil search in junk files."
 (use-package which-key :ensure t
   :config
   (which-key-mode)
-  (which-key-setup-side-window-bottom))
+  (which-key-setup-side-window-bottom)
+  )
 
 (use-package smartparens :ensure t
   :config
-  (smartparens-global-mode t))
+  (smartparens-global-mode t)
+  )
 
 (use-package restart-emacs :ensure t)
 
 (use-package elscreen :ensure t
   :init
-  (setq elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
-  (setq elscreen-tab-display-control nil)
   (add-hook 'elscreen-screen-update-hook
             '(lambda ()
                (setq elscreen-display-tab (if (elscreen-one-screen-p) nil t))))
   (add-hook 'after-init-hook 'elscreen-start)
+  :config
+  (setq elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
+  (setq elscreen-tab-display-control nil)
   )
 
 (use-package s :ensure t)
@@ -232,29 +235,30 @@ When ARG is non-nil search in junk files."
 (use-package sky-color-clock
   :init
   (el-get-bundle zk-phi/sky-color-clock)
-  (setq sky-color-clock-enable-emoji-icon nil
-        sky-color-clock-format "%m/%d %H:%M")
   :config
+  (setq sky-color-clock-enable-emoji-icon nil)
+  (setq sky-color-clock-format "%m/%d %H:%M")
   (sky-color-clock-initialize 35))
 
-(use-package emojify :ensure t
-  :init
+(use-package emojify :ensure t :defer t
+  :config
   (global-emojify-mode)
   )
 
 (use-package direx :ensure t :defer t
-  :init
+  :commands direx:jump-to-directory-other-window
+  :config
   (setq direx:leaf-icon "  ")
   (setq direx:open-icon "▾ ")
   (setq direx:closed-icon "▸ ")
   )
 
 (use-package wdired :ensure t :defer t
-  :init
-  (setq wdired-allow-to-change-permissions t)
   :bind
   (:map dired-mode-map
         ("e" . wdired-change-to-wdired-mode))
+  :config
+  (setq wdired-allow-to-change-permissions t)
   )
 
 (use-package flycheck :ensure t :defer t
@@ -316,6 +320,7 @@ When ARG is non-nil search in junk files."
   (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
   (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
 
+  :config
   ;; http://keisanbutsuriya.hateblo.jp/entry/2015/02/10/152543
   (setq-default ispell-program-name "aspell")
   (eval-after-load "ispell"
@@ -354,18 +359,17 @@ When ARG is non-nil search in junk files."
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   )
 
-(use-package git-gutter-fringe+ :ensure t
-  :config
+(use-package git-gutter-fringe+ :ensure t :defer t
+  :init
   (global-git-gutter+-mode)
   )
 
 (use-package recentf :defer t
-  :init
+  :config
   (setq recentf-save-file "~/.cache/emacs/recentf")
   (setq recentf-max-saved-items 2000)
   (setq recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
   (setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
-  :config
   (run-with-idle-timer 30 t '(lambda ()
                                (with-suppressed-message (recentf-save-list))))
   (recentf-mode 1)
@@ -384,17 +388,17 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package undohist :ensure t
-  :init
-  (setq undohist-ignored-files '("COMMIT_EDITMSG"))
   :config
+  (setq undohist-ignored-files '("COMMIT_EDITMSG"))
   (undohist-initialize))
 
+(use-package ivy :ensure t)
+
 (use-package counsel :ensure t
-  :init
+  :after ivy
+  :config
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
-  :config
-  (ivy-mode 1)
   )
 
 (use-package swiper :ensure t :defer t
@@ -439,7 +443,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;   )
 
 (use-package twittering-mode :ensure t :defer t
-  :init
+  :commands (twit)
+  :config
   ;; master-password を設定する際に注意すること
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (setq twittering-use-master-password t))
@@ -449,16 +454,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package company :ensure t :defer t
   :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
   ;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
   (setq company-auto-complete nil)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 3)
   (setq company-selection-wrap-around t)
   (setq company-dabbrev-downcase nil)
-  (add-hook 'after-init-hook
-            '(lambda()
-               (global-company-mode)
-               ))
   :bind
   (:map company-active-map
         ("<tab>" . nil)
@@ -476,10 +479,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company-statistics :ensure t :defer t
+  :after (company)
   :init
+  (add-hook 'company-mode-hook 'company-statistics-mode)
+  :config
   ;; 候補のソート順
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
-  (add-hook 'after-init-hook 'company-statistics-mode)
   )
 
 ;; (use-package company-flx :disabled t)
@@ -597,9 +602,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package quickrun :ensure t :defer t
-  :init
-  (setq quickrun-timeout-seconds 30)
   :config
+  (setq quickrun-timeout-seconds 30)
   (quickrun-add-command "rust/script"
     '((:command . "cargo")
       (:exec    . ("%c script %o %s")))
@@ -626,13 +630,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package go-mode :ensure t :defer t
   :init
-  (setq company-go-insert-arguments nil
-        gofmt-command "goimports")
   (add-hook 'go-mode-hook
             '(lambda()
                (add-hook 'write-contents-functions 'gofmt-before-save)
                (add-to-list 'company-backends 'company-go)
                ))
+  :config
+  (setq company-go-insert-arguments nil)
+  (setq gofmt-command "goimports")
 )
 
 (use-package company-go :ensure t :defer t)
@@ -816,42 +821,45 @@ See `org-capture-templates' for more information."
 ;;   )
 
 (use-package ox-confluence
-  :after org
+  :after ox
   )
 
 (use-package ox-gfm :ensure t :defer t
-  :after org
+  :after ox
   )
 
 (use-package ox-hugo :ensure t :defer t
-  :after ox)
+  :after ox
+  )
 
 (use-package ox-rst :ensure t :defer t
-  :after ox)
+  :after ox
+  )
 
 (use-package python :ensure t :defer t
   :init
-  (add-hook 'python-mode-hook
-            '(lambda()
-               (electric-indent-mode +1)
-               ))
+  (add-hook 'python-mode-hook 'electric-indent-mode)
   (add-hook 'python-mode-hook 'eglot-ensure)
   )
 
 (use-package py-yapf :ensure t :defer t
-  :after python)
+  :after python
+  :commands (py-yapf-buffer)
+  )
 
 (use-package py-isort :ensure t :defer t
-  :after python)
+  :after python
+  :commands (py-isort-buffer py-isort-region)
+  )
 
 (use-package sh-script :defer t
   :init
   (add-hook 'sh-mode-hook 'eglot-ensure)
   :config
-  (setq-default sh-basic-offset 2)
-  (setq-default sh-indentation 2)
-  (setq-default sh-indent-for-case-label 0)
-  (setq-default sh-indent-for-case-alt '+)
+  (setq sh-basic-offset 2)
+  (setq sh-indentation 2)
+  (setq sh-indent-for-case-label 0)
+  (setq sh-indent-for-case-alt '+)
   :mode
   ("\\.zsh\\'" . shell-script-mode)
   )
@@ -905,7 +913,10 @@ See `org-capture-templates' for more information."
   (add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
   )
 
-(use-package toml-mode :ensure t :defer t)
+(use-package toml-mode :ensure t :defer t
+  :mode
+  (("\\.toml\\'" . toml-mode))
+  )
 
 (use-package typescript-mode :ensure t :defer t
   :mode
@@ -913,9 +924,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package tide :ensure t :defer t
+  :after typescript-mode
   :init
-  (setq flycheck-check-syntax-automatically '(save mode-enabled)
-        tide-completion-ignore-case t)
   (add-hook 'typescript-mode-hook
             '(lambda()
                (tide-setup)
@@ -924,10 +934,13 @@ See `org-capture-templates' for more information."
                (company-mode 1)
                ))
   :hook (typescript-mode)
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (setq tide-completion-ignore-case t)
   )
 
 (use-package plantuml-mode :ensure t :defer t
-  :init
+  :config
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
   (setq plantuml-java-options "-Djava.awt.headless=true")
   (setq plantuml-options "-charset UTF-8")
@@ -964,26 +977,24 @@ See `org-capture-templates' for more information."
 (use-package flycheck-plantuml :ensure t :defer t
   :after plantuml-mode
   :init
-  (add-hook 'plantuml-mode-hook
-            '(lambda()
-               (flycheck-plantuml-setup)
-               ))
+  (add-hook 'plantuml-mode-hook 'flycheck-plantuml-setup)
   )
 
 (use-package web-mode :ensure t :defer t
   :init
-  (setq-default web-mode-attr-indent-offset nil)
-  (setq-default web-mode-code-indent-offset 2)
-  (setq-default web-mode-css-indent-offset 2)
-  (setq-default web-mode-enable-current-column-highlight t)
-  (setq-default web-mode-enable-current-element-highlight t)
-  (setq-default web-mode-markup-indent-offset 2)
-  (setq-default web-mode-sql-indent-offset 2)
   (add-hook 'web-mode-hook
             '(lambda()
-               (add-to-list 'company-backends 'company-tern)
+               (push 'company-tern company-backends)
                (flycheck-mode 1)
                ))
+  :config
+  (setq web-mode-attr-indent-offset nil)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-enable-current-column-highlight t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-sql-indent-offset 2)
   :mode
   ("\\.[agj]sp\\'" . web-mode)
   ("\\.as[cp]x\\'" . web-mode)
@@ -1008,13 +1019,6 @@ See `org-capture-templates' for more information."
 )
 
 (use-package evil :ensure t
-  :init
-  (setq evil-ex-search-vim-style-regexp t)
-  (setq evil-search-module 'evil-search)
-  (setq evil-want-C-i-jump t)
-  (setq evil-want-C-u-scroll nil)
-  (setq evil-want-fine-undo 'fine)
-  (modify-syntax-entry ?_ "w" (standard-syntax-table))
   :bind
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
@@ -1026,6 +1030,12 @@ See `org-capture-templates' for more information."
   (:map evil-visual-state-map
         ( "gs" . 'google-this-region))
   :config
+  (setq evil-ex-search-vim-style-regexp t)
+  (setq evil-search-module 'evil-search)
+  (setq evil-want-C-i-jump t)
+  (setq evil-want-C-u-scroll nil)
+  (setq evil-want-fine-undo 'fine)
+  (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "C-j") 'direx:next-sibling-item
     (kbd "C-k") 'direx:previous-sibling-item
@@ -1194,6 +1204,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil-leader :ensure t
+  :after evil
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -1239,35 +1250,30 @@ See `org-capture-templates' for more information."
 (use-package evil-surround :ensure t
   :after evil
   :config
-  (global-evil-surround-mode 1))
+  (global-evil-surround-mode 1)
+  )
 
 (use-package evil-magit :ensure t
-  :after magit
+  :after (evil magit)
   )
 
 (use-package evil-commentary :ensure t
   :after evil
   :config
-  (evil-commentary-mode))
+  (evil-commentary-mode)
+  )
 
 (use-package evil-matchit :ensure t
   :after evil
   :config
-  (global-evil-matchit-mode 1))
-
-;; (use-package evil-org :ensure t
-;;   :after org
-;;   :init
-;;   ;; (add-hook 'org-mode-hook 'evil-org-mode)
-;;   (add-hook 'evil-org-mode-hook
-;;             (lambda ()
-;;               (evil-org-set-key-theme
-;;                '(textobjects insert navigation additional todo return)))))
+  (global-evil-matchit-mode 1)
+  )
 
 (use-package evil-lion :ensure t
   :after evil
   :config
-  (evil-lion-mode))
+  (evil-lion-mode)
+  )
 
 (use-package evil-escape :ensure t
   :after evil
@@ -1278,7 +1284,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package shackle :ensure t
-  :init
+  :config
   (setq shackle-rules
         '((compilation-mode :align below :ratio 0.2)
           ("*Help*" :align right)
@@ -1291,19 +1297,17 @@ See `org-capture-templates' for more information."
           )
         )
   (setq shackle-lighter "")
-  :config
   (shackle-mode 1)
   )
 
 (use-package smartrep :ensure t
-  :after evil
+  :after evil-numbers
   :config
-  (smartrep-define-key
-      global-map "C-c" '(
-      ("+" . 'evil-numbers/inc-at-pt)
-      ("=" . 'evil-numbers/inc-at-pt)
-      ("-" . 'evil-numbers/dec-at-pt)
-      ))
+  (smartrep-define-key global-map
+      "C-c" '(("+" . 'evil-numbers/inc-at-pt)
+              ("=" . 'evil-numbers/inc-at-pt)
+              ("-" . 'evil-numbers/dec-at-pt)
+              ))
   )
 
 (use-package color-theme-sanityinc-tomorrow :ensure t
@@ -1319,7 +1323,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package whitespace
-  :init
+  :config
   ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
@@ -1360,25 +1364,25 @@ See `org-capture-templates' for more information."
                         :underline t)
     (global-whitespace-mode 1)
     )
-  :config
   (my/init-whitespace-mode)
   )
 
 (use-package yasnippet :ensure t :defer t
   :init
+  (add-hook 'after-init-hook '(lambda() (yas-global-mode 1)))
   (setq yas-snippet-dirs (list
                           (locate-user-emacs-file "snippets")
                           "~/.yasnippet"
                           'yas-installed-snippets-dir))
   (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
-  (add-hook 'after-init-hook '(lambda() (yas-global-mode 1)))
   :bind
   (:map yas-keymap
         ("<tab>" . nil)
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-(use-package yasnippet-snippets :ensure t :defer t)
+(use-package yasnippet-snippets :ensure t :defer t
+  :after yasnippet)
 
 (use-package popup :ensure t
   :after yasnippet
@@ -1421,3 +1425,10 @@ See `org-capture-templates' for more information."
   (global-set-key "\C-h" (kbd "<backspace>"))
   (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
   )
+(custom-set-variables ;; custom-set-variables was added by Custom. ;; If you edit it by hand, you could mess it up, so be careful. ;; Your init file should contain only one such instance. ;; If there is more than one, they won't work right. '(package-selected-packages (quote (neotree all-the-icons frame-tabs yatemplate yasnippet-snippets yapfify yaml-mode xref-js2 which-key web-mode vue-mode volatile-highlights use-package undohist twittering-mode toml-mode tide switch-buffer-functions sql-indent smartrep smartparens shackle restart-emacs rainbow-delimiters quickrun pyvenv py-yapf py-isort prettier-js popup ox-rst ox-hugo ox-gfm org-plus-contrib open-junk-file markdown-mode json-mode js2-refactor init-loader go-eldoc git-gutter-fringe+ flyspell-lazy flycheck-plantuml evil-surround evil-org evil-numbers evil-matchit evil-magit evil-lion evil-leader evil-escape evil-commentary eslint-fix emojify emmet-mode elscreen el-get eglot dockerfile-mode direx csharp-mode counsel company-tern company-statistics company-lsp company-jedi company-go color-theme-sanityinc-tomorrow add-node-modules-path))) '(safe-local-variable-values (quote ((eglot-workspace-configuration (pyls (configurationSources . ["flake8"])))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
