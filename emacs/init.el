@@ -865,9 +865,13 @@ See `org-capture-templates' for more information."
   )
 
 (use-package sql :defer t
-  :init
+  :config
   (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
   (setq sql-postgres-login-params (append sql-postgres-login-params '(port)))
+  (setq sql-indent-offset 2)
+  (setq indent-tabs-mode nil)
+  (setq c-basic-offset 2)
+  (setq tab-width 2)
   )
 
 (use-package sql-indent :ensure t
@@ -890,11 +894,6 @@ See `org-capture-templates' for more information."
   (add-hook 'sql-mode-hook
             '(lambda ()
               (sqlind-minor-mode)
-              (setq-default sql-indent-offset 2
-                            indent-tabs-mode nil
-                            c-basic-offset 2
-                            tab-width 2)
-              (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
               (sql-set-product "postgres")
               ))
   (add-hook 'sql-interactive-mode-hook
@@ -1425,10 +1424,3 @@ See `org-capture-templates' for more information."
   (global-set-key "\C-h" (kbd "<backspace>"))
   (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
   )
-(custom-set-variables ;; custom-set-variables was added by Custom. ;; If you edit it by hand, you could mess it up, so be careful. ;; Your init file should contain only one such instance. ;; If there is more than one, they won't work right. '(package-selected-packages (quote (neotree all-the-icons frame-tabs yatemplate yasnippet-snippets yapfify yaml-mode xref-js2 which-key web-mode vue-mode volatile-highlights use-package undohist twittering-mode toml-mode tide switch-buffer-functions sql-indent smartrep smartparens shackle restart-emacs rainbow-delimiters quickrun pyvenv py-yapf py-isort prettier-js popup ox-rst ox-hugo ox-gfm org-plus-contrib open-junk-file markdown-mode json-mode js2-refactor init-loader go-eldoc git-gutter-fringe+ flyspell-lazy flycheck-plantuml evil-surround evil-org evil-numbers evil-matchit evil-magit evil-lion evil-leader evil-escape evil-commentary eslint-fix emojify emmet-mode elscreen el-get eglot dockerfile-mode direx csharp-mode counsel company-tern company-statistics company-lsp company-jedi company-go color-theme-sanityinc-tomorrow add-node-modules-path))) '(safe-local-variable-values (quote ((eglot-workspace-configuration (pyls (configurationSources . ["flake8"])))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
