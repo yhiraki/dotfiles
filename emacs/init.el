@@ -63,6 +63,17 @@
   ;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
   )
 
+(use-package vscode-icon :ensure t
+  :commands (vscode-icon-for-file)
+  :config
+  ;; Install ImageMagick:
+  ;; $ brew install ImageMagick
+  ;; A simple example if I want 16x16 icons:
+  ;; M-x vscode-icon-convert-and-copy
+  ;; 16 RET
+  (setq vscode-icon-size 16)
+  )
+
 (use-package file-open :no-require
   :config
   (setq vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
@@ -245,13 +256,23 @@ When ARG is non-nil search in junk files."
   (global-emojify-mode)
   )
 
-(use-package direx :ensure t :defer t
-  :commands direx:jump-to-directory-other-window
+(use-package dired-sidebar :ensure t
+  :commands dired-sidebar-toggle-sidebar
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
   :config
-  (setq direx:leaf-icon "  ")
-  (setq direx:open-icon "▾ ")
-  (setq direx:closed-icon "▸ ")
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t)
   )
+
+(use-package projectile :ensure t)
 
 (use-package wdired :ensure t :defer t
   :bind
@@ -462,14 +483,34 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (setq company-minimum-prefix-length 3)
   (setq company-selection-wrap-around t)
   (setq company-dabbrev-downcase nil)
+  ;; https://github.com/expez/company-quickhelp/issues/63
+  (add-hook
+   'company-completion-started-hook
+   '(lambda (&rest ignore)
+     (when evil-mode
+       (when (evil-insert-state-p)
+         (define-key evil-insert-state-map (kbd "C-n") nil)
+         (define-key evil-insert-state-map (kbd "C-p") nil)
+         ))))
   :bind
   (:map company-active-map
         ("<tab>" . nil)
+        ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
+        ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
         ("C-n" . 'company-select-next)
         ("C-p" . 'company-select-previous)
-        ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
-        ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
+        ("C-s" . 'company-filter-candidates)
         )
+  (:map company-search-map
+        ("C-n" . 'company-select-next)
+        ("C-p" . 'company-select-previous)
+        )
+  )
+
+(use-package company-box :ensure t
+  :hook (company-mode . company-box-mode)
+  ;; ~/.emacs.d/elpa//company-box-*/images
+  ;; $ mogrify -resize 50% *.png
   )
 
 (use-package company-lsp :ensure t :defer t
@@ -1050,6 +1091,10 @@ See `org-capture-templates' for more information."
     (kbd "q") 'evil-window-delete
     (kbd "r") 'direx:refresh-whole-tree
     )
+  (evil-define-key 'normal dired-sidebar-mode-map
+    (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
+    (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
+    )
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete
     )
@@ -1217,7 +1262,7 @@ See `org-capture-templates' for more information."
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
-    (kbd "fd") 'direx:jump-to-directory-other-window
+    (kbd "fd") 'dired-sidebar-toggle-sidebar
     (kbd "ff") 'counsel-find-file
     (kbd "fj") 'my/open-junk-file
     (kbd "fr") 'counsel-recentf
@@ -1291,7 +1336,6 @@ See `org-capture-templates' for more information."
           ("*quickrun*" :align below :select nil :ratio 0.3)
           ("*magit: *" :regexp t :align below :ratio 0.3)
           ("*magit-diff: *" :regexp t :align above :ratio 0.5)
-          (direx:direx-mode :popup t :align left :ratio 32)
           ("*Warnings*" :popup t :align below :ratio 0.1)
           )
         )
