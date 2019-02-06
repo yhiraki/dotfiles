@@ -121,7 +121,7 @@
       `(with-temp-message (or (current-message) "") ,@body)))
   )
 
-(use-package open-junk-file :ensure t :defer t
+(use-package open-junk-file :ensure t
   :commands (my/open-junk-file)
   :config
   (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
@@ -141,7 +141,8 @@ When ARG is non-nil search in junk files."
              (counsel-find-file rel-fname)))))
   )
 
-(use-package volatile-highlights :ensure t :defer t
+(use-package volatile-highlights :ensure t
+  :commands volatile-highlights-mode
   :init
   (add-hook 'evil-mode-hook
             '(lambda()
@@ -154,31 +155,38 @@ When ARG is non-nil search in junk files."
                ))
   )
 
-(use-package eldoc :defer t
+(use-package eldoc
+  :commands eldoc-mode
   :init
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'lisp-mode-hook 'eldoc-mode)
   )
 
-(use-package rainbow-delimiters :ensure t :defer t
+(use-package rainbow-delimiters :ensure t
+  :commands rainbow-delimiters-mode
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   )
 
 (use-package which-key :ensure t
+  :commands which-key-mode
   :config
   (which-key-mode)
   (which-key-setup-side-window-bottom)
   )
 
 (use-package smartparens :ensure t
-  :config
-  (smartparens-global-mode t)
+  :commands smartparens-mode
+  :init
+  (add-hook 'after-init-hook 'smartparens-global-mode)
   )
 
-(use-package restart-emacs :ensure t)
+(use-package restart-emacs :ensure t
+  :commands restart-emacs
+  )
 
 (use-package elscreen :ensure t
+  :commands elscreen-start
   :init
   (add-hook 'elscreen-screen-update-hook
             '(lambda ()
@@ -232,24 +240,16 @@ When ARG is non-nil search in junk files."
            ))
         )
   (setq default-frame-alist initial-frame-alist)
-  ;; バッテリ残量をおしゃれに表示
-  ;; https://qiita.com/zk_phi/items/76c950c89428a54ec67d
-  ;; (add-to-list
-  ;;  'mode-line-format
-  ;;  '(:eval (let ((bat (read (cdr (assoc ?p (funcall battery-status-function))))))
-  ;;            (cond ((> bat 87)  "█") ((> bat 75)  "▇")
-  ;;                  ((> bat 62)  "▆") ((> bat 50)  "▅")
-  ;;                  ((> bat 37)  "▄") ((> bat 25)  "▃")
-  ;;                  ((> bat 12)  "▂") (t           "▁")))))
   )
 
-(use-package emojify :ensure t :defer t
+(use-package emojify :ensure t
+  :commands emojify-mode
   :config
   (global-emojify-mode)
   )
 
 (use-package dired-sidebar :ensure t
-  :commands dired-sidebar-toggle-sidebar
+  :commands dired-subtree-insert
   :init
   (add-hook 'dired-sidebar-mode-hook
             (lambda ()
@@ -264,9 +264,12 @@ When ARG is non-nil search in junk files."
   (setq dired-sidebar-use-custom-font t)
   )
 
-(use-package projectile :ensure t)
+(use-package projectile :ensure t
+  :commands projectile-mode
+  )
 
-(use-package wdired :ensure t :defer t
+(use-package wdired :ensure t
+  :commands (wdired-change-to-wdired-mode)
   :bind
   (:map dired-mode-map
         ("e" . wdired-change-to-wdired-mode))
@@ -274,7 +277,8 @@ When ARG is non-nil search in junk files."
   (setq wdired-allow-to-change-permissions t)
   )
 
-(use-package flycheck :ensure t :defer t
+(use-package flycheck :ensure t
+  :commands flycheck-mode
   :hook ((js2-mode python-mode web-mode plantuml-mode) . flycheck-mode)
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
@@ -282,6 +286,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flyspell
+  :commands flyspell-mode
   :init
   ;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
   (defun flyspell-detect-ispell-args (&optional run-together)
@@ -361,11 +366,12 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flyspell-lazy :ensure t
+  :commands flyspell-mode
   :config
   (flyspell-lazy-mode 1)
   )
 
-(use-package magit :ensure t :defer t
+(use-package magit :ensure t
   :commands (magit-status)
   :config
   ;; magit-commit 時に diff が開くのをやめる
@@ -373,12 +379,14 @@ When ARG is non-nil search in junk files."
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   )
 
-(use-package git-gutter-fringe+ :ensure t :defer t
+(use-package git-gutter-fringe+ :ensure t
+  :commands git-gutter+-mode
   :init
   (global-git-gutter+-mode)
   )
 
-(use-package recentf :defer t
+(use-package recentf
+  :command recentf-mode
   :config
   (setq recentf-save-file "~/.cache/emacs/recentf")
   (setq recentf-max-saved-items 2000)
@@ -404,9 +412,11 @@ When ARG is non-nil search in junk files."
 (use-package undohist :ensure t
   :config
   (setq undohist-ignored-files '("COMMIT_EDITMSG"))
-  (undohist-initialize))
+  (undohist-initialize)
+  )
 
-(use-package ivy :ensure t)
+(use-package ivy :ensure t
+  :commands ivy-mode)
 
 (use-package counsel :ensure t
   :after ivy
@@ -415,10 +425,11 @@ When ARG is non-nil search in junk files."
   (setq enable-recursive-minibuffers t)
   )
 
-(use-package swiper :ensure t :defer t
-  :commands (ivy-mode))
+(use-package swiper :ensure t
+  :commands swiper
+  )
 
-(use-package counsel-ghq :init (el-get-bundle windymelt/counsel-ghq) :defer t
+(use-package counsel-ghq :init (el-get-bundle windymelt/counsel-ghq)
   :commands (counsel-ghq)
   )
 
@@ -456,17 +467,19 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;   (add-hook 'twittering-edit-mode-hook 'pangu-spacing-mode)
 ;;   )
 
-(use-package twittering-mode :ensure t :defer t
+(use-package twittering-mode :ensure t
   :commands (twit)
   :config
   ;; master-password を設定する際に注意すること
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (setq twittering-use-master-password t))
 
-(use-package eglot :ensure t :defer t
+(use-package eglot :ensure t
+  :commands eglot-ensure
   )
 
-(use-package company :ensure t :defer t
+(use-package company :ensure t
+  :commands company-mode
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :config
@@ -501,18 +514,21 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company-box :ensure t
+  :commands company-box-mode
   :hook (company-mode . company-box-mode)
   ;; ~/.emacs.d/elpa//company-box-*/images
   ;; $ mogrify -resize 50% *.png
   )
 
-(use-package company-lsp :ensure t :defer t
+(use-package company-lsp :ensure t
+  :commands company-lsp
   :after (eglot company)
   :config
   (push 'company-lsp company-backends)
   )
 
-(use-package company-statistics :ensure t :defer t
+(use-package company-statistics :ensure t
+  :commands company-statistics-mode
   :after (company)
   :init
   (add-hook 'company-mode-hook 'company-statistics-mode)
@@ -633,7 +649,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
                       :foreground "black" :background "#eab700")
   )
 
-(use-package quickrun :ensure t :defer t
+(use-package quickrun :ensure t
+  :commands quickrun
   :config
   (setq quickrun-timeout-seconds 30)
   (quickrun-add-command "rust/script"
@@ -642,25 +659,27 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     :default "rust")
   )
 
-(use-package csharp-mode :ensure t :defer t
+(use-package csharp-mode :ensure t
   :mode
   ("\\.cs\\'" . csharp-mode)
   )
 
-(use-package dockerfile-mode :ensure t :defer t
+(use-package dockerfile-mode :ensure t
   :mode
   ("Dockerfile\\'" . dockerfile-mode))
 
-(use-package elisp-mode :defer t
+(use-package elisp-mode
   :init
   (add-hook 'emacs-lisp-mode-hook
             '(lambda()
                (hs-minor-mode)
                (hs-hide-all)
                ))
+  :mode
+  ("\\.el\\'" . emacs-lisp-mode)
   )
 
-(use-package go-mode :ensure t :defer t
+(use-package go-mode :ensure t
   :init
   (add-hook 'go-mode-hook
             '(lambda()
@@ -670,16 +689,21 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :config
   (setq company-go-insert-arguments nil)
   (setq gofmt-command "goimports")
+  :mode
+  ("\\.go\\'" . go-mode)
 )
 
-(use-package company-go :ensure t :defer t)
+(use-package company-go :ensure t
+  :commands company-go
+  )
 
-(use-package go-eldoc :ensure t :defer t
+(use-package go-eldoc :ensure t
+  :commands go-eldoc-setup
   :init
   (add-hook 'go-mode-hook 'go-eldoc-setup)
 )
 
-(use-package js2-mode :ensure t :defer t
+(use-package js2-mode :ensure t
   :init
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   (add-hook 'js2-mode-hook
@@ -696,7 +720,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :mode (("\\.js\\'" . js2-mode))
   )
 
-(use-package js2-refactor :ensure t :defer t
+(use-package js2-refactor :ensure t
+  :commands js2-refactor-mode
   :init
   (add-hook 'js2-mode-hook #'js2-refactor-mode)
   :config
@@ -705,14 +730,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (define-key js-mode-map (kbd "M-.") nil)
   )
 
-(use-package xref-js2 :ensure t :defer t
+(use-package xref-js2 :ensure t
   :init
   (add-hook 'js2-mode-hook
             '(lambda ()
                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
   )
 
-(use-package tern :ensure t :defer t
+(use-package tern :ensure t
+  :commands tern-mode
   :hook ((js2-mode web-mode) . tern-mode)
   :config
   (setq tern-command (append tern-command '("--no-port-file")))
@@ -720,9 +746,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (define-key tern-mode-keymap (kbd "M-,") nil)
   )
 
-(use-package company-tern :ensure t)
+(use-package company-tern :ensure t
+  :commands company-tern
+  )
 
-(use-package add-node-modules-path :ensure t :defer t
+(use-package add-node-modules-path :ensure t
+  :commands add-node-modules-path
   :hook (js-mode js2-mode typescript-mode web-mode)
   )
 
@@ -1461,3 +1490,23 @@ See `org-capture-templates' for more information."
   (global-set-key "\C-h" (kbd "<backspace>"))
   (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
   )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (projectile yatemplate yasnippet-snippets yaml-mode xref-js2 which-key web-mode vscode-icon volatile-highlights use-package undohist twittering-mode toml-mode tide sql-indent smartrep smartparens shackle restart-emacs rainbow-delimiters quickrun py-yapf py-isort popup ox-rst ox-hugo ox-gfm org-plus-contrib open-junk-file memoize markdown-mode json-mode js2-refactor go-eldoc git-gutter-fringe+ general font-lock+ flyspell-lazy flycheck-plantuml evil-surround evil-numbers evil-matchit evil-magit evil-lion evil-leader evil-escape evil-commentary eslint-fix emojify emmet-mode elscreen el-get eglot edit-indirect dockerfile-mode dired-sidebar csharp-mode counsel company-tern company-statistics company-lsp company-go company-box color-theme-sanityinc-tomorrow add-node-modules-path)))
+ '(safe-local-variable-values
+   (quote
+    ((eglot-workspace-configuration
+      (pyls
+       (configurationSources .
+                             ["flake8"])))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
