@@ -243,14 +243,6 @@ When ARG is non-nil search in junk files."
   ;;                  ((> bat 12)  "▂") (t           "▁")))))
   )
 
-(use-package sky-color-clock
-  :init
-  (el-get-bundle zk-phi/sky-color-clock)
-  :config
-  (setq sky-color-clock-enable-emoji-icon nil)
-  (setq sky-color-clock-format "%m/%d %H:%M")
-  (sky-color-clock-initialize 35))
-
 (use-package emojify :ensure t :defer t
   :config
   (global-emojify-mode)
@@ -571,8 +563,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      (:propertize mode-line-process
                   face mode-line-process-face)
      (global-mode-string global-mode-string)
-     "    "
-     (:eval (sky-color-clock))
      ))
 
   ;; Helper function
@@ -842,7 +832,9 @@ See `org-capture-templates' for more information."
   (add-hook 'org-mode-hook 'turn-on-font-lock)
   (add-hook 'org-mode-hook
             '(lambda()
-               (add-to-list 'company-backends 'company-capf)
+               (setq company-minimum-prefix-length 1)
+               (push 'company-capf 'company-backends)
+               (push 'company-tempo 'company-backends)
                (add-hook 'completion-at-point-functions
                          'pcomplete-completions-at-point nil t)
                ))
@@ -854,6 +846,9 @@ See `org-capture-templates' for more information."
    '((python . t) (plantuml . t) (shell . t) (dot . t))
    )
   :mode (("\\.org\\'" . org-mode))
+  )
+
+(use-package org-tempo
   )
 
 ;; (use-package org-reveal :ensure t :disabled t
@@ -1014,7 +1009,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package flycheck-plantuml :ensure t
-  :command (flycheck-plantuml-setup)
+  :commands (flycheck-plantuml-setup)
   :init
   (add-hook 'plantuml-mode-hook 'flycheck-plantuml-setup)
   )
