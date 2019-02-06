@@ -283,6 +283,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flycheck :ensure t :defer t
+  :hook ((js2-mode python-mode web-mode plantuml-mode) . flycheck-mode)
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
@@ -694,7 +695,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (add-hook 'js2-mode-hook
             '(lambda()
                (add-to-list 'company-backends 'company-tern)
-               (flycheck-mode 1)
                ))
   :config
   (setq-default js2-basic-offset 2)
@@ -969,7 +969,6 @@ See `org-capture-templates' for more information."
   (add-hook 'typescript-mode-hook
             '(lambda()
                (tide-setup)
-               (flycheck-mode +1)
                (eldoc-mode +1)
                (company-mode 1)
                ))
@@ -1014,8 +1013,8 @@ See `org-capture-templates' for more information."
   ("C-c C-s" . 'plantuml-save-png)
   )
 
-(use-package flycheck-plantuml :ensure t :defer t
-  :after plantuml-mode
+(use-package flycheck-plantuml :ensure t
+  :command (flycheck-plantuml-setup)
   :init
   (add-hook 'plantuml-mode-hook 'flycheck-plantuml-setup)
   )
@@ -1025,7 +1024,6 @@ See `org-capture-templates' for more information."
   (add-hook 'web-mode-hook
             '(lambda()
                (push 'company-tern company-backends)
-               (flycheck-mode 1)
                ))
   :config
   (setq web-mode-attr-indent-offset nil)
