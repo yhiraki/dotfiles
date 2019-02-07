@@ -796,6 +796,30 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
                          'pcomplete-completions-at-point nil t)
                ))
   :config
+  (setq org-directory "~/org/")
+  (setq org-startup-with-inline-images nil)
+  (setq org-src-fontify-natively t)
+  (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
+  (setq org-default-notes-file "notes.org")
+  (setq org-capture-templates
+        '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
+          ("m" "Mail\t\t- Mail or text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
+          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n  %a\n  %T")
+          ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
+          ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
+          ;; https://ox-hugo.scripter.co/doc/org-capture-setup
+          ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
+           (function org-hugo-new-subtree-post-capture-template))
+          )
+        )
+  (setq org-hide-leading-stars t) ; 見出しの余分な*を消す
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
+  (setq org-log-done 'time) ; DONEの時刻を記録
+  (setq org-html-htmlize-output-type 'css)
+  (setq org-publish-directory "~/public_html/")
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml" "rust"))))
@@ -850,29 +874,6 @@ See `org-capture-templates' for more information."
     )
   (my/update-org-agenda-files)
 
-  (setq org-directory "~/org/")
-  (setq org-startup-with-inline-images nil)
-  (setq org-src-fontify-natively t)
-  (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
-  (setq org-default-notes-file "notes.org")
-  (setq org-capture-templates
-        '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
-          ("m" "Mail\t\t- Mail or text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
-          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n  %a\n  %T")
-          ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
-          ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
-          ;; https://ox-hugo.scripter.co/doc/org-capture-setup
-          ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
-           (function org-hugo-new-subtree-post-capture-template))
-          )
-        )
-  (setq org-hide-leading-stars t) ; 見出しの余分な*を消す
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
-  (setq org-log-done 'time) ; DONEの時刻を記録
-  (setq org-html-htmlize-output-type 'css)
-  (setq org-publish-directory "~/public_html/")
-  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   ;; https://github.com/skuro/plantuml-mode
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages
