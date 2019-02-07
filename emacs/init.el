@@ -386,7 +386,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package recentf
-  :command recentf-mode
+  :commands recentf-mode
   :config
   (setq recentf-save-file "~/.cache/emacs/recentf")
   (setq recentf-max-saved-items 2000)
@@ -755,11 +755,15 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :hook (js-mode js2-mode typescript-mode web-mode)
   )
 
-(use-package eslint-fix :ensure t :defer t)
+(use-package eslint-fix :ensure t
+  :commands eslint-fix
+  )
 
-(use-package json-mode :ensure t :defer t)
+(use-package json-mode :ensure t
+  :mode (("\\.json\\'" . json-mode))
+  )
 
-(use-package markdown-mode :ensure t :defer t
+(use-package markdown-mode :ensure t
   :init
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
   (add-hook 'markdown-mode-hook
@@ -776,10 +780,22 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ("README\\.md\\'" . gfm-mode)
   )
 
-(use-package edit-indirect :ensure t)
+(use-package edit-indirect :ensure t
+  :commands edit-indirect-region
+  )
 
-(use-package org :ensure org-plus-contrib :defer t
+(use-package org :ensure org-plus-contrib
   :init
+  (add-hook 'org-mode-hook 'turn-on-font-lock)
+  (add-hook 'org-mode-hook
+            '(lambda()
+               (setq company-minimum-prefix-length 1)
+               (push 'company-capf 'company-backends)
+               (push 'company-tempo 'company-backends)
+               (add-hook 'completion-at-point-functions
+                         'pcomplete-completions-at-point nil t)
+               ))
+  :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml" "rust"))))
@@ -819,8 +835,6 @@ See `org-capture-templates' for more information."
               'recursive))
     )
 
-  (setq org-directory "~/org/")
-
   (defun my/get-org-agenda-files ()
     (concatenate
      'list
@@ -836,6 +850,7 @@ See `org-capture-templates' for more information."
     )
   (my/update-org-agenda-files)
 
+  (setq org-directory "~/org/")
   (setq org-startup-with-inline-images nil)
   (setq org-src-fontify-natively t)
   (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
@@ -858,16 +873,6 @@ See `org-capture-templates' for more information."
   (setq org-html-htmlize-output-type 'css)
   (setq org-publish-directory "~/public_html/")
   (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
-  (add-hook 'org-mode-hook 'turn-on-font-lock)
-  (add-hook 'org-mode-hook
-            '(lambda()
-               (setq company-minimum-prefix-length 1)
-               (push 'company-capf 'company-backends)
-               (push 'company-tempo 'company-backends)
-               (add-hook 'completion-at-point-functions
-                         'pcomplete-completions-at-point nil t)
-               ))
-  :config
   ;; https://github.com/skuro/plantuml-mode
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages
@@ -878,6 +883,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package org-tempo
+  :commands org-tempo-setup
   )
 
 ;; (use-package org-reveal :ensure t :disabled t
@@ -886,38 +892,40 @@ See `org-capture-templates' for more information."
 ;;   )
 
 (use-package ox-confluence
-  :after ox
+  :commands org-confluence-export-as-confluence
   )
 
-(use-package ox-gfm :ensure t :defer t
-  :after ox
+(use-package ox-gfm :ensure t
+  :commands
+  (org-gfm-convert-region-to-md
+   org-gfm-export-as-markdown
+   org-gfm-export-to-markdown)
   )
 
-(use-package ox-hugo :ensure t :defer t
-  :after ox
+(use-package ox-hugo :ensure t
+  :after (org-hugo-export-as-md org-hugo-export-to-md)
   )
 
-(use-package ox-rst :ensure t :defer t
-  :after ox
+(use-package ox-rst :ensure t
+  :after (org-rst-export-as-rst org-rst-export-to-rst)
   )
 
-(use-package python :ensure t :defer t
+(use-package python :ensure t
   :init
   (add-hook 'python-mode-hook 'electric-indent-mode)
   (add-hook 'python-mode-hook 'eglot-ensure)
+  :mode (("\\.py\\'" . python-mode))
   )
 
-(use-package py-yapf :ensure t :defer t
-  :after python
+(use-package py-yapf :ensure t
   :commands (py-yapf-buffer)
   )
 
-(use-package py-isort :ensure t :defer t
-  :after python
+(use-package py-isort :ensure t
   :commands (py-isort-buffer py-isort-region)
   )
 
-(use-package sh-script :defer t
+(use-package sh-script
   :init
   (add-hook 'sh-mode-hook 'eglot-ensure)
   :config
@@ -926,10 +934,10 @@ See `org-capture-templates' for more information."
   (setq sh-indent-for-case-label 0)
   (setq sh-indent-for-case-alt '+)
   :mode
-  ("\\.zsh\\'" . shell-script-mode)
+  ("\\.?sh\\'" . shell-script-mode)
   )
 
-(use-package sql :defer t
+(use-package sql
   :config
   (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
   (setq sql-postgres-login-params (append sql-postgres-login-params '(port)))
@@ -937,20 +945,12 @@ See `org-capture-templates' for more information."
   (setq indent-tabs-mode nil)
   (setq c-basic-offset 2)
   (setq tab-width 2)
+  :mode
+  ("\\.sql\\'" . sql-mode)
   )
 
 (use-package sql-indent :ensure t
-  :config
-  (defvar my-sql-indentation-offsets-alist
-    `((select-clause)
-      (insert-clause 0)
-      (delete-clause 0)
-      (update-clause 0)
-      (select-column + sqlind-adjust-comma)
-      (select-join-condition +)
-      (in-select-clause + sqlind-lineup-close-paren-to-open-indentation)
-      (select-table-continuation + sqlind-lineup-close-paren-to-open-indentation)
-      ,@sqlind-default-indentation-offsets-alist))
+  :commands sqlind-setup
   :init
   (add-hook 'sqlind-minor-mode-hook
             '(lambda ()
@@ -975,20 +975,30 @@ See `org-capture-templates' for more information."
     (add-hook 'comint-preoutput-filter-functions
               'sql-add-newline-first))
   (add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
+  :config
+  (defvar my-sql-indentation-offsets-alist
+    `((select-clause)
+      (insert-clause 0)
+      (delete-clause 0)
+      (update-clause 0)
+      (select-column + sqlind-adjust-comma)
+      (select-join-condition +)
+      (in-select-clause + sqlind-lineup-close-paren-to-open-indentation)
+      (select-table-continuation + sqlind-lineup-close-paren-to-open-indentation)
+      ,@sqlind-default-indentation-offsets-alist))
   )
 
-(use-package toml-mode :ensure t :defer t
+(use-package toml-mode :ensure t
   :mode
   (("\\.toml\\'" . toml-mode))
   )
 
-(use-package typescript-mode :ensure t :defer t
+(use-package typescript-mode :ensure t
   :mode
   (("\\.ts\\'" . typescript-mode))
   )
 
-(use-package tide :ensure t :defer t
-  :after typescript-mode
+(use-package tide :ensure t
   :init
   (add-hook 'typescript-mode-hook
             '(lambda()
@@ -1002,7 +1012,7 @@ See `org-capture-templates' for more information."
   (setq tide-completion-ignore-case t)
   )
 
-(use-package plantuml-mode :ensure t :defer t
+(use-package plantuml-mode :ensure t
   :config
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
   (setq plantuml-java-options "-Djava.awt.headless=true")
@@ -1043,7 +1053,7 @@ See `org-capture-templates' for more information."
   (add-hook 'plantuml-mode-hook 'flycheck-plantuml-setup)
   )
 
-(use-package web-mode :ensure t :defer t
+(use-package web-mode :ensure t
   :init
   (add-hook 'web-mode-hook
             '(lambda()
@@ -1068,15 +1078,14 @@ See `org-capture-templates' for more information."
   ("\\.vue\\'" . web-mode)
   )
 
-(use-package yaml-mode :ensure t :defer t
+(use-package yaml-mode :ensure t
   :bind
   (:map yaml-mode-map ("\C-m" . 'newline-and-indent))
   :mode
-  ("\\.yml\\'" . yaml-mode)
-  ("\\.yaml\\'" . yaml-mode)
+  ("\\.ya?ml\\'" . yaml-mode)
   )
 
-(use-package emmet-mode :ensure t :defer t
+(use-package emmet-mode :ensure t
   :hook (sgml-mode css-mode web-mode xml-mode)
 )
 
@@ -1270,7 +1279,6 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil-leader :ensure t
-  :after evil
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -1320,7 +1328,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil-magit :ensure t
-  :after (evil magit)
+  :commands magit-status
   )
 
 (use-package evil-commentary :ensure t
@@ -1366,7 +1374,6 @@ See `org-capture-templates' for more information."
   )
 
 (use-package smartrep :ensure t
-  :after evil-numbers
   :config
   (smartrep-define-key global-map
       "C-c" '(("+" . 'evil-numbers/inc-at-pt)
@@ -1432,7 +1439,8 @@ See `org-capture-templates' for more information."
   (my/init-whitespace-mode)
   )
 
-(use-package yasnippet :ensure t :defer t
+(use-package yasnippet :ensure t
+  :commands yas-initialize
   :init
   (add-hook 'after-init-hook '(lambda() (yas-global-mode 1)))
   (setq yas-snippet-dirs (list
@@ -1446,11 +1454,11 @@ See `org-capture-templates' for more information."
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-(use-package yasnippet-snippets :ensure t :defer t
+(use-package yasnippet-snippets :ensure t
   :after yasnippet)
 
 (use-package popup :ensure t
-  :after yasnippet
+  :commands (popup-next popup-previous)
   :init
   ;; use popup menu for yas-choose-value
   ;; https://www.emacswiki.org/emacs/Yasnippet
@@ -1490,23 +1498,3 @@ See `org-capture-templates' for more information."
   (global-set-key "\C-h" (kbd "<backspace>"))
   (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
   )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (projectile yatemplate yasnippet-snippets yaml-mode xref-js2 which-key web-mode vscode-icon volatile-highlights use-package undohist twittering-mode toml-mode tide sql-indent smartrep smartparens shackle restart-emacs rainbow-delimiters quickrun py-yapf py-isort popup ox-rst ox-hugo ox-gfm org-plus-contrib open-junk-file memoize markdown-mode json-mode js2-refactor go-eldoc git-gutter-fringe+ general font-lock+ flyspell-lazy flycheck-plantuml evil-surround evil-numbers evil-matchit evil-magit evil-lion evil-leader evil-escape evil-commentary eslint-fix emojify emmet-mode elscreen el-get eglot edit-indirect dockerfile-mode dired-sidebar csharp-mode counsel company-tern company-statistics company-lsp company-go company-box color-theme-sanityinc-tomorrow add-node-modules-path)))
- '(safe-local-variable-values
-   (quote
-    ((eglot-workspace-configuration
-      (pyls
-       (configurationSources .
-                             ["flake8"])))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
