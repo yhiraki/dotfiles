@@ -790,8 +790,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (add-hook 'org-mode-hook
             '(lambda()
                (setq company-minimum-prefix-length 1)
-               (push 'company-capf 'company-backends)
-               (push 'company-tempo 'company-backends)
+               (push 'company-capf company-backends)
+               (push 'company-tempo company-backends)
                (add-hook 'completion-at-point-functions
                          'pcomplete-completions-at-point nil t)
                ))
@@ -801,29 +801,50 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (setq org-src-fontify-natively t)
   (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
   (setq org-default-notes-file "notes.org")
-  (setq org-capture-templates
-        '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
-          ("m" "Mail\t\t- Mail or text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
-          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n  %a\n  %T")
-          ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
-          ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
-          ;; https://ox-hugo.scripter.co/doc/org-capture-setup
-          ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
-           (function org-hugo-new-subtree-post-capture-template))
-          )
-        )
   (setq org-hide-leading-stars t) ; 見出しの余分な*を消す
   (setq org-todo-keywords
         '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
   (setq org-log-done 'time) ; DONEの時刻を記録
   (setq org-html-htmlize-output-type 'css)
   (setq org-publish-directory "~/public_html/")
-  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
+  ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
+  (defun toggle-org-html-export-on-save ()
+    (interactive)
+    (if (memq 'org-html-export-to-html after-save-hook)
+        (progn
+          (remove-hook 'after-save-hook 'org-html-export-to-html t)
+          (setq org-export-in-background nil)
+          (message "Disabled org html export on save for current buffer..."))
+      (add-hook 'after-save-hook 'org-html-export-to-html nil t)
+      (setq org-export-in-background t)
+      (message "Enabled org html export on save for current buffer...")))
+  :mode (("\\.org\\'" . org-mode))
+  )
+
+(use-package org-agenda
+  :commands org-agenda
+  :config
+  (setq org-agenda-files '("~/org/" "~/org/projects/"))
+  )
+
+(use-package ob
+  :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml" "rust"))))
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  ;; https://github.com/skuro/plantuml-mode
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t) (plantuml . t) (shell . t) (dot . t))
+   )
+  )
 
+(use-package org-capture
+  :commands org-capture
+  :config
   (defun org-hugo-new-subtree-post-capture-template ()
     "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
@@ -837,50 +858,17 @@ See `org-capture-templates' for more information."
                    ":END:"
                    "%?\n")          ;Place the cursor here finally
                  "\n")))
-
-  ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
-  (defun toggle-org-html-export-on-save ()
-    (interactive)
-    (if (memq 'org-html-export-to-html after-save-hook)
-        (progn
-          (remove-hook 'after-save-hook 'org-html-export-to-html t)
-          (setq org-export-in-background nil)
-          (message "Disabled org html export on save for current buffer..."))
-      (add-hook 'after-save-hook 'org-html-export-to-html nil t)
-      (setq org-export-in-background t)
-      (message "Enabled org html export on save for current buffer...")))
-
-  (defun my/get-org-agenda-files ()
-    (concatenate
-     'list
-     (f-files "~/org"
-              (lambda (f)
-                (string= (f-ext f) "org"))
-              'recursive))
-    )
-
-  (defun my/get-org-agenda-files ()
-    (concatenate
-     'list
-     (f-files org-directory
-              (lambda (f)
-                (string= (f-ext f) "org"))
-              'recursive))
-    )
-
-  (defun my/update-org-agenda-files ()
-    (interactive)
-    (setq org-agenda-files (my/get-org-agenda-files))
-    )
-  (my/update-org-agenda-files)
-
-  ;; https://github.com/skuro/plantuml-mode
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t) (plantuml . t) (shell . t) (dot . t))
-   )
-  :mode (("\\.org\\'" . org-mode))
+  (setq org-capture-templates
+        '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
+          ("m" "Mail\t\t- Mail or text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
+          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n  %a\n  %T")
+          ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
+          ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
+          ;; https://ox-hugo.scripter.co/doc/org-capture-setup
+          ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
+           (function org-hugo-new-subtree-post-capture-template))
+          )
+        )
   )
 
 (use-package org-tempo
@@ -1329,7 +1317,6 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil-magit :ensure t
-  :commands magit-status
   )
 
 (use-package evil-commentary :ensure t
@@ -1498,4 +1485,10 @@ See `org-capture-templates' for more information."
   :config
   (global-set-key "\C-h" (kbd "<backspace>"))
   (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
+  )
+
+(use-package custom-file :no-require
+  :config
+  (setq custom-file (my/file-path-join user-emacs-directory "custom.el"))
+  (load custom-file)
   )
