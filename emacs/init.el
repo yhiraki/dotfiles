@@ -83,17 +83,9 @@
   (setq tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
   )
 
-(use-package line-number :no-require
-  :config
-  (add-hook 'prog-mode-hook
-            '(lambda ()
-               (linum-mode)
-               ;; linumに起因する高速化
-               ;; http://d.hatena.ne.jp/daimatz/20120215/1329248780
-               (setq linum-delay t)
-               (defadvice linum-schedule (around my-linum-schedule () activate)
-                 (run-with-idle-timer 0.2 nil #'linum-update-current))
-               ))
+(use-package display-line-numbers
+  :hook
+  (prog-mode . display-line-numbers-mode)
   )
 
 (use-package indent :no-require
@@ -872,7 +864,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package org-tempo
-  :commands org-tempo-setup
+  :after org
   )
 
 ;; (use-package org-reveal :ensure t :disabled t
@@ -1114,6 +1106,7 @@ See `org-capture-templates' for more information."
   (evil-define-key 'normal dired-sidebar-mode-map
     (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
     (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
+    (kbd "gg") 'evil-goto-first-line
     )
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete
@@ -1196,9 +1189,10 @@ See `org-capture-templates' for more information."
     (kbd "\\f") 'eslint-fix
     )
   (evil-define-key 'normal web-mode-map
+    (kbd "\\R") 'web-mode-element-rename
+    (kbd "\\f") 'eslint-fix
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
-    (kbd "\\f") 'eslint-fix
     )
   (evil-define-key 'normal org-agenda-mode-map
     (kbd "+") 'org-agenda-priority-up
