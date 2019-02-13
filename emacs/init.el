@@ -351,8 +351,9 @@ When ARG is non-nil search in junk files."
                '(lambda () (flyspell-mode 1))))
    '(
      ;; ここに書いたモードでは flyspell-mode が有効になる
-     text-mode-hook
-     prog-mode-hook
+     ;; company との相性が悪いので一旦停止
+     ;; text-mode-hook
+     ;; prog-mode-hook
      twittering-edit-mode-hook
      ))
   )
@@ -703,12 +704,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
                (add-to-list 'company-backends 'company-tern)
                ))
   :config
-  (setq-default js2-basic-offset 2)
-  (setq-default js2-highlight-external-variables nil)
-  (setq-default js2-include-browser-externs nil)
-  (setq-default js2-include-jslint-globals nil)
-  (setq-default js2-mode-show-parse-errors nil)
-  (setq-default js2-mode-show-strict-warnings nil)
+  (setq js2-basic-offset 2)
+  (setq js2-highlight-external-variables nil)
+  (setq js2-include-browser-externs nil)
+  (setq js2-include-jslint-globals nil)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
   :mode (("\\.js\\'" . js2-mode))
   )
 
@@ -727,15 +728,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (add-hook 'js2-mode-hook
             '(lambda ()
                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-  )
-
-(use-package tern :ensure t
-  :commands tern-mode
-  :hook ((js2-mode web-mode) . tern-mode)
-  :config
-  (setq tern-command (append tern-command '("--no-port-file")))
-  (define-key tern-mode-keymap (kbd "M-.") nil)
-  (define-key tern-mode-keymap (kbd "M-,") nil)
   )
 
 (use-package company-tern :ensure t
