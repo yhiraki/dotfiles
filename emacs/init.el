@@ -515,7 +515,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package company-lsp :ensure t
   :commands company-lsp
-  :after (eglot company)
   :config
   (push 'company-lsp company-backends)
   )
@@ -752,12 +751,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
   (add-hook 'markdown-mode-hook
             '(lambda ()
-               (hide-sublevels 1)
+               ;; (hide-sublevels 1)
                ;; whitespace-cleanup を無効にする
                (set (make-local-variable 'whitespace-action) nil)
                ))
-  :commands
-  (markdown-mode gfm-mode)
   :mode
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
@@ -876,7 +873,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package ox-hugo :ensure t
-  :after (org-hugo-export-as-md org-hugo-export-to-md)
+  :after ox
+  :commands (org-hugo-export-as-md org-hugo-export-to-md)
   )
 
 (use-package ox-rst :ensure t
@@ -962,6 +960,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package toml-mode :ensure t
+  :config
+  (setq c-basic-offset 2)
   :mode
   (("\\.toml\\'" . toml-mode))
   )
