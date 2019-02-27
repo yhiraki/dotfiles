@@ -1058,6 +1058,11 @@ See `org-capture-templates' for more information."
   ("\\.ya?ml\\'" . yaml-mode)
   )
 
+(use-package vimrc-mode :ensure t
+  :mode
+  ("\\.vim\\(rc\\)?\\'" . vimrc-mode)
+  )
+
 (use-package emmet-mode :ensure t
   :hook (sgml-mode css-mode web-mode xml-mode)
 )
