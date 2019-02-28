@@ -5,8 +5,6 @@ let g:is_mac = has('mac')
 let g:is_linux = has('unix') || has('win32unix') || has('win64unix')
 let g:is_win = has('win32') || has('win64')
 
-let $PATH = "~/.pyenv/shims:".$PATH
-
 if len($HOME)
 let g:home = expand('$HOME')
   set runtimepath-=~/.vim
@@ -30,8 +28,6 @@ call s:load_rc('encoding')
 call s:load_rc('filetype')
 call s:load_rc('os')
 call s:load_rc('mapping')
-
-let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python'
 
 " https://github.com/fatih/vim-go/issues/108
 " Quickfix window opening beneath TagBar
@@ -60,3 +56,5 @@ if has("vim_starting") && !has('gui_running') && has('vertsplit')
   map <expr> <t_F9> EnableVsplitMode()
   let &t_RV .= "\e[?6;69h\e[1;3s\e[3;9H\e[6n\e[0;0s\e[?6;69l"
 endif
+
+let mapleader = "\<Space>"
