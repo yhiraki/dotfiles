@@ -1,13 +1,3 @@
-" http://d.hatena.ne.jp/osyo-manga/20120507/1336320335
-let s:hook = {
-\    "name" : "anim",
-\    "kind" : "hook",
-\    "index_counter" : 0,
-\    "config" : {
-\        "enable" : 0
-\    }
-\}
-
 function! s:hook.on_ready(session, context)
     let self.index_counter = -2
 endfunction

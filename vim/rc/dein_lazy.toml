@@ -143,6 +143,9 @@ post_hook_source = '''
 repo = 'plasticboy/vim-markdown'
 on_ft = 'markdown'
 on_i = 1
+hook_source = '''
+  autocmd BufNewFile,BufRead *.md set filetype=markdown
+'''
 hook_add = '''
   let g:vim_markdown_folding_disabled = 1
 '''
@@ -182,18 +185,14 @@ hook_post_source = '''
 on_map = '<leader>gs'
 
 [[plugins]]
-repo = 'cohama/lexima.vim'
-on_i = 1
-hook_post_source = '''
-  source ~/.vim/rc/lexima.vim
-'''
-
-[[plugins]]
 repo = 'tpope/vim-abolish'
 
 [[plugins]]
 repo = 'vim-scripts/confluencewiki.vim'
 on_ft = 'confluencewiki'
+hook_source = '''
+  autocmd BufNewFile,BufRead *.conflu set filetype=confluencewiki
+'''
 
 [[plugins]]
 repo = 'davidhalter/jedi-vim'
@@ -294,7 +293,24 @@ repo = 'Shougo/context_filetype.vim'
 repo = 'Shougo/neosnippet'
 on_i = 1
 hook_post_source = '''
-  source ~/.vim/rc/neosnippet.vim
+  " Plugin key-mappings.
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k> <Plug>(neosnippet_expand_target)
+
+  " SuperTab like snippets behavior.
+  imap <expr><TAB>
+   \ pumvisible() ? "\<C-n>" :
+   \ neosnippet#expandable_or_jumpable() ?
+   \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+  \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+  " Enable snipMate compatibility feature.
+  let g:neosnippet#enable_snipmate_compatibility = 1
+
+  " Tell Neosnippet about the other snippets
+  let g:neosnippet#snippets_directory = [ '~/.vim-snippets', g:vim_home . '/snippets' ]
 '''
 
 [[plugins]]
@@ -317,6 +333,9 @@ on_ft = 'dockerfile'
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
 on_map = '<leader>s'
+hook_source = '''
+  autocmd BufNewFile,BufRead Result set filetype=dbext
+'''
 hook_add = '''
   let g:dbext_default_buffer_lines = 20
   let g:dbext_default_history_file = '~/.dbext_sql_history'
