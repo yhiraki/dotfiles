@@ -5,6 +5,46 @@ let g:is_mac = has('mac')
 let g:is_linux = has('unix') || has('win32unix') || has('win64unix')
 let g:is_win = has('win32') || has('win64')
 
+if has('win32unix') || has('win64unix') || has('unix')
+
+  set backup
+  set backupdir=/tmp
+  set directory=/tmp
+  set backupskip=/tmp/*,/private/tmp/*
+
+  set encoding=utf-8
+
+  if filereadable(expand('~/.vimrc.local'))
+    source ~/.vimrc.local
+  endif
+
+endif
+
+
+if has('win32') || has('win64')
+
+  ""Using with Cygwin"
+  " VIM faq-33.6
+  " https://github.com/Shougo/shougo-s-github/blob/master/vim/rc/windows.rc.vim
+  "set shellcmdflag=-c
+  "set shellxquote=\"
+  "set shell=bash.exe
+  "set shellpipe=2>&1\|\ tee
+  "set shellredir=>%s\ 2>&1
+  "set grepprg=grep
+
+  set backup
+  set backupdir=%temp%
+  set directory=%temp%
+  set encoding=utf-8
+  let $HOME="%userprofile%\\.vim"
+
+  if filereadable(expand('c:/vim/vimrc.local'))
+    source c:/vim/vimrc.local
+  endif
+
+endif
+
 if len($HOME)
 let g:home = expand('$HOME')
   set runtimepath-=~/.vim
@@ -18,16 +58,157 @@ endif
 let g:vim_home = g:home . (g:is_win ? '/vimfiles' : '/.vim')
 let g:rc_dir = g:vim_home . '/rc'
 
-function! s:load_rc(file)
-  execute 'source ' . g:rc_dir . '/' . a:file . '.vim'
+set termencoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8,cp932,sjis,euc-jp,iso-2022-jp
+set ff=unix
+set ffs=unix,dos,mac
+
+if exists('&ambiwidth')
+  set ambiwidth=double
+endif
+
+set number
+set incsearch
+set autoindent
+set ic
+set shiftwidth=2
+set tabstop=2
+set expandtab
+set laststatus=2
+set t_Co=256
+set background=dark
+set hlsearch
+set nomore
+
+" 描画の高速化
+set nocursorcolumn
+set nocursorline
+set norelativenumber
+" set synmaxcol=200
+syntax sync minlines=256
+
+" return to continue を表示しない
+set shortmess=t
+
+" ※等の記号を2バイト表示
+set ambiwidth=double
+
+" undoの永続化
+if has('persistent_undo')
+  set undodir=~/.vim/undo
+  set undofile
+endif
+
+" マーカーで閉じる
+set foldtext=marker
+
+" ペーストモードを簡単に切り替え
+set pastetoggle=<f5>
+
+" 0から始まる数値を10進数として処理する
+set nrformats=
+
+"ビープ音すべてを無効にする
+set visualbell t_vb=
+set noerrorbells "エラーメッセージの表示時にビープを鳴らさない"
+
+if has('mouse')
+  set mouse=a
+endif
+
+" 無名レジスタに入るデータを、*レジスタにも入れる。
+if has('clipboard')
+  if !has('nvim')
+    set clipboard+=unnamed
+  endif
+  set clipboard+=unnamedplus
+endif
+
+" 行80, 100, 120+文字のラインを引く
+if (exists('+colorcolumn'))
+  let &colorcolumn="80,100,".join(range(120,999),",")
+endif
+
+" 特殊文字の可視化
+set list
+set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
+
+" grep結果をQuickFixに表示
+" http://qiita.com/yuku_t/items/0c1aff03949cb1b8fe6b
+autocmd QuickFixCmdPost *grep* cwindow
+
+if has('multi_byte_ime') || has('xim')
+  " IME ON時のカーソルの色を設定(設定例:紫)
+  highlight CursorIM guibg=Purple guifg=NONE
+  " 挿入モード・検索モードでのデフォルトのIME状態設定
+  set iminsert=0 imsearch=0
+  if has('xim') && has('GUI_GTK')
+    " XIMの入力開始キーを設定:
+    " 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
+    "set imactivatekey=s-space
+  endif
+  " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
+  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+endif
+
+" 全角スペースの可視化
+" http://inari.hatenablog.com/entry/2014/05/05/231307
+function! ZenkakuSpace()
+    highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 endfunction
 
-call s:load_rc('dein')
-call s:load_rc('set')
-call s:load_rc('encoding')
-call s:load_rc('filetype')
-call s:load_rc('os')
-call s:load_rc('mapping')
+if has('syntax')
+    augroup ZenkakuSpace
+        autocmd!
+        autocmd ColorScheme * call ZenkakuSpace()
+        autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
+    augroup END
+    call ZenkakuSpace()
+endif
+
+" " スペルチェックを ON
+" set spell
+" " 日本語をスペルチェックから除外
+" set spelllang=en,cjk
+"
+" " スペルチェック highlight を下線のみに
+" " http://tango-ruby.hatenablog.com/entry/2015/09/04/175729
+" hi clear SpellBad
+" hi clear SpellLocal
+" hi clear SpellRare
+" hi clear SpellCap
+" hi SpellBad cterm=underline
+
+let s:dein_dir = expand('~/.cache/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
+
+let g:dein#install_max_processes = 16
+let g:dein#install_progress_type = 'title'
+
+let s:toml      = g:rc_dir . '/dein.toml'
+let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
+
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#end()
+  call dein#save_state()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
+filetype plugin indent on
 
 " https://github.com/fatih/vim-go/issues/108
 " Quickfix window opening beneath TagBar
@@ -58,3 +239,15 @@ if has("vim_starting") && !has('gui_running') && has('vertsplit')
 endif
 
 let mapleader = "\<Space>"
+
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
+nnoremap <silent> <leader>td :<C-u> :e ~/todo.txt<CR>
+
+" コマンドライン履歴を一つ進む
+cnoremap <C-n> <Down>
+" コマンドライン履歴を一つ戻る
+cnoremap <C-p> <Up>
+
+" tags が複数ある時は一覧表示
+nnoremap <C-]> g<C-]>
