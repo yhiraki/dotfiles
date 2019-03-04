@@ -63,17 +63,6 @@
   ;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
   )
 
-(use-package vscode-icon :ensure t
-  :commands (vscode-icon-for-file)
-  :config
-  ;; Install ImageMagick:
-  ;; $ brew install ImageMagick
-  ;; A simple example if I want 16x16 icons:
-  ;; M-x vscode-icon-convert-and-copy
-  ;; 16 RET
-  (setq vscode-icon-size 16)
-  )
-
 (use-package file-open :no-require
   :config
   (setq vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
@@ -160,11 +149,8 @@ When ARG is non-nil search in junk files."
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   )
 
-(use-package which-key :ensure t
-  :commands which-key-mode
-  :config
-  (which-key-mode)
-  (which-key-setup-side-window-bottom)
+(use-package which-key
+  :hook (after-init . which-key-mode)
   )
 
 (use-package smartparens :ensure t
@@ -240,21 +226,7 @@ When ARG is non-nil search in junk files."
   (global-emojify-mode)
   )
 
-(use-package dired-sidebar :ensure t
-  :commands dired-subtree-insert
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
-  :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-theme 'vscode)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t)
-  )
+(use-package neotree :ensure t)
 
 (use-package projectile :ensure t
   :commands projectile-mode
@@ -271,7 +243,7 @@ When ARG is non-nil search in junk files."
 
 (use-package flycheck :ensure t
   :commands flycheck-mode
-  :hook ((js2-mode python-mode web-mode plantuml-mode) . flycheck-mode)
+  :hook ((js2-mode web-mode plantuml-mode) . flycheck-mode)
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
@@ -409,13 +381,24 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package ivy :ensure t
-  :commands ivy-mode)
+  :commands ivy-mode
+  :config
+  (ivy-mode)
+  )
+
+(use-package ivy-rich :ensure t
+  :after ivy
+  :config
+  (ivy-rich-mode 1)
+  )
 
 (use-package counsel :ensure t
   :after ivy
   :config
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
+  :custom
+  (counsel-yank-pop-separator "\n-------\n")
   )
 
 (use-package swiper :ensure t
@@ -807,6 +790,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :commands org-agenda
   :config
   (setq org-agenda-files '("~/org/" "~/org/projects/"))
+  (setq org-agenda-current-time-string "← now")
+  (setq org-agenda-time-grid ;; Format is changed from 9.1
+        '((daily today require-timed)
+          (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
+          "-"
+          "────────────────"))
   )
 
 (use-package ob
@@ -855,6 +844,9 @@ See `org-capture-templates' for more information."
 (use-package org-tempo
   :after org
   )
+
+(use-package org-bullets :ensure t
+  :hook (org-mode . org-bullets-mode))
 
 ;; (use-package org-reveal :ensure t :disabled t
 ;;   :init
@@ -1145,10 +1137,10 @@ See `org-capture-templates' for more information."
     (kbd "\\.") 'org-time-stamp
     (kbd "\\!") 'org-time-stamp-inactive
     (kbd "\\d") 'org-deadline
-    (kbd "\\s") 'org-schedule
-    (kbd "\\o") 'org-open-at-point
+    (kbd "\\i") 'org-clock-in
     (kbd "\\p") 'org-priority
     (kbd "\\q") 'org-set-tags-command
+    (kbd "\\s") 'org-schedule
     (kbd "\\t") 'org-todo
     (kbd "\\x") 'org-toggle-checkbox
     (kbd "<") 'org-metaleft
@@ -1272,7 +1264,7 @@ See `org-capture-templates' for more information."
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
-    (kbd "fd") 'dired-sidebar-toggle-sidebar
+    (kbd "fd") 'neotree
     (kbd "ff") 'counsel-find-file
     (kbd "fj") 'my/open-junk-file
     (kbd "fr") 'counsel-recentf
@@ -1286,7 +1278,9 @@ See `org-capture-templates' for more information."
     (kbd "oa") 'org-agenda
     (kbd "ob") 'org-switchb
     (kbd "oc") 'org-capture
+    (kbd "oi") 'org-clock-in
     (kbd "ol") 'org-store-link
+    (kbd "oo") 'org-clock-out
     (kbd "r") 'quickrun
     (kbd "th") 'twit
     (kbd "tm") 'twittering-mentions-timeline
@@ -1336,21 +1330,27 @@ See `org-capture-templates' for more information."
   :after evil
   )
 
-(use-package shackle :ensure t
+(use-package evil-collection :ensure t
+  :after evil
   :config
-  (setq shackle-rules
-        '((compilation-mode :align below :ratio 0.2)
-          ("*Help*" :align right)
-          ("*Completions*" :align below :ratio 0.3)
-          ("*quickrun*" :align below :select nil :ratio 0.3)
-          ("*magit: *" :regexp t :align below :ratio 0.3)
-          ("*magit-diff: *" :regexp t :align above :ratio 0.5)
-          ("*Warnings*" :popup t :align below :ratio 0.1)
-          )
-        )
-  (setq shackle-lighter "")
-  (shackle-mode 1)
+  (evil-collection-init 'neotree)
   )
+
+;; (use-package shackle :ensure t
+;;   :config
+;;   (setq shackle-rules
+;;         '((compilation-mode :align below :ratio 0.2)
+;;           ("*Help*" :align right)
+;;           ("*Completions*" :align below :ratio 0.3)
+;;           ("*quickrun*" :align below :select nil :ratio 0.3)
+;;           ("*magit: *" :regexp t :align below :ratio 0.3)
+;;           ("*magit-diff: *" :regexp t :align above :ratio 0.5)
+;;           ("*Warnings*" :popup t :align below :ratio 0.1)
+;;           )
+;;         )
+;;   (setq shackle-lighter "")
+;;   (shackle-mode 1)
+;;   )
 
 (use-package smartrep :ensure t
   :config
@@ -1361,16 +1361,24 @@ See `org-capture-templates' for more information."
               ))
   )
 
-(use-package color-theme-sanityinc-tomorrow :ensure t
+(use-package all-the-icons :ensure t)
+
+(use-package doom-themes :ensure t
   :init
-  ;; after emacsclient load
   (add-hook 'after-make-frame-functions
             '(lambda(frame)
-               (load-theme 'sanityinc-tomorrow-night t)
+               (load-theme 'doom-one t)
                (my/init-whitespace-mode)
                ))
   :config
-  (load-theme 'sanityinc-tomorrow-night t)
+  (load-theme 'doom-one t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config)
+  )
+
+(use-package doom-modeline :ensure t
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
   )
 
 (use-package whitespace
