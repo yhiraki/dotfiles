@@ -1208,19 +1208,19 @@ See `org-capture-templates' for more information."
     (kbd "J") 'org-agenda-next-date-line
     (kbd "K") 'org-agenda-previous-date-line
     (kbd "L") 'org-agenda-recenter
-    (kbd "O") 'org-agenda-clock-out-avy
+    (kbd "O") 'org-agenda-clock-out
     (kbd "P") 'org-agenda-show-priority
     (kbd "R") 'org-agenda-clockreport-mode
-    (kbd "S") 'org-save-all-org-buffers
+    ;; (kbd "S") 'org-save-all-org-buffers
     (kbd "T") 'org-agenda-show-tags
     (kbd "X") 'org-agenda-clock-cancel
     (kbd "Z") 'org-agenda-sunrise-sunset
     (kbd "[") 'org-agenda-manipulate-query-add
     (kbd "\\t") 'org-agenda-goto
     (kbd "]") 'org-agenda-manipulate-query-subtract
-    (kbd "b") 'org-agenda-earlier
-    (kbd "e") 'org-agenda-set-effort
-    (kbd "f") 'org-agenda-later
+    ;; (kbd "b") 'org-agenda-earlier
+    ;; (kbd "e") 'org-agenda-set-effort
+    ;; (kbd "f") 'org-agenda-later
     (kbd "g/") 'org-agenda-filter-by-tag
     (kbd "gJ") 'org-agenda-clock-goto
     (kbd "g\\") 'org-agenda-filter-by-tag-refine
@@ -1229,10 +1229,10 @@ See `org-capture-templates' for more information."
     (kbd "gm") 'org-agenda-bulk-mark
     (kbd "go") 'org-agenda-open-link
     (kbd "gv") 'org-agenda-view-mode-dispatch
-    (kbd "i") 'org-agenda-clock-in-avy
-    (kbd "j")  'org-agenda-next-line
-    (kbd "k")  'org-agenda-previous-line
-    (kbd "n") 'org-agenda-add-note
+    (kbd "I") 'org-agenda-clock-in
+    (kbd "j") 'org-agenda-next-line
+    (kbd "k") 'org-agenda-previous-line
+    (kbd "N") 'org-agenda-add-note
     (kbd "o") 'delete-other-windows
     (kbd "p") 'org-agenda-priority
     (kbd "q") 'org-agenda-quit
@@ -1246,10 +1246,10 @@ See `org-capture-templates' for more information."
     (kbd "vl") 'org-agenda-log-mode
     (kbd "vt") 'org-agenda-toggle-time-grid
     (kbd "vw") 'org-agenda-week-view
-    (kbd "x") 'org-agenda-exit
+    ;; (kbd "x") 'org-agenda-exit
     (kbd "y") 'org-agenda-todo-yesterday
-    (kbd "{") 'org-agenda-manipulate-query-add-re
-    (kbd "}") 'org-agenda-manipulate-query-subtract-re
+    ;; (kbd "{") 'org-agenda-manipulate-query-add-re
+    ;; (kbd "}") 'org-agenda-manipulate-query-subtract-re
     )
   (evil-define-key 'normal prog-mode-map
     (kbd "[e") 'flycheck-previous-error
