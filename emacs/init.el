@@ -234,7 +234,14 @@ When ARG is non-nil search in junk files."
   (global-emojify-mode)
   )
 
-(use-package neotree :ensure t)
+;; (use-package neotree :ensure t)
+
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :config
+  (setq dired-sidebar-theme 'vscode)
+  )
 
 (use-package projectile :ensure t
   :commands projectile-mode
@@ -1175,7 +1182,7 @@ See `org-capture-templates' for more information."
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
-    (kbd "fd") 'neotree
+    (kbd "fd") 'dired-sidebar-toggle-sidebar
     (kbd "ff") 'counsel-find-file
     (kbd "fj") 'my/open-junk-file
     (kbd "fr") 'counsel-recentf
@@ -1244,7 +1251,7 @@ See `org-capture-templates' for more information."
 (use-package evil-collection :ensure t
   :after evil
   :config
-  (evil-collection-init 'neotree)
+  (evil-collection-init 'neotree '(package-menu package))
   )
 
 ;; (use-package shackle :ensure t
