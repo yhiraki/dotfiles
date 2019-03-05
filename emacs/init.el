@@ -977,6 +977,11 @@ See `org-capture-templates' for more information."
   :hook (sgml-mode css-mode web-mode xml-mode)
 )
 
+(use-package gitignore-mode :ensure t
+  :mode
+  ("\\(\\.git\\|docker\\)ignore\\'" . gitignore-mode)
+  )
+
 (use-package evil :ensure t
   :bind
   (:map evil-normal-state-map
@@ -1248,11 +1253,11 @@ See `org-capture-templates' for more information."
   :after evil
   )
 
-(use-package evil-collection :ensure t
-  :after evil
-  :config
-  (evil-collection-init 'neotree '(package-menu package))
-  )
+;; (use-package evil-collection :ensure t
+;;   :after evil
+;;   :config
+;;   (evil-collection-init 'neotree)
+;;   )
 
 ;; (use-package shackle :ensure t
 ;;   :config
@@ -1409,3 +1414,31 @@ See `org-capture-templates' for more information."
   (setq custom-file (my/file-path-join user-emacs-directory "custom.el"))
   (load custom-file)
   )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(counsel-yank-pop-separator "
+-------
+")
+ '(flymake-error-bitmap nil)
+ '(flymake-note-bitmap nil)
+ '(flymake-warning-bitmap nil)
+ '(highlight-indent-guides-method (quote character) t)
+ '(highlight-indent-guides-responsive t t)
+ '(package-selected-packages
+   (quote
+    (counsel-ghq yatemplate yasnippet-snippets yaml-mode xref-js2 which-key web-mode vscode-icon volatile-highlights vimrc-mode use-package undohist twittering-mode toml-mode tide sql-indent smartrep smartparens shackle restart-emacs rainbow-delimiters quickrun py-yapf py-isort projectile ox-rst ox-hugo ox-gfm org-plus-contrib org-bullets open-junk-file neotree markdown-mode json-mode js2-refactor ivy-rich highlight-indent-guides go-eldoc git-gutter-fringe+ general font-lock+ flyspell-lazy flycheck-plantuml fill-column-indicator evil-surround evil-numbers evil-matchit evil-magit evil-lion evil-leader evil-escape evil-commentary evil-collection eslint-fix emojify emmet-mode elscreen el-get eglot edit-indirect dumb-jump doom-themes doom-modeline dockerfile-mode dired-sidebar csharp-mode counsel company-tern company-statistics company-lsp company-go company-box auto-virtualenvwrapper add-node-modules-path)))
+ '(safe-local-variable-values
+   (quote
+    ((eglot-workspace-configuration
+      (pyls
+       (configurationSources .
+                             ["flake8"])))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
