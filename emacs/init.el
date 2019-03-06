@@ -576,17 +576,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package go-mode :ensure t
-  :init
-  (add-hook 'go-mode-hook
-            '(lambda()
-               (add-hook 'write-contents-functions 'gofmt-before-save)
-               (add-to-list 'company-backends 'company-go)
-               ))
-  :config
-  (setq company-go-insert-arguments nil)
-  (setq gofmt-command "goimports")
-  :mode
-  ("\\.go\\'" . go-mode)
+  :hook ((go-mode . eglot-ensure)
+         (before-save . eglot-format))
+  :mode ("\\.go\\'" . go-mode)
 )
 
 (use-package company-go :ensure t
