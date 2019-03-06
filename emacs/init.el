@@ -243,7 +243,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package all-the-icons-dired :ensure t
-  :commands (all-the-icons-dired-mode)
+  :hook (dired-mode-hook . all-the-icons-dired-mode)
   )
 
 (use-package projectile :ensure t
