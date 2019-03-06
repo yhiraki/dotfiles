@@ -236,11 +236,14 @@ When ARG is non-nil search in junk files."
 
 ;; (use-package neotree :ensure t)
 
-(use-package dired-sidebar
-  :ensure t
+(use-package dired-sidebar :ensure t
   :commands (dired-sidebar-toggle-sidebar)
   :config
-  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-theme 'icons)
+  )
+
+(use-package all-the-icons-dired :ensure t
+  :commands (all-the-icons-dired-mode)
   )
 
 (use-package projectile :ensure t
@@ -1295,7 +1298,7 @@ See `org-capture-templates' for more information."
                ))
   :config
   (load-theme 'doom-one t)
-  (doom-themes-neotree-config)
+  ;; (doom-themes-neotree-config)
   (doom-themes-org-config)
   )
 
