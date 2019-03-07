@@ -416,7 +416,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package ivy-rich :ensure t
-  :after ivy
+  :after (ivy counsel)
   :config
   (ivy-rich-mode 1)
   )
@@ -526,8 +526,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company-lsp :ensure t
-  :commands company-lsp
-  :config (push 'company-lsp company-backends)
+  :after company
+  :config
+  ;; (setq company-lsp-enable-snippet nil)
+  (push 'company-lsp company-backends)
   )
 
 (use-package company-statistics :ensure t
@@ -644,12 +646,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package markdown-mode :ensure t
   :init
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
-  (add-hook 'markdown-mode-hook
-            '(lambda ()
-               ;; (hide-sublevels 1)
-               ;; whitespace-cleanup を無効にする
-               (set (make-local-variable 'whitespace-action) nil)
-               ))
   :mode
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
@@ -1289,7 +1285,6 @@ See `org-capture-templates' for more information."
   (add-hook 'after-make-frame-functions
             '(lambda(frame)
                (load-theme 'doom-one t)
-               (my/init-whitespace-mode)
                ))
   :config
   (load-theme 'doom-one t)
@@ -1304,6 +1299,20 @@ See `org-capture-templates' for more information."
 
 (use-package whitespace
   :config
+  (set-face-attribute 'whitespace-trailing nil
+                      :foreground "DeepPink"
+                      :background nil
+                      :underline t)
+  (set-face-attribute 'whitespace-tab nil
+                      :background nil)
+  (set-face-attribute 'whitespace-space nil
+                      :background nil
+                      :foreground "GreenYellow"
+                      :weight 'bold)
+  (set-face-attribute 'whitespace-empty nil
+                      :background nil
+                      :foreground "DeepPink"
+                      :underline t)
   ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
@@ -1325,37 +1334,17 @@ See `org-capture-templates' for more information."
 
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
-
-  (defun my/init-whitespace-mode ()
-    (interactive)
-    (set-face-attribute 'whitespace-trailing nil
-                        :foreground "DeepPink"
-                        :background nil
-                        :underline t)
-    (set-face-attribute 'whitespace-tab nil
-                        :background nil)
-    (set-face-attribute 'whitespace-space nil
-                        :background nil
-                        :foreground "GreenYellow"
-                        :weight 'bold)
-    (set-face-attribute 'whitespace-empty nil
-                        :background nil
-                        :foreground "DeepPink"
-                        :underline t)
-    (global-whitespace-mode 1)
-    )
-  (my/init-whitespace-mode)
   )
 
 (use-package yasnippet :ensure t
-  :commands yas-initialize
   :init
-  (add-hook 'after-init-hook '(lambda() (yas-global-mode 1)))
   (setq yas-snippet-dirs (list
                           (locate-user-emacs-file "snippets")
                           "~/.yasnippet"
                           'yas-installed-snippets-dir))
   (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
+  :config
+  (yas-global-mode 1)
   :bind
   (:map yas-keymap
         ("<tab>" . nil)
