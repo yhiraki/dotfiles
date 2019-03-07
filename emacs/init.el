@@ -573,7 +573,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package go-mode :ensure t
   :hook ((go-mode . eglot-ensure)
-         (before-save . eglot-format))
+         (go-mode . (lambda () (add-hook 'write-contents-functions 'eglot-format))))
   :mode ("\\.go\\'" . go-mode)
 )
 
