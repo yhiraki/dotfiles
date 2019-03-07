@@ -9,6 +9,8 @@ zplug "junegunn/fzf", as:command, use:bin/fzf-tmux, lazy:true
 zplug "mollifier/anyframe"
 zplug "paulirish/git-open", as:plugin
 zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))", defer:2
+zplug "plugins/docker", from:oh-my-zsh, if:"(( $+commands[docker] ))", defer:2
+zplug "plugins/docker-compose", from:oh-my-zsh, if:"(( $+commands[docker-compose] ))", defer:2
 zplug "mafredri/zsh-async"
 zplug "sindresorhus/pure"
 zplug "zsh-users/zsh-autosuggestions", defer:2
@@ -16,4 +18,4 @@ zplug "zsh-users/zsh-completions", lazy:true
 zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-zplug "$ZDOTDIR", from:local, use:"{alias,bind,func,gcloud}.zsh"
+zplug "$ZDOTDIR", from:local, use:"{alias,bind,func}.zsh"
