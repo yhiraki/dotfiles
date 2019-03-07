@@ -487,13 +487,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :commands company-mode
   :init
   (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  ;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
-  (setq company-auto-complete nil)
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 3)
-  (setq company-selection-wrap-around t)
-  (setq company-dabbrev-downcase nil)
   ;; https://github.com/expez/company-quickhelp/issues/63
   (add-hook
    'company-completion-started-hook
@@ -503,6 +496,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
          (define-key evil-insert-state-map (kbd "C-n") nil)
          (define-key evil-insert-state-map (kbd "C-p") nil)
          ))))
+  :config
+  ;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
+  (setq company-auto-complete nil)
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 3)
+  (setq company-selection-wrap-around t)
+  (setq company-dabbrev-downcase nil)
   :bind
   (:map company-active-map
         ("<tab>" . nil)
@@ -526,9 +526,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company-lsp :ensure t
-  :after company
+  :after (company yasnippet)
   :config
-  ;; (setq company-lsp-enable-snippet nil)
   (push 'company-lsp company-backends)
   )
 
@@ -541,10 +540,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; 候補のソート順
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
-
-;; (use-package company-flx :disabled t)
-
-;; (use-package company-racer :disabled t)
 
 (use-package quickrun :ensure t
   :commands quickrun
@@ -581,10 +576,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
          (before-save . eglot-format))
   :mode ("\\.go\\'" . go-mode)
 )
-
-;; (use-package company-go :ensure t
-;;   :commands company-go
-;;   )
 
 (use-package go-eldoc :ensure t
   :commands go-eldoc-setup
