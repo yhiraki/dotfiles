@@ -157,7 +157,7 @@ When ARG is non-nil search in junk files."
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   )
 
-(use-package which-key
+(use-package which-key :ensure t
   :hook (after-init . which-key-mode)
   )
 
@@ -580,9 +580,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :mode ("\\.go\\'" . go-mode)
 )
 
-(use-package company-go :ensure t
-  :commands company-go
-  )
+;; (use-package company-go :ensure t
+;;   :commands company-go
+;;   )
 
 (use-package go-eldoc :ensure t
   :commands go-eldoc-setup
