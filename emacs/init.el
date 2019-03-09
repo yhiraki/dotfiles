@@ -481,6 +481,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package eglot :ensure t
   :commands eglot-ensure
+  :config
+  (add-to-list 'eglot-server-programs
+               '(go-mode . ("go-langserver" "-mode=stdio" "-gocodecompletion" "-func-snippet-enabled=false")))
   )
 
 (use-package company :ensure t
@@ -573,7 +576,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package go-mode :ensure t
   :hook ((go-mode . eglot-ensure)
-         (go-mode . (lambda () (add-hook 'write-contents-functions 'eglot-format))))
+         ;; (go-mode . (lambda () (add-hook 'write-contents-functions 'eglot-format)))
+         )
   :mode ("\\.go\\'" . go-mode)
 )
 
@@ -1001,29 +1005,21 @@ See `org-capture-templates' for more information."
     (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
     (kbd "gg") 'evil-goto-first-line
     )
+  (evil-define-key 'normal prog-mode-map
+    (kbd "K") 'eglot-help-at-point
+    (kbd "\\f") 'eglot-format
+    (kbd "\\r") 'quickrun
+    (kbd "gd") 'xref-find-definitions
+    (kbd "gr") 'eglot-rename
+    )
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete
     )
-  (evil-define-key 'normal sh-mode-map
-    (kbd "K") 'eglot-help-at-point
-    (kbd "gd") 'xref-find-definitions
-    )
   (evil-define-key 'normal python-mode-map
-    (kbd "K") 'eglot-help-at-point
-    (kbd "\\f") 'eglot-format
     (kbd "\\i") 'py-isort-buffer
-    (kbd "gd") 'xref-find-definitions
-    (kbd "gr") 'eglot-rename
     )
   (evil-define-key 'visual python-mode-map
-    (kbd "\\f") 'eglot-format
     (kbd "\\i") 'py-isort-region
-    )
-  (evil-define-key 'normal go-mode-map
-    (kbd "K") 'eglot-help-at-point
-    (kbd "\\f") 'eglot-format
-    (kbd "gd") 'xref-find-definitions
-    (kbd "gr") 'eglot-rename
     )
   (evil-define-key 'normal markdown-mode-map
     (kbd "\\1") 'markdown-insert-header-setext-1
@@ -1189,7 +1185,6 @@ See `org-capture-templates' for more information."
     (kbd "oi") 'org-clock-in
     (kbd "ol") 'org-store-link
     (kbd "oo") 'org-clock-out
-    (kbd "r") 'quickrun
     (kbd "th") 'twit
     (kbd "tm") 'twittering-mentions-timeline
     (kbd "tu") 'twittering-update-status-interactive
