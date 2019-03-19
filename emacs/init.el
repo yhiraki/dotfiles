@@ -73,8 +73,7 @@
   )
 
 (use-package display-line-numbers
-  :hook
-  (prog-mode . display-line-numbers-mode)
+  :hook (prog-mode . display-line-numbers-mode)
   )
 
 (use-package indent :no-require
@@ -91,15 +90,9 @@
   (modify-syntax-entry ?_ "w" (standard-syntax-table)) ; 単語境界をvim風に
   )
 
-(use-package messages :no-require
+(use-package files
   :config
-  ;; エコーエリアや *Messages* バッファにメッセージを表示させたくない
-  ;; http://qiita.com/itiut@github/items/d917eafd6ab255629346
-  (defmacro with-suppressed-message (&rest body)
-    "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
-    (declare (indent 0))
-    (let ((message-log-max nil))
-      `(with-temp-message (or (current-message) "") ,@body)))
+  (setq save-silently t)
   )
 
 (use-package open-junk-file :ensure t
@@ -123,17 +116,11 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package volatile-highlights :ensure t
-  :commands volatile-highlights-mode
-  :init
-  (add-hook 'evil-mode-hook
-            '(lambda()
-               (volatile-highlights-mode t)
-               (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
-                                     'evil-paste-pop 'evil-move)
-               (vhl/install-extension 'evil)
-               (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-               (vhl/install-extension 'undo-tree)
-               ))
+  :hook ((prog-mode org-mode) . volatile-highlights-mode)
+  :config
+  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
+                        'evil-paste-pop 'evil-move)
+  (vhl/install-extension 'evil)
   )
 
 (use-package highlight-indent-guides :ensure t
@@ -145,16 +132,11 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package eldoc
-  :commands eldoc-mode
-  :init
-  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-  (add-hook 'lisp-mode-hook 'eldoc-mode)
+  :hook ((emacs-lisp-mode-hook lisp-mode-hook) . eldoc-mode)
   )
 
 (use-package rainbow-delimiters :ensure t
-  :commands rainbow-delimiters-mode
-  :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  :hook (prog-mode . rainbow-delimiters-mode)
   )
 
 (use-package which-key :ensure t
@@ -162,9 +144,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package smartparens :ensure t
-  :commands smartparens-mode
-  :init
-  (add-hook 'after-init-hook 'smartparens-global-mode)
+  :hook (after-init . smartparens-global-mode)
   )
 
 (use-package restart-emacs :ensure t
@@ -172,12 +152,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package elscreen :ensure t
-  :commands elscreen-start
-  :init
-  (add-hook 'elscreen-screen-update-hook
-            '(lambda ()
-               (setq elscreen-display-tab (if (elscreen-one-screen-p) nil t))))
-  (add-hook 'after-init-hook 'elscreen-start)
+  :hook (after-init . elscreen-start)
   :config
   (setq elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
   (setq elscreen-tab-display-control nil)
@@ -228,13 +203,9 @@ When ARG is non-nil search in junk files."
   (setq default-frame-alist initial-frame-alist)
   )
 
-(use-package emojify :ensure t
-  :commands emojify-mode
-  :config
-  (global-emojify-mode)
-  )
-
-;; (use-package neotree :ensure t)
+;; (use-package emojify :ensure t
+;;   :hook (after-init . global-emojify-mode)
+;;   )
 
 (use-package dired-sidebar :ensure t
   :commands (dired-sidebar-toggle-sidebar)
@@ -260,6 +231,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flymake
+  :commands flymake-mode
   :config
   (set-face-underline 'flymake-error nil)
   (set-face-underline 'flymake-note nil)
@@ -271,7 +243,6 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flycheck :ensure t
-  :commands flycheck-mode
   :hook ((js2-mode python-mode web-mode plantuml-mode) . flycheck-mode)
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
@@ -360,9 +331,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flyspell-lazy :ensure t
-  :commands flyspell-mode
-  :config
-  (flyspell-lazy-mode 1)
+  :hook (flyspell-mode . flyspell-lazy-mode)
   )
 
 (use-package magit :ensure t
@@ -374,9 +343,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package git-gutter-fringe+ :ensure t
-  :commands git-gutter+-mode
-  :init
-  (global-git-gutter+-mode)
+  :hook (after-init . global-git-gutter+-mode)
   )
 
 (use-package recentf
@@ -388,7 +355,6 @@ When ARG is non-nil search in junk files."
   (setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
   (run-with-idle-timer 30 t '(lambda ()
                                (with-suppressed-message (recentf-save-list))))
-  (recentf-mode 1)
   )
 
 (use-package backup :no-require
@@ -404,21 +370,18 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package undohist :ensure t
+  :hook (after-init . undohist-initialize)
   :config
   (setq undohist-ignored-files '("COMMIT_EDITMSG"))
-  (undohist-initialize)
   )
 
 (use-package ivy :ensure t
-  :commands ivy-mode
-  :config
-  (ivy-mode)
+  :hook (after-init . ivy-mode)
   )
 
 (use-package ivy-rich :ensure t
   :after (ivy counsel)
-  :config
-  (ivy-rich-mode 1)
+  :hook (ivy-mode . ivy-rich-mode)
   )
 
 (use-package counsel :ensure t
@@ -438,19 +401,19 @@ When ARG is non-nil search in junk files."
   :commands (counsel-ghq)
   )
 
-(use-package path :no-require
-  :config
-  (defun set-exec-path-from-shell-PATH ()
-    "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
+;; (use-package path :no-require
+;;   :config
+;;   (defun set-exec-path-from-shell-PATH ()
+;;     "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
 
-This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
-    (interactive)
-    (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-      (setenv "PATH" path-from-shell)
-      (setq exec-path (split-string path-from-shell path-separator))))
+;; This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
+;;     (interactive)
+;;     (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+;;       (setenv "PATH" path-from-shell)
+;;       (setq exec-path (split-string path-from-shell path-separator))))
 
-  (set-exec-path-from-shell-PATH)
-  )
+;;   (set-exec-path-from-shell-PATH)
+;;   )
 
 ;; (use-package pangu-spacing :ensure t
 ;;   :init
@@ -481,9 +444,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package eglot :ensure t
   :commands eglot-ensure
+  :hook ((python-mode go-mode sh-mode) . eglot-ensure)
   :config
   (add-to-list 'eglot-server-programs
-               '(go-mode . ("go-langserver" "-mode=stdio" "-gocodecompletion" "-func-snippet-enabled=false")))
+               '(go-mode . ("go-langserver" "-mode=stdio" "-gocodecompletion" "-func-snippet-enabled=false"))
+               )
   )
 
 (use-package company :ensure t
@@ -522,7 +487,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company-box :ensure t
-  :commands company-box-mode
   :hook (company-mode . company-box-mode)
   ;; ~/.emacs.d/elpa//company-box-*/images
   ;; $ mogrify -resize 50% *.png
@@ -535,12 +499,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company-statistics :ensure t
-  :commands company-statistics-mode
-  :after (company)
-  :init
-  (add-hook 'company-mode-hook 'company-statistics-mode)
+  :hook (company-mode . company-statistics-mode)
   :config
-  ;; 候補のソート順
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
 
@@ -563,37 +523,32 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :mode
   ("Dockerfile\\'" . dockerfile-mode))
 
+(use-package hideshow
+  :hook (emacs-lisp-mode . my/hs-minor-mode-hide-all)
+  :config
+  (defun my/hs-minor-mode-hide-all ()
+    (hs-minor-mode)
+    (hs-hide-all)
+    )
+  )
+
 (use-package elisp-mode
-  :init
-  (add-hook 'emacs-lisp-mode-hook
-            '(lambda()
-               (hs-minor-mode)
-               (hs-hide-all)
-               ))
   :mode
   ("\\.el\\'" . emacs-lisp-mode)
   )
 
 (use-package go-mode :ensure t
-  :hook ((go-mode . eglot-ensure)
-         ;; (go-mode . (lambda () (add-hook 'write-contents-functions 'eglot-format)))
-         )
+  ;; :hook (go-mode . (lambda () (add-hook 'write-contents-functions 'eglot-format)))
   :mode ("\\.go\\'" . go-mode)
 )
 
 (use-package go-eldoc :ensure t
-  :commands go-eldoc-setup
-  :init
-  (add-hook 'go-mode-hook 'go-eldoc-setup)
+  :hook (go-mode . go-eldoc-setup)
 )
 
 (use-package js2-mode :ensure t
   :init
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  (add-hook 'js2-mode-hook
-            '(lambda()
-               (add-to-list 'company-backends 'company-tern)
-               ))
   :config
   (setq js2-basic-offset 2)
   (setq js2-highlight-external-variables nil)
@@ -605,9 +560,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package js2-refactor :ensure t
-  :commands js2-refactor-mode
-  :init
-  (add-hook 'js2-mode-hook #'js2-refactor-mode)
+  :hook (js2-mode . js2-refactor-mode)
   :config
   (js2r-add-keybindings-with-prefix "C-c C-r")
   (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
@@ -623,10 +576,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package company-tern :ensure t
   :commands company-tern
+  :config
+  (push 'company-tern company-backends)
   )
 
 (use-package add-node-modules-path :ensure t
-  :commands add-node-modules-path
   :hook (js-mode js2-mode typescript-mode web-mode)
   )
 
@@ -639,8 +593,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package markdown-mode :ensure t
-  :init
+  :config
   (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
+  (setq markdown-gfm-use-electric-backquote nil)
   :mode
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
@@ -653,7 +608,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package org :ensure org-plus-contrib
   :init
-  (add-hook 'org-mode-hook 'turn-on-font-lock)
   (add-hook 'org-mode-hook
             '(lambda()
                (setq company-minimum-prefix-length 1)
@@ -692,7 +646,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package org-agenda
   :commands org-agenda
   :config
-  (setq org-agenda-files '("~/org/" "~/org/projects/"))
+  (setq org-agenda-files '("~/org/"))
   (setq org-agenda-current-time-string "← now")
   (setq org-agenda-time-grid ;; Format is changed from 9.1
         '((daily today require-timed)
@@ -776,10 +730,11 @@ See `org-capture-templates' for more information."
   :after (org-rst-export-as-rst org-rst-export-to-rst)
   )
 
+(use-package electric
+  :hook (python-mode . electric-indent-mode)
+  )
+
 (use-package python :ensure t
-  :init
-  (add-hook 'python-mode-hook 'electric-indent-mode)
-  (add-hook 'python-mode-hook 'eglot-ensure)
   :mode (("\\.py\\'" . python-mode))
   )
 
@@ -792,8 +747,6 @@ See `org-capture-templates' for more information."
   )
 
 (use-package sh-script
-  :init
-  (add-hook 'sh-mode-hook 'eglot-ensure)
   :config
   (setq sh-basic-offset 2)
   (setq sh-indentation 2)
@@ -855,26 +808,15 @@ See `org-capture-templates' for more information."
   )
 
 (use-package toml-mode :ensure t
-  :config
-  (setq c-basic-offset 2)
-  :mode
-  (("\\.toml\\'" . toml-mode))
+  :mode ("\\.toml\\'")
   )
 
 (use-package typescript-mode :ensure t
-  :mode
-  (("\\.ts\\'" . typescript-mode))
+  :mode ("\\.ts\\'")
   )
 
 (use-package tide :ensure t
-  :init
-  (add-hook 'typescript-mode-hook
-            '(lambda()
-               (tide-setup)
-               (eldoc-mode +1)
-               (company-mode 1)
-               ))
-  :hook (typescript-mode)
+  :hook (typescript-mode . tide-setup)
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (setq tide-completion-ignore-case t)
@@ -922,11 +864,6 @@ See `org-capture-templates' for more information."
   )
 
 (use-package web-mode :ensure t
-  :init
-  (add-hook 'web-mode-hook
-            '(lambda()
-               (push 'company-tern company-backends)
-               ))
   :config
   (setq web-mode-attr-indent-offset nil)
   (setq web-mode-code-indent-offset 2)
@@ -950,7 +887,7 @@ See `org-capture-templates' for more information."
   :bind
   (:map yaml-mode-map ("\C-m" . 'newline-and-indent))
   :mode
-  ("\\.ya?ml\\'" . yaml-mode)
+  ("\\.ya?ml\\'")
   )
 
 (use-package vimrc-mode :ensure t
@@ -1155,6 +1092,9 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil-leader :ensure t
+  :hook
+  ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
+  (after-init . (lambda() (global-evil-leader-mode) (evil-mode 1)))
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -1193,9 +1133,6 @@ See `org-capture-templates' for more information."
     (kbd "ze") 'eval-buffer
     (kbd "zi") 'find-user-init-file
     (kbd "zr") 'restart-emacs)
-  ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
-  (global-evil-leader-mode)
-  (evil-mode 1)
   )
 
 (use-package evil-surround :ensure t
@@ -1205,6 +1142,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil-magit :ensure t
+  :after (evil magit)
   )
 
 (use-package evil-commentary :ensure t
@@ -1267,11 +1205,10 @@ See `org-capture-templates' for more information."
 (use-package all-the-icons :ensure t)
 
 (use-package doom-themes :ensure t
-  :init
-  (add-hook 'after-make-frame-functions
-            '(lambda(frame)
-               (load-theme 'doom-one t)
-               ))
+  :hook (after-make-frame-functions .
+         (lambda (frame)
+           (load-theme 'doom-one t)
+           ))
   :config
   (load-theme 'doom-one t)
   ;; (doom-themes-neotree-config)
@@ -1279,11 +1216,11 @@ See `org-capture-templates' for more information."
   )
 
 (use-package doom-modeline :ensure t
-  :ensure t
   :hook (after-init . doom-modeline-mode)
   )
 
 (use-package whitespace
+  :commands whitespace-mode
   :config
   (set-face-attribute 'whitespace-trailing nil
                       :foreground "DeepPink"
@@ -1323,14 +1260,13 @@ See `org-capture-templates' for more information."
   )
 
 (use-package yasnippet :ensure t
-  :init
+  :hook (after-init . yas-global-mode)
+  :config
   (setq yas-snippet-dirs (list
                           (locate-user-emacs-file "snippets")
                           "~/.yasnippet"
                           'yas-installed-snippets-dir))
   (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
-  :config
-  (yas-global-mode 1)
   :bind
   (:map yas-keymap
         ("<tab>" . nil)
