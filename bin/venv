@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# mode: shell-script
+
+PYTHON_VERSION=${1:-$(python -V | cut -d ' ' -f 2)}
+PROJECT_NAME=$(basename $(realpath .))
+VENV_BASE=.venv
+VENV_DIR=$VENV_BASE/$PROJECT_NAME
+
+if [ -d $VENV_BASE ]
+then
+  echo $VENV_BASE/ already exists. >&2
+  exit
+fi
+
+pyenv local $PYTHON_VERSION || exit
+python -m venv $VENV_DIR
+
+echo . $VENV_DIR/bin/activate >> .envrc && direnv allow
+python -V
