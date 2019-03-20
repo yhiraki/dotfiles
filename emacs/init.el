@@ -1273,8 +1273,7 @@ See `org-capture-templates' for more information."
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-(use-package yasnippet-snippets :ensure t
-  :after yasnippet)
+(use-package yasnippet-snippets :ensure t)
 
 (use-package popup :ensure t
   :commands (popup-next popup-previous)
