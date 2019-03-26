@@ -74,6 +74,7 @@
 
 (use-package display-line-numbers
   :hook (prog-mode . display-line-numbers-mode)
+  ;; :config (setq display-line-numbers-type 'relative)
   )
 
 (use-package indent :no-require
@@ -584,8 +585,19 @@ When ARG is non-nil search in junk files."
   :hook (js-mode js2-mode typescript-mode web-mode)
   )
 
-(use-package eslint-fix :ensure t
-  :commands eslint-fix
+;; (use-package eslint-fix :ensure t
+;;   :commands eslint-fix
+;;   )
+
+(use-package prettierjs :no-require
+  :config
+  (defun my/prettier ()
+    (interactive)
+    (shell-command
+     (format "%s --write %s"
+             (shell-quote-argument (executable-find "prettier"))
+             (shell-quote-argument (expand-file-name buffer-file-name))))
+    (revert-buffer t t t))
   )
 
 (use-package json-mode :ensure t
@@ -1011,16 +1023,16 @@ See `org-capture-templates' for more information."
   (evil-define-key 'normal js2-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
-    (kbd "\\f") 'eslint-fix
+    (kbd "\\f") 'my/prettier
     )
   (evil-define-key 'normal js-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
-    (kbd "\\f") 'eslint-fix
+    (kbd "\\f") 'my/prettier
     )
   (evil-define-key 'normal web-mode-map
     (kbd "\\R") 'web-mode-element-rename
-    (kbd "\\f") 'eslint-fix
+    (kbd "\\f") 'my/prettier
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
     )
