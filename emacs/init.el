@@ -624,7 +624,6 @@ When ARG is non-nil search in junk files."
             '(lambda()
                (setq company-minimum-prefix-length 1)
                (push 'company-capf company-backends)
-               (push 'company-tempo company-backends)
                (add-hook 'completion-at-point-functions
                          'pcomplete-completions-at-point nil t)
                ))
@@ -708,10 +707,6 @@ See `org-capture-templates' for more information."
            (function org-hugo-new-subtree-post-capture-template))
           )
         )
-  )
-
-(use-package org-tempo
-  :after org
   )
 
 (use-package org-bullets :ensure t
@@ -953,6 +948,7 @@ See `org-capture-templates' for more information."
     (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
     (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
     (kbd "gg") 'evil-goto-first-line
+    (kbd "G") 'evil-goto-line
     )
   (evil-define-key 'normal prog-mode-map
     (kbd "K") 'eglot-help-at-point
@@ -1272,12 +1268,13 @@ See `org-capture-templates' for more information."
   )
 
 (use-package yasnippet :ensure t
-  :hook (after-init . yas-global-mode)
+  :hook ((after-init . yas-global-mode)
+         (yasnippet-mode . (lambda ()
+                             (setq require-final-newline nil)
+                             ))
+         )
   :config
-  (setq yas-snippet-dirs (list
-                          (locate-user-emacs-file "snippets")
-                          "~/.yasnippet"
-                          'yas-installed-snippets-dir))
+  (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
   (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
   :bind
   (:map yas-keymap
@@ -1285,7 +1282,7 @@ See `org-capture-templates' for more information."
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-(use-package yasnippet-snippets :ensure t)
+;; (use-package yasnippet-snippets :ensure t)
 
 (use-package popup :ensure t
   :commands (popup-next popup-previous)
