@@ -457,14 +457,14 @@ When ARG is non-nil search in junk files."
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   ;; https://github.com/expez/company-quickhelp/issues/63
-  (add-hook
-   'company-completion-started-hook
-   '(lambda (&rest ignore)
-     (when evil-mode
-       (when (evil-insert-state-p)
-         (define-key evil-insert-state-map (kbd "C-n") nil)
-         (define-key evil-insert-state-map (kbd "C-p") nil)
-         ))))
+  ;; (add-hook
+  ;;  'company-completion-started-hook
+  ;;  '(lambda (&rest ignore)
+  ;;    (when evil-mode
+  ;;      (when (evil-insert-state-p)
+  ;;        (define-key evil-insert-state-map (kbd "C-n") nil)
+  ;;        (define-key evil-insert-state-map (kbd "C-p") nil)
+  ;;        ))))
   :config
   ;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
   (setq company-auto-complete nil)
@@ -487,11 +487,11 @@ When ARG is non-nil search in junk files."
         )
   )
 
-(use-package company-box :ensure t
-  :hook (company-mode . company-box-mode)
-  ;; ~/.emacs.d/elpa//company-box-*/images
-  ;; $ mogrify -resize 50% *.png
-  )
+;; (use-package company-box :ensure t
+;;   :hook (company-mode . company-box-mode)
+;;   ;; ~/.emacs.d/elpa//company-box-*/images
+;;   ;; $ mogrify -resize 50% *.png
+;;   )
 
 (use-package company-lsp :ensure t
   :after (company yasnippet)
@@ -629,6 +629,7 @@ When ARG is non-nil search in junk files."
                ))
   :config
   (setq org-directory "~/org/")
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (setq org-startup-with-inline-images nil)
   (setq org-src-fontify-natively t)
   (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
@@ -655,7 +656,7 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package org-agenda
-  :commands org-agenda
+  :commands (org-agenda org-refile)
   :config
   (setq org-agenda-files '("~/org/"))
   (setq org-agenda-current-time-string "← now")
@@ -698,8 +699,8 @@ See `org-capture-templates' for more information."
                  "\n")))
   (setq org-capture-templates
         '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
-          ("m" "Mail\t\t- Mail or text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
-          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n  %a\n  %T")
+          ("m" "Mail\t\t- Text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
+          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %? %a\n %T\n")
           ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
           ;; https://ox-hugo.scripter.co/doc/org-capture-setup
@@ -912,6 +913,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil :ensure t
+  :hook (org-capture-mode . evil-insert-state)
   :bind
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
@@ -929,6 +931,7 @@ See `org-capture-templates' for more information."
   (setq evil-want-C-u-scroll nil)
   (setq evil-want-fine-undo 'fine)
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
+  (evil-declare-change-repeat 'company-complete)
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "C-j") 'direx:next-sibling-item
     (kbd "C-k") 'direx:previous-sibling-item
@@ -983,8 +986,11 @@ See `org-capture-templates' for more information."
     (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
     (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
     (kbd "t") 'org-todo
-    (kbd "\\.") 'org-time-stamp
+    (kbd "<") 'org-metaleft
+    (kbd ">") 'org-metaright
     (kbd "\\!") 'org-time-stamp-inactive
+    (kbd "\\*") 'org-ctrl-c-star
+    (kbd "\\.") 'org-time-stamp
     (kbd "\\d") 'org-deadline
     (kbd "\\i") 'org-clock-in
     (kbd "\\p") 'org-priority
@@ -992,16 +998,10 @@ See `org-capture-templates' for more information."
     (kbd "\\s") 'org-schedule
     (kbd "\\t") 'org-todo
     (kbd "\\x") 'org-toggle-checkbox
-    (kbd "<") 'org-metaleft
-    (kbd ">") 'org-metaright
     (kbd "gh") 'outline-up-heading
     (kbd "gp") 'outline-previous-heading
-    (kbd "}") (if (fboundp 'org-forward-same-level)
-                  'org-forward-same-level
-                'org-forward-heading-same-level)
-    (kbd "{") (if (fboundp 'org-backward-same-level)
-                  'org-backward-same-level
-                'org-backward-heading-same-level)
+    ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
+    ;; (kbd "{") (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
     )
   (evil-define-key 'insert org-mode-map
     (kbd "M-j") 'org-metadown
@@ -1111,6 +1111,7 @@ See `org-capture-templates' for more information."
     (kbd "bk") 'elscreen-kill
     (kbd "bn") 'elscreen-next
     (kbd "bp") 'elscreen-previous
+    (kbd "c") 'org-capture
     (kbd "df") 'counsel-describe-function
     (kbd "dk") 'describe-key
     (kbd "dv") 'counsel-describe-variable
@@ -1140,7 +1141,9 @@ See `org-capture-templates' for more information."
     (kbd "x") 'counsel-M-x
     (kbd "ze") 'eval-buffer
     (kbd "zi") 'find-user-init-file
-    (kbd "zr") 'restart-emacs)
+    (kbd "zk") 'kill-emacs
+    (kbd "zr") 'restart-emacs
+    )
   )
 
 (use-package evil-surround :ensure t
