@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: scanN
+# key: scann
+# --
+var n int
+fmt.Scan(&n)

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: forkey
+# key: fork
+# --
+for k, v := range ${m} {
+    $0
+}
