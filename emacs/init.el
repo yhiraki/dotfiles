@@ -719,23 +719,19 @@ See `org-capture-templates' for more information."
 ;;   )
 
 (use-package ox-confluence
-  :commands org-confluence-export-as-confluence
+  :after ox
   )
 
 (use-package ox-gfm :ensure t
-  :commands
-  (org-gfm-convert-region-to-md
-   org-gfm-export-as-markdown
-   org-gfm-export-to-markdown)
+  :after ox
   )
 
 (use-package ox-hugo :ensure t
   :after ox
-  :commands (org-hugo-export-as-md org-hugo-export-to-md)
   )
 
 (use-package ox-rst :ensure t
-  :after (org-rst-export-as-rst org-rst-export-to-rst)
+  :after ox
   )
 
 (use-package electric
@@ -958,7 +954,7 @@ See `org-capture-templates' for more information."
     (kbd "\\f") 'eglot-format
     (kbd "\\r") 'quickrun
     (kbd "gd") 'xref-find-definitions
-    (kbd "gr") 'eglot-rename
+    (kbd "gr") 'xref-find-references
     )
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete
@@ -1188,21 +1184,13 @@ See `org-capture-templates' for more information."
 ;;   (evil-collection-init 'neotree)
 ;;   )
 
-;; (use-package shackle :ensure t
-;;   :config
-;;   (setq shackle-rules
-;;         '((compilation-mode :align below :ratio 0.2)
-;;           ("*Help*" :align right)
-;;           ("*Completions*" :align below :ratio 0.3)
-;;           ("*quickrun*" :align below :select nil :ratio 0.3)
-;;           ("*magit: *" :regexp t :align below :ratio 0.3)
-;;           ("*magit-diff: *" :regexp t :align above :ratio 0.5)
-;;           ("*Warnings*" :popup t :align below :ratio 0.1)
-;;           )
-;;         )
-;;   (setq shackle-lighter "")
-;;   (shackle-mode 1)
-;;   )
+(use-package popwin :ensure t
+  :hook (after-init . popwin-mode)
+  :config
+  (push '("*quickrun*" :position bottom :dedicated t) popwin:special-display-config)
+  (push '("*Help*" :position right) popwin:special-display-config)
+  (push '("magit:" :regexp t :position bottom ) popwin:special-display-config)
+  )
 
 (use-package smartrep :ensure t
   :config
