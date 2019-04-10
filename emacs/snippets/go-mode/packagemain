@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: packagemain
+# key: pam
+# --
+package main
+
+func main() {
+	$0  
+}

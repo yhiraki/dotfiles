@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ifmain-unittest
+# key: ifmu
+# --
+if __name__ == '__main__':
+   unittest.main()

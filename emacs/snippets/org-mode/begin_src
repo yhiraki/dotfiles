@@ -1,0 +1,7 @@
+# -＊- mode: snippet -＊-
+# name: begin_src
+# key: <s
+# --
+#+begin_src ${1:$$(yas-choose-value (let (lang) (dolist (item org-babel-load-languages) (when (cdr item) (push (symbol-name (car item)) lang))) lang))}
+$0
+#+end_src
