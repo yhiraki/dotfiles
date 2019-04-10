@@ -1095,6 +1095,21 @@ See `org-capture-templates' for more information."
   (evil-set-initial-state 'org-agenda-mode 'normal)
   )
 
+(use-package evil-jumps-push-on-find-file :no-require
+  :after evil
+  :init
+  (add-hook 'dired-mode-hook 'my-rename-dired-buffer)
+  :config
+  ;; https://www.reddit.com/r/emacs/comments/8rg6zk/question_add_dired_buffers_to_evil_jump_list/
+  (defun my-rename-dired-buffer ()
+    (interactive)
+    (unless (string-match-p "Dired:" (buffer-name))
+      (rename-buffer (concat "Dired:" (buffer-name)))))
+
+  (setq evil--jumps-buffer-targets "\\(\\*\\(\\new\\|scratch\\)\\*\\|Dired:.+\\)")
+  (evil-add-command-properties #'dired-find-file :jump t)
+  )
+
 (use-package evil-leader :ensure t
   :hook
   ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
@@ -1190,6 +1205,7 @@ See `org-capture-templates' for more information."
   (push '("*quickrun*" :position bottom :dedicated t) popwin:special-display-config)
   (push '("*Help*" :position right) popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
+  (push '("*xref*" :position bottom ) popwin:special-display-config)
   )
 
 (use-package smartrep :ensure t
