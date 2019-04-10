@@ -913,6 +913,10 @@ See `org-capture-templates' for more information."
   :bind
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
+        ( "C-j" . 'evil-forward-paragraph)
+        ( "C-k" . 'evil-backward-paragraph)
+        ( "S-C-j" . 'evil-forward-section-begin)
+        ( "S-C-k" . 'evil-backward-section-begin)
         ( "/" . 'swiper)
         ( "Y" . "y$")
         )
@@ -1203,7 +1207,7 @@ See `org-capture-templates' for more information."
   :hook (after-init . popwin-mode)
   :config
   (push '("*quickrun*" :position bottom :dedicated t) popwin:special-display-config)
-  (push '("*Help*" :position right) popwin:special-display-config)
+  (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
   (push '("*xref*" :position bottom ) popwin:special-display-config)
   )
