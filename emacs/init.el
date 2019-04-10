@@ -466,12 +466,12 @@ When ARG is non-nil search in junk files."
   ;;        (define-key evil-insert-state-map (kbd "C-p") nil)
   ;;        ))))
   :config
-  ;; http://qiita.com/sune2/items/b73037f9e85962f5AFB7
   (setq company-auto-complete nil)
+  (setq company-dabbrev-downcase nil)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 3)
   (setq company-selection-wrap-around t)
-  (setq company-dabbrev-downcase nil)
+  (setq completion-ignore-case t)
   :bind
   (:map company-active-map
         ("<tab>" . nil)
@@ -1189,7 +1189,7 @@ See `org-capture-templates' for more information."
   :config
   (push '("*quickrun*" :position bottom :dedicated t) popwin:special-display-config)
   (push '("*Help*" :position right) popwin:special-display-config)
-  (push '("magit:" :regexp t :position bottom ) popwin:special-display-config)
+  (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
   )
 
 (use-package smartrep :ensure t
