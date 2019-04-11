@@ -1128,7 +1128,7 @@ See `org-capture-templates' for more information."
     (kbd "bp") 'elscreen-previous
     (kbd "c") 'org-capture
     (kbd "df") 'counsel-describe-function
-    (kbd "dk") 'describe-key
+    (kbd "dk") 'counsel-descbinds
     (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
@@ -1140,9 +1140,6 @@ See `org-capture-templates' for more information."
     (kbd "gg") 'counsel-git-grep
     (kbd "gp") 'counsel-ghq
     (kbd "gs") 'magit-status
-    (kbd "ll") 'counsel-load-library
-    (kbd "lo") 'counsel-locate
-    (kbd "ls") 'counsel-info-lookup-symbol
     (kbd "oa") 'org-agenda
     (kbd "ob") 'org-switchb
     (kbd "oc") 'org-capture
@@ -1152,7 +1149,7 @@ See `org-capture-templates' for more information."
     (kbd "th") 'twit
     (kbd "tm") 'twittering-mentions-timeline
     (kbd "tu") 'twittering-update-status-interactive
-    (kbd "us") 'counsel-unicode-char
+    (kbd "u") 'undo-tree-visualize
     (kbd "x") 'counsel-M-x
     (kbd "ze") 'eval-buffer
     (kbd "zi") 'find-user-init-file
@@ -1208,6 +1205,7 @@ See `org-capture-templates' for more information."
   :config
   (push '("*quickrun*" :position bottom :dedicated t) popwin:special-display-config)
   (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
+  (push '("*Error*") popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
   (push '("*xref*" :position bottom ) popwin:special-display-config)
   )
@@ -1279,11 +1277,9 @@ See `org-capture-templates' for more information."
   )
 
 (use-package yasnippet :ensure t
-  :hook ((after-init . yas-global-mode)
-         (yasnippet-mode . (lambda ()
-                             (setq require-final-newline nil)
-                             ))
-         )
+  :hook (after-init . yas-global-mode)
+  :init (add-hook 'yasnippet-mode-hook
+                 '(lambda () (setq require-final-newline nil)))
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
   (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
@@ -1323,13 +1319,13 @@ See `org-capture-templates' for more information."
         ("C-p" . popup-previous))
   )
 
-(use-package yatemplate :ensure t
-  :after yasnippet
-  :config
-  ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
-  (yatemplate-fill-alist)
-  (auto-insert-mode 1)
-  )
+;; (use-package yatemplate :ensure t
+;;   :after yasnippet
+;;   :config
+;;   ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
+;;   (yatemplate-fill-alist)
+;;   (auto-insert-mode 1)
+;;   )
 
 (use-package key-binding :no-require
   :config
