@@ -671,15 +671,47 @@ When ARG is non-nil search in junk files."
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("python" "shell" "plantuml" "rust"))))
+    (not (member lang '("python" "shell" "plantuml"))))
   (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   ;; https://github.com/skuro/plantuml-mode
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (push '("plantuml" . plantuml) org-src-lang-modes)
+  (push '("js" . js2) org-src-lang-modes)
+  ;; (org-babel-do-load-languages
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (plantuml . t) (shell . t) (dot . t))
+   '((python . t) (plantuml . t) (shell . t) (dot . t) (js . t))
    )
   )
+
+(use-package ob-plantuml
+  :after ob
+  :config
+  (push '(:java . "java -jar -Djava.awt.headless=true") org-babel-default-header-args:plantuml)
+  (push '(:async) org-babel-default-header-args:plantuml)
+  )
+
+(use-package ob-shell
+  :after ob
+  :config
+  (push '(:async) org-babel-default-header-args:shell)
+  )
+
+(use-package ob-python
+  :after ob
+  :config
+  (push '(:session . "default") org-babel-default-header-args:python)
+  )
+
+(use-package ob-async :ensure t
+  :after ob
+  :config
+  (add-hook 'ob-async-pre-execute-src-block-hook
+        '(lambda ()
+           (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
+  )
+
+(use-package ob-ipython :ensure t
+  :after ob)
 
 (use-package org-capture
   :commands org-capture
@@ -979,8 +1011,8 @@ See `org-capture-templates' for more information."
     (kbd "TAB") 'markdown-cycle
     )
   (evil-define-key 'normal org-mode-map
-    (kbd "C-k") 'org-metaup
-    (kbd "C-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-j") 'org-metadown
     (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
     (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
     (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
@@ -998,6 +1030,7 @@ See `org-capture-templates' for more information."
     (kbd "\\s") 'org-schedule
     (kbd "\\t") 'org-todo
     (kbd "\\x") 'org-toggle-checkbox
+    (kbd "\\v") 'org-toggle-inline-images
     (kbd "gh") 'outline-up-heading
     (kbd "gp") 'outline-previous-heading
     ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
@@ -1140,6 +1173,7 @@ See `org-capture-templates' for more information."
     (kbd "gg") 'counsel-git-grep
     (kbd "gp") 'counsel-ghq
     (kbd "gs") 'magit-status
+    (kbd "k") 'kill-this-buffer
     (kbd "oa") 'org-agenda
     (kbd "ob") 'org-switchb
     (kbd "oc") 'org-capture
@@ -1208,6 +1242,8 @@ See `org-capture-templates' for more information."
   (push '("*Error*") popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
   (push '("*xref*" :position bottom ) popwin:special-display-config)
+  (push '(image-mode) popwin:special-display-config)
+  (push '("*Org-Babel Error Output*") popwin:special-display-config)
   )
 
 (use-package smartrep :ensure t
