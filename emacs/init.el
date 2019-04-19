@@ -378,7 +378,14 @@ When ARG is non-nil search in junk files."
 
 (use-package ivy :ensure t
   :hook (after-init . ivy-mode)
+  :config
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-use-virtual-buffers t)
   )
+
+(use-package ivy-hydra :ensure t
+  :after ivy)
 
 (use-package ivy-rich :ensure t
   :after (ivy counsel)
@@ -387,9 +394,6 @@ When ARG is non-nil search in junk files."
 
 (use-package counsel :ensure t
   :after ivy
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
   :custom
   (counsel-yank-pop-separator "\n-------\n")
   )
@@ -684,10 +688,12 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package ob-plantuml
-  :after ob
+  :after (ob plantuml-mode)
   :config
-  (push '(:java . "java -jar -Djava.awt.headless=true") org-babel-default-header-args:plantuml)
+  (push (cons ':java plantuml-java-options) org-babel-default-header-args:plantuml)
+  (push (cons ':cmdline plantuml-options) org-babel-default-header-args:plantuml)
   (push '(:async) org-babel-default-header-args:plantuml)
+  (push '(:cache . "yes") org-babel-default-header-args:plantuml)
   )
 
 (use-package ob-shell
@@ -710,8 +716,8 @@ When ARG is non-nil search in junk files."
            (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
   )
 
-(use-package ob-ipython :ensure t
-  :after ob)
+;; (use-package ob-ipython :ensure t
+;;   :after ob)
 
 (use-package org-capture
   :commands org-capture
@@ -859,10 +865,11 @@ See `org-capture-templates' for more information."
   )
 
 (use-package plantuml-mode :ensure t
-  :config
+  :init
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
   (setq plantuml-java-options "-Djava.awt.headless=true")
-  (setq plantuml-options "-charset UTF-8")
+  (setq plantuml-options "-charset UTF-8 -config ~/.config/plantuml/color.uml")
+  :config
   ;; (setq plantuml-output-type "svg")
   ;; plantumlをpngで保存する関数
   (defun plantuml-save-png ()
@@ -876,7 +883,7 @@ See `org-capture-templates' for more information."
       (when (string-match "^\\s-*@startuml\\s-+\\(\\S-+\\)\\s*$" code)
         (setq out-file (match-string 1 code)))
       (setq cmd (concat
-                 "java -Djava.awt.headless=true -jar " plantuml-java-options " "
+                 plantuml-java-options " "
                  (shell-quote-argument plantuml-jar-path) " "
                  (and out-file (concat "-t" (file-name-extension out-file))) " "
                  plantuml-options " "
