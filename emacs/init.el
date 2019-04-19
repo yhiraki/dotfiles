@@ -456,22 +456,30 @@ When ARG is non-nil search in junk files."
                )
   )
 
+;; (use-package lsp-mode :ensure t
+;;   :hook ((python-mode go-mode sh-mode) . lsp)
+;;   :config
+;;   (setq lsp-enable-snippet nil)
+;;   )
+
 (use-package company :ensure t
-  :commands company-mode
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  ;; https://github.com/expez/company-quickhelp/issues/63
-  ;; (add-hook
-  ;;  'company-completion-started-hook
-  ;;  '(lambda (&rest ignore)
-  ;;    (when evil-mode
-  ;;      (when (evil-insert-state-p)
-  ;;        (define-key evil-insert-state-map (kbd "C-n") nil)
-  ;;        (define-key evil-insert-state-map (kbd "C-p") nil)
-  ;;        ))))
+  :hook (after-init . global-company-mode)
   :config
+  ;; https://github.com/expez/company-quickhelp/issues/63
+  (add-hook
+   'company-completion-started-hook
+   '(lambda (&rest ignore)
+     (when evil-mode
+       (when (evil-insert-state-p)
+         (define-key evil-insert-state-map (kbd "C-n") nil)
+         (define-key evil-insert-state-map (kbd "C-p") nil)
+         ))))
   (setq company-auto-complete nil)
+  (setq company-candidates-cache t)
+  (setq company-dabbrev-code-ignore-case t)
   (setq company-dabbrev-downcase nil)
+  (setq company-dabbrev-ignore-case t)
+  (setq company-etags-ignore-case t)
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 3)
   (setq company-selection-wrap-around t)
@@ -499,7 +507,10 @@ When ARG is non-nil search in junk files."
 
 (use-package company-lsp :ensure t
   :after (company yasnippet)
+  :commands company-lsp
   :config
+  ;; https://github.com/tigersoldier/company-lsp/issues/103
+  (add-to-list 'company-lsp-filter-candidates '(gopls . nil))
   (push 'company-lsp company-backends)
   )
 
@@ -543,7 +554,6 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package go-mode :ensure t
-  ;; :hook (go-mode . (lambda () (add-hook 'write-contents-functions 'eglot-format)))
   :mode ("\\.go\\'" . go-mode)
 )
 
@@ -992,10 +1002,15 @@ See `org-capture-templates' for more information."
     (kbd "gg") 'evil-goto-first-line
     (kbd "G") 'evil-goto-line
     )
+  ;; (evil-define-key 'normal prog-mode-map
+  ;;   (kbd "\\f") 'lsp-format-region
+  ;;   )
   (evil-define-key 'normal prog-mode-map
     (kbd "K") 'eglot-help-at-point
+    ;; (kbd "K") 'lsp-describe-thing-at-point
     (kbd "\\f") 'eglot-format
-    (kbd "\\r") 'quickrun
+    ;; (kbd "\\f") 'lsp-format-buffer
+    (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
     (kbd "gd") 'xref-find-definitions
     (kbd "gr") 'xref-find-references
     )
