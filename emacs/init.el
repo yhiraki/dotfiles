@@ -524,10 +524,16 @@ When ARG is non-nil search in junk files."
   :commands quickrun
   :config
   (setq quickrun-timeout-seconds 30)
+
   (quickrun-add-command "rust/script"
     '((:command . "cargo")
       (:exec    . ("%c script %o %s")))
     :default "rust")
+
+  (quickrun-add-command "c++/g++"
+    '((:exec . ("%c -x c++ -std=c++17 --pedantic-errors %o -o %e %s" "%e %a")))
+    :override t)
+  (quickrun-set-default "c++" "c++/g++")
   )
 
 (use-package csharp-mode :ensure t
@@ -1019,6 +1025,7 @@ See `org-capture-templates' for more information."
     )
   (evil-define-key 'normal python-mode-map
     (kbd "\\i") 'py-isort-buffer
+    (kbd "\\f") 'py-yapf-buffer
     )
   (evil-define-key 'visual python-mode-map
     (kbd "\\i") 'py-isort-region
