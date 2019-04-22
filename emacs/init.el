@@ -244,10 +244,24 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package flycheck :ensure t
-  :hook ((js2-mode python-mode web-mode plantuml-mode) . flycheck-mode)
+  :hook ((js2-mode python-mode web-mode plantuml-mode c++-mode) . flycheck-mode)
+
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
+
+  (flycheck-define-checker c/c++-g++
+    "A C/C++ checker using g++."
+    :command ("g++" "-Wall" "-Wextra" source)
+    :error-patterns  ((error line-start
+                             (file-name) ":" line ":" column ":" " error: " (message)
+                             line-end)
+                      (warning line-start
+                               (file-name) ":" line ":" column ":" " warning: " (message)
+                               line-end))
+    :modes (c-mode c++-mode))
+
+  (push 'c/c++-g++ flycheck-checkers)
   )
 
 (use-package flyspell
@@ -449,7 +463,7 @@ When ARG is non-nil search in junk files."
 
 (use-package eglot :ensure t
   :commands eglot-ensure
-  :hook ((python-mode go-mode sh-mode) . eglot-ensure)
+  :hook ((python-mode go-mode sh-mode c++-mode) . eglot-ensure)
   :config
   (add-to-list 'eglot-server-programs
                '(go-mode . ("go-langserver" "-mode=stdio" "-gocodecompletion" "-func-snippet-enabled=false"))
@@ -693,14 +707,17 @@ When ARG is non-nil search in junk files."
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml"))))
   (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
   ;; https://github.com/skuro/plantuml-mode
   (push '("plantuml" . plantuml) org-src-lang-modes)
   (push '("js" . js2) org-src-lang-modes)
-  ;; (org-babel-do-load-languages
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t) (plantuml . t) (shell . t) (dot . t) (js . t))
    )
+
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
   )
 
 (use-package ob-plantuml
@@ -790,6 +807,10 @@ See `org-capture-templates' for more information."
 
 (use-package electric
   :hook (python-mode . electric-indent-mode)
+  )
+
+(use-package cc-mode
+  :mode (("\\.cpp\\'" . c++-mode))
   )
 
 (use-package python :ensure t
