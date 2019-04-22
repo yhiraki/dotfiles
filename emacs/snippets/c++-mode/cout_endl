@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cout_endl
+# key: pn
+# --
+std::cout << ${hoge} << std::endl;
