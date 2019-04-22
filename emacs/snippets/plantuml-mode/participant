@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: participant
+# key: p
+# --
+participant "${Person}" as ${p}

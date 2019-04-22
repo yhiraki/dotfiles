@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: for j++
-# key: forj
-# --
-for j := 0; j < ${1:n}; j++ {
-    $0
-}

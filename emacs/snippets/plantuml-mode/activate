@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: activate
+# key: a
+# --
+activate ${1:A}
+  $0
+deactivate $1

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cout
+# key: p
+# --
+std::cout << ${hoge};
