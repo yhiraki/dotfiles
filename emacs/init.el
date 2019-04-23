@@ -705,7 +705,7 @@ When ARG is non-nil search in junk files."
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("python" "shell" "plantuml"))))
+    (not (member lang '("python" "shell" "plantuml" "shell" "dot" "js" "C" "C++"))))
   (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
   ;; https://github.com/skuro/plantuml-mode
@@ -714,7 +714,7 @@ When ARG is non-nil search in junk files."
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (plantuml . t) (shell . t) (dot . t) (js . t))
+   '((python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
    )
 
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
@@ -739,6 +739,14 @@ When ARG is non-nil search in junk files."
   :after ob
   :config
   (push '(:session . "default") org-babel-default-header-args:python)
+  )
+
+(use-package ob-C
+  :after ob
+  :custom
+  (org-babel-default-header-args:C '((:async) (:cache . "yes")))
+  (org-babel-default-header-args:C++
+   (append org-babel-default-header-args:C '((:includes . "<iostream>"))))
   )
 
 (use-package ob-async :ensure t
