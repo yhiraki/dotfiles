@@ -692,7 +692,7 @@ When ARG is non-nil search in junk files."
 (use-package org-agenda
   :commands (org-agenda org-refile)
   :config
-  (setq org-agenda-files '("~/org/"))
+  (setq org-agenda-files '("~/org/" "~/org/kb/"))
   (setq org-agenda-current-time-string "← now")
   (setq org-agenda-time-grid ;; Format is changed from 9.1
         '((daily today require-timed)
@@ -778,7 +778,7 @@ See `org-capture-templates' for more information."
                  "\n")))
   (setq org-capture-templates
         '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
-          ("m" "Mail\t\t- Text message drafts" entry (file+olp+datetree "~/org/mail.org") "* %?\n  %c\n  %T")
+          ("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U")
           ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %? %a\n %T\n")
           ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
@@ -1295,7 +1295,7 @@ See `org-capture-templates' for more information."
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
   :config
-  (push '("*quickrun*" :position bottom :dedicated t) popwin:special-display-config)
+  (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
   (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
   (push '("*Error*") popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
@@ -1422,13 +1422,15 @@ See `org-capture-templates' for more information."
 ;;   )
 
 (use-package key-binding :no-require
-  :config
-  (global-set-key "\C-h" (kbd "<backspace>"))
-  (global-set-key (kbd "<C-s-268632070>") 'toggle-frame-fullscreen)
+  :bind
+  ("C-h" . "")
+  ("<C-s-268632070>" . toggle-frame-fullscreen)
+  ("C-\\" . nil)
   )
 
 (use-package custom-file :no-require
+  :custom
+  (custom-file (my/file-path-join user-emacs-directory "custom.el"))
   :config
-  (setq custom-file (my/file-path-join user-emacs-directory "custom.el"))
   (load custom-file)
   )
