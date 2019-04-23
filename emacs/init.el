@@ -363,11 +363,17 @@ When ARG is non-nil search in junk files."
 
 (use-package recentf
   :commands recentf-mode
+  :custom
+  (recentf-save-file "~/.cache/emacs/recentf")
+  (recentf-max-saved-items 2000)
+  (recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
+  (recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
   :config
-  (setq recentf-save-file "~/.cache/emacs/recentf")
-  (setq recentf-max-saved-items 2000)
-  (setq recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
-  (setq recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
+  (defmacro with-suppressed-message (&rest body)
+    "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
+    (declare (indent 0))
+    (let ((message-log-max nil))
+      `(with-temp-message (or (current-message) "") ,@body)))
   (run-with-idle-timer 30 t '(lambda ()
                                (with-suppressed-message (recentf-save-list))))
   )
