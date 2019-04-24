@@ -1000,6 +1000,7 @@ See `org-capture-templates' for more information."
 
 (use-package evil :ensure t
   :hook (org-capture-mode . evil-insert-state)
+
   :bind
   (:map evil-normal-state-map
         ( "C-l" . 'evil-ex-nohighlight)
@@ -1014,14 +1015,18 @@ See `org-capture-templates' for more information."
         ( "C-k" . 'company-yasnippet))
   (:map evil-visual-state-map
         ( "gs" . 'google-this-region))
+
+  :custom
+  (evil-ex-search-vim-style-regexp t)
+  (evil-search-module 'evil-search)
+  (evil-want-C-i-jump t)
+  (evil-want-C-u-scroll nil)
+  (evil-want-fine-undo 'fine)
+
   :config
-  (setq evil-ex-search-vim-style-regexp t)
-  (setq evil-search-module 'evil-search)
-  (setq evil-want-C-i-jump t)
-  (setq evil-want-C-u-scroll nil)
-  (setq evil-want-fine-undo 'fine)
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
+
   (evil-define-key 'normal direx:direx-mode-map
     (kbd "C-j") 'direx:next-sibling-item
     (kbd "C-k") 'direx:previous-sibling-item
@@ -1037,6 +1042,7 @@ See `org-capture-templates' for more information."
     (kbd "q") 'evil-window-delete
     (kbd "r") 'direx:refresh-whole-tree
     )
+
   (evil-define-key 'normal dired-sidebar-mode-map
     (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
     (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
@@ -1046,6 +1052,7 @@ See `org-capture-templates' for more information."
   ;; (evil-define-key 'normal prog-mode-map
   ;;   (kbd "\\f") 'lsp-format-region
   ;;   )
+
   (evil-define-key 'normal prog-mode-map
     (kbd "K") 'eglot-help-at-point
     ;; (kbd "K") 'lsp-describe-thing-at-point
@@ -1055,16 +1062,20 @@ See `org-capture-templates' for more information."
     (kbd "gd") 'xref-find-definitions
     (kbd "gr") 'xref-find-references
     )
+
   (evil-define-key 'normal quickrun--mode-map
     (kbd "q") 'evil-window-delete
     )
+
   (evil-define-key 'normal python-mode-map
     (kbd "\\i") 'py-isort-buffer
     (kbd "\\f") 'py-yapf-buffer
     )
+
   (evil-define-key 'visual python-mode-map
     (kbd "\\i") 'py-isort-region
     )
+
   (evil-define-key 'normal markdown-mode-map
     (kbd "\\1") 'markdown-insert-header-setext-1
     (kbd "\\2") 'markdown-insert-header-setext-2
@@ -1074,9 +1085,16 @@ See `org-capture-templates' for more information."
     (kbd "zo") 'markdown-show-subtree
     (kbd "TAB") 'markdown-cycle
     )
+
   (evil-define-key 'normal org-mode-map
-    (kbd "M-k") 'org-metaup
+    (kbd "C-h") '(lambda () (interactive) (org-up-element) (evil-close-fold))
+    (kbd "C-j") 'org-next-visible-heading
+    (kbd "C-k") 'org-previous-visible-heading
+    (kbd "C-l") 'evil-open-fold
+    (kbd "M-h") 'org-metaleft
     (kbd "M-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-l") 'org-metaright
     (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
     (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
     (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
@@ -1100,6 +1118,7 @@ See `org-capture-templates' for more information."
     ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
     ;; (kbd "{") (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
     )
+
   (evil-define-key 'insert org-mode-map
     (kbd "M-j") 'org-metadown
     (kbd "M-k") 'org-metaup
@@ -1107,28 +1126,33 @@ See `org-capture-templates' for more information."
     (kbd "M-l") 'org-metaright
     (kbd "RET") 'org-return-indent
     )
+
   (evil-define-key 'visual org-mode-map
     (kbd "M-j") 'org-metadown
     (kbd "M-k") 'org-metaup
     (kbd "M-h") 'org-metaleft
     (kbd "M-l") 'org-metaright
     )
+
   (evil-define-key 'normal js2-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
     (kbd "\\f") 'eslint-fix
     )
+
   (evil-define-key 'normal js-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
     (kbd "\\f") 'eslint-fix
     )
+
   (evil-define-key 'normal web-mode-map
     (kbd "\\R") 'web-mode-element-rename
     (kbd "\\f") 'eslint-fix
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
     )
+
   (evil-define-key 'normal org-agenda-mode-map
     (kbd "+") 'org-agenda-priority-up
     (kbd "-") 'org-agenda-priority-down
@@ -1189,9 +1213,11 @@ See `org-capture-templates' for more information."
     ;; (kbd "{") 'org-agenda-manipulate-query-add-re
     ;; (kbd "}") 'org-agenda-manipulate-query-subtract-re
     )
+
   (evil-define-key 'normal prog-mode-map
     (kbd "[e") 'flycheck-previous-error
     (kbd "]e") 'flycheck-next-error)
+
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
   )
