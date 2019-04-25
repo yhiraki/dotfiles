@@ -49,7 +49,10 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 
 # 拡張 glob
-setopt extended_glob
+# setopt extended_glob
+
+# 配列を0オリジンにする # zshが起動できなくなるので無効化
+# setopt ksharrays
 
 # '#'以降をコメントとして扱う
 setopt interactive_comments
