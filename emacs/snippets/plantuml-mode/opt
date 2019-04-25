@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: opt
+# key: opt
+# --
+opt ${option}
+  $0
+end
