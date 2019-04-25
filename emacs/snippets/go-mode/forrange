@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: forrange
+# key: forr
+# --
+for ${i}, v := range ${arr} {
+	$0
+}

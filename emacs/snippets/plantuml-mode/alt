@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: alt
+# key: alt
+# --
+alt ${1:condition}
+  $3
+else ${2:else}
+  $4
+end
