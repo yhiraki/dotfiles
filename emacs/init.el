@@ -1455,10 +1455,10 @@ See `org-capture-templates' for more information."
 ;;   )
 
 (use-package key-binding :no-require
-  :bind
-  ("C-h" . "")
-  ("<C-s-268632070>" . toggle-frame-fullscreen)
-  ("C-\\" . nil)
+  :config
+  (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+  (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
+  (global-set-key (kbd "C-\\") nil)
   )
 
 (use-package custom-file :no-require
