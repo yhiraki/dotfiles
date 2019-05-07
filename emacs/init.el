@@ -782,11 +782,12 @@ See `org-capture-templates' for more information."
                    ":END:"
                    "%?\n")          ;Place the cursor here finally
                  "\n")))
+
   (setq org-capture-templates
         '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
           ("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U")
-          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %? %a\n %T\n")
-          ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
+          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n\t%a\n\t%T\n")
+          ;; ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
           ;; https://ox-hugo.scripter.co/doc/org-capture-setup
           ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
