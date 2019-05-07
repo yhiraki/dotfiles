@@ -91,6 +91,22 @@
   (modify-syntax-entry ?_ "w" (standard-syntax-table)) ; 単語境界をvim風に
   )
 
+(use-package font :no-require
+  :config
+  (when (eq system-type 'darwin)
+    (set-face-attribute 'default nil
+                        :family "Menlo"
+                        :height 120)
+    (set-fontset-font nil 'japanese-jisx0208
+                      (font-spec :family "Osaka"))
+    (push '("Osaka" . 1.2) face-font-rescale-alist)
+    )
+  ;; |あいうえお|かきくけこ|
+  ;; |１２３４５|一二三四五|
+  ;; |abcdefghij|klmnopqrst|
+  ;; |1234567890|1234567890|
+  )
+
 (use-package files
   :config
   (setq save-silently t)
