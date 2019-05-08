@@ -70,6 +70,9 @@
   (setq auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
   (setq large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
   (setq tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
+  (global-auto-revert-mode t)
+  (add-hook 'after-save-hook
+            'executable-make-buffer-file-executable-if-script-p) ; shegang を見て自動で +x する
   )
 
 (use-package display-line-numbers
