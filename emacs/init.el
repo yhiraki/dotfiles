@@ -100,12 +100,17 @@
     (set-face-attribute 'default nil
                         :family "Menlo"
                         :height 120)
-    (set-fontset-font nil 'japanese-jisx0208
-                      (font-spec :family "Osaka"))
-    (push '("Osaka" . 1.2) face-font-rescale-alist)
+    (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
+    (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
     )
+
+  ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
+  (setq use-default-font-for-symbols nil) ; 記号をデフォルトのフォントにしない ○△□が全角幅になる
+
   ;; |あいうえお|かきくけこ|
   ;; |１２３４５|一二三四五|
+  ;; |①②③④⑤|○△□☆…|
+  ;; |　　　　　|😀😀😀😀😀😀| ; TODO: 絵文字の幅がおかしい
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
   )
@@ -1270,9 +1275,6 @@ See `org-capture-templates' for more information."
     (kbd "bn") 'elscreen-next
     (kbd "bp") 'elscreen-previous
     (kbd "c") 'org-capture
-    (kbd "df") 'counsel-describe-function
-    (kbd "dk") 'counsel-descbinds
-    (kbd "dv") 'counsel-describe-variable
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
     (kbd "fd") 'dired-sidebar-toggle-sidebar
@@ -1283,6 +1285,10 @@ See `org-capture-templates' for more information."
     (kbd "gg") 'counsel-git-grep
     (kbd "gp") 'counsel-ghq
     (kbd "gs") 'magit-status
+    (kbd "h") (lookup-key global-map (kbd "<f1>"))
+    (kbd "hf") 'counsel-describe-function
+    (kbd "hk") 'counsel-descbinds
+    (kbd "hv") 'counsel-describe-variable
     (kbd "k") 'kill-this-buffer
     (kbd "oa") 'org-agenda
     (kbd "ob") 'org-switchb
