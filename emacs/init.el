@@ -1028,16 +1028,18 @@ See `org-capture-templates' for more information."
 
   :bind
   (:map evil-normal-state-map
-        ( "C-l" . 'evil-ex-nohighlight)
+        ( "/" . 'swiper)
         ( "C-j" . 'evil-forward-paragraph)
         ( "C-k" . 'evil-backward-paragraph)
+        ( "C-l" . 'evil-ex-nohighlight)
         ( "S-C-j" . 'evil-forward-section-begin)
         ( "S-C-k" . 'evil-backward-section-begin)
-        ( "/" . 'swiper)
         ( "Y" . "y$")
         )
+
   (:map evil-insert-state-map
         ( "C-k" . 'company-yasnippet))
+
   (:map evil-visual-state-map
         ( "gs" . 'google-this-region))
 
@@ -1270,10 +1272,6 @@ See `org-capture-templates' for more information."
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
     (kbd "ag") 'counsel-ag
-    (kbd "bc") 'elscreen-create
-    (kbd "bk") 'elscreen-kill
-    (kbd "bn") 'elscreen-next
-    (kbd "bp") 'elscreen-previous
     (kbd "c") 'org-capture
     (kbd "el") 'flycheck-list-errors
     (kbd "fb") 'ivy-switch-buffer
@@ -1342,6 +1340,12 @@ See `org-capture-templates' for more information."
 
 (use-package evil-numbers :ensure t
   :after evil
+  )
+
+(use-package evil-tabs :ensure t
+  :after (evil elscreen)
+  :config
+  (global-evil-tabs-mode t)
   )
 
 ;; (use-package evil-collection :ensure t
