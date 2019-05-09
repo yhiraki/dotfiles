@@ -181,7 +181,7 @@ When ARG is non-nil search in junk files."
   :hook (after-init . elscreen-start)
   :config
   (setq elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
-  (setq elscreen-tab-display-control nil)
+  (setq elscreen-tab-display-control t)
   )
 
 (use-package s :ensure t)
@@ -544,11 +544,11 @@ When ARG is non-nil search in junk files."
         )
   )
 
-;; (use-package company-box :ensure t
-;;   :hook (company-mode . company-box-mode)
-;;   ;; ~/.emacs.d/elpa//company-box-*/images
-;;   ;; $ mogrify -resize 50% *.png
-;;   )
+(use-package company-box :ensure t
+  :hook (company-mode . company-box-mode)
+  :config
+  (setq company-box-icons-alist 'company-box-icons-all-the-icons)
+  )
 
 (use-package company-lsp :ensure t
   :after (company yasnippet)
@@ -1046,13 +1046,15 @@ See `org-capture-templates' for more information."
         ("\C-b K"    . 'elscreen-kill-others)
         ("\C-b \C-p" . 'elscreen-previous)
         ("\C-b p"    . 'elscreen-previous)
+        ("gT"        . 'elscreen-previous)
         ("\C-b \C-n" . 'elscreen-next)
         ("\C-b n"    . 'elscreen-next)
+        ("gt"        . 'elscreen-next)
         ("\C-b \C-a" . 'elscreen-toggle)
         ("\C-b a"    . 'elscreen-toggle)
         ("\C-b '"    . 'elscreen-goto)
         ("\C-b \""   . 'elscreen-select-and-goto)
-        ("\C-b 0"    . 'elscreen-jump-0)
+        ("\C-b 0"    . 'elscreen-jump)
         ("\C-b 1"    . 'elscreen-jump)
         ("\C-b 2"    . 'elscreen-jump)
         ("\C-b 3"    . 'elscreen-jump)
@@ -1061,7 +1063,7 @@ See `org-capture-templates' for more information."
         ("\C-b 6"    . 'elscreen-jump)
         ("\C-b 7"    . 'elscreen-jump)
         ("\C-b 8"    . 'elscreen-jump)
-        ("\C-b 9"    . 'elscreen-jump-9)
+        ("\C-b 9"    . 'elscreen-jump)
         ("\C-b \C-s" . 'elscreen-swap)
         ("\C-b \C-w" . 'elscreen-display-screen-name-list)
         ("\C-b w"    . 'elscreen-display-screen-name-list)
@@ -1390,8 +1392,6 @@ See `org-capture-templates' for more information."
 
 (use-package evil-tabs :ensure t
   :after (evil elscreen)
-  :config
-  (global-evil-tabs-mode t)
   )
 
 ;; (use-package evil-collection :ensure t
