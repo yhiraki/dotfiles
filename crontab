@@ -1,1 +1,0 @@
-0 11 * * * bash /usr/local/bin/do_updatedb.sh

@@ -1,0 +1,13 @@
+. ~/.zplug/repos/mollifier/anyframe/anyframe.plugin.zsh
+. ~/.zplug/repos/sindresorhus/pure/pure.plugin.zsh
+. ~/.zplug/repos/felixr/docker-zsh-completion/docker-zsh-completion.plugin.zsh
+. ~/.zplug/repos/paulirish/git-open/git-open.plugin.zsh
+. ~/.config/zsh/alias.zsh
+. ~/.config/zsh/bind.zsh
+. ~/.config/zsh/func.zsh
+. ~/.zplug/repos/zsh-users/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+. ~/.zplug/repos/zsh-users/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+. ~/.zplug/repos/zsh-users/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+. ~/.zplug/repos/robbyrussell/oh-my-zsh/lib/git.zsh
+. ~/.zplug/repos/robbyrussell/oh-my-zsh/plugins/git/git.plugin.zsh
+. ~/.zplug/repos/b4b4r07/zsh-vimode-visual/zsh-vimode-visual.zsh

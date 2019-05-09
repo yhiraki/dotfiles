@@ -1,0 +1,10 @@
+' class diagram のアイコンを消す
+hide circle
+
+skinparam {
+  monochrome true
+  shadowing false
+
+  ' 可視性(+-#-) を plantuml 独自のアイコンにしない
+  classAttributeIconSize 0
+}

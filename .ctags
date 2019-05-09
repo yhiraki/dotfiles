@@ -1,8 +1,0 @@
---append=yes
---recurse=yes
---exclude=.venv/*
---exclude=**/__pycache__/*
---exclude=**/vendor/*.js
---exclude=*.min.js
---exclude=\#*\#
---exclude=~*
