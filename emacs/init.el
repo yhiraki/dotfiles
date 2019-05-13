@@ -1390,9 +1390,9 @@ See `org-capture-templates' for more information."
   :after evil
   )
 
-(use-package evil-tabs :ensure t
-  :after (evil elscreen)
-  )
+;; (use-package evil-tabs :ensure t
+;;   :after (evil elscreen)
+;;   )
 
 ;; (use-package evil-collection :ensure t
 ;;   :after evil
