@@ -561,8 +561,8 @@ When ARG is non-nil search in junk files."
 
 (use-package company-statistics :ensure t
   :hook (company-mode . company-statistics-mode)
-  :custom (company-statistics--file-name "~/.cache/emacs/company-statistics-cache.el")
   :config
+  (setq company-statistics-file "~/.cache/emacs/company-statistics-cache.el")
   (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
 
