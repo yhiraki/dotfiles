@@ -37,7 +37,7 @@ title "Git settings"
 # ----------------------------------------------------------------------
 
 touch $HOME/.gitconfig
-[ -e ~/.gitconfig.local ] || curl $BASEURL/.gitconfig.local > ~/.gitconfig.local
+[ -e ~/.gitconfig.local ] || curl $BASEURL/.gitconfig.local -o ~/.gitconfig.local
 git config --global include.path '~/.gitconfig.local'
 
 # ----------------------------------------------------------------------
@@ -45,14 +45,14 @@ title "Install ghq"
 # ----------------------------------------------------------------------
 
 brew install ghq
-export GOPATH=$HOME
+[ $(ghq root) == $(realpath ~/src) ] || exit 1
 
 # ----------------------------------------------------------------------
 title "Fetch repo"
 # ----------------------------------------------------------------------
 
 ghq get $DOTFILES_REPO
-DOTDIR=$GOPATH/src/github.com/$DOTFILES_REPO
+DOTDIR=$HOME/src/github.com/$DOTFILES_REPO
 [ -d $DOTDIR ] || exit 1
 
 if [ ! -L ~/.gitconfig.local ]
@@ -150,9 +150,8 @@ ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 title "Install emacs"
 # ----------------------------------------------------------------------
 
+[ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
 brew cask install emacs
-
-[ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d/
 
 # ----------------------------------------------------------------------
 title "done."

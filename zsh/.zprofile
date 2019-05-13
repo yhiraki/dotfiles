@@ -1,3 +1,5 @@
+export SHELL=/bin/zsh
+
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin"
 
 export GOPATH="$HOME"
