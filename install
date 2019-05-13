@@ -1,0 +1,16 @@
+#!/bin/bash
+
+BASE=https://yhiraki.github.io/dotfiles
+
+if [ "$(uname)" == 'Darwin' ]
+then
+  URL=$BASE/install_mac.sh
+fi
+
+if [ -z "$URL" ]
+then
+  echo "OS unsupported."
+  exit
+fi
+
+exec curl $URL | bash
