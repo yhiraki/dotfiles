@@ -1,5 +1,9 @@
 #!/bin/bash
 
+BASEURL=https://yhiraki.github.io/dotfiles
+DOTFILES_REPO=yhiraki/dotfiles
+XDG_CONFIG_HOME="$HOME/.config"
+
 title () {
   echo
   echo --------------------------------------------------------------------------------
@@ -10,9 +14,6 @@ title () {
 # ----------------------------------------------------------------------
 title "Prepare"
 # ----------------------------------------------------------------------
-
-DOTFILES_REPO=yhiraki/dotfiles
-XDG_CONFIG_HOME="$HOME/.config"
 
 mkdir $XDG_CONFIG_HOME
 
@@ -32,25 +33,32 @@ then
 fi
 
 # ----------------------------------------------------------------------
-title "Fetch repo"
+title "Git settings"
+# ----------------------------------------------------------------------
+
+touch $HOME/.gitconfig
+[ -e ~/.gitconfig.local ] || curl $BASEURL/.gitconfig.local > ~/.gitconfig.local
+git config --global include.path '~/.gitconfig.local'
+
+# ----------------------------------------------------------------------
+title "Install ghq"
 # ----------------------------------------------------------------------
 
 brew install ghq
 export GOPATH=$HOME
 
+# ----------------------------------------------------------------------
+title "Fetch repo"
+# ----------------------------------------------------------------------
+
 ghq get $DOTFILES_REPO
 DOTDIR=$GOPATH/src/github.com/$DOTFILES_REPO
 [ -d $DOTDIR ] || exit 1
 
-# ----------------------------------------------------------------------
-title "Git settings"
-# ----------------------------------------------------------------------
-
-touch $HOME/.gitconfig
-ln -s $DOTDIR/.gitconfig.local ~/
-if ! `grep "\[include\]" $HOME/.gitconfig > /dev/null`
+if [ ! -L ~/.gitconfig.local ]
 then
-  echo "[include]\n\tpath = ~/.gitconfig.local" >> $HOME/.gitconfig
+  rm ~/.gitconfig.local
+  ln -s $DOTDIR/.gitconfig.local ~/
 fi
 
 # ----------------------------------------------------------------------
