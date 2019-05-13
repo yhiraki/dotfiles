@@ -150,8 +150,9 @@ ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 title "Install emacs"
 # ----------------------------------------------------------------------
 
-[ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
 brew cask install emacs
+[ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
+touch ~/.emacs.d/custom.el 
 
 # ----------------------------------------------------------------------
 title "done."
