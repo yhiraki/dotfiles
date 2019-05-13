@@ -40,7 +40,7 @@ export GOPATH=$HOME
 
 ghq get $DOTFILES_REPO
 DOTDIR=$GOPATH/src/github.com/$DOTFILES_REPO
-test -d $DOTDIR || exit 1
+[ -d $DOTDIR ] || exit 1
 
 # ----------------------------------------------------------------------
 title "Git settings"
@@ -83,15 +83,15 @@ if [ ! -f $PLANTUML_JAR ]; then
   wget http://downloads.sourceforge.net/project/plantuml/plantuml.jar -O $PLANTUML_JAR
 fi
 
-ln -s $DOTDIR/plantuml/ $XDG_CONFIG_HOME/plantuml
+ln -s $DOTDIR/plantuml/ $XDG_CONFIG_HOME
 
 # ----------------------------------------------------------------------
 title "Install neovim"
 # ----------------------------------------------------------------------
 
 brew install neovim/neovim/neovim
-ln -s $DOTDIR/vim/ ~/.vim
-ln -s ~/.vim $XDG_CONFIG_HOME/nvim
+[ -e ~/.vim ] || ln -s $DOTDIR/vim/ ~/.vim
+[ -e $XDG_CONFIG_HOME/nvim ] || ln -s ~/.vim $XDG_CONFIG_HOME/nvim
 
 # ----------------------------------------------------------------------
 title "Mac defaults"
@@ -122,7 +122,7 @@ title "Install zsh"
 # ----------------------------------------------------------------------
 
 brew install zsh
-ln -s $DOTDIR/zsh $XDG_CONFIG_HOME/zsh
+ln -s $DOTDIR/zsh $XDG_CONFIG_HOME
 ln -s $XDG_CONFIG_HOME/zsh/.zshenv ~/
 
 # ----------------------------------------------------------------------
@@ -136,16 +136,15 @@ title "Install alacritty"
 # ----------------------------------------------------------------------
 
 brew cask install alacritty
-ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME/alacritty
+ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 
 # ----------------------------------------------------------------------
 title "Install emacs"
 # ----------------------------------------------------------------------
 
-brew tap railwaycat/emacsmacport
-brew cask install emacs-mac
+brew cask install emacs
 
-ln -s $DOTDIR/emacs ~/.emacs.d/
+[ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d/
 
 # ----------------------------------------------------------------------
 title "done."
