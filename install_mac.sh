@@ -111,6 +111,10 @@ defaults write com.apple.finder AppleShowAllFiles TRUE
 # マウスカーソル速度
 defaults write -g com.apple.trackpad.scaling 5
 
+# キーリピート
+defaults write -g InitialKeyRepeat -int 15
+defaults write -g KeyRepeat -int 2
+
 # ----------------------------------------------------------------------
 title "Utils"
 # ----------------------------------------------------------------------
@@ -153,6 +157,29 @@ title "Install emacs"
 brew cask install emacs
 [ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
 touch ~/.emacs.d/custom.el 
+
+# ----------------------------------------------------------------------
+title "Install karabiner-elements"
+# ----------------------------------------------------------------------
+
+brew cask install karabiner-elements
+cp $DOTDIR/karabiner/assets/complex_modifications/alt2kana.json ~/.config/karabiner/assets/complex_modifications/alt2kana.json 
+
+# ----------------------------------------------------------------------
+title "Install chrome"
+# ----------------------------------------------------------------------
+
+brew cask install google-chrome
+
+# ----------------------------------------------------------------------
+title "Install spectacle"
+# ----------------------------------------------------------------------
+
+brew cask install spectacle
+
+SPECTACLE_CONFIG=~/Library/Application\ Support/Spectacle/Shortcuts.json
+[ -L $SPECTACLE_CONFIG ] || rm $SPECTACLE_CONFIG
+ln -s $DOTDIR/Spectacle/Shortcuts.json $SPECTACLE_CONFIG
 
 # ----------------------------------------------------------------------
 title "done."
