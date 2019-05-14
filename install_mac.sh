@@ -182,4 +182,10 @@ SPECTACLE_CONFIG=~/Library/Application\ Support/Spectacle/Shortcuts.json
 ln -s $DOTDIR/Spectacle/Shortcuts.json $SPECTACLE_CONFIG
 
 # ----------------------------------------------------------------------
+title "Install Dropbox"
+# ----------------------------------------------------------------------
+
+brew cask install dropbox
+
+# ----------------------------------------------------------------------
 title "done."
