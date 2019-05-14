@@ -65,7 +65,7 @@ fi
 title "Install essentials"
 # ----------------------------------------------------------------------
 
-brew install wget fzf
+brew install wget fzf gnupg ag
 
 # ----------------------------------------------------------------------
 title "gcc g++"
@@ -76,6 +76,8 @@ ln -s /usr/local/bin/gcc-8 ~/bin/gcc
 
 brew install llvm
 ln -s /usr/local/bin/g++-8 ~/bin/g++
+
+brew install gdb
 
 # ----------------------------------------------------------------------
 title "Install plantuml"
@@ -186,6 +188,12 @@ title "Install Dropbox"
 # ----------------------------------------------------------------------
 
 brew cask install dropbox
+
+# ----------------------------------------------------------------------
+title "Install gogle IME"
+# ----------------------------------------------------------------------
+
+brew cask install google-japanese-ime
 
 # ----------------------------------------------------------------------
 title "done."
