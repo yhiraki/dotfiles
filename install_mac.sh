@@ -78,6 +78,8 @@ brew install llvm
 ln -s /usr/local/bin/g++-8 ~/bin/g++
 
 brew install gdb
+brew tap twlz0ne/homebrew-ccls
+brew install ccls
 
 # ----------------------------------------------------------------------
 title "Install plantuml"
