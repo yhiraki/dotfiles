@@ -277,7 +277,7 @@ When ARG is non-nil search in junk files."
 
   (flycheck-define-checker c/c++-g++
     "A C/C++ checker using g++."
-    :command ("g++" "-Wall" "-Wextra" source)
+    :command ("g++" "-Wall" "-Wextra" "-std=c++14" source)
     :error-patterns  ((error line-start
                              (file-name) ":" line ":" column ":" " error: " (message)
                              line-end)
