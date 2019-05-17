@@ -853,6 +853,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package cc-mode
+  :config
+  (setq-default sp-escape-quotes-after-insert nil)
   :mode (("\\.cpp\\'" . c++-mode))
   )
 
@@ -1155,10 +1157,6 @@ See `org-capture-templates' for more information."
     )
 
   (evil-define-key 'normal markdown-mode-map
-    (kbd "\\1") 'markdown-insert-header-setext-1
-    (kbd "\\2") 'markdown-insert-header-setext-2
-    (kbd "\\-") 'markdown-insert-hr
-    (kbd "\\c") 'markdown-insert-gfm-code-block
     (kbd "zc") 'markdown-hide-subtree
     (kbd "zo") 'markdown-show-subtree
     (kbd "TAB") 'markdown-cycle
