@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+SYNC_PROJECT_WORKDIR=/tmp/sync-project-tmp
+
+if [ -z "$REMOTE_WORKSPACE" ]
+then
+  echo Set env REMOTE_WORKSPACE 1>&2
+  exit 1
+fi 
+
+if [ ! -d $SYNC_PROJECT_WORKDIR ]
+then
+  mkdir -p $SYNC_PROJECT_WORKDIR
+fi
+
+GITROOT=$(git rev-parse --show-toplevel)
+HASH=$(echo $GITROOT | md5sum | cut -d' ' -f1)
+
+if [ -f $SYNC_PROJECT_WORKDIR/$HASH ]
+then
+  if kill -s 0 $(cat $SYNC_PROJECT_WORKDIR/$HASH)
+  then
+    echo Another process is running... 1>&2
+    exit 1
+  fi
+  rm $SYNC_PROJECT_WORKDIR/$HASH 
+fi 
+
+echo $$ > $SYNC_PROJECT_WORKDIR/$HASH 
+
+GITROOT_REL=$(echo $GITROOT | sed -e s:$HOME:~:)
+ssh $REMOTE_WORKSPACE mkdir -p "$GITROOT_REL"
+rsync -av $GITROOT/ as-common-lin01:$GITROOT_REL --exclude-from=$GITROOT/.gitignore --exclude=.git
+
+rm $SYNC_PROJECT_WORKDIR/$HASH 
