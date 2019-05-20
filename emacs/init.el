@@ -94,6 +94,13 @@
   (modify-syntax-entry ?_ "w" (standard-syntax-table)) ; 単語境界をvim風に
   )
 
+(use-package meta-key :no-require
+  :config
+  (when (eq system-type 'darwin)
+    (setq mac-option-modifier 'meta)
+    )
+  )
+
 (use-package font :no-require
   :config
   (if window-system (progn
@@ -489,7 +496,7 @@ When ARG is non-nil search in junk files."
 
 (use-package twittering-mode :ensure t
   :commands (twit)
-  :config
+  :init
   ;; master-password を設定する際に注意すること
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (setq twittering-use-master-password t))
