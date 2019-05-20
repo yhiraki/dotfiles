@@ -65,7 +65,7 @@ fi
 title "Install essentials"
 # ----------------------------------------------------------------------
 
-brew install wget fzf gnupg ag
+brew install wget fzf gnupg ag direnv
 
 # ----------------------------------------------------------------------
 title "gcc g++"
@@ -146,6 +146,7 @@ title "Install languages"
 # ----------------------------------------------------------------------
 
 brew install python3 go node
+brew cask install java
 
 # ----------------------------------------------------------------------
 title "Install alacritty"
@@ -158,7 +159,8 @@ ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 title "Install emacs"
 # ----------------------------------------------------------------------
 
-brew cask install emacs
+brew tap railwaycat/emacsmacport
+brew cask install emacs-mac
 [ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
 touch ~/.emacs.d/custom.el 
 
