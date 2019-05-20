@@ -15,7 +15,7 @@ export PATH="$PATH:$DOTDIR/bin"
 # export CLOUDSDK_PYTHON_SITEPACKAGES=1
 # export PATH=$PATH:$HOME/bin/google-cloud-sdk/bin
 
-export PATH="$HOME/.anyenv/bin:$PATH"
+# export PATH="$HOME/.anyenv/bin:$PATH"
 
 for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}
 do
@@ -59,10 +59,24 @@ export LOCATE_PATH="$HOME/var/db/locate.database"
 export PIPENV_VENV_IN_PROJECT=true
 
 # anyenv
-eval "$(anyenv init -)"
+# eval "$(anyenv init -)"
 
 # gcloud
 # source $HOME/bin/google-cloud-sdk/path.zsh.inc
 
-eval `ssh-agent`
-ssh-add
+export SSH_AGENT_RC=/tmp/ssh-agent-rc
+
+if [ ! -f $SSH_AGENT_RC ]
+then
+  ssh-agent > $SSH_AGENT_RC
+  ssh-add
+fi
+
+. $SSH_AGENT_RC
+
+if ! kill -s 0 $SSH_AGENT_PID
+then
+  ssh-agent > $SSH_AGENT_RC
+  ssh-add
+  . $SSH_AGENT_RC
+fi
