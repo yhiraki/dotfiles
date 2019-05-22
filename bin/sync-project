@@ -3,6 +3,7 @@ set -e
 
 SYNC_PROJECT_WORKDIR=/tmp/sync-project-tmp
 
+[ -n "$1" ] && REMOTE_WORKSPACE=$1
 if [ -z "$REMOTE_WORKSPACE" ]
 then
   echo Set env REMOTE_WORKSPACE 1>&2
@@ -31,6 +32,6 @@ echo $$ > $SYNC_PROJECT_WORKDIR/$HASH
 
 GITROOT_REL=$(echo $GITROOT | sed -e s:$HOME:~:)
 ssh $REMOTE_WORKSPACE mkdir -p "$GITROOT_REL"
-rsync -av $GITROOT/ as-common-lin01:$GITROOT_REL --exclude-from=$GITROOT/.gitignore --exclude=.git
+rsync -av $GITROOT/ $REMOTE_WORKSPACE:$GITROOT_REL --exclude-from=$GITROOT/.gitignore --exclude=.git
 
 rm $SYNC_PROJECT_WORKDIR/$HASH 
