@@ -65,7 +65,14 @@ fi
 title "Install essentials"
 # ----------------------------------------------------------------------
 
-brew install wget fzf gnupg ag direnv
+brew install \
+  ag \
+  direnv \
+  fzf \
+  gibo \
+  gnupg \
+  terminal-notifier \
+  wget
 
 # ----------------------------------------------------------------------
 title "gcc g++"
@@ -78,8 +85,9 @@ brew install llvm
 ln -s /usr/local/bin/g++-8 ~/bin/g++
 
 brew install gdb
-brew tap twlz0ne/homebrew-ccls
-brew install ccls
+
+# brew tap twlz0ne/homebrew-ccls
+# brew install ccls
 
 # ----------------------------------------------------------------------
 title "Install plantuml"
