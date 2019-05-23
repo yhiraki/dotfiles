@@ -31,6 +31,11 @@ then
   export PATH="/usr/local/opt/openssl/bin:$PATH"
 fi
 
+if [ -d /usr/local/opt/llvm/ ]
+then
+  export PATH="/usr/local/opt/llvm/bin:$PATH"
+fi
+
 export TERM=xterm-256color
 
 export LANG=ja_JP.UTF-8
