@@ -137,7 +137,7 @@ brew install coreutils findutils gnu-sed gnu-tar grep
 title "Install tmux"
 # ----------------------------------------------------------------------
 
-brew install tmux
+brew install tmux reattach-to-user-namespace
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s $DOTDIR/.tmux.conf ~/
 
