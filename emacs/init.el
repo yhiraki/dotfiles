@@ -436,6 +436,7 @@ When ARG is non-nil search in junk files."
   (setq enable-recursive-minibuffers t)
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-use-virtual-buffers t)
+  :bind (:map ivy-minibuffer-map ([escape] . 'minibuffer-keyboard-quit))
   )
 
 (use-package ivy-hydra :ensure t
@@ -613,6 +614,9 @@ When ARG is non-nil search in junk files."
   :mode
   ("\\.el\\'" . emacs-lisp-mode)
   )
+
+(use-package clang-format :ensure t
+  :commands clang-format-buffer)
 
 (use-package go-mode :ensure t
   :mode ("\\.go\\'" . go-mode)
@@ -1148,6 +1152,14 @@ See `org-capture-templates' for more information."
     (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
     (kbd "gd") 'xref-find-definitions
     (kbd "gr") 'xref-find-references
+    )
+
+  (evil-define-key 'normal c++-mode-map
+    (kbd "\\f") 'clang-format-buffer
+    )
+
+  (evil-define-key 'visual c++-mode-map
+    (kbd "\\f") 'clang-format-region
     )
 
   (evil-define-key 'normal quickrun--mode-map
