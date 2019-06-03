@@ -2,4 +2,4 @@
 # name: cout
 # key: cout
 # --
-std::cout << ${hoge};
+std::cout << ${"hoge"};
