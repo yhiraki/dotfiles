@@ -56,6 +56,7 @@ zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "zsh-users/zsh-completions", lazy:true
 zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "yhiraki/docker-gcloud", as:command, use:"bin/*"
 
 zplug "$ZDOTDIR", from:local, use:"{alias,bind,func}.zsh"
 
