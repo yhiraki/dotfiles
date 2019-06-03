@@ -2,4 +2,4 @@
 # name: cout_endl
 # key: coutl
 # --
-std::cout << ${hoge} << std::endl;
+std::cout << ${"hoge"} << std::endl;

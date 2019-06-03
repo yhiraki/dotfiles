@@ -587,7 +587,10 @@ When ARG is non-nil search in junk files."
     :default "rust")
 
   (quickrun-add-command "c++/g++"
-    '((:exec . ("%c -x c++ -std=c++17 --pedantic-errors %o -o %e %s" "%e %a")))
+    '(
+      (:exec . ("%c -std=c++14 %o -o %e %s" "%e %a"))
+      (:compile-only . "%c -Wall -Wextra -std=c++14 %o -o %e %s")
+      )
     :override t)
   (quickrun-set-default "c++" "c++/g++")
   )
@@ -1140,18 +1143,22 @@ See `org-capture-templates' for more information."
     (kbd "gg") 'evil-goto-first-line
     (kbd "G") 'evil-goto-line
     )
-  ;; (evil-define-key 'normal prog-mode-map
-  ;;   (kbd "\\f") 'lsp-format-region
-  ;;   )
 
   (evil-define-key 'normal prog-mode-map
     (kbd "K") 'eglot-help-at-point
-    ;; (kbd "K") 'lsp-describe-thing-at-point
     (kbd "\\f") 'eglot-format
-    ;; (kbd "\\f") 'lsp-format-buffer
     (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
+    (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
+    (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
+    (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
+    (kbd "\\qa") 'quickrun-autorun-mode
     (kbd "gd") 'xref-find-definitions
     (kbd "gr") 'xref-find-references
+    )
+
+  (evil-define-key 'visual prog-mode-hook
+    (kbd "\\r") 'quickrun-region
+    (kbd "\\qr") 'quickrun-region
     )
 
   (evil-define-key 'normal c++-mode-map
@@ -1511,7 +1518,7 @@ See `org-capture-templates' for more information."
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-;; (use-package yasnippet-snippets :ensure t)
+(use-package yasnippet-snippets :ensure t)
 
 (use-package popup :ensure t
   :commands (popup-next popup-previous)
