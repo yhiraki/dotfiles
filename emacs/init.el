@@ -279,7 +279,10 @@ When ARG is non-nil search in junk files."
 
 (use-package flycheck :ensure t
   :hook ((js2-mode python-mode web-mode plantuml-mode c++-mode) . flycheck-mode)
-
+  :custom
+  (flycheck-python-flake8-executable "python3")
+  (flycheck-python-pycompile-executable "python3")
+  (flycheck-python-pylint-executable "python3")
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
@@ -874,6 +877,9 @@ See `org-capture-templates' for more information."
 
 (use-package python :ensure t
   :mode (("\\.py\\'" . python-mode))
+  :custom
+  (python-shell-interpreter "python3")
+  (python-shell-interpreter-args "-m IPython --simple-prompt -i")
   )
 
 (use-package py-yapf :ensure t
@@ -1463,6 +1469,7 @@ See `org-capture-templates' for more information."
 
 (use-package doom-modeline :ensure t
   :hook (after-init . doom-modeline-mode)
+  :custom (doom-modeline-python-executable "python3")
   )
 
 (use-package whitespace
