@@ -9,7 +9,7 @@
       (mapconcat
        (lambda (x)
          (concat "   " (nth 0 x)
-             (if make-fields (format " ${%d:arg%d}" (cl-incf nr) nr))
+             (if make-fields (format ": ${%d:arg%d}" (cl-incf nr) nr))
              (if (nth 1 x) (concat " \(default " (nth 1 x) "\)"))))
        args
        indent)))
