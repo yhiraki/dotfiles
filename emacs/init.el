@@ -267,14 +267,13 @@ When ARG is non-nil search in junk files."
 
 (use-package flymake
   :commands flymake-mode
-  :config
-  (set-face-underline 'flymake-error nil)
-  (set-face-underline 'flymake-note nil)
-  (set-face-underline 'flymake-warning nil)
   :custom
   (flymake-error-bitmap nil)
   (flymake-note-bitmap nil)
   (flymake-warning-bitmap nil)
+  (set-face-underline 'flymake-error nil)
+  (set-face-underline 'flymake-note nil)
+  (set-face-underline 'flymake-warning nil)
   )
 
 (use-package flycheck :ensure t
@@ -1179,6 +1178,17 @@ See `org-capture-templates' for more information."
     (kbd "q") 'evil-window-delete
     )
 
+  (evil-define-key 'normal 'flycheck-error-list-mode-map
+    (kbd "F") 'flycheck-error-list-reset-filter
+    (kbd "RET") 'flycheck-error-list-goto-error
+    (kbd "f") 'flycheck-error-list-set-filter
+    (kbd "j") 'flycheck-error-list-next-error
+    (kbd "k") 'flycheck-error-list-previous-error
+    (kbd "n") 'flycheck-error-list-next-error
+    (kbd "p") 'flycheck-error-list-previous-error
+    (kbd "q") 'quit-window
+    )
+
   (evil-define-key 'normal python-mode-map
     (kbd "\\i") 'py-isort-buffer
     (kbd "\\f") 'py-yapf-buffer
@@ -1436,13 +1446,13 @@ See `org-capture-templates' for more information."
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
   :config
-  (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
-  (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
   (push '("*Error*") popwin:special-display-config)
-  (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
-  (push '("*xref*" :position bottom ) popwin:special-display-config)
-  (push '(image-mode) popwin:special-display-config)
+  (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
   (push '("*Org-Babel Error Output*") popwin:special-display-config)
+  (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
+  (push '("*xref*" :position bottom ) popwin:special-display-config)
+  (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
+  (push '(image-mode) popwin:special-display-config)
   )
 
 (use-package smartrep :ensure t
