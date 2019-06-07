@@ -45,7 +45,6 @@ zplug "b4b4r07/zsh-vimode-visual", defer:3
 zplug "felixr/docker-zsh-completion"
 zplug "hchbaw/opp.zsh", lazy:true
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux, lazy:true
-zplug "mollifier/anyframe"
 zplug "paulirish/git-open", as:plugin
 zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))", defer:2
 zplug "plugins/docker", from:oh-my-zsh, if:"(( $+commands[docker] ))", defer:2
@@ -58,7 +57,7 @@ zplug "zsh-users/zsh-history-substring-search", defer:2
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "yhiraki/docker-gcloud", as:command, use:"bin/*"
 
-zplug "$ZDOTDIR", from:local, use:"{alias,bind,func}.zsh"
+zplug "$ZDOTDIR", from:local, use:"rc/*.zsh"
 
 zplug load
 
