@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: docstring-quote
+# key: "
+# --
+"""$0""
