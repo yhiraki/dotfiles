@@ -28,6 +28,7 @@
   (setq inhibit-startup-message t)
   (setq confirm-kill-emacs 'y-or-n-p)
   (fset 'yes-or-no-p 'y-or-n-p)
+  (server-start)
   )
 
 (use-package scroll :no-require
@@ -1416,6 +1417,10 @@ See `org-capture-templates' for more information."
 
 (use-package evil-magit :ensure t
   :after (evil magit)
+  :config
+  (evil-define-key evil-magit-state magit-mode-map
+    (kbd "x") '(lambda () (interactive) (message "Deletion is disabled."))
+    (kbd "q") 'evil-quit)
   )
 
 (use-package evil-commentary :ensure t
@@ -1546,7 +1551,7 @@ See `org-capture-templates' for more information."
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-(use-package yasnippet-snippets :ensure t)
+;; (use-package yasnippet-snippets :ensure t)
 
 (use-package popup :ensure t
   :commands (popup-next popup-previous)
