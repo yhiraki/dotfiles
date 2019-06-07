@@ -17,18 +17,6 @@ repo() {
   fi
 }
 
-_fzf-select-branch(){
-  local branches branch
-  branches=$(git branch --all -vv) &&
-    branch=$(echo "$branches" | $FZF_CMD +m -q "$*") &&
-    echo $(basename $(echo "$branch" | awk '{print $1}' | sed "s/.* //"))
-}
-
-# fbr - checkout git branch
-checkout() {
-  git checkout $(_fzf-select-branch "$*")
-}
-
 # fshow - git commit browser
 gitshow() {
   git log --graph --color=always \
@@ -45,27 +33,6 @@ gitroot(){
   cd $(git rev-parse --show-toplevel)
 }
 
-# v - open files in neomru
-v() {
-  local files
-    files=$(tail -n +2 $XDG_CACHE_HOME/neomru/file \
-      | grep -vE "\w+:\/\/" \
-      | $FZF_CMD -d -m -q "$*" -1) && $EDITOR ${files}
-}
-
-# fd - cd to selected directory
-fd() {
-  local dir
-  dir=$(find ${1:-*} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | $FZF_CMD +m) &&
-  cd "$dir"
-}
-
-# fda - including hidden directories
-fda() {
-  local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | $FZF_CMD +m) && cd "$dir"
-}
 
 _fzf-select-files() {
   IFS='
@@ -75,21 +42,6 @@ _fzf-select-files() {
   # [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   [[ -n "$files" ]] && echo "${files[@]}"
   unset IFS
-}
-
-_find-current-dir(){
-  find . | sed -e 's/\.\///g'
-}
-
-# fe [FUZZY PATTERN] - Open the selected file with the default editor
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-u
-fe() {
-  $EDITOR $(ls -a | grep -v -e "\.$" | _fzf-select-files $1)
-}
-
-fea() {
-  $EDITOR $(_find-current-dir | _fzf-select-files $1)
 }
 
 fsh() {
@@ -131,36 +83,7 @@ alias -g dld='$(_select-dirs-in-dir ~/Downloads)'
 alias -g junkf='$(_select-files-in-dir ~/.cache/junkfile/)'
 alias -g repod='$(_select-dirs-in-repo)'
 alias -g repof='$(_select-files-in-repo)'
-alias -g bra='$(_fzf-select-branch)'
 
-
-function locatecd () {
-  cd $(locate $* F dirname)
-}
-
-
-function my-manual(){
-  local HELPDIR=$HOME/.help
-  if [ $# -eq 0 ]; then
-    HELPFILE=${HELPDIR}/$(ls $HELPDIR | anyframe-selector-auto)
-  else
-    HELPFILE=${HELPDIR}/$1
-  fi
-  SELECTED_LINE=$(
-    echo $(cat $HELPFILE \
-      | sed '/^#.*/d' \
-      | sed '/^$/d' \
-      | $FZF_CMD) \
-      | sed -e 's/ *\[.*\] *//g'
-  )
-  if [ ${#$(echo $SELECTED_LINE | grep '#.*insert')} -ne 0 ]; then
-    CMD=anyframe-action-insert
-  else
-    CMD=anyframe-action-execute
-  fi
-  echo -E $SELECTED_LINE \
-    | $CMD
-}
 
 # 失敗した History は記録しない
 # http://someneat.hatenablog.jp/entry/2017/07/25/073428
