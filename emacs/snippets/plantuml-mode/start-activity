@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: start-activity
+# key: start-activity
+# --
+start
+:${Init Phase;
+:Second Phase};
+stop

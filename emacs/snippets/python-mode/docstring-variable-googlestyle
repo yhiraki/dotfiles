@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: docstring-variable-googlestyle
+# key: docvg
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
+# --
+\"\"\"${int}: ${Module level variable documented inline.}
+
+${The docstring may span multiple lines. The type may optionally be specified
+on the first line, separated by a colon.}
+\"\"\"
