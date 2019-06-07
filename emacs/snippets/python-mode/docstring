@@ -2,6 +2,4 @@
 # name: docstring
 # key: doc
 # --
-"""
-$0
-"""
+"""$0"""
