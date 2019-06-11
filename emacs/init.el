@@ -399,6 +399,7 @@ When ARG is non-nil search in junk files."
 
 (use-package magit :ensure t
   :commands (magit-status)
+  :custom (magit-save-repository-buffers nil)
   :config
   ;; magit-commit 時に diff が開くのをやめる
   ;; https://qiita.com/egg_chicken/items/948f8df70069334e8296
@@ -601,12 +602,15 @@ When ARG is non-nil search in junk files."
     :default "rust")
 
   (quickrun-add-command "c++/g++"
-    '(
-      (:exec . ("%c -std=c++14 %o -o %e %s" "%e %a"))
-      (:compile-only . "%c -Wall -Wextra -std=c++14 %o -o %e %s")
-      )
+    '((:exec . ("%c -std=c++14 %o -o %e %s" "%e %a"))
+      (:compile-only . "%c -Wall -Wextra -std=c++14 %o -o %e %s"))
     :override t)
   (quickrun-set-default "c++" "c++/g++")
+
+  (quickrun-add-command "python3"
+    '((:command . "python3")
+      (:compile-only . "flake8 %s")))
+  (quickrun-set-default "python" "python3")
   )
 
 (use-package csharp-mode :ensure t
@@ -1447,6 +1451,7 @@ See `org-capture-templates' for more information."
 
 (use-package evil-numbers :ensure t
   :after evil
+  :bind (:map evil-normal-state-map ("C-a" . evil-numbers/inc-at-pt))
   )
 
 ;; (use-package evil-tabs :ensure t
@@ -1472,11 +1477,19 @@ See `org-capture-templates' for more information."
   )
 
 (use-package smartrep :ensure t
+  :after evil-numbers
   :config
-  (smartrep-define-key global-map
+  (smartrep-define-key evil-normal-state-map
       "C-c" '(("+" . 'evil-numbers/inc-at-pt)
               ("=" . 'evil-numbers/inc-at-pt)
               ("-" . 'evil-numbers/dec-at-pt)
+              ))
+  (smartrep-define-key evil-normal-state-map
+      "C-w" '(("+" . 'evil-window-increase-height)
+              ("-" . 'evil-window-decrease-height)
+              ("<" . 'evil-window-decrease-width)
+              (">" . 'evil-window-increase-width)
+              ("=" . 'balance-windows)
               ))
   )
 
