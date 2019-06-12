@@ -12,16 +12,20 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; el-get
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
-(when (not (package-installed-p 'el-get))
-  (package-install 'el-get))
-(require 'el-get)
+;; load straight.el
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; use-package
-(when (not (package-installed-p 'use-package))
-  (package-install 'use-package))
-(require 'use-package)
+(straight-use-package 'use-package)
 
 (use-package startup :no-require
   :custom
@@ -488,7 +492,8 @@ When ARG is non-nil search in junk files."
   :commands swiper
   )
 
-(use-package counsel-ghq :init (el-get-bundle windymelt/counsel-ghq)
+(use-package counsel-ghq :straight
+  (counsel-ghq :type git :host github :repo "windymelt/counsel-ghq")
   :commands (counsel-ghq)
   )
 
@@ -1640,6 +1645,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package cus-edit
+  :after my/functions
   :config
   (setq custom-file (my/file-path-join user-emacs-directory "custom.el"))
   (load custom-file)
