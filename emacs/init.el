@@ -24,19 +24,21 @@
 (require 'use-package)
 
 (use-package startup :no-require
+  :custom
+  (confirm-kill-emacs 'y-or-n-p)
   :config
   (setq inhibit-startup-message t)
-  (setq confirm-kill-emacs 'y-or-n-p)
   (fset 'yes-or-no-p 'y-or-n-p)
-  (server-start)
+  ;; (server-start)
   )
 
 (use-package scroll :no-require
+  :custom
+  (mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
+  (mouse-wheel-progressive-speed nil) ; don't accelerate scrolling
+  (mouse-wheel-follow-mouse 't) ; scroll window under mouse
   :config
   (setq scroll-conservatively 1)
-  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
-  (setq mouse-wheel-progressive-speed nil) ; don't accelerate scrolling
-  (setq mouse-wheel-follow-mouse 't) ; scroll window under mouse
   (scroll-bar-mode 0)
   )
 
@@ -64,14 +66,22 @@
   ;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
   )
 
-(use-package file-open :no-require
+(use-package vc-hooks
+  :custom
+  (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
+  (find-file-visit-truename t) ; 実体を開く
+  (auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
+  (large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
+  (tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
+  )
+
+(use-package autorevert
   :config
-  (setq vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
-  (setq find-file-visit-truename t) ; 実体を開く
-  (setq auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
-  (setq large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
-  (setq tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
   (global-auto-revert-mode t)
+  )
+
+(use-package executable
+  :config
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p) ; shegang を見て自動で +x する
   )
@@ -81,12 +91,14 @@
   ;; :config (setq display-line-numbers-type 'relative)
   )
 
+(use-package cc-vars
+  :custom (c-basic-offset 2)
+  )
+
 (use-package indent :no-require
   :config
-  (setq-default c-basic-offset 2)
   (setq-default tab-width 2)
   (setq-default indent-tabs-mode nil)
-  (setq-default require-final-newline t)
   )
 
 (use-package syntax :no-require
@@ -127,15 +139,18 @@
   )
 
 (use-package files
+  :custom
+  (require-final-newline t)
   :config
   (setq save-silently t)
   )
 
 (use-package open-junk-file :ensure t
   :commands (my/open-junk-file)
-  :config
-  (setq open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
+  :custom
+  (open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
   ;; https://github.com/yewton/.emacs.d
+  :config
   (defun my/open-junk-file (&optional arg)
     "Open junk file using ivy.
 
@@ -189,9 +204,9 @@ When ARG is non-nil search in junk files."
 
 (use-package elscreen :ensure t
   :hook (after-init . elscreen-start)
-  :config
-  (setq elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
-  (setq elscreen-tab-display-control t)
+  :custom
+  (elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
+  (elscreen-tab-display-control t)
   )
 
 (use-package s :ensure t)
@@ -227,8 +242,8 @@ When ARG is non-nil search in junk files."
 ;;   )
 
 (use-package appearance :no-require
-  :config
-  (setq initial-frame-alist
+  :custom
+  (initial-frame-alist
         (append
          '((ns-transparent-titlebar . t) ;; タイトルバーを透過
            (vertical-scroll-bars . nil) ;; スクロールバーを消す
@@ -236,6 +251,7 @@ When ARG is non-nil search in junk files."
            (internal-border-width . 0) ;; 余白を消す
            ))
         )
+  :config
   (setq default-frame-alist initial-frame-alist)
   )
 
@@ -245,8 +261,8 @@ When ARG is non-nil search in junk files."
 
 (use-package dired-sidebar :ensure t
   :commands (dired-sidebar-toggle-sidebar)
-  :config
-  (setq dired-sidebar-theme 'icons)
+  :custom
+  (dired-sidebar-theme 'icons)
   )
 
 (use-package all-the-icons-dired :ensure t
@@ -262,8 +278,7 @@ When ARG is non-nil search in junk files."
   :bind
   (:map dired-mode-map
         ("e" . wdired-change-to-wdired-mode))
-  :config
-  (setq wdired-allow-to-change-permissions t)
+  :custom (wdired-allow-to-change-permissions t)
   )
 
 (use-package flymake
@@ -441,8 +456,8 @@ When ARG is non-nil search in junk files."
 
 (use-package undohist :ensure t
   :hook (after-init . undohist-initialize)
-  :config
-  (setq undohist-ignored-files '("COMMIT_EDITMSG"))
+  :custom
+  (undohist-ignored-files '("COMMIT_EDITMSG"))
   )
 
 (use-package ivy :ensure t
@@ -535,6 +550,17 @@ When ARG is non-nil search in junk files."
 
 (use-package company :ensure t
   :hook (after-init . global-company-mode)
+  :custom
+  (company-auto-complete nil)
+  (company-candidates-cache t)
+  (company-dabbrev-code-ignore-case t)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-ignore-case t)
+  (company-etags-ignore-case t)
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 3)
+  (company-selection-wrap-around t)
+  (completion-ignore-case t)
   :config
   ;; https://github.com/expez/company-quickhelp/issues/63
   (add-hook
@@ -545,16 +571,6 @@ When ARG is non-nil search in junk files."
          (define-key evil-insert-state-map (kbd "C-n") nil)
          (define-key evil-insert-state-map (kbd "C-p") nil)
          ))))
-  (setq company-auto-complete nil)
-  (setq company-candidates-cache t)
-  (setq company-dabbrev-code-ignore-case t)
-  (setq company-dabbrev-downcase nil)
-  (setq company-dabbrev-ignore-case t)
-  (setq company-etags-ignore-case t)
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 3)
-  (setq company-selection-wrap-around t)
-  (setq completion-ignore-case t)
   :bind
   (:map company-active-map
         ("<tab>" . nil)
@@ -572,8 +588,8 @@ When ARG is non-nil search in junk files."
 
 (use-package company-box :ensure t
   :hook (company-mode . company-box-mode)
-  :config
-  (setq company-box-icons-alist 'company-box-icons-all-the-icons)
+  :custom
+  (company-box-icons-alist 'company-box-icons-all-the-icons)
   )
 
 (use-package company-lsp :ensure t
@@ -587,9 +603,9 @@ When ARG is non-nil search in junk files."
 
 (use-package company-statistics :ensure t
   :hook (company-mode . company-statistics-mode)
-  :config
-  (setq company-statistics-file "~/.cache/emacs/company-statistics-cache.el")
-  (setq company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
+  :custom
+  (company-statistics-file "~/.cache/emacs/company-statistics-cache.el")
+  (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
 
 (use-package quickrun :ensure t
@@ -651,13 +667,13 @@ When ARG is non-nil search in junk files."
 (use-package js2-mode :ensure t
   :init
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  :config
-  (setq js2-basic-offset 2)
-  (setq js2-highlight-external-variables nil)
-  (setq js2-include-browser-externs nil)
-  (setq js2-include-jslint-globals nil)
-  (setq js2-mode-show-parse-errors nil)
-  (setq js2-mode-show-strict-warnings nil)
+  :custom
+  (js2-basic-offset 2)
+  (js2-highlight-external-variables nil)
+  (js2-include-browser-externs nil)
+  (js2-include-jslint-globals nil)
+  (js2-mode-show-parse-errors nil)
+  (js2-mode-show-strict-warnings nil)
   :mode (("\\.js\\'" . js2-mode))
   )
 
@@ -706,9 +722,9 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package markdown-mode :ensure t
-  :config
-  (setq markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
-  (setq markdown-gfm-use-electric-backquote nil)
+  :custom
+  (markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
+  (markdown-gfm-use-electric-backquote nil)
   :mode
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
@@ -728,19 +744,19 @@ When ARG is non-nil search in junk files."
                (add-hook 'completion-at-point-functions
                          'pcomplete-completions-at-point nil t)
                ))
+  :custom
+  (org-directory "~/org/")
+  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (org-startup-with-inline-images nil)
+  (org-src-fontify-natively t)
+  (org-plantuml-jar-path "~/lib/java/plantuml.jar")
+  (org-default-notes-file "notes.org")
+  (org-hide-leading-stars t) ; 見出しの余分な*を消す
+  (org-todo-keywords
+   '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
+  (org-log-done 'time) ; DONEの時刻を記録
   :config
-  (setq org-directory "~/org/")
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
-  (setq org-startup-with-inline-images nil)
-  (setq org-src-fontify-natively t)
-  (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")
-  (setq org-default-notes-file "notes.org")
-  (setq org-hide-leading-stars t) ; 見出しの余分な*を消す
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
-  (setq org-log-done 'time) ; DONEの時刻を記録
   (setq org-html-htmlize-output-type 'css)
-  (setq org-publish-directory "~/public_html/")
 
   ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
   (defun toggle-org-html-export-on-save ()
@@ -769,11 +785,12 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package ob
+  :custom
+  (org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("python" "shell" "plantuml" "shell" "dot" "js" "C" "C++"))))
-  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
   ;; https://github.com/skuro/plantuml-mode
   (push '("plantuml" . plantuml) org-src-lang-modes)
@@ -804,6 +821,8 @@ When ARG is non-nil search in junk files."
 
 (use-package ob-python
   :after ob
+  :custom
+  (org-babel-python-command "python3")
   :config
   (push '(:session . "default") org-babel-default-header-args:python)
   )
@@ -865,6 +884,12 @@ See `org-capture-templates' for more information."
 ;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
 ;;   )
 
+(use-package ox-publish
+  :after org
+  :config
+  (setq org-publish-directory "~/public_html/")
+  )
+
 (use-package ox-confluence
   :after ox
   )
@@ -907,11 +932,11 @@ See `org-capture-templates' for more information."
   )
 
 (use-package sh-script
-  :config
-  (setq sh-basic-offset 2)
-  (setq sh-indentation 2)
-  (setq sh-indent-for-case-label 0)
-  (setq sh-indent-for-case-alt '+)
+  :custom
+  (sh-basic-offset 2)
+  (sh-indentation 2)
+  (sh-indent-for-case-label 0)
+  (sh-indent-for-case-alt '+)
   :mode
   ("\\.?sh\\'" . shell-script-mode)
   )
@@ -920,15 +945,12 @@ See `org-capture-templates' for more information."
   :config
   (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
   (setq sql-postgres-login-params (append sql-postgres-login-params '(port)))
-  (setq sql-indent-offset 2)
-  (setq indent-tabs-mode nil)
-  (setq c-basic-offset 2)
-  (setq tab-width 2)
   :mode
   ("\\.sql\\'" . sql-mode)
   )
 
 (use-package sql-indent :ensure t
+  :after sql
   :commands sqlind-setup
   :init
   (add-hook 'sqlind-minor-mode-hook
@@ -955,6 +977,7 @@ See `org-capture-templates' for more information."
               'sql-add-newline-first))
   (add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
   :config
+  (setq sql-indent-offset 2)
   (defvar my-sql-indentation-offsets-alist
     `((select-clause)
       (insert-clause 0)
@@ -977,14 +1000,15 @@ See `org-capture-templates' for more information."
 
 (use-package tide :ensure t
   :hook (typescript-mode . tide-setup)
-  :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq tide-completion-ignore-case t)
+  :custom
+  (flycheck-check-syntax-automatically '(save mode-enabled))
+  (tide-completion-ignore-case t)
   )
 
 (use-package plantuml-mode :ensure t
+  :custom
+  (plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
   :init
-  (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
   (setq plantuml-java-options "-Djava.awt.headless=true")
   (setq plantuml-options "-charset UTF-8 -config ~/.config/plantuml/color.uml")
   :config
@@ -1025,14 +1049,14 @@ See `org-capture-templates' for more information."
   )
 
 (use-package web-mode :ensure t
-  :config
-  (setq web-mode-attr-indent-offset nil)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-enable-current-column-highlight t)
-  (setq web-mode-enable-current-element-highlight t)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-sql-indent-offset 2)
+  :custom
+  (web-mode-attr-indent-offset nil)
+  (web-mode-code-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-enable-current-column-highlight t)
+  (web-mode-enable-current-element-highlight t)
+  (web-mode-markup-indent-offset 2)
+  (web-mode-sql-indent-offset 2)
   :mode
   ("\\.[agj]sp\\'" . web-mode)
   ("\\.as[cp]x\\'" . web-mode)
@@ -1514,6 +1538,25 @@ See `org-capture-templates' for more information."
 
 (use-package whitespace
   :commands whitespace-mode
+  :custom
+  ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
+  (whitespace-style '(face           ; faceで可視化
+                      trailing       ; 行末
+                      tabs           ; タブ
+                      spaces         ; スペース
+                      empty          ; 先頭/末尾の空行
+                      space-mark     ; 表示のマッピング
+                      tab-mark))
+  (whitespace-display-mappings
+   '((space-mark ?\u3000 [?\u25a1])
+     ;; WARNING: the mapping below has a problem.
+     ;; When a TAB occupies exactly one column, it will display the
+     ;; character ?\xBB at that column followed by a TAB which goes to
+     ;; the next TAB column.
+     ;; If this is a problem for you, please, comment the line below.
+     (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+  (whitespace-space-regexp "\\(\u3000+\\)") ; スペースは全角のみを可視化
+  (whitespace-action '(auto-cleanup)) ; 保存時に自動でクリーンアップ
   :config
   (set-face-attribute 'whitespace-trailing nil
                       :foreground "DeepPink"
@@ -1529,24 +1572,6 @@ See `org-capture-templates' for more information."
                       :background nil
                       :foreground "DeepPink"
                       :underline t)
-  ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
-  (setq whitespace-style '(face           ; faceで可視化
-                           trailing       ; 行末
-                           tabs           ; タブ
-                           spaces         ; スペース
-                           empty          ; 先頭/末尾の空行
-                           space-mark     ; 表示のマッピング
-                           tab-mark))
-  (setq whitespace-display-mappings
-        '((space-mark ?\u3000 [?\u25a1])
-          ;; WARNING: the mapping below has a problem.
-          ;; When a TAB occupies exactly one column, it will display the
-          ;; character ?\xBB at that column followed by a TAB which goes to
-          ;; the next TAB column.
-          ;; If this is a problem for you, please, comment the line below.
-          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
-  (setq whitespace-space-regexp "\\(\u3000+\\)") ; スペースは全角のみを可視化
-  (setq whitespace-action '(auto-cleanup)) ; 保存時に自動でクリーンアップ
 
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
@@ -1556,9 +1581,10 @@ See `org-capture-templates' for more information."
   :hook (after-init . yas-global-mode)
   :init (add-hook 'yasnippet-mode-hook
                  '(lambda () (setq require-final-newline nil)))
+  :custom
+  (yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
-  (setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
   :bind
   (:map yas-keymap
         ("<tab>" . nil)
@@ -1610,9 +1636,8 @@ See `org-capture-templates' for more information."
   (global-set-key (kbd "C-\\") nil)
   )
 
-(use-package custom-file :no-require
-  :custom
-  (custom-file (my/file-path-join user-emacs-directory "custom.el"))
+(use-package cus-edit
   :config
+  (setq custom-file (my/file-path-join user-emacs-directory "custom.el"))
   (load custom-file)
   )
