@@ -270,7 +270,10 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package all-the-icons-dired :ensure t
-  :hook (dired-mode-hook . all-the-icons-dired-mode)
+  :hook (dired-mode . all-the-icons-dired-mode)
+  :config
+  (add-hook 'dired-mode-hook
+            '(lambda() (setq line-spacing 5)))
   )
 
 (use-package projectile :ensure t
