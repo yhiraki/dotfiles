@@ -1,5 +1,5 @@
 [ghq]
 	root = ~/src
 [core]
-	editor = vi
+	editor = emacsclient -nw
 	excludesfile = ~/.gitexclude

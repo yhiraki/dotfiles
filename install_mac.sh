@@ -167,8 +167,13 @@ ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 title "Install emacs"
 # ----------------------------------------------------------------------
 
-brew tap railwaycat/emacsmacport
-brew cask install emacs-mac
+# 日本語パッチが組み込まれたバージョン
+#   emacsclientの挙動がおかしいのでやめた…
+#   server起動時のemacsのフレーム状態に依存する
+#   GUIで起動したらemacsclientもGUIでしか起動できない
+# brew tap railwaycat/emacsmacport
+# brew cask install emacs-mac
+brew cask install emacs
 [ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
 touch ~/.emacs.d/custom.el 
 
