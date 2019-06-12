@@ -447,10 +447,11 @@ When ARG is non-nil search in junk files."
 
 (use-package ivy :ensure t
   :hook (after-init . ivy-mode)
-  :config
-  (setq enable-recursive-minibuffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (setq ivy-use-virtual-buffers t)
+  :custom
+  (enable-recursive-minibuffers t)
+  (ivy-count-format "(%d/%d) ")
+  (ivy-use-selectable-prompt t)
+  (ivy-use-virtual-buffers t)
   :bind (:map ivy-minibuffer-map ([escape] . 'minibuffer-keyboard-quit))
   )
 
