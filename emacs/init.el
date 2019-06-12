@@ -536,6 +536,9 @@ When ARG is non-nil search in junk files."
 (use-package eglot :ensure t
   :commands eglot-ensure
   :hook ((python-mode go-mode c++-mode) . eglot-ensure)
+  :custom
+  (eglot-connect-timeout 1)
+  (eglot-sync-connect 0)
   :config
   (add-to-list 'eglot-server-programs
                '(go-mode . ("go-langserver" "-mode=stdio" "-gocodecompletion" "-func-snippet-enabled=false"))
