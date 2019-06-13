@@ -763,7 +763,6 @@ When ARG is non-nil search in junk files."
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
-  (org-plantuml-jar-path "~/lib/java/plantuml.jar")
   (org-default-notes-file "notes.org")
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
@@ -820,7 +819,10 @@ When ARG is non-nil search in junk files."
 
 (use-package ob-plantuml
   :after (ob plantuml-mode)
+  :custom
+  (org-plantuml-jar-path plantuml-jar-path)
   :config
+  ;; (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-mode
   (push (cons ':java plantuml-java-options) org-babel-default-header-args:plantuml)
   (push (cons ':cmdline plantuml-options) org-babel-default-header-args:plantuml)
   (push '(:async) org-babel-default-header-args:plantuml)
@@ -1020,13 +1022,15 @@ See `org-capture-templates' for more information."
   )
 
 (use-package plantuml-mode :ensure t
-  :custom
-  (plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar"))
   :init
-  (setq plantuml-java-options "-Djava.awt.headless=true")
-  (setq plantuml-options "-charset UTF-8 -config ~/.config/plantuml/color.uml")
+  (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
+  (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
+  (setq plantuml-options "-charset UTF-8 -config ~/.config/plantuml/color.uml") ; ob-plantumlで使う
+  :custom
+  (plantuml-exec-mode 'jar)
   :config
   ;; (setq plantuml-output-type "svg")
+
   ;; plantumlをpngで保存する関数
   (defun plantuml-save-png ()
     (interactive)
@@ -1048,8 +1052,6 @@ See `org-capture-templates' for more information."
       (message cmd)
       (call-process-shell-command cmd nil 0)))
   :mode
-  ("\\.pu\\'" . plantuml-mode)
-  ("\\.uml\\'" . plantuml-mode)
   ("\\.puml\\'" . plantuml-mode)
   ("\\.plantuml\\'" . plantuml-mode)
   :bind
@@ -1057,9 +1059,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package flycheck-plantuml :ensure t
-  :commands (flycheck-plantuml-setup)
-  :init
-  (add-hook 'plantuml-mode-hook 'flycheck-plantuml-setup)
+  :hook (plantuml-mode . flycheck-plantuml-setup)
   )
 
 (use-package web-mode :ensure t
