@@ -818,13 +818,13 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package ob-plantuml
-  :after (ob plantuml-mode)
+  :after (ob plantuml-mode s)
   :custom
   (org-plantuml-jar-path plantuml-jar-path)
+  (plantuml-server-url nil)
   :config
-  ;; (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-mode
   (push (cons ':java plantuml-java-options) org-babel-default-header-args:plantuml)
-  (push (cons ':cmdline plantuml-options) org-babel-default-header-args:plantuml)
+  (push (cons ':cmdline (s-join " " plantuml-jar-args)) org-babel-default-header-args:plantuml)
   (push '(:async) org-babel-default-header-args:plantuml)
   (push '(:cache . "yes") org-babel-default-header-args:plantuml)
   )
@@ -1025,7 +1025,7 @@ See `org-capture-templates' for more information."
   :init
   (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
-  (setq plantuml-options "-charset UTF-8 -config ~/.config/plantuml/color.uml") ; ob-plantumlで使う
+  (setq plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
   :custom
   (plantuml-exec-mode 'jar)
   :config
@@ -1046,11 +1046,12 @@ See `org-capture-templates' for more information."
                  plantuml-java-options " "
                  (shell-quote-argument plantuml-jar-path) " "
                  (and out-file (concat "-t" (file-name-extension out-file))) " "
-                 plantuml-options " "
+                 (s-join " " plantuml-jar-args) " "
                  (f-dirname (buffer-file-name))
                  ))
       (message cmd)
       (call-process-shell-command cmd nil 0)))
+
   :mode
   ("\\.puml\\'" . plantuml-mode)
   ("\\.plantuml\\'" . plantuml-mode)
@@ -1202,6 +1203,10 @@ See `org-capture-templates' for more information."
     (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
     (kbd "gg") 'evil-goto-first-line
     (kbd "G") 'evil-goto-line
+    )
+
+  (evil-define-key 'normal image-mode-map
+    (kbd "q") 'evil-quit
     )
 
   (evil-define-key 'normal prog-mode-map
