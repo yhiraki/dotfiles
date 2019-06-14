@@ -1465,10 +1465,20 @@ See `org-capture-templates' for more information."
 
 (use-package evil-magit :ensure t
   :after (evil magit)
+
   :config
-  (evil-define-key evil-magit-state magit-mode-map
-    (kbd "x") '(lambda () (interactive) (message "Deletion is disabled."))
-    (kbd "q") 'evil-quit)
+  (defun my/echo-disabled ()
+    "Echo disabled."
+    (interactive)
+    (message "Disabled")
+    )
+
+  (evil-define-key 'normal 'visual magit-mode-map
+    (kbd "x") 'my/echo-disabled
+    )
+  (evil-define-key 'visual magit-mode-map
+    (kbd "x") 'my/echo-disabled
+    )
   )
 
 (use-package evil-commentary :ensure t
