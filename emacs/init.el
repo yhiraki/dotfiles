@@ -291,17 +291,19 @@ When ARG is non-nil search in junk files."
   :custom (wdired-allow-to-change-permissions t)
   )
 
-(use-package flymake
-  :commands flymake-mode
-  :custom
-  (flymake-error-bitmap nil)
-  (flymake-note-bitmap nil)
-  (flymake-warning-bitmap nil)
-  :config
-  (set-face-underline 'flymake-error nil)
-  (set-face-underline 'flymake-note nil)
-  (set-face-underline 'flymake-warning nil)
-  )
+;; (use-package flymake
+;;   :commands flymake-mode
+;;   :custom
+;;   (flymake-error-bitmap nil)
+;;   (flymake-note-bitmap nil)
+;;   (flymake-warning-bitmap nil)
+;;   :config
+;;   flymakeが起動していてもマーカーを見えなくする。 eglotで勝手にflymakeが起動してしまう対策。
+;;   eglot--managed-mode-hook を設定したので様子見
+;;   (set-face-underline 'flymake-error nil)
+;;   (set-face-underline 'flymake-note nil)
+;;   (set-face-underline 'flymake-warning nil)
+;;   )
 
 (use-package flycheck :ensure t
   :hook ((js2-mode python-mode web-mode plantuml-mode c++-mode) . flycheck-mode)
@@ -547,6 +549,8 @@ When ARG is non-nil search in junk files."
 (use-package eglot :ensure t
   :commands eglot-ensure
   :hook ((python-mode go-mode c++-mode) . eglot-ensure)
+  :init
+  (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
   :custom
   (eglot-connect-timeout 1)
   (eglot-sync-connect 0)
@@ -1289,7 +1293,7 @@ See `org-capture-templates' for more information."
     (kbd "\\q") 'org-set-tags-command
     (kbd "\\s") 'org-schedule
     (kbd "\\t") 'org-todo
-    (kbd "\\x") 'org-toggle-checkbox
+    (kbd "\\xp") 'org-set-property
     (kbd "\\v") 'org-toggle-inline-images
     (kbd "gh") 'outline-up-heading
     (kbd "gp") 'outline-previous-heading
@@ -1590,6 +1594,7 @@ See `org-capture-templates' for more information."
   (set-face-attribute 'whitespace-trailing nil
                       :foreground "DeepPink"
                       :background nil
+                      :inherit 'default
                       :underline t)
   (set-face-attribute 'whitespace-tab nil
                       :background nil)
@@ -1659,10 +1664,12 @@ See `org-capture-templates' for more information."
 ;;   )
 
 (use-package key-binding :no-require
+  :after (frame org)
   :config
   (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
+  (global-set-key (kbd "C-c l") 'org-store-link)
   )
 
 (use-package cus-edit
