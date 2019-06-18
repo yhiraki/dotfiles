@@ -253,7 +253,7 @@ When ARG is non-nil search in junk files."
 (use-package dired
   :config
   (add-hook 'dired-mode-hook
-            '(lambda() (setq line-spacing 5)))
+            '(lambda() (setq line-spacing 3)))
   )
 
 (use-package dired-sidebar :ensure t
@@ -568,14 +568,14 @@ When ARG is non-nil search in junk files."
   (completion-ignore-case t)
   :config
   ;; https://github.com/expez/company-quickhelp/issues/63
-  (add-hook
-   'company-completion-started-hook
-   '(lambda (&rest ignore)
-     (when evil-mode
-       (when (evil-insert-state-p)
-         (define-key evil-insert-state-map (kbd "C-n") nil)
-         (define-key evil-insert-state-map (kbd "C-p") nil)
-         ))))
+  ;; (add-hook
+  ;;  'company-completion-started-hook
+  ;;  '(lambda (&rest ignore)
+  ;;    (when evil-mode
+  ;;      (when (evil-insert-state-p)
+  ;;        (define-key evil-insert-state-map (kbd "C-n") nil)
+  ;;        (define-key evil-insert-state-map (kbd "C-p") nil)
+  ;;        ))))
   :bind
   (:map company-active-map
         ("<tab>" . nil)
