@@ -1267,8 +1267,8 @@ See `org-capture-templates' for more information."
 
   (evil-define-key 'normal org-mode-map
     (kbd "C-h") '(lambda () (interactive) (org-up-element) (evil-close-fold))
-    (kbd "C-j") 'org-next-visible-heading
-    (kbd "C-k") 'org-previous-visible-heading
+    ;; (kbd "C-j") 'org-next-visible-heading
+    ;; (kbd "C-k") 'org-previous-visible-heading
     (kbd "C-l") 'evil-open-fold
     (kbd "M-h") 'org-metaleft
     (kbd "M-j") 'org-metadown
@@ -1311,6 +1311,18 @@ See `org-capture-templates' for more information."
     (kbd "M-k") 'org-metaup
     (kbd "M-h") 'org-metaleft
     (kbd "M-l") 'org-metaright
+    )
+
+  (evil-define-key 'normal org-src-mode-map
+    (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
+    )
+
+  (evil-define-key 'visual org-src-mode-map
+    (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
+    )
+
+  (evil-define-key 'insert org-src-mode-map
+    (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
     )
 
   (evil-define-key 'normal js2-mode-map
