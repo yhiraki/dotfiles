@@ -876,8 +876,7 @@ See `org-capture-templates' for more information."
                  "\n")))
 
   (setq org-capture-templates
-        '(("t" "Task\t\t- TODOs" entry (file+headline "~/org/task.org" "Todos") "** TODO %?%i\n  %a")
-          ("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U")
+        '(("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U\n  %c")
           ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n\t%a\n\t%T\n")
           ;; ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
@@ -1176,7 +1175,7 @@ See `org-capture-templates' for more information."
   (evil-ex-search-vim-style-regexp t)
   (evil-search-module 'evil-search)
   (evil-want-C-i-jump t)
-  (evil-want-C-u-scroll nil)
+  (evil-want-C-u-scroll t)
   (evil-want-fine-undo 'fine)
 
   :config
@@ -1438,7 +1437,7 @@ See `org-capture-templates' for more information."
     (kbd "ag") 'counsel-ag
     (kbd "c") 'org-capture
     (kbd "el") 'flycheck-list-errors
-    (kbd "fb") 'ivy-switch-buffer
+    (kbd "fb") 'counsel-switch-buffer
     (kbd "fd") 'dired-sidebar-toggle-sidebar
     (kbd "ff") 'counsel-find-file
     (kbd "fj") 'my/open-junk-file
