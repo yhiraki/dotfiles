@@ -217,19 +217,6 @@ When ARG is non-nil search in junk files."
 
 (use-package f :ensure t)
 
-(use-package my/functions :no-require
-  :config
-  ;; path 連結
-  ;; http://tototoshi.hatenablog.com/entry/20110520/1305906664
-  (defun my/file-path-join (&rest paths)
-    (reduce #'(lambda (x y) (concat (file-name-as-directory x) y)) paths))
-
-  (defun find-user-init-file ()
-    "Edit the `user-init-file', in another window."
-    (interactive)
-    (find-file-other-window user-init-file))
-  )
-
 ;; (use-package ime :no-require
 ;;   :init
 ;;   (add-hook 'evil-normal-state-entry-hook
@@ -764,17 +751,14 @@ When ARG is non-nil search in junk files."
                ))
   :custom
   (org-directory "~/org/")
-  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
-  (org-default-notes-file "notes.org")
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
   (org-log-done 'time) ; DONEの時刻を記録
-  :config
-  (setq org-html-htmlize-output-type 'css)
 
+  :config
   ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
   (defun toggle-org-html-export-on-save ()
     (interactive)
@@ -790,15 +774,23 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package org-agenda
+  :after org
   :commands (org-agenda org-refile)
-  :config
-  (setq org-agenda-files '("~/org/" "~/org/kb/"))
-  (setq org-agenda-current-time-string "← now")
-  (setq org-agenda-time-grid ;; Format is changed from 9.1
-        '((daily today require-timed)
-          (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
-          "-"
-          "────────────────"))
+  :init
+  (add-hook 'org-agenda-mode-hook
+            '(lambda()
+               (custom-set-variables '(org-agenda-files (list
+                                       org-directory
+                                       (concat org-directory "projects"))))
+               ))
+  :custom
+  (org-agenda-current-time-string "← now")
+  (org-agenda-time-grid ;; Format is changed from 9.1
+   '((daily today require-timed)
+     (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
+     "-"
+     "────────────────"))
+  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   )
 
 (use-package ob
@@ -920,6 +912,11 @@ See `org-capture-templates' for more information."
 
 (use-package ox-hugo :ensure t
   :after ox
+  )
+
+(use-package ox-html
+  :custom
+  (org-html-htmlize-output-type 'css)
   )
 
 (use-package ox-rst :ensure t
@@ -1455,7 +1452,7 @@ See `org-capture-templates' for more information."
     (kbd "u") 'undo-tree-visualize
     (kbd "x") 'counsel-M-x
     (kbd "ze") 'eval-buffer
-    (kbd "zi") 'find-user-init-file
+    (kbd "zi") '(lambda () (interactive) (find-file user-init-file))
     (kbd "zk") 'kill-emacs
     (kbd "zr") 'restart-emacs
     )
@@ -1526,6 +1523,7 @@ See `org-capture-templates' for more information."
   :hook (after-init . popwin-mode)
   :config
   (push '("*Error*") popwin:special-display-config)
+  (push '("*Org Src" :regexp t) popwin:special-display-config)
   (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
   (push '("*Org-Babel Error Output*") popwin:special-display-config)
   (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
@@ -1673,8 +1671,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package cus-edit
-  :after my/functions
+  :custom
+  (custom-file (concat user-emacs-directory "custom.el"))
   :config
-  (setq custom-file (my/file-path-join user-emacs-directory "custom.el"))
   (load custom-file)
   )
