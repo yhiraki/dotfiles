@@ -1485,7 +1485,7 @@ See `org-capture-templates' for more information."
     (message "Disabled")
     )
 
-  (evil-define-key 'normal 'visual magit-mode-map
+  (evil-define-key 'normal magit-mode-map
     (kbd "x") 'my/echo-disabled
     )
   (evil-define-key 'visual magit-mode-map
