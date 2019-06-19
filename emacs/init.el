@@ -1289,8 +1289,8 @@ See `org-capture-templates' for more information."
     (kbd "\\q") 'org-set-tags-command
     (kbd "\\s") 'org-schedule
     (kbd "\\t") 'org-todo
-    (kbd "\\xp") 'org-set-property
     (kbd "\\v") 'org-toggle-inline-images
+    (kbd "\\xp") 'org-set-property
     (kbd "gh") 'outline-up-heading
     (kbd "gp") 'outline-previous-heading
     ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
@@ -1451,6 +1451,11 @@ See `org-capture-templates' for more information."
     (kbd "hk") 'counsel-descbinds
     (kbd "hv") 'counsel-describe-variable
     (kbd "k") 'kill-this-buffer
+    (kbd "nb") 'org-narrow-to-block
+    (kbd "ne") 'org-narrow-to-element
+    (kbd "nf") 'narrow-to-defun
+    (kbd "ns") 'org-narrow-to-subtree
+    (kbd "nw") 'widen
     (kbd "oa") 'org-agenda
     (kbd "ob") 'org-switchb
     (kbd "oc") 'org-capture
