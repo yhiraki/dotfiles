@@ -196,6 +196,8 @@ When ARG is non-nil search in junk files."
 
 (use-package which-key :ensure t
   :hook (after-init . which-key-mode)
+  :custom
+  (which-key-allow-evil-operators t)
   )
 
 (use-package smartparens :ensure t
@@ -1118,7 +1120,6 @@ See `org-capture-templates' for more information."
         ( "S-C-j" . 'evil-forward-section-begin)
         ( "S-C-k" . 'evil-backward-section-begin)
         ( "Y" . "y$")
-
         )
 
   (:map evil-insert-state-map
@@ -1507,19 +1508,58 @@ See `org-capture-templates' for more information."
 (use-package hydra :ensure t
   :config
 
-  (defhydra inc/dec-number (evil-normal-state-map "C-c")
-    "increment or decrement number"
-    ("+" evil-numbers/inc-at-pt "increment")
-    ("=" evil-numbers/inc-at-pt "increment")
-    ("-" evil-numbers/dec-at-pt "decrement"))
+  (defhydra hydra-inc-dec-number (evil-normal-state-map "C-c" :hint nil)
+    "
+decrement _-_      _+_ increment
+          ^41←42→43
+"
+    ("+" evil-numbers/inc-at-pt)
+    ("=" evil-numbers/inc-at-pt)
+    ("-" evil-numbers/dec-at-pt))
 
-  (defhydra window-size (evil-normal-state-map "C-w")
-    "change window size"
-    ("+" evil-window-increase-height "inc height")
-    ("-" evil-window-decrease-height "inc height")
-    ("<" evil-window-decrease-width "dec width")
-    (">" evil-window-increase-width "inc width")
-    ("=" balance-windows "balance"))
+  (defhydra hydra-operate-window (evil-normal-state-map "C-w" :hint nil)
+    "
+ ^command^ | ^^^ ^move^  ^^^ |^^  ^size
+ ^^--------|^^^^^^^^---------|^^^^^^--------
+  _s_plit  | ^ ^  ^_j_^  ^ ^ | ^ ^  ^_+_
+  _v_plist | _h_  ^^^ ^  _l_ | _<_  _=_  _>_
+  _d_elete | ^ ^  ^_k_^  ^ ^ | ^ ^  ^_-_
+"
+    ("+" evil-window-increase-height)
+    ("-" evil-window-decrease-height)
+    ("<" evil-window-decrease-width)
+    (">" evil-window-increase-width)
+    ("=" balance-windows)
+    ("s" evil-window-split)
+    ("v" evil-window-vsplit)
+    ("j" (progn (evil-window-down 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("k" (progn (evil-window-up 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("h" (progn (evil-window-left 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("l" (progn (evil-window-right 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("d" evil-quit :exit t)
+    ("q" nil)
+    ("<ESC>" nil)
+    )
+
+  (defhydra hydra-operate-window-no-move ()
+    "
+ ^command^ |^^   ^size
+ ^^--------|^^^^^^--------
+  _s_plit  | ^ ^  ^_+_
+  _v_plist | _<_  _=_  _>_
+  _d_elete | ^ ^  ^_-_
+"
+    ("+" (progn (evil-window-increase-height 5) (hydra-operate-window/body)) :exit t)
+    ("-" (progn (evil-window-decrease-height 5) (hydra-operate-window/body)) :exit t)
+    ("<" (progn (evil-window-decrease-width 5) (hydra-operate-window/body)) :exit t)
+    (">" (progn (evil-window-increase-width 5) (hydra-operate-window/body)) :exit t)
+    ("=" (progn (balance-windows) (hydra-operate-window/body)) :exit t)
+    ("s" evil-window-split)
+    ("v" evil-window-vsplit)
+    ("d" evil-quit :exit t)
+    ("q" nil)
+    ("<ESC>" nil)
+    )
 
   (defhydra elscreen (evil-normal-state-map "C-b")
     "elscreen keymaps"
@@ -1531,6 +1571,7 @@ See `org-capture-templates' for more information."
     ("C-s"  elscreen-swap)
     ("C-t"  elscreen-display-time)
     ("M-x"  elscreen-execute-extended-command)
+    ("SPC"  nil)
 
     ("'"    elscreen-goto)
     ("0"    elscreen-jump)
@@ -1545,16 +1586,17 @@ See `org-capture-templates' for more information."
     ("9"    elscreen-jump)
     ("A"    elscreen-screen-nickname)
     ("C"    elscreen-clone)
-    ("K"    elscreen-kill)
     ("T"    elscreen-toggle-display-tab)
     ("\\"   elscreen-select-and-goto)
-    ("a"    elscreen-toggle)
+    ("a"    nil)
     ("b"    elscreen-find-and-goto-by-buffer)
     ("c"    elscreen-create :exit t)
-    ("d"    elscreen-dired :exit t)
-    ("i"    elscreen-toggle-display-screen-number)
-    ("j"    evil-next-line :exit t)
-    ("k"    evil-previous-line :exit t)
+    ("d"    elscreen-kill)
+    ("h"    nil)
+    ("i"    nil)
+    ("j"    nil)
+    ("k"    nil)
+    ("l"    nil)
     ("m"    elscreen-display-last-message)
     ("n"    elscreen-next)
     ("p"    elscreen-previous)
