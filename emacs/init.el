@@ -810,7 +810,7 @@ When ARG is non-nil search in junk files."
    '((python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
    )
 
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)   
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
   )
 
 (use-package ob-plantuml
@@ -1026,8 +1026,10 @@ See `org-capture-templates' for more information."
   (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
   (setq plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
+
   :custom
-  (plantuml-exec-mode 'jar)
+  (plantuml-default-exec-mode 'jar)
+
   :config
   ;; (setq plantuml-output-type "svg")
 
@@ -1117,52 +1119,6 @@ See `org-capture-templates' for more information."
         ( "S-C-k" . 'evil-backward-section-begin)
         ( "Y" . "y$")
 
-        ("\C-b \C-c" . 'elscreen-create)
-        ("\C-b c"    . 'elscreen-create)
-        ("\C-b C"    . 'elscreen-clone)
-        ("\C-b \C-k" . 'elscreen-kill)
-        ("\C-b k"    . 'elscreen-kill)
-        ("\C-b \M-k" . 'elscreen-kill-screen-and-buffers)
-        ("\C-b K"    . 'elscreen-kill-others)
-        ("\C-b \C-p" . 'elscreen-previous)
-        ("\C-b p"    . 'elscreen-previous)
-        ("gT"        . 'elscreen-previous)
-        ("\C-b \C-n" . 'elscreen-next)
-        ("\C-b n"    . 'elscreen-next)
-        ("gt"        . 'elscreen-next)
-        ("\C-b \C-a" . 'elscreen-toggle)
-        ("\C-b a"    . 'elscreen-toggle)
-        ("\C-b '"    . 'elscreen-goto)
-        ("\C-b \""   . 'elscreen-select-and-goto)
-        ("\C-b 0"    . 'elscreen-jump)
-        ("\C-b 1"    . 'elscreen-jump)
-        ("\C-b 2"    . 'elscreen-jump)
-        ("\C-b 3"    . 'elscreen-jump)
-        ("\C-b 4"    . 'elscreen-jump)
-        ("\C-b 5"    . 'elscreen-jump)
-        ("\C-b 6"    . 'elscreen-jump)
-        ("\C-b 7"    . 'elscreen-jump)
-        ("\C-b 8"    . 'elscreen-jump)
-        ("\C-b 9"    . 'elscreen-jump)
-        ("\C-b \C-s" . 'elscreen-swap)
-        ("\C-b \C-w" . 'elscreen-display-screen-name-list)
-        ("\C-b w"    . 'elscreen-display-screen-name-list)
-        ("\C-b \C-m" . 'elscreen-display-last-message)
-        ("\C-b m"    . 'elscreen-display-last-message)
-        ("\C-b \C-t" . 'elscreen-display-time)
-        ("\C-b t"    . 'elscreen-display-time)
-        ("\C-b A"    . 'elscreen-screen-nickname)
-        ("\C-b b"    . 'elscreen-find-and-goto-by-buffer)
-        ("\C-b \C-f" . 'elscreen-find-file)
-        ("\C-b \C-r" . 'elscreen-find-file-read-only)
-        ("\C-b d"    . 'elscreen-dired)
-        ("\C-b \M-x" . 'elscreen-execute-extended-command)
-        ("\C-b i"    . 'elscreen-toggle-display-screen-number)
-        ("\C-b T"    . 'elscreen-toggle-display-tab)
-        ("\C-b ?"    . 'elscreen-help)
-        ("\C-b v"    . 'elscreen-display-version)
-        ("\C-b j"    . 'elscreen-link)
-        ("\C-b s"    . 'elscreen-split)
         )
 
   (:map evil-insert-state-map
@@ -1548,21 +1504,67 @@ See `org-capture-templates' for more information."
   (push '(image-mode) popwin:special-display-config)
   )
 
-(use-package smartrep :ensure t
-  :after evil-numbers
+(use-package hydra :ensure t
   :config
-  (smartrep-define-key evil-normal-state-map
-      "C-c" '(("+" . 'evil-numbers/inc-at-pt)
-              ("=" . 'evil-numbers/inc-at-pt)
-              ("-" . 'evil-numbers/dec-at-pt)
-              ))
-  (smartrep-define-key evil-normal-state-map
-      "C-w" '(("+" . 'evil-window-increase-height)
-              ("-" . 'evil-window-decrease-height)
-              ("<" . 'evil-window-decrease-width)
-              (">" . 'evil-window-increase-width)
-              ("=" . 'balance-windows)
-              ))
+
+  (defhydra inc/dec-number (evil-normal-state-map "C-c")
+    "increment or decrement number"
+    ("+" evil-numbers/inc-at-pt "increment")
+    ("=" evil-numbers/inc-at-pt "increment")
+    ("-" evil-numbers/dec-at-pt "decrement"))
+
+  (defhydra window-size (evil-normal-state-map "C-w")
+    "change window size"
+    ("+" evil-window-increase-height "inc height")
+    ("-" evil-window-decrease-height "inc height")
+    ("<" evil-window-decrease-width "dec width")
+    (">" evil-window-increase-width "inc width")
+    ("=" balance-windows "balance"))
+
+  (defhydra elscreen (evil-normal-state-map "C-b")
+    "elscreen keymaps"
+
+    ("C-K"  elscreen-kill-others)
+    ("C-f"  elscreen-find-file)
+    ("C-m"  elscreen-display-last-message)
+    ("C-r"  elscreen-find-file-read-only)
+    ("C-s"  elscreen-swap)
+    ("C-t"  elscreen-display-time)
+    ("M-x"  elscreen-execute-extended-command)
+
+    ("'"    elscreen-goto)
+    ("0"    elscreen-jump)
+    ("1"    elscreen-jump)
+    ("2"    elscreen-jump)
+    ("3"    elscreen-jump)
+    ("4"    elscreen-jump)
+    ("5"    elscreen-jump)
+    ("6"    elscreen-jump)
+    ("7"    elscreen-jump)
+    ("8"    elscreen-jump)
+    ("9"    elscreen-jump)
+    ("A"    elscreen-screen-nickname)
+    ("C"    elscreen-clone)
+    ("K"    elscreen-kill)
+    ("T"    elscreen-toggle-display-tab)
+    ("\\"   elscreen-select-and-goto)
+    ("a"    elscreen-toggle)
+    ("b"    elscreen-find-and-goto-by-buffer)
+    ("c"    elscreen-create :exit t)
+    ("d"    elscreen-dired :exit t)
+    ("i"    elscreen-toggle-display-screen-number)
+    ("j"    evil-next-line :exit t)
+    ("k"    evil-previous-line :exit t)
+    ("m"    elscreen-display-last-message)
+    ("n"    elscreen-next)
+    ("p"    elscreen-previous)
+    ("q"    nil)
+    ("s"    elscreen-split :exit t)
+    ("t"    elscreen-display-time)
+    ("v"    elscreen-display-version)
+    ("w"    elscreen-display-screen-name-list)
+    )
+
   )
 
 (use-package all-the-icons :ensure t)
@@ -1584,7 +1586,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package whitespace
-  :commands whitespace-mode
+  :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
+
   :custom
   ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
   (whitespace-style '(face           ; faceで可視化
@@ -1603,7 +1606,8 @@ See `org-capture-templates' for more information."
      ;; If this is a problem for you, please, comment the line below.
      (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
   (whitespace-space-regexp "\\(\u3000+\\)") ; スペースは全角のみを可視化
-  (whitespace-action '(auto-cleanup)) ; 保存時に自動でクリーンアップ
+  ;; (whitespace-action '(auto-cleanup)) ; 保存時に自動でクリーンアップ
+
   :config
   (set-face-attribute 'whitespace-trailing nil
                       :foreground "DeepPink"
