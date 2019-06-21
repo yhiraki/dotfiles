@@ -1108,6 +1108,154 @@ See `org-capture-templates' for more information."
   ("\\(\\.git\\|docker\\)ignore\\'" . gitignore-mode)
   )
 
+(use-package hydra :ensure t
+  :config
+  (defhydra hydra-inc-dec-number (evil-normal-state-map "C-c" :hint nil)
+    "
+decrement _-_      _+_ increment
+          ^41←42→43
+"
+    ("+" evil-numbers/inc-at-pt)
+    ("=" evil-numbers/inc-at-pt)
+    ("-" evil-numbers/dec-at-pt))
+
+  (defhydra hydra-operate-window (evil-normal-state-map "C-w" :hint nil)
+    "
+ ^command^ |^^^^^^  size   |^^^^^^^^  move
+ ^^--------|^^^^^^---------|^^^^^^^^---------
+  _s_plit  | ^ ^  _+_  ^ ^ | ^ ^  ^_j_^  ^ ^
+  _v_plist | _<_  _=_  _>_ | _h_  ^^^ ^  _l_
+  _c_lose  | ^ ^  _-_  ^ ^ | ^ ^  ^_k_^  ^ ^
+  close _o_ther windows
+"
+
+    ;; size
+    ("+" evil-window-increase-height)
+    ("-" evil-window-decrease-height)
+    ("<" evil-window-decrease-width)
+    ("=" balance-windows)
+    (">" evil-window-increase-width)
+
+    ;; move
+    ("j" (progn (evil-window-down 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("k" (progn (evil-window-up 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("h" (progn (evil-window-left 1) (hydra-operate-window-no-move/body)) :exit t)
+    ("l" (progn (evil-window-right 1) (hydra-operate-window-no-move/body)) :exit t)
+
+    ;; operate
+    ("c" evil-window-delete :exit t)
+    ("o" delete-other-windows :exit t)
+    ("s" evil-window-split)
+    ("v" evil-window-vsplit)
+
+    ("q" nil)
+    ("<ESC>" nil)
+    )
+
+  (defhydra hydra-operate-window-no-move (:hint nil)
+    "
+ ^command^ |^^^^^^  size
+ ^^--------|^^^^^^---------
+  _s_plit  | ^ ^  ^_+_
+  _v_plist | _<_  _=_  _>_
+  _c_lose  | ^ ^  ^_-_
+  close _o_ther windows
+"
+
+    ;; size
+    ("+" (progn (evil-window-increase-height 5) (hydra-operate-window/body)) :exit t)
+    ("-" (progn (evil-window-decrease-height 5) (hydra-operate-window/body)) :exit t)
+    ("<" (progn (evil-window-decrease-width 5) (hydra-operate-window/body)) :exit t)
+    ("=" (progn (balance-windows) (hydra-operate-window/body)) :exit t )
+    (">" (progn (evil-window-increase-width 5) (hydra-operate-window/body)) :exit t)
+
+    ;; operate
+    ("c" evil-window-close :exit t)
+    ("o" delete-other-windows :exit t)
+    ("s" (progn (evil-window-split) (hydra-operate-window/body)) :exit t)
+    ("v" (progn (evil-window-vsplit) (hydra-operate-window/body)) :exit t)
+
+    ("q" nil)
+    ("<ESC>" nil)
+    )
+
+  (defhydra hydra-elscreen (evil-normal-state-map "C-b" :hint nil)
+    "
+^^^^    move    |   ^modify^      |  ^preferance^   |
+^^^^------------|^^---------------|^^---------------|----------------------
+jump to _0_-_9_ | _C_lone         | _r_ename        | _f_ind file
+_b_uffer    ^ ^ | _K_ill others   | _T_ab hide/show | _F_ind file (RO)
+_n_ext      ^ ^ | _c_reate        | ^ ^             |
+_p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
+^ ^         ^ ^ | _s_plit         | ^ ^             | _q_uit
+"
+
+    ;; move
+    ("0" elscreen-jump)
+    ("1" elscreen-jump)
+    ("2" elscreen-jump)
+    ("3" elscreen-jump)
+    ("4" elscreen-jump)
+    ("5" elscreen-jump)
+    ("6" elscreen-jump)
+    ("7" elscreen-jump)
+    ("8" elscreen-jump)
+    ("9" elscreen-jump)
+    ("b" elscreen-find-and-goto-by-buffer)
+    ("n" elscreen-next)
+    ("p" elscreen-previous)
+
+    ;; modify
+    ("C" elscreen-clone)
+    ("K" elscreen-kill-others)
+    ("c" elscreen-create :exit t)
+    ("d" elscreen-kill)
+    ("s" elscreen-split :exit t)
+
+    ;; preferance
+    ("T" elscreen-toggle-display-tab)
+    ("r" elscreen-screen-nickname)
+
+    ;; other
+    ("f" elscreen-find-file)
+    ("F" elscreen-find-file-read-only)
+
+    ;; quit
+    ("q" nil)
+
+    ;; evil
+    ("i" evil-insert-state :exit t)
+    ("a" evil-append :exit t)
+    ("j" evil-next-line :exit t)
+    ("k" evil-previous-line :exit t)
+    ("l" evil-forward-char :exit t)
+    ("h" evil-backward-char :exit t)
+    )
+
+  (defhydra hydra-move-org (:hint nil)
+    "
+^^^^^^^^^^^^^^^^         move
+^^^^^^^^^^^^^^^^----------------------
+  ^ ^  ^_j_^  ^ ^ | ^ ^  ^_C-j_^ ^ ^
+  _h_  ^^^ ^  _l_ | _C-h_  ^^^ ^ _C-l_
+  ^ ^  ^_k_^  ^ ^ | ^ ^  ^_C-k_^ ^ ^
+"
+
+    ("j" outline-next-visible-heading)
+    ("k" outline-previous-visible-heading)
+    ("h" (progn (outline-up-heading 1) (outline-hide-subtree)))
+    ("l" outline-show-children)
+
+    ("C-j" org-forward-heading-same-level)
+    ("C-k" org-backward-heading-same-level)
+    ("C-h" outline-up-heading)
+    ("C-l" (progn (outline-show-children) (outline-next-visible-heading 1)))
+
+    ("o" org-toggle-narrow-to-subtree)
+    ("RET" outline-show-entry)
+    )
+  )
+
 (use-package evil :ensure t
   :after hydra
   :hook (org-capture-mode . evil-insert-state)
@@ -1505,150 +1653,6 @@ See `org-capture-templates' for more information."
   (push '("*xref*" :position bottom ) popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
   (push '(image-mode) popwin:special-display-config)
-  )
-
-(use-package hydra :ensure t
-  :config
-  (defhydra hydra-inc-dec-number (evil-normal-state-map "C-c" :hint nil)
-    "
-decrement _-_      _+_ increment
-          ^41←42→43
-"
-    ("+" evil-numbers/inc-at-pt)
-    ("=" evil-numbers/inc-at-pt)
-    ("-" evil-numbers/dec-at-pt))
-
-  (defhydra hydra-operate-window (evil-normal-state-map "C-w" :hint nil)
-    "
- ^command^ |^^^^^^  size   |^^^^^^^^  move
- ^^--------|^^^^^^---------|^^^^^^^^---------
-  _s_plit  | ^ ^  _+_  ^ ^ | ^ ^  ^_j_^  ^ ^
-  _v_plist | _<_  _=_  _>_ | _h_  ^^^ ^  _l_
-  _c_lose  | ^ ^  _-_  ^ ^ | ^ ^  ^_k_^  ^ ^
-  close _o_ther windows
-"
-
-    ;; size
-    ("+" evil-window-increase-height)
-    ("-" evil-window-decrease-height)
-    ("<" evil-window-decrease-width)
-    ("=" balance-windows)
-    (">" evil-window-increase-width)
-
-    ;; move
-    ("j" (progn (evil-window-down 1) (hydra-operate-window-no-move/body)) :exit t)
-    ("k" (progn (evil-window-up 1) (hydra-operate-window-no-move/body)) :exit t)
-    ("h" (progn (evil-window-left 1) (hydra-operate-window-no-move/body)) :exit t)
-    ("l" (progn (evil-window-right 1) (hydra-operate-window-no-move/body)) :exit t)
-
-    ;; operate
-    ("c" evil-window-delete :exit t)
-    ("o" delete-other-windows :exit t)
-    ("s" evil-window-split)
-    ("v" evil-window-vsplit)
-
-    ("q" nil)
-    ("<ESC>" nil)
-    )
-
-  (defhydra hydra-operate-window-no-move (:hint nil)
-    "
- ^command^ |^^^^^^  size
- ^^--------|^^^^^^---------
-  _s_plit  | ^ ^  ^_+_
-  _v_plist | _<_  _=_  _>_
-  _c_lose  | ^ ^  ^_-_
-  close _o_ther windows
-"
-
-    ;; size
-    ("+" (progn (evil-window-increase-height 5) (hydra-operate-window/body)) :exit t)
-    ("-" (progn (evil-window-decrease-height 5) (hydra-operate-window/body)) :exit t)
-    ("<" (progn (evil-window-decrease-width 5) (hydra-operate-window/body)) :exit t)
-    ("=" (progn (balance-windows) (hydra-operate-window/body)) :exit t )
-    (">" (progn (evil-window-increase-width 5) (hydra-operate-window/body)) :exit t)
-
-    ;; operate
-    ("c" evil-window-close :exit t)
-    ("o" delete-other-windows :exit t)
-    ("s" (progn (evil-window-split) (hydra-operate-window/body)) :exit t)
-    ("v" (progn (evil-window-vsplit) (hydra-operate-window/body)) :exit t)
-
-    ("q" nil)
-    ("<ESC>" nil)
-    )
-
-  (defhydra hydra-elscreen (evil-normal-state-map "C-b")
-    "elscreen keymaps"
-
-    ("C-f"  elscreen-find-file)
-    ("C-m"  elscreen-display-last-message)
-    ("C-r"  elscreen-find-file-read-only)
-    ("C-s"  elscreen-swap)
-    ("C-t"  elscreen-display-time)
-    ("M-x"  elscreen-execute-extended-command)
-    ("SPC"  nil)
-
-    ("'"    elscreen-goto)
-    ("0"    elscreen-jump)
-    ("1"    elscreen-jump)
-    ("2"    elscreen-jump)
-    ("3"    elscreen-jump)
-    ("4"    elscreen-jump)
-    ("5"    elscreen-jump)
-    ("6"    elscreen-jump)
-    ("7"    elscreen-jump)
-    ("8"    elscreen-jump)
-    ("9"    elscreen-jump)
-    ("A"    elscreen-screen-nickname)
-    ("K"    elscreen-kill-others)
-    ("C"    elscreen-clone)
-    ("T"    elscreen-toggle-display-tab)
-    ("\\"   elscreen-select-and-goto)
-    ("a"    nil)
-    ("b"    elscreen-find-and-goto-by-buffer)
-    ("c"    elscreen-create :exit t)
-    ("d"    elscreen-kill)
-    ("m"    elscreen-display-last-message)
-    ("n"    elscreen-next)
-    ("p"    elscreen-previous)
-    ("q"    nil)
-    ("s"    elscreen-split :exit t)
-    ("t"    elscreen-display-time)
-    ("v"    elscreen-display-version)
-    ;; ("w"    elscreen-display-screen-name-list)
-
-    ;; evil
-    ("i"    evil-insert-state :exit t)
-    ("a"    evil-append :exit t)
-    ("j"    evil-next-line :exit t)
-    ("k"    evil-previous-line :exit t)
-    ("l"    evil-forward-char :exit t)
-    ("h"    evil-backward-char :exit t)
-    )
-
-  (defhydra hydra-move-org ()
-    "
- ^^^^^^^^  move   |^^^^^^^^  move
- ^^^^^^^^---------|^^^^^^^^--------
-  ^ ^  ^_j_^  ^ ^ | ^ ^  ^_C-j_^  ^ ^
-  _h_  ^^^ ^  _l_ | _C-h_  ^^^ ^  _C-l_
-  ^ ^  ^_k_^  ^ ^ | ^ ^  ^_C-k_^  ^ ^
-"
-
-    ("j" outline-next-visible-heading)
-    ("k" outline-previous-visible-heading)
-    ("h" (progn (outline-up-heading 1) (outline-hide-subtree)))
-    ("l" outline-show-children)
-
-    ("C-j" org-forward-heading-same-level)
-    ("C-k" org-backward-heading-same-level)
-    ("C-h" outline-up-heading)
-    ("C-l" (progn (outline-show-children) (outline-next-visible-heading 1)))
-
-    ("o" org-toggle-narrow-to-subtree)
-    ("RET" outline-show-entry)
-    )
   )
 
 (use-package all-the-icons :ensure t)
