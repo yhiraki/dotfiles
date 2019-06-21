@@ -1109,6 +1109,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package evil :ensure t
+  :after hydra
   :hook (org-capture-mode . evil-insert-state)
 
   :bind
@@ -1225,7 +1226,6 @@ See `org-capture-templates' for more information."
     (kbd "C-h") '(lambda () (interactive) (org-up-element) (evil-close-fold))
     ;; (kbd "C-j") 'org-next-visible-heading
     ;; (kbd "C-k") 'org-previous-visible-heading
-    (kbd "C-l") 'evil-open-fold
     (kbd "M-h") 'org-metaleft
     (kbd "M-j") 'org-metadown
     (kbd "M-k") 'org-metaup
@@ -1252,6 +1252,8 @@ See `org-capture-templates' for more information."
     (kbd "gp") 'outline-previous-heading
     ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
     ;; (kbd "{") (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
+
+    (kbd "SPC SPC") 'hydra-move-org/body
     )
 
   (evil-define-key 'insert org-mode-map
@@ -1507,7 +1509,6 @@ See `org-capture-templates' for more information."
 
 (use-package hydra :ensure t
   :config
-
   (defhydra hydra-inc-dec-number (evil-normal-state-map "C-c" :hint nil)
     "
 decrement _-_      _+_ increment
@@ -1577,10 +1578,9 @@ decrement _-_      _+_ increment
     ("<ESC>" nil)
     )
 
-  (defhydra elscreen (evil-normal-state-map "C-b")
+  (defhydra hydra-elscreen (evil-normal-state-map "C-b")
     "elscreen keymaps"
 
-    ("C-K"  elscreen-kill-others)
     ("C-f"  elscreen-find-file)
     ("C-m"  elscreen-display-last-message)
     ("C-r"  elscreen-find-file-read-only)
@@ -1601,6 +1601,7 @@ decrement _-_      _+_ increment
     ("8"    elscreen-jump)
     ("9"    elscreen-jump)
     ("A"    elscreen-screen-nickname)
+    ("K"    elscreen-kill-others)
     ("C"    elscreen-clone)
     ("T"    elscreen-toggle-display-tab)
     ("\\"   elscreen-select-and-goto)
@@ -1608,11 +1609,6 @@ decrement _-_      _+_ increment
     ("b"    elscreen-find-and-goto-by-buffer)
     ("c"    elscreen-create :exit t)
     ("d"    elscreen-kill)
-    ("h"    backward-char)
-    ("i"    evil-insert-state :exit t)
-    ("j"    next-line)
-    ("k"    previous-line)
-    ("l"    forward-char)
     ("m"    elscreen-display-last-message)
     ("n"    elscreen-next)
     ("p"    elscreen-previous)
@@ -1620,12 +1616,38 @@ decrement _-_      _+_ increment
     ("s"    elscreen-split :exit t)
     ("t"    elscreen-display-time)
     ("v"    elscreen-display-version)
-    ("w"    elscreen-display-screen-name-list)
+    ;; ("w"    elscreen-display-screen-name-list)
+
+    ;; evil
+    ("i"    evil-insert-state :exit t)
+    ("a"    evil-append :exit t)
+    ("j"    evil-next-line :exit t)
+    ("k"    evil-previous-line :exit t)
+    ("l"    evil-forward-char :exit t)
+    ("h"    evil-backward-char :exit t)
     )
 
-  (defhydra org-mode-mode (evil-normal-state-map "ESC")
-    "org mode moving"
-    ("j" org-next-visible-heading)
+  (defhydra hydra-move-org ()
+    "
+ ^^^^^^^^  move   |^^^^^^^^  move
+ ^^^^^^^^---------|^^^^^^^^--------
+  ^ ^  ^_j_^  ^ ^ | ^ ^  ^_C-j_^  ^ ^
+  _h_  ^^^ ^  _l_ | _C-h_  ^^^ ^  _C-l_
+  ^ ^  ^_k_^  ^ ^ | ^ ^  ^_C-k_^  ^ ^
+"
+
+    ("j" outline-next-visible-heading)
+    ("k" outline-previous-visible-heading)
+    ("h" (progn (outline-up-heading 1) (outline-hide-subtree)))
+    ("l" outline-show-children)
+
+    ("C-j" org-forward-heading-same-level)
+    ("C-k" org-backward-heading-same-level)
+    ("C-h" outline-up-heading)
+    ("C-l" (progn (outline-show-children) (outline-next-visible-heading 1)))
+
+    ("o" org-toggle-narrow-to-subtree)
+    ("RET" outline-show-entry)
     )
   )
 
@@ -1746,7 +1768,8 @@ decrement _-_      _+_ increment
 (use-package key-binding :no-require
   :after (frame org)
   :config
-  (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+  ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+  (global-set-key (kbd "C-h") (kbd "<DEL>"))
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "C-c l") 'org-store-link)
