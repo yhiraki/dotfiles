@@ -1110,7 +1110,75 @@ See `org-capture-templates' for more information."
 
 (use-package hydra :ensure t
   :config
-  (defhydra hydra-inc-dec-number (evil-normal-state-map "C-c" :hint nil)
+
+  (defhydra hydra-file-open (:exit t)
+    ("b" counsel-switch-buffer "buffer")
+    ("d" dired-sidebar-toggle-sidebar "sidebar")
+    ("f" counsel-find-file "find file")
+    ("j" my/open-junk-file "junk file")
+    ("r" counsel-recentf "rencetf")
+    ("g" counsel-ag "grep")
+    )
+
+  (defhydra hydra-git (:exit t)
+    ("f" counsel-git "find")
+    ("g" counsel-git-grep "grep")
+    ("p" counsel-ghq "ghq")
+    ("s" magit-status "status")
+    )
+
+  (defhydra hydra-help (:exit t)
+    ("f" counsel-describe-function "function")
+    ("k" counsel-descbinds "bind")
+    ("v" counsel-describe-variable "variable")
+    )
+
+  (defhydra hydra-org (:exit t)
+    ("a" org-agenda "agenda")
+    ("b" org-switchb "buffer")
+    ("c" org-capture "capture")
+    ("i" org-clock-in "clock in")
+    ("l" org-store-link "store link")
+    ("o" org-clock-out "clock out")
+    )
+
+  (defhydra hydra-twitter (:exit t)
+    ("h" twit "home")
+    ("m" twittering-mentions-timeline "mentions")
+    ("u" twittering-update-status-interactive "update")
+    )
+
+  (defhydra hydra-emacs-operation (:exit t)
+    ("e" eval-buffer "eval-buffer")
+    ("i" (progn (interactive) (find-file user-init-file)) "init.el")
+    ("k" kill-emacs "kill emacs")
+    ("r" restart-emacs "restart emacs")
+    )
+
+  (defhydra hydra-narrow (:exit t)
+    ("b" org-narrow-to-block "blodk")
+    ("e" org-narrow-to-element "element")
+    ("f" narrow-to-defun "defun")
+    ("s" org-narrow-to-subtree "subtree")
+    ("w" widen "widen")
+    )
+
+  (defhydra hydra-global-leader (:exit t)
+    ("c" org-capture "org-cature")
+    ("el" flycheck-list-errors "error")
+    ("f" hydra-file-open/body "find file")
+    ("g" hydra-git/body "git")
+    ("h" hydra-help/body "help")
+    ("k" kill-this-buffer "kill buffer")
+    ("n" hydra-narrow/body "narrow")
+    ("o" hydra-org/body "org")
+    ("q" nil "quit")
+    ("t" hydra-twitter/body "twitter")
+    ("u" undo-tree-visualize "undotree")
+    ("z" hydra-emacs-operation/body "emacs")
+    )
+
+  (defhydra hydra-inc-dec-number (:hint nil)
     "
 decrement _-_      _+_ increment
           ^41←42→43
@@ -1119,7 +1187,7 @@ decrement _-_      _+_ increment
     ("=" evil-numbers/inc-at-pt)
     ("-" evil-numbers/dec-at-pt))
 
-  (defhydra hydra-operate-window (evil-normal-state-map "C-w" :hint nil)
+  (defhydra hydra-operate-window (:hint nil)
     "
  ^command^ |^^^^^^  size   |^^^^^^^^  move
  ^^--------|^^^^^^---------|^^^^^^^^---------
@@ -1179,7 +1247,7 @@ decrement _-_      _+_ increment
     ("<ESC>" nil)
     )
 
-  (defhydra hydra-elscreen (evil-normal-state-map "C-b" :hint nil)
+  (defhydra hydra-elscreen (:hint nil)
     "
 ^^^^    move    |   ^modify^      |  ^preferance^   |
 ^^^^------------|^^---------------|^^---------------|----------------------
@@ -1254,11 +1322,13 @@ _p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
     ("o" org-toggle-narrow-to-subtree)
     ("RET" outline-show-entry)
     )
+
   )
 
 (use-package evil :ensure t
   :after hydra
-  :hook (org-capture-mode . evil-insert-state)
+  :hook ((after-init . evil-mode)
+         (org-capture-mode . evil-insert-state))
 
   :bind
   (:map evil-normal-state-map
@@ -1269,6 +1339,10 @@ _p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
         ( "S-C-j" . 'evil-forward-section-begin)
         ( "S-C-k" . 'evil-backward-section-begin)
         ( "Y" . "y$")
+        ("SPC" . 'hydra-global-leader/body)
+        ("C-c" . 'hydra-inc-dec-number/body)
+        ("C-w" .'hydra-operate-window/body)
+        ("C-b" . 'hydra-elscreen/body)
         )
 
   (:map evil-insert-state-map
@@ -1532,53 +1606,6 @@ _p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
 
   (setq evil--jumps-buffer-targets "\\(\\*\\(\\new\\|scratch\\)\\*\\|Dired:.+\\)")
   (evil-add-command-properties #'dired-find-file :jump t)
-  )
-
-(use-package evil-leader :ensure t
-  :hook
-  ;; Note: You should enable global-evil-leader-mode before you enable evil-mode
-  (after-init . (lambda() (global-evil-leader-mode) (evil-mode 1)))
-  :config
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-    (kbd "ag") 'counsel-ag
-    (kbd "c") 'org-capture
-    (kbd "el") 'flycheck-list-errors
-    (kbd "fb") 'counsel-switch-buffer
-    (kbd "fd") 'dired-sidebar-toggle-sidebar
-    (kbd "ff") 'counsel-find-file
-    (kbd "fj") 'my/open-junk-file
-    (kbd "fr") 'counsel-recentf
-    (kbd "gf") 'counsel-git
-    (kbd "gg") 'counsel-git-grep
-    (kbd "gp") 'counsel-ghq
-    (kbd "gs") 'magit-status
-    (kbd "h") (lookup-key global-map (kbd "<f1>"))
-    (kbd "hf") 'counsel-describe-function
-    (kbd "hk") 'counsel-descbinds
-    (kbd "hv") 'counsel-describe-variable
-    (kbd "k") 'kill-this-buffer
-    (kbd "nb") 'org-narrow-to-block
-    (kbd "ne") 'org-narrow-to-element
-    (kbd "nf") 'narrow-to-defun
-    (kbd "ns") 'org-narrow-to-subtree
-    (kbd "nw") 'widen
-    (kbd "oa") 'org-agenda
-    (kbd "ob") 'org-switchb
-    (kbd "oc") 'org-capture
-    (kbd "oi") 'org-clock-in
-    (kbd "ol") 'org-store-link
-    (kbd "oo") 'org-clock-out
-    (kbd "th") 'twit
-    (kbd "tm") 'twittering-mentions-timeline
-    (kbd "tu") 'twittering-update-status-interactive
-    (kbd "u") 'undo-tree-visualize
-    (kbd "x") 'counsel-M-x
-    (kbd "ze") 'eval-buffer
-    (kbd "zi") '(lambda () (interactive) (find-file user-init-file))
-    (kbd "zk") 'kill-emacs
-    (kbd "zr") 'restart-emacs
-    )
   )
 
 (use-package evil-surround :ensure t
