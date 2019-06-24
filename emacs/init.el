@@ -1108,6 +1108,16 @@ See `org-capture-templates' for more information."
   ("\\(\\.git\\|docker\\)ignore\\'" . gitignore-mode)
   )
 
+(use-package smartrep :ensure t
+  :after evil
+  :config
+  (smartrep-define-key evil-normal-state-map
+      "C-c" '(("+" . 'evil-numbers/inc-at-pt)
+              ("=" . 'evil-numbers/inc-at-pt)
+              ("-" . 'evil-numbers/dec-at-pt)
+              ))
+  )
+
 (use-package hydra :ensure t
   :config
 
@@ -1178,14 +1188,14 @@ See `org-capture-templates' for more information."
     ("z" hydra-emacs-operation/body "emacs")
     )
 
-  (defhydra hydra-inc-dec-number (:hint nil)
-    "
-decrement _-_      _+_ increment
-          ^41←42→43
-"
-    ("+" evil-numbers/inc-at-pt)
-    ("=" evil-numbers/inc-at-pt)
-    ("-" evil-numbers/dec-at-pt))
+;; Use smartrep instead
+;;   (defhydra hydra-inc-dec-number ("C-c" :hint nil)
+;;     "
+;; decrement _-_ 41←42→43 _+_ increment
+;; "
+;;     ("+" evil-numbers/inc-at-pt)
+;;     ("=" evil-numbers/inc-at-pt)
+;;     ("-" evil-numbers/dec-at-pt))
 
   (defhydra hydra-operate-window (:hint nil)
     "
@@ -1238,7 +1248,7 @@ decrement _-_      _+_ increment
     (">" (progn (evil-window-increase-width 5) (hydra-operate-window/body)) :exit t)
 
     ;; operate
-    ("c" evil-window-close :exit t)
+    ("c" evil-window-delete :exit t)
     ("o" delete-other-windows :exit t)
     ("s" (progn (evil-window-split) (hydra-operate-window/body)) :exit t)
     ("v" (progn (evil-window-vsplit) (hydra-operate-window/body)) :exit t)
@@ -1341,7 +1351,6 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
         ( "S-C-k" . 'evil-backward-section-begin)
         ( "Y" . "y$")
         ("SPC" . 'hydra-global-leader/body)
-        ("C-c" . 'hydra-inc-dec-number/body)
         ("C-w" .'hydra-operate-window/body)
         ("C-b" . 'hydra-elscreen/body)
         )
