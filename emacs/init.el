@@ -1249,13 +1249,13 @@ decrement _-_      _+_ increment
 
   (defhydra hydra-elscreen (:hint nil)
     "
-^^^^    move    |   ^modify^      |  ^preferance^   |
-^^^^------------|^^---------------|^^---------------|----------------------
-jump to _0_-_9_ | _C_lone         | _r_ename        | _f_ind file
-_b_uffer    ^ ^ | _K_ill others   | _T_ab hide/show | _F_ind file (RO)
-_n_ext      ^ ^ | _c_reate        | ^ ^             |
-_p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
-^ ^         ^ ^ | _s_plit         | ^ ^             | _q_uit
+^^^^    move    |   ^modify^     ^^ |  ^preferance^   |
+^^^^------------|^^--------------^^-|^^---------------|----------------------
+jump to _0_-_9_ | _C_lone        ^^ | _r_ename        | _f_ind file
+_b_uffer    ^ ^ | _K_ill others  ^^ | _T_ab hide/show | _F_ind file (RO)
+_n_ext      ^ ^ | _c_reate       ^^ | ^ ^             |
+_p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
+^ ^         ^ ^ | _s_plit        ^^ | ^ ^             | _q_uit
 "
 
     ;; move
@@ -1277,6 +1277,7 @@ _p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
     ("C" elscreen-clone)
     ("K" elscreen-kill-others)
     ("c" elscreen-create :exit t)
+    ("k" elscreen-kill)
     ("d" elscreen-kill)
     ("s" elscreen-split :exit t)
 
@@ -1295,7 +1296,7 @@ _p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
     ("i" evil-insert-state :exit t)
     ("a" evil-append :exit t)
     ("j" evil-next-line :exit t)
-    ("k" evil-previous-line :exit t)
+    ;; ("k" evil-previous-line :exit t)
     ("l" evil-forward-char :exit t)
     ("h" evil-backward-char :exit t)
     )
@@ -1474,8 +1475,7 @@ _p_revious  ^ ^ | _d_elete (kill) | ^ ^             |
     (kbd "gp") 'outline-previous-heading
     ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
     ;; (kbd "{") (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
-
-    (kbd "SPC SPC") 'hydra-move-org/body
+    (kbd "\\ \\") 'hydra-move-org/body
     )
 
   (evil-define-key 'insert org-mode-map
