@@ -878,7 +878,7 @@ See `org-capture-templates' for more information."
                  "\n")))
 
   (setq org-capture-templates
-        '(("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U\n  %c")
+        '(("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U\n")
           ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n\t%a\n\t%T\n")
           ;; ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
