@@ -1311,13 +1311,13 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
     ("h" evil-backward-char :exit t)
     )
 
-  (defhydra hydra-move-org (:hint nil)
+  (defhydra hydra-outline (:hint nil)
     "
-^^^^^^^^^^^^^^^^         move
-^^^^^^^^^^^^^^^^----------------------
-  ^ ^  ^_j_^  ^ ^ | ^ ^  ^_C-j_^ ^ ^
-  _h_  ^^^ ^  _l_ | _C-h_  ^^^ ^ _C-l_
-  ^ ^  ^_k_^  ^ ^ | ^ ^  ^_C-k_^ ^ ^
+^^^^^^^^^^^^^^^^         move       |
+^^^^^^^^^^^^^^^^--------------------|
+  ^ ^  ^_j_^  ^ ^ | ^ ^  ^_J_^  ^ ^ | _O_ widen
+  _h_  ^^^ ^  _l_ | _H_  ^^^ ^  _L_ | _o_ narrow
+  ^ ^  ^_k_^  ^ ^ | ^ ^  ^_K_^  ^ ^ | _RET_ show
 "
 
     ("j" outline-next-visible-heading)
@@ -1325,12 +1325,13 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
     ("h" (progn (outline-up-heading 1) (outline-hide-subtree)))
     ("l" outline-show-children)
 
-    ("C-j" org-forward-heading-same-level)
-    ("C-k" org-backward-heading-same-level)
-    ("C-h" outline-up-heading)
-    ("C-l" (progn (outline-show-children) (outline-next-visible-heading 1)))
+    ("J" outline-forward-same-level)
+    ("K" outline-backward-same-level)
+    ("H" outline-up-heading)
+    ("L" (progn (outline-show-children) (outline-next-visible-heading 1)))
 
-    ("o" org-toggle-narrow-to-subtree)
+    ("o" narrow-to-defun)
+    ("O" widen)
     ("RET" outline-show-entry)
     )
 
@@ -1484,7 +1485,7 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
     (kbd "gp") 'outline-previous-heading
     ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
     ;; (kbd "{") (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
-    (kbd "\\ \\") 'hydra-move-org/body
+    (kbd "\\ \\") 'hydra-outline/body
     )
 
   (evil-define-key 'insert org-mode-map
