@@ -422,6 +422,8 @@ When ARG is non-nil search in junk files."
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   )
 
+(use-package git-timemachine :ensure t)
+
 (use-package git-gutter-fringe+ :ensure t
   :hook (after-init . global-git-gutter+-mode)
   )
@@ -578,9 +580,9 @@ When ARG is non-nil search in junk files."
   ;;        (define-key evil-insert-state-map (kbd "C-n") nil)
   ;;        (define-key evil-insert-state-map (kbd "C-p") nil)
   ;;        ))))
+  (company-tng-configure-default)
   :bind
   (:map company-active-map
-        ("<tab>" . nil)
         ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
         ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
         ("C-n" . 'company-select-next)
@@ -593,11 +595,13 @@ When ARG is non-nil search in junk files."
         )
   )
 
-(use-package company-box :ensure t
-  :hook (company-mode . company-box-mode)
-  :custom
-  (company-box-icons-alist 'company-box-icons-all-the-icons)
-  )
+;; company tab and go が動かないのでしばらく無効化
+;; https://github.com/company-mode/company-mode/pull/706
+;; (use-package company-box :ensure t
+;;   :hook (company-mode . company-box-mode)
+;;   :custom
+;;   (company-box-icons-alist 'company-box-icons-all-the-icons)
+;;   )
 
 (use-package company-lsp :ensure t
   :after (company yasnippet)
