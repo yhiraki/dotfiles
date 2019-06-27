@@ -1131,7 +1131,7 @@ See `org-capture-templates' for more information."
     ("f" counsel-find-file "find file")
     ("j" my/open-junk-file "junk file")
     ("r" counsel-recentf "rencetf")
-    ("g" counsel-ag "grep")
+    ("g" counsel-rg "grep")
     )
 
   (defhydra hydra-git (:exit t)
