@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+if [ -z "$REMOTE_WORKSPACE" ]
+then
+  echo Set env REMOTE_WORKSPACE 1>&2
+  exit 1
+fi
+
+PWD_REL=$(echo $(pwd) | sed -e s:$HOME:~:)
+
+ssh $REMOTE_WORKSPACE "cd $PWD_REL && $*"
