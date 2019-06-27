@@ -4,6 +4,8 @@ emacs/bookmarks
 emacs/custom.el
 emacs/el-get/
 emacs/elpa/
+emacs/eshell/
+emacs/straight/
 emacs/transient/
 emacs/undohist/
 vim/undo/
