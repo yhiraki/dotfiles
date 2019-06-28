@@ -537,25 +537,17 @@ When ARG is non-nil search in junk files."
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (setq twittering-use-master-password t))
 
-(use-package eglot :ensure t
-  :commands eglot-ensure
-  :hook ((python-mode go-mode c++-mode) . eglot-ensure)
-  :init
-  (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
+(use-package lsp-mode :ensure t
+  :hook ((python-mode go-mode sh-mode c++-mode) . lsp)
   :custom
-  (eglot-connect-timeout 1)
-  (eglot-sync-connect 0)
-  :config
-  (add-to-list 'eglot-server-programs
-               '(go-mode . ("go-langserver" "-mode=stdio" "-gocodecompletion" "-func-snippet-enabled=false"))
-               )
+  (lsp-auto-guess-root t)
+  (lsp-enable-snippet nil)
+  (lsp-prefer-flymake nil)
+  (lsp-response-timeout 1)
   )
 
-;; (use-package lsp-mode :ensure t
-;;   :hook ((python-mode go-mode sh-mode) . lsp)
-;;   :config
-;;   (setq lsp-enable-snippet nil)
-;;   )
+(use-package lsp-ui :ensure t
+  :hook lsp)
 
 (use-package company :ensure t
   :hook (after-init
@@ -1416,17 +1408,19 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
 
   (evil-define-key 'normal prog-mode-map
     (kbd "K") 'eglot-help-at-point
-    (kbd "\\f") 'eglot-format
-    (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
+    (kbd "\\f") 'lsp-format-buffer
+    (kbd "\\m") 'lsp-ui-imenu
+    (kbd "\\qa") 'quickrun-autorun-mode
+    (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
     (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
     (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
-    (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
-    (kbd "\\qa") 'quickrun-autorun-mode
+    (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
     (kbd "gd") 'xref-find-definitions
     (kbd "gr") 'xref-find-references
     )
 
   (evil-define-key 'visual prog-mode-hook
+    (kbd "\\f") 'lsp-format-regin
     (kbd "\\r") 'quickrun-region
     (kbd "\\qr") 'quickrun-region
     )
