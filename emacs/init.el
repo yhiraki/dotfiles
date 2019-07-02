@@ -538,7 +538,15 @@ When ARG is non-nil search in junk files."
   (setq twittering-use-master-password t))
 
 (use-package lsp-mode :ensure t
-  :hook ((python-mode go-mode sh-mode c++-mode) . lsp)
+  :hook ((
+          c++-mode
+          go-mode
+          js2-mode
+          python-mode
+          sh-mode
+          typescript-mode
+          vue-mode
+          ) . lsp)
   :custom
   (lsp-auto-guess-root t)
   (lsp-enable-snippet nil)
@@ -695,7 +703,6 @@ When ARG is non-nil search in junk files."
   :config
   (js2r-add-keybindings-with-prefix "C-c C-r")
   (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-  (define-key js-mode-map (kbd "M-.") nil)
   )
 
 (use-package xref-js2 :ensure t
@@ -712,7 +719,12 @@ When ARG is non-nil search in junk files."
   )
 
 (use-package add-node-modules-path :ensure t
-  :hook (js-mode js2-mode typescript-mode web-mode)
+  :hook (
+         js2-mode
+         typescript-mode
+         web-mode
+         vue-mode
+         )
   )
 
 (use-package eslint-fix :ensure t
@@ -810,8 +822,9 @@ When ARG is non-nil search in junk files."
     (not (member lang '("python" "shell" "plantuml" "shell" "dot" "js" "C" "C++"))))
 
   ;; https://github.com/skuro/plantuml-mode
-  (push '("plantuml" . plantuml) org-src-lang-modes)
   (push '("js" . js2) org-src-lang-modes)
+  (push '("ts" . typescript) org-src-lang-modes)
+  (push '("console" . sh) org-src-lang-modes)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1019,6 +1032,8 @@ See `org-capture-templates' for more information."
   )
 
 (use-package typescript-mode :ensure t
+  :custom
+  (typescript-indent-level 2)
   :mode ("\\.ts\\'")
   )
 
@@ -1090,7 +1105,12 @@ See `org-capture-templates' for more information."
   ("\\.html?\\'" . web-mode)
   ("\\.mustache\\'" . web-mode)
   ("\\.tpl\\.php\\'" . web-mode)
-  ("\\.vue\\'" . web-mode)
+  ;; ("\\.vue\\'" . web-mode)
+  )
+
+(use-package vue-mode :ensure t
+  :mode
+  ("\\.vue\\'" . vue-mode)
   )
 
 (use-package yaml-mode :ensure t
@@ -1265,13 +1285,13 @@ See `org-capture-templates' for more information."
 
   (defhydra hydra-elscreen (:hint nil)
     "
-^^^^    move    |   ^modify^     ^^ |  ^preferance^   |
-^^^^------------|^^--------------^^-|^^---------------|----------------------
-jump to _0_-_9_ | _C_lone        ^^ | _r_ename        | _f_ind file
-_b_uffer    ^ ^ | _K_ill others  ^^ | _T_ab hide/show | _F_ind file (RO)
-_n_ext      ^ ^ | _c_reate       ^^ | ^ ^             |
-_p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
-^ ^         ^ ^ | _s_plit        ^^ | ^ ^             | _q_uit
+^^^^    move    |   ^modify^    |  ^preferance^   |
+^^^^------------|^^-------------|^^---------------|----------------------
+jump to _0_-_9_ | _C_lone       | _r_ename        | _f_ind file
+_b_uffer    ^ ^ | _K_ill others | _T_ab hide/show | _F_ind file (RO)
+_n_ext      ^ ^ | _c_reate      | ^ ^             |
+_p_revious  ^ ^ | _d_elete      | ^ ^             |
+^ ^         ^ ^ | _s_plit       | ^ ^             | _q_uit
 "
 
     ;; move
@@ -1293,7 +1313,7 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
     ("C" elscreen-clone)
     ("K" elscreen-kill-others)
     ("c" elscreen-create :exit t)
-    ("k" elscreen-kill)
+    ;; ("k" elscreen-kill)
     ("d" elscreen-kill)
     ("s" elscreen-split :exit t)
 
@@ -1312,7 +1332,7 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
     ("i" evil-insert-state :exit t)
     ("a" evil-append :exit t)
     ("j" evil-next-line :exit t)
-    ;; ("k" evil-previous-line :exit t)
+    ("k" evil-previous-line :exit t)
     ("l" evil-forward-char :exit t)
     ("h" evil-backward-char :exit t)
     )
@@ -1419,8 +1439,8 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
     (kbd "gr") 'xref-find-references
     )
 
-  (evil-define-key 'visual prog-mode-hook
-    (kbd "\\f") 'lsp-format-regin
+  (evil-define-key 'visual prog-mode-map
+    (kbd "\\f") 'lsp-format-region
     (kbd "\\r") 'quickrun-region
     (kbd "\\qr") 'quickrun-region
     )
@@ -1450,12 +1470,12 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
 
   (evil-define-key 'normal python-mode-map
     (kbd "\\i") 'py-isort-buffer
-    (kbd "\\f") 'py-yapf-buffer
+    ;; (kbd "\\f") 'py-yapf-buffer
     )
 
-  (evil-define-key 'visual python-mode-map
-    (kbd "\\i") 'py-isort-region
-    )
+  ;; (evil-define-key 'visual python-mode-map
+  ;;   (kbd "\\i") 'py-isort-region
+  ;;   )
 
   (evil-define-key 'normal markdown-mode-map
     (kbd "zc") 'markdown-hide-subtree
@@ -1526,18 +1546,10 @@ _p_revious  ^ ^ | _k_ill (_d_elete) | ^ ^             |
   (evil-define-key 'normal js2-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
-    (kbd "\\f") 'eslint-fix
-    )
-
-  (evil-define-key 'normal js-mode-map
-    (kbd "zc") 'js2-mode-hide-element
-    (kbd "zo") 'js2-mode-show-element
-    (kbd "\\f") 'eslint-fix
     )
 
   (evil-define-key 'normal web-mode-map
     (kbd "\\R") 'web-mode-element-rename
-    (kbd "\\f") 'eslint-fix
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
     )
