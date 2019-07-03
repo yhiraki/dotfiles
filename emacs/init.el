@@ -1485,8 +1485,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   (evil-define-key 'normal org-mode-map
     (kbd "C-h") '(lambda () (interactive) (org-up-element) (evil-close-fold))
-    ;; (kbd "C-j") 'org-next-visible-heading
-    ;; (kbd "C-k") 'org-previous-visible-heading
+    (kbd "C-j") 'org-next-visible-heading
+    (kbd "C-k") 'org-previous-visible-heading
     (kbd "M-h") 'org-metaleft
     (kbd "M-j") 'org-metadown
     (kbd "M-k") 'org-metaup
