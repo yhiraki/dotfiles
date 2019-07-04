@@ -33,7 +33,14 @@
   :config
   (setq inhibit-startup-message t)
   (fset 'yes-or-no-p 'y-or-n-p)
-  ;; (server-start)
+  )
+
+(use-package server
+  :hook (after-init
+         . (lambda ()
+             (unless
+                 (server-running-p)
+               (server-start))))
   )
 
 (use-package scroll :no-require
