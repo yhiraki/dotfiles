@@ -8,5 +8,13 @@ then
 fi
 
 PWD_REL=$(echo $(pwd) | sed -e s:$HOME:~:)
+CMD="cd $PWD_REL"
 
-ssh $REMOTE_WORKSPACE "cd $PWD_REL && $*"
+if [ $# -eq 0 ]
+then
+  CMD=$CMD" && bash"
+else
+  CMD=$CMD" && $*"
+fi
+
+exec ssh $REMOTE_WORKSPACE -t bash -c "'$CMD'"
