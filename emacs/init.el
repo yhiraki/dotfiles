@@ -554,8 +554,10 @@ When ARG is non-nil search in junk files."
           typescript-mode
           vue-mode
           ) . lsp)
+
   :custom
   (lsp-auto-guess-root t)
+  (lsp-clients-go-server "gopls")
   (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
@@ -686,6 +688,8 @@ When ARG is non-nil search in junk files."
 
 (use-package go-mode :ensure t
   :mode ("\\.go\\'" . go-mode)
+  :custom
+  (gofmt-command "goimports")
 )
 
 (use-package go-eldoc :ensure t
@@ -1450,6 +1454,14 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "\\f") 'lsp-format-region
     (kbd "\\r") 'quickrun-region
     (kbd "\\qr") 'quickrun-region
+    )
+
+  (evil-define-key 'normal go-mode-map
+    (kbd "\\f") 'gofmt
+    )
+
+  (evil-define-key 'visual go-mode-map
+    (kbd "\\f") 'gofmt
     )
 
   (evil-define-key 'normal c++-mode-map
