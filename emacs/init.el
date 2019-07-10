@@ -1457,7 +1457,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     )
 
   (evil-define-key 'normal vue-mode-map
-    (kbd "\\f" 'eslint-fix)
+    (kbd "\\f") 'eslint-fix
     )
 
   (evil-define-key 'normal go-mode-map
