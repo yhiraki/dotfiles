@@ -1048,12 +1048,12 @@ See `org-capture-templates' for more information."
   :mode ("\\.ts\\'")
   )
 
-(use-package tide :ensure t
-  :hook (typescript-mode . tide-setup)
-  :custom
-  (flycheck-check-syntax-automatically '(save mode-enabled))
-  (tide-completion-ignore-case t)
-  )
+;; (use-package tide :ensure t
+;;   :hook (typescript-mode . tide-setup)
+;;   :custom
+;;   (flycheck-check-syntax-automatically '(save mode-enabled))
+;;   (tide-completion-ignore-case t)
+;;   )
 
 (use-package plantuml-mode :ensure t
   :init
