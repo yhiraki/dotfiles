@@ -1456,6 +1456,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "\\qr") 'quickrun-region
     )
 
+  (evil-define-key 'normal vue-mode-map
+    (kbd "\\f" 'eslint-fix)
+    )
+
   (evil-define-key 'normal go-mode-map
     (kbd "\\f") 'gofmt
     )
