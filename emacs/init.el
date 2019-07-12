@@ -80,7 +80,6 @@
 (use-package vc-hooks
   :custom
   (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
-  (find-file-visit-truename t) ; 実体を開く
   (auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
   (large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
   (tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
@@ -152,6 +151,7 @@
 (use-package files
   :custom
   (require-final-newline t)
+  (find-file-visit-truename t)
   :config
   (setq save-silently t)
   )
