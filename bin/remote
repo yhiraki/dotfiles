@@ -12,9 +12,9 @@ CMD="cd $PWD_REL"
 
 if [ $# -eq 0 ]
 then
-  CMD=$CMD" && bash"
+  CMD="$CMD && bash"
 else
-  CMD=$CMD" && $*"
+  CMD="$CMD && $*"
 fi
 
-exec ssh $REMOTE_WORKSPACE -t bash -c "'$CMD'"
+exec ssh $REMOTE_WORKSPACE -t "$CMD"
