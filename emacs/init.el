@@ -275,9 +275,9 @@ When ARG is non-nil search in junk files."
 ;;   :hook (dired-mode . all-the-icons-dired-mode)
 ;;   )
 
-(use-package projectile :ensure t
-  :commands projectile-mode
-  )
+;; (use-package projectile :ensure t
+;;   :commands projectile-mode
+;;   )
 
 (use-package wdired :ensure t
   :commands (wdired-change-to-wdired-mode)
@@ -914,6 +914,7 @@ See `org-capture-templates' for more information."
   (setq org-capture-templates
         '(("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U\n")
           ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n\t%a\n\t%T\n")
+          ("b" "Book\t\t- Books wish list" table-line (file+headline "~/org/books.org" "wish list") "|名前|価格|URL|電子版|追加日|\n|%?||||%U|" :table-line-pos "II-1")
           ;; ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
           ;; https://ox-hugo.scripter.co/doc/org-capture-setup
@@ -1460,10 +1461,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "\\qr") 'quickrun-region
     )
 
-  (evil-define-key 'normal vue-mode-map
-    (kbd "\\f") 'eslint-fix
-    )
-
   (evil-define-key 'normal go-mode-map
     (kbd "\\f") 'gofmt
     )
@@ -1803,11 +1800,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package yasnippet :ensure t
   :hook (after-init . yas-global-mode)
-  :init (add-hook 'yasnippet-mode-hook
-                 '(lambda () (setq require-final-newline nil)))
 
   :custom
   (yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
+  (require-final-newline nil)
 
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
