@@ -1415,20 +1415,25 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
 
-  (evil-define-key 'normal direx:direx-mode-map
-    (kbd "C-j") 'direx:next-sibling-item
-    (kbd "C-k") 'direx:previous-sibling-item
-    (kbd "D") 'direx:do-delete-files
-    (kbd "P") 'direx-project:jump-to-project-root
-    (kbd "R") 'direx:do-rename-file
-    (kbd "RET") 'direx:find-item
-    (kbd "SPC") 'direx:toggle-item
-    (kbd "c") 'direx:do-copy-files
-    (kbd "j") 'direx:next-item
-    (kbd "k") 'direx:previous-item
-    (kbd "o") 'direx:maybe-find-item
-    (kbd "q") 'evil-window-delete
-    (kbd "r") 'direx:refresh-whole-tree
+  ;; (evil-define-key 'normal direx:direx-mode-map
+  ;;   (kbd "C-j") 'direx:next-sibling-item
+  ;;   (kbd "C-k") 'direx:previous-sibling-item
+  ;;   (kbd "D") 'direx:do-delete-files
+  ;;   (kbd "P") 'direx-project:jump-to-project-root
+  ;;   (kbd "R") 'direx:do-rename-file
+  ;;   (kbd "RET") 'direx:find-item
+  ;;   (kbd "SPC") 'direx:toggle-item
+  ;;   (kbd "c") 'direx:do-copy-files
+  ;;   (kbd "j") 'direx:next-item
+  ;;   (kbd "k") 'direx:previous-item
+  ;;   (kbd "o") 'direx:maybe-find-item
+  ;;   (kbd "q") 'evil-window-delete
+  ;;   (kbd "r") 'direx:refresh-whole-tree
+  ;;   )
+
+  (evil-define-key 'normal dired-mode-map
+    (kbd "C-j") 'dired-next-dirline
+    (kbd "C-k") 'dired-prev-dirline
     )
 
   (evil-define-key 'normal dired-sidebar-mode-map
