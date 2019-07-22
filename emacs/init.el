@@ -1572,6 +1572,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
     )
 
+  (evil-define-key 'normal 'json-mode-map
+    (kbd "\\f") 'json-pretty-print-buffer
+    )
+
   (evil-define-key 'normal js2-mode-map
     (kbd "zc") 'js2-mode-hide-element
     (kbd "zo") 'js2-mode-show-element
