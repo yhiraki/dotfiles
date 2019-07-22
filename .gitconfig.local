@@ -1,5 +1,7 @@
 [ghq]
 	root = ~/src
+[pager]
+  branch = cat
 [core]
 	editor = emacsclient -nw
 	excludesfile = ~/.gitexclude
