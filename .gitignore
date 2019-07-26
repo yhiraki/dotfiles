@@ -1,5 +1,7 @@
 ### User ignore files
 
+emacs/.cache/
+emacs/.lsp-session*
 emacs/bookmarks
 emacs/custom.el
 emacs/el-get/
