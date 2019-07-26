@@ -32,6 +32,6 @@ echo $$ > $SYNC_PROJECT_WORKDIR/$HASH
 
 GITROOT_REL=$(echo $GITROOT | sed -e s:$HOME:~:)
 ssh $REMOTE_WORKSPACE mkdir -p "$GITROOT_REL"
-rsync -av $GITROOT/ $REMOTE_WORKSPACE:$GITROOT_REL --exclude-from=$GITROOT/.gitignore # --exclude=.git
+rsync -av $GITROOT/ $REMOTE_WORKSPACE:$GITROOT_REL --files-from=<(git ls-files)
 
 rm $SYNC_PROJECT_WORKDIR/$HASH 
