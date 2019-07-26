@@ -302,7 +302,14 @@ When ARG is non-nil search in junk files."
 ;;   )
 
 (use-package flycheck :ensure t
-  :hook ((js2-mode python-mode web-mode plantuml-mode c++-mode) . flycheck-mode)
+  :hook ((
+          c++-mode
+          js2-mode
+          json-mode
+          plantuml-mode
+          python-mode
+          web-mode
+          ) . flycheck-mode)
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
@@ -1572,7 +1579,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
     )
 
-  (evil-define-key 'normal 'json-mode-map
+  (evil-define-key 'normal json-mode-map
     (kbd "\\f") 'json-pretty-print-buffer
     )
 
