@@ -14,7 +14,8 @@ case ${OSTYPE} in
     EMACSCLIENT="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
     alias emacs="$EMACS"
     alias emacsclient="$EMACSCLIENT"
-    export EDITOR="$EMACSCLIENT -nw"
+    alias e="$EMACSCLIENT -nw"
+    alias ge="emacsclient-gui"
     ;;
   linux*)
     ;;
