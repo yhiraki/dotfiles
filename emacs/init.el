@@ -1890,7 +1890,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :after (frame org)
   :config
   ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (global-set-key (kbd "C-h") (kbd "<DEL>"))
+  (global-set-key (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "C-c l") 'org-store-link)
