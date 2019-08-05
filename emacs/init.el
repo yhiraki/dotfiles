@@ -271,9 +271,8 @@ When ARG is non-nil search in junk files."
   (dired-sidebar-theme 'icons)
   )
 
-;; (use-package all-the-icons-dired :ensure t
-;;   :hook (dired-mode . all-the-icons-dired-mode)
-;;   )
+(use-package all-the-icons-dired :ensure t
+  )
 
 ;; (use-package projectile :ensure t
 ;;   :commands projectile-mode
