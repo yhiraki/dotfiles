@@ -156,6 +156,20 @@
   (setq save-silently t)
   )
 
+(use-package find-large-file :no-require
+  ;; 巨大なファイルを開いたときに fundamental mode にする
+  :hook (find-file . conditional-disable-modes)
+  :init
+  (defun conditional-disable-modes ()
+    (when (> (buffer-size) (* 500 1024))  ; 500KB
+      (flycheck-mode -1)
+      (font-lock-mode -1)
+      (fundamental-mode)
+      (which-function-mode -1)
+      )
+    )
+  )
+
 (use-package open-junk-file :ensure t
   :commands (my/open-junk-file)
   :custom
@@ -304,7 +318,6 @@ When ARG is non-nil search in junk files."
   :hook ((
           c++-mode
           js2-mode
-          json-mode
           plantuml-mode
           python-mode
           web-mode
@@ -763,8 +776,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;     (revert-buffer t t t))
 ;;   )
 
-(use-package json-mode :ensure t
-  )
+(use-package json-mode :ensure t)
 
 (use-package markdown-mode :ensure t
   :custom
