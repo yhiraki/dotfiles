@@ -764,7 +764,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;   )
 
 (use-package json-mode :ensure t
-  :mode (("\\.json\\'" . json-mode))
+  :mode
+  ("\\package.json\\'" . json-mode)
+  ("\\tsconfig.json\\'" . json-mode)
+  :config
+  ;; 巨大なJsonファイルを誤って開いたときに困るのでデフォルトは fundamental
+  ;; json-mode が読み込まれたときに勝手に auto-mode-alist に入れるので上書きする
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . fundamental-mode))
   )
 
 (use-package markdown-mode :ensure t
