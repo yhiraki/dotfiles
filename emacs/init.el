@@ -825,6 +825,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :mode (("\\.org\\'" . org-mode))
   )
 
+;; インデントが階段状になってしまって想定した動きじゃないので保留
+;; evilか何かと競合している
+;; (use-package org-src
+;;   :after org
+;;   :custom
+;;   (org-src-tab-acts-natively t) ; src block をインデントする
+;;   )
+
 (use-package org-agenda
   :after org
   :commands (org-agenda org-refile)
