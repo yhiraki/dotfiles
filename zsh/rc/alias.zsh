@@ -1,5 +1,3 @@
-alias ma='my-manual'
-
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
