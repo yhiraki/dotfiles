@@ -255,6 +255,12 @@ When ARG is non-nil search in junk files."
 ;;   (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
 ;;   )
 
+;; evil normal state では動かない
+;; (use-package jaword :straight
+;;   (jaword :type git :host github :repo "zk-phi/jaword")
+;;   :commands jaword-mode
+;;   )
+
 (use-package appearance :no-require
   :custom
   (initial-frame-alist
