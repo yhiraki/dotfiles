@@ -588,6 +588,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (lsp-response-timeout 1)
   )
 
+(use-package lsp-pyls
+  :custom
+  (lsp-pyls-configuration-sources ["flake8"])
+  )
+
 (use-package lsp-ui :ensure t
   :hook lsp)
 
@@ -647,20 +652,26 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;   (company-box-icons-alist 'company-box-icons-all-the-icons)
 ;;   )
 
-(use-package company-lsp :ensure t
-  :after (company yasnippet)
-  :commands company-lsp
-  :config
-  ;; https://github.com/tigersoldier/company-lsp/issues/103
-  (add-to-list 'company-lsp-filter-candidates '(gopls . nil))
-  (push 'company-lsp company-backends)
-  )
+;; company-tabnine を代わりに使ってみる
+;; (use-package company-lsp :ensure t
+;;   :after (company yasnippet)
+;;   :commands company-lsp
+;;   :config
+;;   ;; https://github.com/tigersoldier/company-lsp/issues/103
+;;   (add-to-list 'company-lsp-filter-candidates '(gopls . nil))
+;;   (push 'company-lsp company-backends)
+;;   )
 
 (use-package company-statistics :ensure t
   :hook (company-mode . company-statistics-mode)
   :custom
   (company-statistics-file "~/.cache/emacs/company-statistics-cache.el")
   (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
+  )
+
+(use-package company-tabnine :ensure t
+  :config
+  (add-to-list 'company-backends #'company-tabnine)
   )
 
 (use-package quickrun :ensure t
