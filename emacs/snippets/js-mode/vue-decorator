@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: vue-decorator
+# key: vue-decorator
+# --
+import { Vue, Component } from 'vue-property-decorator'
