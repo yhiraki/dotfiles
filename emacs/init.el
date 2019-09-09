@@ -96,10 +96,10 @@
             'executable-make-buffer-file-executable-if-script-p) ; shegang を見て自動で +x する
   )
 
-(use-package display-line-numbers
-  :hook (prog-mode . display-line-numbers-mode)
-  ;; :config (setq display-line-numbers-type 'relative)
-  )
+;; (use-package display-line-numbers
+;;   :hook (prog-mode . display-line-numbers-mode)
+;;   ;; :config (setq display-line-numbers-type 'relative)
+;;   )
 
 (use-package cc-vars
   :custom (c-basic-offset 2)
@@ -171,24 +171,8 @@
   )
 
 (use-package open-junk-file :ensure t
-  :commands (my/open-junk-file)
   :custom
   (open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
-  ;; https://github.com/yewton/.emacs.d
-  :config
-  (defun my/open-junk-file (&optional arg)
-    "Open junk file using ivy.
-
-When ARG is non-nil search in junk files."
-    (interactive "P")
-    (let* ((fname (format-time-string open-junk-file-format (current-time)))
-           (rel-fname (file-name-nondirectory fname))
-           (junk-dir (file-name-directory fname))
-           (default-directory junk-dir))
-      (cond (arg
-             (counsel-ag nil junk-dir "" "[junk]"))
-            (t
-             (counsel-find-file rel-fname)))))
   )
 
 (use-package volatile-highlights :ensure t
@@ -229,12 +213,12 @@ When ARG is non-nil search in junk files."
   :commands restart-emacs
   )
 
-(use-package elscreen :ensure t
-  :hook (after-init . elscreen-start)
-  :custom
-  (elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
-  (elscreen-tab-display-control t)
-  )
+;; (use-package elscreen :ensure t
+;;   :hook (after-init . elscreen-start)
+;;   :custom
+;;   (elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
+;;   (elscreen-tab-display-control nil)
+;;   )
 
 (use-package s :ensure t)
 
@@ -583,9 +567,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :custom
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
-  (lsp-enable-snippet nil)
+  ;; (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
+  )
+
+(use-package lsp-vetur
+  :custom
+  (lsp-vetur-format-default-formatter-ts "eslint")
   )
 
 (use-package lsp-pyls
@@ -594,7 +583,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package lsp-ui :ensure t
-  :hook lsp)
+  )
 
 (use-package company :ensure t
   :hook (after-init
@@ -639,8 +628,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
         ("C-p" . 'company-select-previous)
 
         ;; tab and go のため再割り当て
-        ("RET" . 'company-complete)
-        ([return] . 'company-complete)
+        ;; ("RET" . 'company-complete)
+        ;; ([return] . 'company-complete)
         )
   )
 
@@ -652,15 +641,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 ;;   (company-box-icons-alist 'company-box-icons-all-the-icons)
 ;;   )
 
-;; company-tabnine を代わりに使ってみる
-;; (use-package company-lsp :ensure t
-;;   :after (company yasnippet)
-;;   :commands company-lsp
-;;   :config
-;;   ;; https://github.com/tigersoldier/company-lsp/issues/103
-;;   (add-to-list 'company-lsp-filter-candidates '(gopls . nil))
-;;   (push 'company-lsp company-backends)
-;;   )
+(use-package company-lsp :ensure t
+  :after (company yasnippet)
+  :commands company-lsp
+  :config
+  ;; https://github.com/tigersoldier/company-lsp/issues/103
+  (push '(gopls . nil) company-lsp-filter-candidates )
+  (push 'company-lsp company-backends)
+  )
 
 (use-package company-statistics :ensure t
   :hook (company-mode . company-statistics-mode)
@@ -669,10 +657,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
 
-(use-package company-tabnine :ensure t
-  :config
-  (add-to-list 'company-backends #'company-tabnine)
-  )
+;; (use-package company-tabnine :ensure t  ; リソースを食うので停止
+;;   :config
+;;   (add-to-list 'company-backends #'company-tabnine)
+;;   )
 
 (use-package quickrun :ensure t
   :commands quickrun
@@ -1209,7 +1197,7 @@ See `org-capture-templates' for more information."
     ("b" counsel-switch-buffer "buffer")
     ("d" dired-sidebar-toggle-sidebar "sidebar")
     ("f" counsel-find-file "find file")
-    ("j" my/open-junk-file "junk file")
+    ("j" open-junk-file "junk file")
     ("r" counsel-recentf "rencetf")
     ("g" counsel-rg "grep")
     )
@@ -1436,7 +1424,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ( "S-C-k" . 'evil-backward-section-begin)
         ( "Y" . "y$")
         ("SPC" . 'hydra-global-leader/body)
-        ("C-w" .'hydra-operate-window/body)
+        ;; ("C-w" .'hydra-operate-window/body)
         ("C-b" . 'hydra-elscreen/body)
         )
 
@@ -1789,20 +1777,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package all-the-icons :ensure t)
 
-(use-package doom-themes :ensure t
-  :hook (after-make-frame-functions .
-         (lambda (frame)
-           (load-theme 'doom-one t)
-           ))
+(use-package color-theme-sanityinc-tomorrow :ensure t
   :config
-  (load-theme 'doom-one t)
-  ;; (doom-themes-neotree-config)
-  (doom-themes-org-config)
-  )
-
-(use-package doom-modeline :ensure t
-  :hook (after-init . doom-modeline-mode)
-  :custom (doom-modeline-python-executable "python3")
+  (load-theme 'sanityinc-tomorrow-eighties t)
   )
 
 (use-package whitespace
