@@ -154,7 +154,7 @@
   )
 
 (use-package fira-code-mode
-  :hook (prog-mode)
+  :hook (after-init)
   )
 
 (use-package files
