@@ -51,7 +51,7 @@ zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))", defer:2
 zplug "plugins/docker", from:oh-my-zsh, if:"(( $+commands[docker] ))", defer:2
 zplug "plugins/docker-compose", from:oh-my-zsh, if:"(( $+commands[docker-compose] ))", defer:2
 zplug "mafredri/zsh-async"
-zplug "sindresorhus/pure"
+# zplug "sindresorhus/pure"  # -> starthip
 zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "zsh-users/zsh-completions", lazy:true
 zplug "zsh-users/zsh-history-substring-search", defer:2
@@ -62,12 +62,17 @@ zplug "$ZDOTDIR", from:local, use:"rc/*.zsh"
 
 zplug load
 
+# starship setup
+which starship > /dev/null \
+  && eval "$(starship init zsh)"
+
+# direnv setup
+which direnv > /dev/null \
+  && eval "$(direnv hook zsh)"
+
 # zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 bindkey '^ ' autosuggest-accept
-
-# direnv setup
-which direnv > /dev/null && eval "$(direnv hook zsh)"
 
 if [ -d /usr/local/opt/fzf ]
 then
@@ -89,8 +94,7 @@ export PATH=$(echo $PATH \
          | cut -d ' ' -f 2 \
          | tr '\n' :)
 
-if which zprof > /dev/null
-then
-  zprof
-fi
+which zprof > /dev/null \
+  && zprof
+
 # zmodload zsh/zprof && zprof
