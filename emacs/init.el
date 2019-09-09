@@ -1154,6 +1154,11 @@ See `org-capture-templates' for more information."
   ;; ("\\.vue\\'" . web-mode)
   )
 
+(use-package mmm-mode
+  :custom
+  (mmm-submode-decoration-level 0)
+  )
+
 (use-package vue-mode :ensure t
   :mode
   ("\\.vue\\'" . vue-mode)
