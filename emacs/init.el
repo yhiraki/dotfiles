@@ -1796,6 +1796,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (load-theme 'sanityinc-tomorrow-night t)
   )
 
+(use-package smart-mode-line :ensure t
+  :hook (after-init . sml/setup)
+  )
+
 (use-package whitespace
   :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
 
