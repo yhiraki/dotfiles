@@ -1,6 +1,11 @@
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
+(setq load-path (cons
+                 (locate-user-emacs-file "elisp")
+                 load-path
+                 ))
+
 (require 'package)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -146,6 +151,10 @@
   ;; |　　　　　|😀😀😀😀😀😀| ; TODO: 絵文字の幅がおかしい
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
+  )
+
+(use-package fira-code-mode
+  :hook (prog-mode)
   )
 
 (use-package files
