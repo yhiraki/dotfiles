@@ -1779,7 +1779,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package color-theme-sanityinc-tomorrow :ensure t
   :config
-  (load-theme 'sanityinc-tomorrow-eighties t)
+  (load-theme 'sanityinc-tomorrow-night t)
   )
 
 (use-package whitespace
