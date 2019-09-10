@@ -154,7 +154,13 @@
   )
 
 (use-package fira-code-mode
-  :hook (after-init)
+  :hook (
+         prog-mode
+         gfm-mode
+         markdown-mode
+         org-mode
+         )
+  :if (not (eq window-system nil))
   )
 
 (use-package files
