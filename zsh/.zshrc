@@ -8,6 +8,12 @@ then
   fi
 fi
 
+function precmd() {
+  if [ ! -z $TMUX ]; then
+    tmux refresh-client -S
+  fi
+}
+
 case ${OSTYPE} in
   darwin*)
     EMACS="/Applications/Emacs.app/Contents/MacOS/Emacs"
@@ -63,8 +69,9 @@ zplug "$ZDOTDIR", from:local, use:"rc/*.zsh"
 zplug load
 
 # starship setup
-which starship > /dev/null \
-  && eval "$(starship init zsh)"
+# which starship > /dev/null \
+#   && eval "$(starship init zsh)"
+PS1='$ '
 
 # direnv setup
 which direnv > /dev/null \
