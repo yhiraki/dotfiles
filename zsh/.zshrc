@@ -1,3 +1,5 @@
+autoload -Uz add-zsh-hook
+
 if [ -z "$TMUX" ]
 then
   if tmux list-session > /dev/null
@@ -8,11 +10,12 @@ then
   fi
 fi
 
-function precmd() {
+function my_refresh_tmux_status() {
   if [ ! -z $TMUX ]; then
     tmux refresh-client -S
   fi
 }
+add-zsh-hook periodic my_refresh_tmux_status
 
 case ${OSTYPE} in
   darwin*)
@@ -48,14 +51,14 @@ source $ZPLUG_HOME/init.zsh
 
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 # zplug "aws/aws-cli", use:bin/aws_zsh_completer.sh, on:"zsh-users/zsh-completions", defer:2
-zplug "b4b4r07/zsh-vimode-visual", defer:3
-zplug "felixr/docker-zsh-completion"
+# zplug "b4b4r07/zsh-vimode-visual", defer:3
+# zplug "felixr/docker-zsh-completion"
 zplug "hchbaw/opp.zsh", lazy:true
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux, lazy:true
 zplug "paulirish/git-open", as:plugin
 zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))", defer:2
-zplug "plugins/docker", from:oh-my-zsh, if:"(( $+commands[docker] ))", defer:2
-zplug "plugins/docker-compose", from:oh-my-zsh, if:"(( $+commands[docker-compose] ))", defer:2
+# zplug "plugins/docker", from:oh-my-zsh, if:"(( $+commands[docker] ))", defer:2
+# zplug "plugins/docker-compose", from:oh-my-zsh, if:"(( $+commands[docker-compose] ))", defer:2
 zplug "mafredri/zsh-async"
 # zplug "sindresorhus/pure"  # -> starthip
 zplug "zsh-users/zsh-autosuggestions", defer:2
@@ -71,7 +74,7 @@ zplug load
 # starship setup
 # which starship > /dev/null \
 #   && eval "$(starship init zsh)"
-PS1='$ '
+PS1='\$ '
 
 # direnv setup
 which direnv > /dev/null \
