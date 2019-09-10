@@ -1842,7 +1842,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
                       :foreground "GreenYellow"
                       :weight 'bold)
   (set-face-attribute 'whitespace-empty nil
-                      :background nil
+                      :background "controlBackgroundColor"
                       :foreground "DeepPink"
                       :underline t)
 
