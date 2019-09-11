@@ -11,7 +11,6 @@ _fzf-select-repo-dir(){
 # repo - cd to repogitory dir
 repo() {
   local repodir=$(_fzf-select-repo-dir "$*")
-  echo $repodir
   if [ ! -z $repodir ]
   then cd $repodir
   fi
