@@ -2,7 +2,7 @@
 # name: script dir symbolic link
 # key: script_sym
 # --
-if [ -L $0 ]
-then SCRIPT_DIR=$(dirname $(readlink $0))
-else SCRIPT_DIR=$(cd $(dirname $0); pwd)
+if [ -L \$0 ]
+then SCRIPT_DIR=$(dirname $(readlink \$0))
+else SCRIPT_DIR=$(cd $(dirname \$0); pwd)
 fi
