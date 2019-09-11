@@ -1,0 +1,77 @@
+#!/bin/bash
+
+WD=${1:-$(pwd)}
+cd $WD
+
+CMD=${2}
+
+echo -n ' '
+
+if [ "$CMD" != "zsh" ]
+then
+  # Process
+  echo -n $CMD
+  exit
+  
+elif GIT_STATUS=$(git status -s)
+then
+  # Git
+
+  # Git project
+  echo -n '#[fg=blue]'
+  GIT_PROJECT=$(
+    git remote -v | head -1 | awk '{print $2}' \
+      | sed -e 's/.*@//g' \
+      | sed -e 's:github.com.:  :' \
+      | sed -e 's:bitbucket.org.:  :'
+             )
+  echo -n "$GIT_PROJECT"
+  echo -n ' '
+
+  # Git branch
+  echo -n '#[fg=magenta]'
+  [ -d $WD ] && cd $WD
+  echo -n  $(git symbolic-ref --short HEAD)
+  echo -n ' '
+
+  # Git status
+  if [ -n "$GIT_STATUS" ]
+  then
+    echo -n '#[fg=magenta]'
+    echo -n '['
+    echo -n '#[fg=red]'
+    echo -n $(
+      echo "$GIT_STATUS" \
+        | awk '{print $1}' \
+        | fold -w 1 | sort | uniq | paste -sd "" -
+         )
+    echo -n '#[fg=magenta]'
+    echo -n '] '
+  fi
+
+else
+  # Current path
+
+  echo -n '#[fg=blue]'
+  echo -n $WD \
+    | sed -e "s:$(ghq root)/*/::" \
+    | sed -e "s:$HOME:  ~:" \
+    | sed -e "s:^/:  /:"
+  echo -n ' '
+  
+fi
+
+
+# Language icons
+
+echo -n '#[fg=green]'
+ICONS=
+while [ $(pwd) != "/" ]
+do
+  FILES=$(find . -maxdepth 1 -type f)
+  echo $FILES | grep -E "setup.(cfg|py)" > /dev/null && ICONS="$ICONS"
+  echo $FILES | grep "package.json" > /dev/null && ICONS="$ICONS"
+  cd .. 
+done
+
+echo -n "$ICONS" | fold -w 3 | sort | uniq | paste -sd " " -
