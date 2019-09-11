@@ -1,0 +1,15 @@
+#!/bin/bash
+
+current_path=$1
+[ -d $current_path ] && cd $current_path
+
+S=
+while [ $(pwd) != "/" ]
+do
+  FILES=$(find . -maxdepth 1 -type f)
+  echo $FILES | grep -E "setup.(cfg|py)" > /dev/null && S="$S"
+  echo $FILES | grep "package.json" > /dev/null && S="$S"
+  cd .. 
+done
+
+echo "$S" | fold -w 3 | sort | uniq | paste -sd " " -

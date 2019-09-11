@@ -1,0 +1,10 @@
+#!/bin/bash
+
+current_path=$1
+
+echo $current_path \
+ | sed -e "s:$(ghq root)/*/::" \
+ | sed -e "s:$HOME:  ~:" \
+ | sed -e "s:github.com/:  :" \
+ | sed -e "s:bitbucket.org/:  :" \
+ | sed -e "s:^/:  /:"
