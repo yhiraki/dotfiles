@@ -80,7 +80,7 @@ alias zmv='noglob zmv -W'
 setopt prompt_subst
 
 # autoload -U promptinit && promptinit
-# autoload -U compinit && compinit -C
+autoload -U compinit && compinit -C
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"

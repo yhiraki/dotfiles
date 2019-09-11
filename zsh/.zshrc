@@ -41,39 +41,20 @@ case ${OSTYPE} in
     ;;
 esac
 
-[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+GHQROOT=$(ghq root)
+source $GHQROOT/github.com/'paulirish/git-open'/git-open.plugin.zsh	
+source $GHQROOT/github.com/'robbyrussell/oh-my-zsh/plugins/git'/git.plugin.zsh
+source $GHQROOT/github.com/'zsh-users/zsh-autosuggestions'/zsh-autosuggestions.plugin.zsh
+source $GHQROOT/github.com/'zsh-users/zsh-completions'/zsh-completions.plugin.zsh	
+source $GHQROOT/github.com/'zsh-users/zsh-syntax-highlighting'/zsh-syntax-highlighting.plugin.zsh
 
-if [ ! -d $ZPLUG_HOME ]; then
-  git clone https://github.com/zplug/zplug $ZPLUG_HOME
-  source $ZPLUG_HOME/init.zsh && zplug update --self
-fi
-source $ZPLUG_HOME/init.zsh
+PATH=$GHQROOT/github.com/'yhiraki/docker-gcloud'/bin:$PATH
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-# zplug "aws/aws-cli", use:bin/aws_zsh_completer.sh, on:"zsh-users/zsh-completions", defer:2
-# zplug "b4b4r07/zsh-vimode-visual", defer:3
-# zplug "felixr/docker-zsh-completion"
-zplug "hchbaw/opp.zsh", lazy:true
-zplug "junegunn/fzf", as:command, use:bin/fzf-tmux, lazy:true
-zplug "paulirish/git-open", as:plugin
-zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))", defer:2
-# zplug "plugins/docker", from:oh-my-zsh, if:"(( $+commands[docker] ))", defer:2
-# zplug "plugins/docker-compose", from:oh-my-zsh, if:"(( $+commands[docker-compose] ))", defer:2
-zplug "mafredri/zsh-async"
-# zplug "sindresorhus/pure"  # -> starthip
-zplug "zsh-users/zsh-autosuggestions", defer:2
-zplug "zsh-users/zsh-completions", lazy:true
-zplug "zsh-users/zsh-history-substring-search", defer:2
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "yhiraki/docker-gcloud", as:command, use:"bin/*"
+source $ZDOTDIR/rc/alias.zsh
+source $ZDOTDIR/rc/bind.zsh
+source $ZDOTDIR/rc/func.zsh
 
-zplug "$ZDOTDIR", from:local, use:"rc/*.zsh"
 
-zplug load
-
-# starship setup
-# which starship > /dev/null \
-#   && eval "$(starship init zsh)"
 PS1='\$ '
 
 # direnv setup
@@ -103,6 +84,8 @@ export PATH=$(echo $PATH \
          | sort -nr \
          | cut -d ' ' -f 2 \
          | tr '\n' :)
+
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 which zprof > /dev/null \
   && zprof
