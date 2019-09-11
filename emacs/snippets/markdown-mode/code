@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: code
+# key: `
+# --
+\`\`\`${1:sh}
+$0
+\`\`
