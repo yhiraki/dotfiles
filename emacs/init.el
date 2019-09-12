@@ -131,24 +131,20 @@
 
 (use-package font :no-require
   :config
-  (if window-system
-      (progn
+  ;; Osaka + Menlo
+  ;; (when (eq system-type 'darwin)
+  ;;   (set-face-attribute 'default nil
+  ;;                       :family "Menlo"
+  ;;                       :height 120)
+  ;;   (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
+  ;;   (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+  ;;   )
 
-        ;; Osaka + Menlo
-        ;; (when (eq system-type 'darwin)
-        ;;   (set-face-attribute 'default nil
-        ;;                       :family "Menlo"
-        ;;                       :height 120)
-        ;;   (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
-        ;;   (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
-        ;;   )
-
-        ;; Cica
-        (set-face-attribute 'default nil
-                            :family "Cica"
-                            :height 140
-                            )
-        ))
+  ;; Cica
+  (set-face-attribute 'default nil
+                      :family "Cica"
+                      :height 140
+                      )
 
   ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
   ;; TODO: インデント可視化用のunicode文字は半角幅にしたいので無効化
