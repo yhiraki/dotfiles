@@ -29,6 +29,8 @@ then
       | sed -e 's:bitbucket.org.:  :' \
       | sed -e 's:\.git$::'
              )
+
+  # Sub directory
   echo -n "$GIT_PROJECT"
   echo -n '#[none]#[fg=#bfbfbf]'
   echo -n $(
