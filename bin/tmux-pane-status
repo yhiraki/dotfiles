@@ -3,14 +3,17 @@
 WD=${1:-$(pwd)}
 cd $WD
 
-CMD=${2}
+PID=${2}
 
 echo -n ' '
 
-if [ "$CMD" != "zsh" ]
+CHILD_PS=$(ps -ef | awk -v pid=$PID '$3==pid {print $8}')
+
+if [ -n "$CHILD_PS" ]
 then
   # Process
-  echo -n $CMD
+  echo -n $CHILD_PS
+  echo -n ' '
   exit
   
 elif GIT_STATUS=$(git status -s)
@@ -18,18 +21,23 @@ then
   # Git
 
   # Git project
-  echo -n '#[fg=blue]'
+  echo -n '#[bold]#[fg=blue]'
   GIT_PROJECT=$(
     git remote -v | head -1 | awk '{print $2}' \
       | sed -e 's/.*@//g' \
       | sed -e 's:github.com.:  :' \
-      | sed -e 's:bitbucket.org.:  :'
+      | sed -e 's:bitbucket.org.:  :' \
+      | sed -e 's:\.git$::'
              )
   echo -n "$GIT_PROJECT"
+  echo -n '#[none]#[fg=white]'
+  echo -n $(
+    pwd \
+    | sed s:$(git rev-parse --show-toplevel)::)
   echo -n ' '
 
   # Git branch
-  echo -n '#[fg=magenta]'
+  echo -n '#[bold]#[fg=magenta]'
   [ -d $WD ] && cd $WD
   echo -n  $(git symbolic-ref --short HEAD)
   echo -n ' '
@@ -74,4 +82,8 @@ do
   cd .. 
 done
 
-echo -n "$ICONS" | fold -w 3 | sort | uniq | paste -sd " " -
+if [ -n "$ICONS" ]
+then
+  echo -n $(echo "$ICONS" | fold -w 3 | sort | uniq | paste -sd " " -)
+  echo -n '  '
+fi
