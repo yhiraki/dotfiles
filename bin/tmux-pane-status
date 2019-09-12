@@ -30,7 +30,7 @@ then
       | sed -e 's:\.git$::'
              )
   echo -n "$GIT_PROJECT"
-  echo -n '#[none]#[fg=white]'
+  echo -n '#[none]#[fg=#bfbfbf]'
   echo -n $(
     pwd \
     | sed s:$(git rev-parse --show-toplevel)::)
