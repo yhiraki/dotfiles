@@ -1,6 +1,0 @@
-#!/bin/bash
-
-current_path=$1
-
-[ -d $current_path ] && cd $current_path
-git symbolic-ref --short HEAD
