@@ -7,7 +7,12 @@ PID=${2}
 
 echo -n ' '
 
-CHILD_PS=$(ps -ef | awk -v pid=$PID '$3==pid {print $8}')
+CHILD_PS=$(
+  ps -ef \
+    | awk -v pid=$PID '$3==pid {print}' \
+    | tr -s ' ' \
+    | cut -d' ' -f8-
+        )
 
 if [ -n "$CHILD_PS" ]
 then
