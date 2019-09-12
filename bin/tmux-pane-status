@@ -74,7 +74,6 @@ fi
 
 # Language icons
 
-echo -n '#[fg=green]'
 ICONS=
 while [ $(pwd) != "/" ]
 do
@@ -86,6 +85,7 @@ done
 
 if [ -n "$ICONS" ]
 then
+  echo -n '#[fg=green]'
   echo -n $(echo "$ICONS" | fold -w 3 | sort | uniq | paste -sd " " -)
   echo -n '  '
 fi
