@@ -1846,20 +1846,24 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :config
   (set-face-attribute 'whitespace-trailing nil
+                      :background "controlBackgroundColor"
                       :foreground "DeepPink"
-                      :background nil
                       :inherit 'default
-                      :underline t)
+                      :underline t
+                      )
   (set-face-attribute 'whitespace-tab nil
-                      :background nil)
+                      :background "controlBackgroundColor"
+                      )
   (set-face-attribute 'whitespace-space nil
-                      :background nil
+                      :background "controlBackgroundColor"
                       :foreground "GreenYellow"
-                      :weight 'bold)
+                      :weight 'bold
+                      )
   (set-face-attribute 'whitespace-empty nil
                       :background "controlBackgroundColor"
                       :foreground "DeepPink"
-                      :underline t)
+                      :underline t
+                      )
 
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
