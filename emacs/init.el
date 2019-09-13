@@ -606,6 +606,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package lsp-ui :ensure t
+  :custom
+  (lsp-ui-sideline-enable nil)
+  :bind
+  (:map lsp-ui-mode-map
+        ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
+        ([remap xref-find-references] . #'lsp-ui-peek-find-references)
+        )
   )
 
 (use-package company :ensure t
