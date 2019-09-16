@@ -1460,7 +1460,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ( "Y" . "y$")
         ("SPC" . 'hydra-global-leader/body)
         ;; ("C-w" .'hydra-operate-window/body)
-        ("C-b" . 'hydra-elscreen/body)
+        ;; ("C-b" . 'hydra-elscreen/body)
         )
 
   (:map evil-insert-state-map
