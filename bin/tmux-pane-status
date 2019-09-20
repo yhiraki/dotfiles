@@ -17,7 +17,9 @@ CHILD_PS=$(
 if [ -n "$CHILD_PS" ]
 then
   # Process
-  echo -n $CHILD_PS
+  CHILD_PS_NAME=$(echo $CHILD_PS | cut -d' ' -f1 | tr '/' '\n' | tail -1)
+  CHILD_PS_ARGS=$(echo $CHILD_PS' ' | cut -d' ' -f2-)
+  echo -n $CHILD_PS_NAME $CHILD_PS_ARGS
   echo -n ' '
   exit
   
