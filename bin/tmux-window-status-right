@@ -35,7 +35,7 @@ class ProcessesParser(Parser):
     )
 
 
-class Processes:
+class ProcessCount:
     def __init__(self, total=0, running=0, sleeping=0, stuck=0, threads=0):
         self.total = int(total)
         self.running = int(running)
@@ -65,9 +65,27 @@ class LoadAvg:
         return cls(*LoadAvgParser.parse(text).values())
 
 
-p = Processes.from_text(str(out[0]))
-la = LoadAvg.from_text(str(out[2]))
+header = out[11].decode()
+offsets = [0]
+for i, _ in enumerate(header):
+    if i == 0:
+        continue
+    if header[i] != ' ' and header[i-1] == ' ':
+        offsets.append(i)
+table = []
+for l in out[12:]:
+    line = l.decode()
+    row = []
+    for i, _ in enumerate(offsets):
+        if i == 0:
+            continue
+        row.append(line[offsets[i-1]: offsets[i]].strip())
+    table.append(row)
+
+
+p = ProcessCount.from_text(out[0].decode())
+la = LoadAvg.from_text(out[2].decode())
 
 print(f'Load:{la.avgs}', end='')
 print(' | ', end='')
-print(datetime.now())
+print(datetime.now().strftime('%m/%d(%a) %H:%M'))
