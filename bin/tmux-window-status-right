@@ -2,7 +2,12 @@
 
 import re
 import subprocess
+from collections import defaultdict
 from datetime import datetime
+
+KIRO = 1024
+MEGA = KIRO*1024
+GIGA = MEGA*1024
 
 result = subprocess.run(['top', '-l', '1'], capture_output=True)
 
@@ -83,9 +88,52 @@ for l in out[12:]:
     table.append(row)
 
 
+# normalize mem usage
+for row in table:
+    mem = row[7]
+    if not len(mem):
+        row[7] = 0
+        continue
+    mem = mem.replace('+', '')
+    if mem[-1] == 'M':
+        mem = int(mem[:-1]) * MEGA
+    elif mem[-1] == 'K':
+        mem = int(mem[:-1]) * KIRO
+    row[7] = mem
+
+
+mem_by_app = defaultdict(lambda: 0)
+for row in table:
+    name = ' '.join(row[1].split()[:2])
+    mem_by_app[name] += row[7]
+mem_by_app = mem_by_app.items()
+mem_by_app = sorted(mem_by_app, key=lambda x: x[1], reverse=True)
+
 p = ProcessCount.from_text(out[0].decode())
 la = LoadAvg.from_text(out[2].decode())
 
-print(f'Load:{la.avgs}', end='')
 print(' | ', end='')
-print(datetime.now().strftime('%m/%d(%a) %H:%M'))
+for name, mem in mem_by_app[:5]:
+    memh = mem
+    if name == 'Google Chrome':
+        name = '󿞮'
+    if name.startswith('com.docker'):
+        name = ''
+    if name.startswith('Rocket.Chat'):
+        name = '󿚄'
+    if name == 'node':
+        name = ''
+    if name.startswith('Slack'):
+        name = '󿦰'
+    if mem > GIGA:
+        memh = f'{mem/GIGA:0.1f}G'
+    elif mem > MEGA:
+        memh = f'{mem/MEGA:0.0f}M'
+    print(f'{name} {memh} ', end='')
+
+print(' | ', end='')
+load_average = ' '.join(str(i)[:3] for i in la.avgs)
+print(f'LA:{load_average}', end='')
+
+print(' | ', end='')
+print(datetime.now().strftime('%m/%d(%a) %H:%M'), end='')
