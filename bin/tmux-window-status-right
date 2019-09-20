@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+import subprocess
+import re
+
+result = subprocess.run(['top', '-l', '1'], capture_output=True)
+
+if result.returncode != 0:
+    raise RuntimeError
+
+out = result.stdout.split(b'\n')
+
+
+class Parser:
+    regex = ()
+
+    @classmethod
+    def parse(cls, text):
+        res = {}
+        for name, r in cls.regex:
+            m = re.search(r, text)
+            if m:
+                res[name] = m.groups()[0]
+        return res
+
+
+class ProcessesParser(Parser):
+    regex = (
+        ('total', r'(\d+) total'),
+        ('running', r'(\d+) running'),
+        ('sleeping', r'(\d+) sleeping'),
+        ('stuck', r'(\d+) stuck'),
+        ('threads', r'(\d+) threads'),
+    )
+
+
+class Processes:
+    def __init__(self, total=0, running=0, sleeping=0, stuck=0, threads=0):
+        self.total = int(total)
+        self.running = int(running)
+        self.sleeping = int(sleeping)
+        self.stuck = int(stuck)
+        self.threads = int(threads)
+
+    @classmethod
+    def from_text(cls, text: str):
+        return cls(**ProcessesParser.parse(text))
+
+
+class LoadAvgParser(Parser):
+    regex = (
+        ('a', r'Load Avg: ((\d|\.)+), (\d|\.)+, (\d|\.)+'),
+        ('b', r'Load Avg: (\d|\.)+, ((\d|\.)+), (\d|\.)+'),
+        ('c', r'Load Avg: (\d|\.)+, (\d|\.)+, ((\d|\.)+)'),
+    )
+
+
+class LoadAvg:
+    def __init__(self, *avgs):
+        self.avgs = [float(i) for i in avgs]
+
+    @classmethod
+    def from_text(cls, text):
+        return cls(*LoadAvgParser.parse(text).values())
+
+
+p = Processes.from_text(str(out[0]))
+la = LoadAvg.from_text(str(out[2]))
