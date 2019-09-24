@@ -19,6 +19,9 @@ with open('/tmp/top.log', 'rb') as f:
     out = f.read().decode()
 out = out.split('\n')
 
+
+# Process count
+
 process_count_re = (
     r'Processes: '
     r'(?P<total>\d+) total, '
@@ -29,9 +32,13 @@ process_count_re = (
 pc = re.search(process_count_re, out[1])
 
 
+# Load average
+
 load_average_re = r'Load Avg: (?P<l1>[^,]+), (?P<l5>[^,]+), (?P<l15>[^,]+) '
 la = re.search(load_average_re, out[2])
 
+
+# table
 
 header = out[11]
 offsets = [0]
