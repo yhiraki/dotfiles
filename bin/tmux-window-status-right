@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import re
-import subprocess
+# import subprocess
 from collections import defaultdict
 from datetime import datetime
 
@@ -9,12 +9,22 @@ KIRO = 1024
 MEGA = KIRO*1024
 GIGA = MEGA*1024
 
-result = subprocess.run(['top', '-l', '1'], capture_output=True)
+# result = subprocess.run(['top', '-l', '2'], capture_output=True)
 
-if result.returncode != 0:
-    raise RuntimeError
+# if result.returncode != 0:
+#     raise RuntimeError
 
-out = result.stdout.split(b'\n')
+# out = result.stdout.split(b'\n')
+with open('/tmp/top.log', 'rb') as f:
+    f.seek(-200000, 2)
+    i = f.tell()
+    for line in f:
+        if line.startswith(b'Process'):
+            f.seek(i)
+            break
+        i = f.tell()
+    out = f.read()
+out = out.split(b'\n')
 
 
 class Parser:
@@ -94,7 +104,7 @@ for row in table:
     if not len(mem):
         row[7] = 0
         continue
-    mem = mem.replace('+', '')
+    mem = mem.replace('+', '').replace('-', '')
     if mem[-1] == 'M':
         mem = int(mem[:-1]) * MEGA
     elif mem[-1] == 'K':
@@ -102,6 +112,7 @@ for row in table:
     row[7] = mem
 
 
+# group by mem usage
 mem_by_app = defaultdict(lambda: 0)
 for row in table:
     name = ' '.join(row[1].split()[:2])
@@ -109,8 +120,22 @@ for row in table:
 mem_by_app = mem_by_app.items()
 mem_by_app = sorted(mem_by_app, key=lambda x: x[1], reverse=True)
 
+# max cpu usage app
+max_cpu_use = 0
+max_cpu_app = None
+for row in table:
+    if not row[2]:
+        continue
+    usage = float(row[2])
+    if max_cpu_use < usage:
+        max_cpu_app = row
+        max_cpu_use = usage
+
 p = ProcessCount.from_text(out[0].decode())
 la = LoadAvg.from_text(out[2].decode())
+
+print(' | ', end='')
+print(f'{max_cpu_app[1][:5]}:{max_cpu_app[2]}%', end='')
 
 print(' | ', end='')
 for name, mem in mem_by_app[:5]:
