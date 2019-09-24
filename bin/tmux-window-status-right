@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import re
-# import subprocess
 from collections import defaultdict
 from datetime import datetime
 
@@ -9,12 +8,6 @@ KIRO = 1024
 MEGA = KIRO*1024
 GIGA = MEGA*1024
 
-# result = subprocess.run(['top', '-l', '2'], capture_output=True)
-
-# if result.returncode != 0:
-#     raise RuntimeError
-
-# out = result.stdout.split(b'\n')
 with open('/tmp/top.log', 'rb') as f:
     f.seek(-200000, 2)
     i = f.tell()
@@ -23,64 +16,24 @@ with open('/tmp/top.log', 'rb') as f:
             f.seek(i)
             break
         i = f.tell()
-    out = f.read()
-out = out.split(b'\n')
+    out = f.read().decode()
+out = out.split('\n')
+
+process_count_re = (
+    r'Processes: '
+    r'(?P<total>\d+) total, '
+    r'(?P<running>\d+) running, '
+    r'(?P<sleeping>\d+) sleeping, '
+    r'(?P<threads>\d+) threads'
+)
+pc = re.search(process_count_re, out[1])
 
 
-class Parser:
-    regex = ()
-
-    @classmethod
-    def parse(cls, text):
-        res = {}
-        for name, r in cls.regex:
-            m = re.search(r, text)
-            if m:
-                res[name] = m.groups()[0]
-        return res
+load_average_re = r'Load Avg: (?P<l1>[^,]+), (?P<l5>[^,]+), (?P<l15>[^,]+) '
+la = re.search(load_average_re, out[2])
 
 
-class ProcessesParser(Parser):
-    regex = (
-        ('total', r'(\d+) total'),
-        ('running', r'(\d+) running'),
-        ('sleeping', r'(\d+) sleeping'),
-        ('stuck', r'(\d+) stuck'),
-        ('threads', r'(\d+) threads'),
-    )
-
-
-class ProcessCount:
-    def __init__(self, total=0, running=0, sleeping=0, stuck=0, threads=0):
-        self.total = int(total)
-        self.running = int(running)
-        self.sleeping = int(sleeping)
-        self.stuck = int(stuck)
-        self.threads = int(threads)
-
-    @classmethod
-    def from_text(cls, text: str):
-        return cls(**ProcessesParser.parse(text))
-
-
-class LoadAvgParser(Parser):
-    regex = (
-        ('a', r'Load Avg: ([^,]+), '),
-        ('b', r'Load Avg: [^,]+, ([^,]+), '),
-        ('c', r'Load Avg: [^,]+, [^,]+, ([^,]+) '),
-    )
-
-
-class LoadAvg:
-    def __init__(self, *avgs):
-        self.avgs = [float(i) for i in avgs]
-
-    @classmethod
-    def from_text(cls, text):
-        return cls(*LoadAvgParser.parse(text).values())
-
-
-header = out[11].decode()
+header = out[11]
 offsets = [0]
 for i, _ in enumerate(header):
     if i == 0:
@@ -89,7 +42,7 @@ for i, _ in enumerate(header):
         offsets.append(i)
 table = []
 for l in out[12:]:
-    line = l.decode()
+    line = l
     row = []
     for i, _ in enumerate(offsets):
         if i == 0:
@@ -131,9 +84,6 @@ for row in table:
         max_cpu_app = row
         max_cpu_use = usage
 
-p = ProcessCount.from_text(out[0].decode())
-la = LoadAvg.from_text(out[2].decode())
-
 print(' | ', end='')
 print(f'{max_cpu_app[1][:5]}:{max_cpu_app[2]}%', end='')
 
@@ -154,11 +104,15 @@ for name, mem in mem_by_app[:5]:
         memh = f'{mem/GIGA:0.1f}G'
     elif mem > MEGA:
         memh = f'{mem/MEGA:0.0f}M'
-    print(f'{name} {memh} ', end='')
+    print(f'{name[:5]} {memh} ', end='')
 
 print(' | ', end='')
-load_average = ' '.join(str(i)[:3] for i in la.avgs)
-print(f'LA:{load_average}', end='')
+l1, l5, l15 = (
+    float(la.group('l1')),
+    float(la.group('l5')),
+    float(la.group('l15'))
+)
+print(f'LA:{l1:.1f} {l5:.1f} {l15:.1f}', end='')
 
 print(' | ', end='')
 print(datetime.now().strftime('%m/%d(%a) %H:%M'), end='')
