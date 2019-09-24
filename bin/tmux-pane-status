@@ -11,7 +11,8 @@ CHILD_PS=$(
   ps -ef \
     | awk -v pid=$PID '$3==pid {print}' \
     | tr -s ' ' \
-    | cut -d' ' -f8-
+    | cut -d' ' -f8- \
+    | head -1
         )
 
 if [ -n "$CHILD_PS" ]

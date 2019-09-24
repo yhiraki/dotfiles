@@ -1,0 +1,19 @@
+#!/bin/bash
+
+trap 'kill $(jobs -p)' EXIT
+
+PID_FILE=/tmp/top.pid
+LOG_FILE=/tmp/top.log
+
+if [ -f $PID_FILE ] && kill -s 0 $PID_FILE 2> /dev/null
+then
+  echo alerady running $(cat $PID_FILE)
+  exit 1
+fi
+
+echo $$ > $PID_FILE
+while true
+do
+  top -l 1000 > $LOG_FILE &
+  wait
+done
