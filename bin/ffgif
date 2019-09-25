@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if ! which ffmpeg > /dev/null
+then
+  echo "install ffmpeg"
+  exit 1
+fi
+
+cmd="ffmpeg -i '$1' -filter_complex '[0:v] fps=10,scale=640:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse=dither=none' '$1.gif'"
+
+echo $cmd
+exec bash -c "$cmd"
