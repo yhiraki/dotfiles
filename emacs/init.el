@@ -1468,7 +1468,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ( "C-k" . 'company-yasnippet))
 
   (:map evil-visual-state-map
-        ( "gs" . 'google-this-region))
+        ( "C-a" . 'evil-numbers/inc-at-pt)
+        ( "C-x" . 'evil-numbers/dec-at-pt)
+        ( "g C-a" . 'evil-numbers/inc-at-pt-incremental)
+        ( "g C-x" . 'evil-numbers/dec-at-pt-incremental)
+        )
 
   :custom
   (evil-ex-search-vim-style-regexp t)
@@ -1787,7 +1791,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :after evil
   )
 
-(use-package evil-numbers :ensure t
+(use-package evil-numbers :straight
+  (evil-numbers :type git :host github :repo "janpath/evil-numbers")
   :after evil
   :bind (:map evil-normal-state-map ("C-a" . evil-numbers/inc-at-pt))
   )
