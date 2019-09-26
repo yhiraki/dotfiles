@@ -333,6 +333,7 @@
           js2-mode
           plantuml-mode
           python-mode
+          vue-mode
           web-mode
           ) . flycheck-mode)
   :custom
@@ -584,7 +585,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
           python-mode
           sh-mode
           typescript-mode
-          vue-mode
+          ;; vue-mode
           ) . lsp)
 
   :custom
@@ -1650,6 +1651,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "\\R") 'web-mode-element-rename
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
+    )
+
+  (evil-define-key 'normal vue-mode-map
+    (kbd "\\f") 'eslint-fix
     )
 
   (evil-define-key 'normal org-agenda-mode-map
