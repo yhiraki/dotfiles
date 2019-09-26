@@ -1174,6 +1174,8 @@ See `org-capture-templates' for more information."
   (web-mode-enable-current-element-highlight t)
   (web-mode-markup-indent-offset 2)
   (web-mode-sql-indent-offset 2)
+  (web-mode-style-padding 0)
+  (web-mode-script-padding 0)
   :mode
   ("\\.[agj]sp\\'" . web-mode)
   ("\\.as[cp]x\\'" . web-mode)
@@ -1182,18 +1184,18 @@ See `org-capture-templates' for more information."
   ("\\.html?\\'" . web-mode)
   ("\\.mustache\\'" . web-mode)
   ("\\.tpl\\.php\\'" . web-mode)
-  ;; ("\\.vue\\'" . web-mode)
+  ("\\.vue\\'" . web-mode)
   )
 
-(use-package mmm-mode
-  :custom
-  (mmm-submode-decoration-level 0)
-  )
+;; (use-package vue-mode :ensure t
+;;   :mode
+;;   ("\\.vue\\'" . vue-mode)
+;;   )
 
-(use-package vue-mode :ensure t
-  :mode
-  ("\\.vue\\'" . vue-mode)
-  )
+;; (use-package mmm-mode
+;;   :custom
+;;   (mmm-submode-decoration-level 0)
+;;   )
 
 (use-package yaml-mode :ensure t
   :bind
