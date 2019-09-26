@@ -1452,26 +1452,28 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :bind
   (:map evil-normal-state-map
-        ( "/" . 'swiper)
-        ( "C-j" . 'evil-forward-paragraph)
-        ( "C-k" . 'evil-backward-paragraph)
-        ( "C-l" . 'evil-ex-nohighlight)
-        ( "S-C-j" . 'evil-forward-section-begin)
-        ( "S-C-k" . 'evil-backward-section-begin)
-        ( "Y" . "y$")
+        ("/" . 'swiper)
+        ("C-a" . evil-numbers/inc-at-pt)
+        ;; ("C-x" . evil-numbers/dec-at-pt)
+        ("C-j" . 'evil-forward-paragraph)
+        ("C-k" . 'evil-backward-paragraph)
+        ("C-l" . 'evil-ex-nohighlight)
+        ("S-C-j" . 'evil-forward-section-begin)
+        ("S-C-k" . 'evil-backward-section-begin)
+        ("Y" . "y$")
         ("SPC" . 'hydra-global-leader/body)
         ;; ("C-w" .'hydra-operate-window/body)
         ;; ("C-b" . 'hydra-elscreen/body)
         )
 
   (:map evil-insert-state-map
-        ( "C-k" . 'company-yasnippet))
+        ("C-k" . 'company-yasnippet))
 
   (:map evil-visual-state-map
-        ( "C-a" . 'evil-numbers/inc-at-pt)
-        ( "C-x" . 'evil-numbers/dec-at-pt)
-        ( "g C-a" . 'evil-numbers/inc-at-pt-incremental)
-        ( "g C-x" . 'evil-numbers/dec-at-pt-incremental)
+        ("C-a" . 'evil-numbers/inc-at-pt)
+        ("C-x" . 'evil-numbers/dec-at-pt)
+        ("g C-a" . 'evil-numbers/inc-at-pt-incremental)
+        ("g C-x" . 'evil-numbers/dec-at-pt-incremental)
         )
 
   :custom
@@ -1794,7 +1796,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package evil-numbers :straight
   (evil-numbers :type git :host github :repo "janpath/evil-numbers")
   :after evil
-  :bind (:map evil-normal-state-map ("C-a" . evil-numbers/inc-at-pt))
   )
 
 ;; (use-package evil-tabs :ensure t
