@@ -48,8 +48,6 @@ source $GHQROOT/github.com/'zsh-users/zsh-autosuggestions'/zsh-autosuggestions.p
 source $GHQROOT/github.com/'zsh-users/zsh-completions'/zsh-completions.plugin.zsh	
 source $GHQROOT/github.com/'zsh-users/zsh-syntax-highlighting'/zsh-syntax-highlighting.plugin.zsh
 
-PATH=$GHQROOT/github.com/'yhiraki/docker-gcloud'/bin:$PATH
-
 source $ZDOTDIR/rc/alias.zsh
 source $ZDOTDIR/rc/bind.zsh
 source $ZDOTDIR/rc/func.zsh
