@@ -94,6 +94,8 @@ for row in table:
         mem = int(mem[:-1]) * MEGA
     elif mem[-1] == 'K':
         mem = int(mem[:-1]) * KIRO
+    elif mem[-1] == 'B':
+        mem = int(mem[:-1])
     row[7] = mem
 
 
