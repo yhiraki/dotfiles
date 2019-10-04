@@ -18,6 +18,8 @@ fi
 GITROOT=$(git rev-parse --show-toplevel)
 HASH=$(echo $GITROOT | md5sum | cut -d' ' -f1)
 
+cd $GITROOT
+
 if [ -f $SYNC_PROJECT_WORKDIR/$HASH ]
 then
   if kill -s 0 $(cat $SYNC_PROJECT_WORKDIR/$HASH)
