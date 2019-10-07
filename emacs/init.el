@@ -1506,6 +1506,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   ;;   )
 
   (evil-define-key 'normal dired-mode-map
+    (kbd "SPC") 'hydra-global-leader/body
     (kbd "C-j") 'dired-next-dirline
     (kbd "C-k") 'dired-prev-dirline
     )
