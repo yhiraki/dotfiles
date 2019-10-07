@@ -531,9 +531,9 @@
   :commands swiper
   )
 
-(use-package counsel-ghq :straight
-  (counsel-ghq :type git :host github :repo "windymelt/counsel-ghq")
-  :commands (counsel-ghq)
+(use-package ivy-ghq :straight
+  (ivy-ghq :type git :host github :repo "analyticd/ivy-ghq")
+  :commands (ivy-ghq-open)
   )
 
 (use-package path :no-require
@@ -1243,7 +1243,7 @@ See `org-capture-templates' for more information."
   (defhydra hydra-git (:exit t)
     ("f" counsel-git "find")
     ("g" counsel-git-grep "grep")
-    ("p" counsel-ghq "ghq")
+    ("p" ivy-ghq-open "ghq")
     ("s" magit-status "status")
     )
 
