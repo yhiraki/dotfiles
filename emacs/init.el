@@ -328,14 +328,14 @@
 ;;   )
 
 (use-package flycheck :ensure t
-  :hook ((
-          c++-mode
-          js2-mode
-          plantuml-mode
-          python-mode
-          vue-mode
-          web-mode
-          ) . flycheck-mode)
+  ;; :hook ((
+  ;;         c++-mode
+  ;;         js2-mode
+  ;;         plantuml-mode
+  ;;         python-mode
+  ;;         vue-mode
+  ;;         web-mode
+  ;;         ) . flycheck-mode)
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
@@ -585,13 +585,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
           python-mode
           sh-mode
           typescript-mode
-          ;; vue-mode
+          vue-mode
           ) . lsp)
 
   :custom
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
-  ;; (lsp-enable-snippet nil)
+  (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
   )
@@ -599,6 +599,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package lsp-vetur
   :custom
   (lsp-vetur-format-default-formatter-ts "eslint")
+  (lsp-vetur-format-default-formatter-js "eslint")
   )
 
 (use-package lsp-pyls
@@ -757,7 +758,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package js2-mode :ensure t
   :init
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  ;; (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   :custom
   (js2-basic-offset 2)
   (js2-highlight-external-variables nil)
@@ -1184,18 +1185,20 @@ See `org-capture-templates' for more information."
   ("\\.html?\\'" . web-mode)
   ("\\.mustache\\'" . web-mode)
   ("\\.tpl\\.php\\'" . web-mode)
-  ("\\.vue\\'" . web-mode)
+  ;; ("\\.vue\\'" . web-mode)
   )
 
-;; (use-package vue-mode :ensure t
-;;   :mode
-;;   ("\\.vue\\'" . vue-mode)
-;;   )
+(use-package vue-mode :ensure t
+  :mode
+  ("\\.vue\\'" . vue-mode)
+  )
 
-;; (use-package mmm-mode
-;;   :custom
-;;   (mmm-submode-decoration-level 0)
-;;   )
+(use-package mmm-mode
+  :custom
+  (mmm-submode-decoration-level 0)
+  :init
+  (add-hook 'mmm-mode-hook (lambda () (setq syntax-ppss-table nil)))
+  )
 
 (use-package yaml-mode :ensure t
   :bind
