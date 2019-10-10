@@ -783,11 +783,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
   )
 
-(use-package company-tern :ensure t
-  :commands company-tern
-  :config
-  (push 'company-tern company-backends)
-  )
+;; (use-package company-tern :ensure t
+;;   :commands company-tern
+;;   :config
+;;   (push 'company-tern company-backends)
+;;   )
 
 (use-package add-node-modules-path :ensure t
   :hook (
@@ -1191,13 +1191,13 @@ See `org-capture-templates' for more information."
 (use-package vue-mode :ensure t
   :mode
   ("\\.vue\\'" . vue-mode)
+  :init
+  (add-hook 'vue-mode-hook (lambda () (setq syntax-ppss-table nil)))
   )
 
 (use-package mmm-mode
   :custom
   (mmm-submode-decoration-level 0)
-  :init
-  (add-hook 'mmm-mode-hook (lambda () (setq syntax-ppss-table nil)))
   )
 
 (use-package yaml-mode :ensure t
@@ -1214,6 +1214,8 @@ See `org-capture-templates' for more information."
 
 (use-package emmet-mode :ensure t
   :hook (sgml-mode css-mode web-mode xml-mode)
+  :custom
+  (emmet-indent-after-insert nil)
 )
 
 (use-package gitignore-mode :ensure t
