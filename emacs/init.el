@@ -230,6 +230,29 @@
 
 (use-package smartparens :ensure t
   :hook (after-init . smartparens-global-mode)
+
+  :config
+  (sp-pair "\{ " " \}")
+
+  (sp-with-modes '(lisp-mode lisp-interaction-mode slime-mode)
+    (sp-local-pair "'" nil :actions nil)
+    (sp-local-pair "`" nil :actions nil)
+    )
+
+  (sp-with-modes '(web-mode html-mode)
+    (sp-local-pair "\{% " " %\}")
+    (sp-local-pair "\{# " " #\}")
+    )
+
+  ;; https://github.com/Fuco1/smartparens/issues/80
+  (defun my-open-block-c-mode (id action context)
+    (when (eq action 'insert)
+      (newline)
+      (indent-according-to-mode)
+      (previous-line)
+      (indent-according-to-mode)))
+
+  (sp-local-pair 'prog-mode "{" nil :post-handlers '((my-open-block-c-mode "RET")))
   )
 
 (use-package restart-emacs :ensure t
