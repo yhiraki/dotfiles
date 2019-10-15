@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: for-django
+# key: for 
+# --
+\{% for ${1:item} in ${2:items} %\}$0\{% endfor %\}
