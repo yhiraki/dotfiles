@@ -14,6 +14,6 @@ fi
 echo $$ > $PID_FILE
 while true
 do
-  top -l 1000 > $LOG_FILE &
+  top -l 1000 -s 10 > $LOG_FILE &
   wait
 done
