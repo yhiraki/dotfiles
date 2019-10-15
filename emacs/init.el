@@ -980,7 +980,7 @@ See `org-capture-templates' for more information."
           ;; ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
           ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
           ;; https://ox-hugo.scripter.co/doc/org-capture-setup
-          ("b" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
+          ("B" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
            (function org-hugo-new-subtree-post-capture-template))
           )
         )
