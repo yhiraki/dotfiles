@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: if-django
+# key: if
+# --
+\{% if ${1:var} %\}$0\{% endif %\}
