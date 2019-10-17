@@ -1797,6 +1797,22 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "[e") 'flycheck-previous-error
     (kbd "]e") 'flycheck-next-error)
 
+  (evil-define-key 'normal git-timemachine-mode-map
+    ;; Navigate
+    (kbd "p") 'git-timemachine-show-previous-revision
+    (kbd "n") 'git-timemachine-show-next-revision
+    (kbd "g") 'git-timemachine-show-nth-revision
+    (kbd "t") 'git-timemachine-show-revision-fuzzy
+    ;; Kill current revision
+    (kbd "w") 'git-timemachine-kill-abbreviated-revision
+    (kbd "W") 'git-timemachine-kill-revision
+    ;; Misc
+    (kbd "b") 'git-timemachine-blame
+    (kbd "c") 'git-timemachine-show-commit
+    (kbd "?") 'git-timemachine-help
+    (kbd "q") 'git-timemachine-quit
+    )
+
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
   )
