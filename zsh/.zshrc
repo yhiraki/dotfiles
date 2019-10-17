@@ -18,24 +18,24 @@ function my_refresh_tmux_status() {
 add-zsh-hook periodic my_refresh_tmux_status
 
 case ${OSTYPE} in
-  darwin*)
-    EMACSCLIENT="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-    alias e="$EMACSCLIENT -nw -a ''"
-    alias ge="$EMACSCLIENT -c -a ''"
-    ;;
-  linux*)
-    ;;
-  msys*)
-    if which start > /dev/null; then
-      function mstart(){
-        for arg in $@
-        do
-          start $arg
-        done
-      }
-      alias start=mstart
-    fi
-    ;;
+darwin*)
+  EMACSCLIENT="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+  alias e="$EMACSCLIENT -nw -a ''"
+  alias ge="$EMACSCLIENT -c -a ''"
+  ;;
+linux*)
+  ;;
+msys*)
+  if which start > /dev/null; then
+    function mstart(){
+      for arg in $@
+      do
+        start $arg
+      done
+    }
+    alias start=mstart
+  fi
+  ;;
 esac
 
 GHQROOT=$(ghq root)
