@@ -625,9 +625,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (pangu-spacing-real-insert-separtor t)
 
   ;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
-  ;; (add-hook 'text-mode-hook 'pangu-spacing-mode)
-  :hook
-  ((twittering-edit-mode) . pangu-spacing-mode)
+  ;; :hook
+  ;; (text-mode-hook . pangu-spacing-mode)
+  ;; (twittering-edit-mode . pangu-spacing-mode)
   )
 
 (use-package twittering-mode :ensure t
