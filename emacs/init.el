@@ -156,6 +156,11 @@
   ;; |　　　　　|😀😀😀😀😀😀| ; TODO: 絵文字の幅がおかしい
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
+
+  ;; unicode の一部を1文字幅として扱う
+  ;; "┃" : git-gutter
+  ;; "│" : highlight-indent-guides
+  (set-language-environment "English")
   )
 
 ;; (use-package fira-code-mode
