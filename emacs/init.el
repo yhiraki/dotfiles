@@ -267,7 +267,7 @@
   :config
   (sp-pair "\{ " " \}")
 
-  (sp-with-modes '(lisp-mode lisp-interaction-mode slime-mode)
+  (sp-with-modes '(lisp-mode emacs-lisp-mode lisp-interaction-mode slime-mode)
     (sp-local-pair "'" nil :actions nil)
     (sp-local-pair "`" nil :actions nil)
     )
