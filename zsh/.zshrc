@@ -19,12 +19,9 @@ add-zsh-hook periodic my_refresh_tmux_status
 
 case ${OSTYPE} in
   darwin*)
-    EMACS="/Applications/Emacs.app/Contents/MacOS/Emacs"
     EMACSCLIENT="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-    alias emacs="$EMACS"
-    alias emacsclient="$EMACSCLIENT"
-    alias e="$EMACSCLIENT -nw"
-    alias ge="emacsclient-gui"
+    alias e="$EMACSCLIENT -nw -a ''"
+    alias ge="$EMACSCLIENT -c -a ''"
     ;;
   linux*)
     ;;

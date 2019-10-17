@@ -3,5 +3,5 @@
 [pager]
   branch = cat
 [core]
-	editor = vim
-	excludesfile = ~/.gitexclude
+  editor = "/usr/local/bin/emacsclient -nw -a ''"
+  excludesfile = ~/.gitexclude
