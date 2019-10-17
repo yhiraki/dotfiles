@@ -489,6 +489,10 @@
 
 (use-package git-gutter-fringe+ :ensure t
   :hook (after-init . global-git-gutter+-mode)
+  :custom
+  (git-gutter+-added-sign "┃")
+  (git-gutter+-deleted-sign "▔")
+  (git-gutter+-modified-sign "┃")
   )
 
 (use-package recentf
