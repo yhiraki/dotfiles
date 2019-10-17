@@ -1,13 +1,6 @@
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-function emacsclient-gui {
-  local filename=$1
-  $EMACSCLIENT -c $filename & disown
-}
-# alias e="$EDITOR"
-# alias ge="emacsclient-gui"
-
 function locate-and-open {
   local query=$1
   locate -i $query | fzf | xargs open
