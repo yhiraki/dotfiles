@@ -674,7 +674,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (company-etags-ignore-case t)
   (company-idle-delay 0.2)
   (company-lsp-cache-candidates 'auto)
-  (company-minimum-prefix-length 3)
+  (company-minimum-prefix-length 2)
   (company-selection-wrap-around t)
   (company-tooltip-idle-delay 0.1)
   (company-tooltip-limit 10)
