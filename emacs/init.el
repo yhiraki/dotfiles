@@ -267,7 +267,9 @@
       (previous-line)
       (indent-according-to-mode)))
 
-  (sp-local-pair 'prog-mode "{" nil :post-handlers '((my-open-block-c-mode "RET")))
+  (sp-with-modes '(prog-mode vue-mode)
+    (sp-local-pair  "{" nil :post-handlers '((my-open-block-c-mode "RET")))
+    )
   )
 
 (use-package restart-emacs :ensure t
