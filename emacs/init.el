@@ -50,6 +50,8 @@
   (fset 'yes-or-no-p 'y-or-n-p)
   )
 
+(use-package diminish :ensure t)
+
 (use-package server
   :hook (after-init
          . (lambda ()
@@ -220,6 +222,7 @@
   )
 
 (use-package volatile-highlights :ensure t
+  :diminish volatile-highlights-mode
   :hook ((prog-mode org-mode) . volatile-highlights-mode)
   :config
   (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
@@ -228,6 +231,7 @@
   )
 
 (use-package highlight-indent-guides :ensure t
+  :diminish highlight-indent-guides-mode
   :hook
   ((prog-mode yaml-mode) . highlight-indent-guides-mode)
   :custom
@@ -236,6 +240,7 @@
   )
 
 (use-package eldoc
+  :diminish eldoc-mode
   :hook ((emacs-lisp-mode-hook lisp-mode-hook) . eldoc-mode)
   )
 
@@ -244,12 +249,14 @@
   )
 
 (use-package which-key :ensure t
+  :diminish which-key-mode
   :hook (after-init . which-key-mode)
   :custom
   (which-key-allow-evil-operators t)
   )
 
 (use-package smartparens :ensure t
+  :diminish smartparens-mode
   :hook (after-init . smartparens-global-mode)
 
   :config
@@ -500,7 +507,12 @@
 
 (use-package git-timemachine :ensure t)
 
+(use-package git-gutter+ :ensure t
+  :diminish
+  )
+
 (use-package git-gutter-fringe+ :ensure t
+  :after git-gutter+
   :hook (after-init . global-git-gutter+-mode)
   :custom
   (git-gutter+-added-sign "┃")
@@ -543,7 +555,11 @@
   (undohist-ignored-files '("COMMIT_EDITMSG"))
   )
 
+(use-package undo-tree :ensure t
+  :diminish undo-tree-mode)
+
 (use-package ivy :ensure t
+  :diminish ivy-mode
   :hook (after-init . ivy-mode)
   :custom
   (enable-recursive-minibuffers t)
@@ -660,6 +676,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package company :ensure t
+  :diminish company-mode
   :hook (after-init
          . (lambda()
               (global-company-mode)
@@ -776,6 +793,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ("Dockerfile\\'" . dockerfile-mode))
 
 (use-package hideshow
+  :diminish hs-minor-mode
   :hook (emacs-lisp-mode . my/hs-minor-mode-hide-all)
   :config
   (defun my/hs-minor-mode-hide-all ()
@@ -1202,6 +1220,7 @@ See `org-capture-templates' for more information."
   )
 
 (use-package mmm-mode
+  :diminish
   :custom
   (mmm-submode-decoration-level 0)
   )
@@ -1797,6 +1816,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package evil-commentary :ensure t
+  :diminish evil-commentary-mode
   :after evil
   :config
   (evil-commentary-mode)
@@ -1854,6 +1874,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package smart-mode-line :ensure t)
 
 (use-package whitespace
+  :diminish whitespace-mode
   :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
 
   :custom
@@ -1902,6 +1923,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package yasnippet :ensure t
+  :diminish yas-minor-mode
   :hook (after-init . yas-global-mode)
 
   :custom
