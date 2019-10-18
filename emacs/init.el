@@ -1823,16 +1823,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :after evil
   )
 
-;; (use-package evil-tabs :ensure t
-;;   :after (evil elscreen)
-;;   )
-
-;; (use-package evil-collection :ensure t
-;;   :after evil
-;;   :config
-;;   (evil-collection-init 'neotree)
-;;   )
-
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
   :config
