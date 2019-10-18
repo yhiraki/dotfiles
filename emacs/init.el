@@ -825,6 +825,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (js-indent-level 2)
   )
 
+(use-package css-mode
+  :custom
+  (css-indent-offset 2)
+  )
+
 (use-package add-node-modules-path :ensure t
   :hook (
          js-mode
