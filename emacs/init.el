@@ -186,6 +186,12 @@
                ))
   )
 
+(use-package encoding :no-require
+  :config
+  ;; magitでの文字化け対策
+  (prefer-coding-system 'utf-8)
+  )
+
 (use-package files
   :custom
   (require-final-newline t)
