@@ -370,7 +370,6 @@
 (use-package flycheck :ensure t
   ;; :hook ((
   ;;         c++-mode
-  ;;         js2-mode
   ;;         plantuml-mode
   ;;         python-mode
   ;;         vue-mode
@@ -625,7 +624,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :hook ((
           c++-mode
           go-mode
-          js2-mode
+          js-mode
           python-mode
           sh-mode
           typescript-mode
@@ -805,42 +804,9 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :hook (go-mode . go-eldoc-setup)
 )
 
-(use-package js2-mode :ensure t
-  :init
-  ;; (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-  :custom
-  (js2-basic-offset 2)
-  (js2-highlight-external-variables nil)
-  (js2-include-browser-externs nil)
-  (js2-include-jslint-globals nil)
-  (js2-mode-show-parse-errors nil)
-  (js2-mode-show-strict-warnings nil)
-  :mode (("\\.js\\'" . js2-mode))
-  )
-
-(use-package js2-refactor :ensure t
-  :hook (js2-mode . js2-refactor-mode)
-  :config
-  (js2r-add-keybindings-with-prefix "C-c C-r")
-  (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-  )
-
-(use-package xref-js2 :ensure t
-  :init
-  (add-hook 'js2-mode-hook
-            '(lambda ()
-               (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-  )
-
-;; (use-package company-tern :ensure t
-;;   :commands company-tern
-;;   :config
-;;   (push 'company-tern company-backends)
-;;   )
-
 (use-package add-node-modules-path :ensure t
   :hook (
-         js2-mode
+         js-mode
          typescript-mode
          web-mode
          vue-mode
@@ -1703,11 +1669,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   (evil-define-key 'normal json-mode-map
     (kbd "\\f") 'json-pretty-print-buffer
-    )
-
-  (evil-define-key 'normal js2-mode-map
-    (kbd "zc") 'js2-mode-hide-element
-    (kbd "zo") 'js2-mode-show-element
     )
 
   (evil-define-key 'normal web-mode-map
