@@ -638,6 +638,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
+  (lsp-clients-javascript-typescript-server "typescript-language-server")
   )
 
 (use-package lsp-vetur
