@@ -111,10 +111,10 @@
             'executable-make-buffer-file-executable-if-script-p) ; shegang を見て自動で +x する
   )
 
-;; (use-package display-line-numbers
-;;   :hook (prog-mode . display-line-numbers-mode)
-;;   ;; :config (setq display-line-numbers-type 'relative)
-;;   )
+(use-package display-line-numbers
+  ;; :hook (prog-mode . display-line-numbers-mode)
+  ;; :config (setq display-line-numbers-type 'relative)
+  )
 
 (use-package cc-vars
   :custom (c-basic-offset 2)
@@ -173,18 +173,18 @@
   (set-language-environment "English")
   )
 
-;; (use-package fira-code-mode
-;;   :hook ((
-;;          prog-mode
-;;          gfm-mode
-;;          markdown-mode
-;;          org-mode
-;;          ) . (lambda ()
-;;                (when window-system
-;;                  (fira-code-mode)
-;;                  )
-;;                ))
-;;   )
+(use-package fira-code-mode :disabled
+  :hook ((
+         prog-mode
+         gfm-mode
+         markdown-mode
+         org-mode
+         ) . (lambda ()
+               (when window-system
+                 (fira-code-mode)
+                 )
+               ))
+  )
 
 (use-package files
   :custom
@@ -276,37 +276,32 @@
   :commands restart-emacs
   )
 
-;; (use-package elscreen :ensure t
-;;   :hook (after-init . elscreen-start)
-;;   :custom
-;;   (elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
-;;   (elscreen-tab-display-control nil)
-;;   )
+(use-package elscreen :ensure t :disabled
+  :hook (after-init . elscreen-start)
+  :custom
+  (elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
+  (elscreen-tab-display-control nil)
+  )
 
 (use-package s :ensure t)
 
 (use-package f :ensure t)
 
-;; (use-package ime :no-require
-;;   :init
-;;   (add-hook 'evil-normal-state-entry-hook
-;;             '(lambda ()
-;;                (mac-toggle-input-method nil)))
-;;   (add-hook 'evil-normal-state-entry-hook 'mac-change-language-to-us)
-;;   ;; ミニバッファを開いたときに英字にする（閉じてもモードは戻らない）
-;;   (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-;;   :config
-;;   ;; http://blog.ichiroc.in/entry/2013/09/06/075832
-;;   ;; Google日本語入力をベースにする
-;;   ;; これがないと(mac-toggle-input-method t) で、ことえりが有効になってしまう。
-;;   (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
-;;   )
-
-;; evil normal state では動かない
-;; (use-package jaword :straight
-;;   (jaword :type git :host github :repo "zk-phi/jaword")
-;;   :commands jaword-mode
-;;   )
+;; mac port 版の emacs のみ
+(use-package ime :no-require :disabled
+  :init
+  (add-hook 'evil-normal-state-entry-hook
+            '(lambda ()
+               (mac-toggle-input-method nil)))
+  (add-hook 'evil-normal-state-entry-hook 'mac-change-language-to-us)
+  ;; ミニバッファを開いたときに英字にする（閉じてもモードは戻らない）
+  (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
+  :config
+  ;; http://blog.ichiroc.in/entry/2013/09/06/075832
+  ;; Google日本語入力をベースにする
+  ;; これがないと(mac-toggle-input-method t) で、ことえりが有効になってしまう。
+  (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
+  )
 
 (use-package appearance :no-require
   :custom
@@ -322,9 +317,9 @@
   (setq default-frame-alist initial-frame-alist)
   )
 
-;; (use-package emojify :ensure t
-;;   :hook (after-init . global-emojify-mode)
-;;   )
+(use-package emojify :ensure t :disabled
+  :hook (after-init . global-emojify-mode)
+  )
 
 (use-package dired
   :config
@@ -341,10 +336,6 @@
 (use-package all-the-icons-dired :ensure t
   )
 
-;; (use-package projectile :ensure t
-;;   :commands projectile-mode
-;;   )
-
 (use-package wdired :ensure t
   :commands (wdired-change-to-wdired-mode)
   :bind
@@ -353,7 +344,7 @@
   :custom (wdired-allow-to-change-permissions t)
   )
 
-;; (use-package flymake
+(use-package flymake
 ;;   :commands flymake-mode
 ;;   :custom
 ;;   (flymake-error-bitmap nil)
@@ -365,7 +356,7 @@
 ;;   (set-face-underline 'flymake-error nil)
 ;;   (set-face-underline 'flymake-note nil)
 ;;   (set-face-underline 'flymake-warning nil)
-;;   )
+  )
 
 (use-package flycheck :ensure t
   ;; :hook ((
@@ -715,11 +706,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 ;; company tab and go が動かないのでしばらく無効化
 ;; https://github.com/company-mode/company-mode/pull/706
-;; (use-package company-box :ensure t
-;;   :hook (company-mode . company-box-mode)
-;;   :custom
-;;   (company-box-icons-alist 'company-box-icons-all-the-icons)
-;;   )
+(use-package company-box :ensure t :disabled
+  :hook (company-mode . company-box-mode)
+  :custom
+  (company-box-icons-alist 'company-box-icons-all-the-icons)
+  )
 
 (use-package company-lsp :ensure t
   :after (company yasnippet)
@@ -737,10 +728,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
 
-;; (use-package company-tabnine :ensure t  ; リソースを食うので停止
-;;   :config
-;;   (add-to-list 'company-backends #'company-tabnine)
-;;   )
+;; リソースを食うので停止
+(use-package company-tabnine :ensure t :disabled
+  :config
+  (add-to-list 'company-backends #'company-tabnine)
+  )
 
 (use-package quickrun :ensure t
   :commands quickrun
@@ -817,16 +809,16 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :commands eslint-fix
   )
 
-;; (use-package prettierjs :no-require
-;;   :config
-;;   (defun my/prettier ()
-;;     (interactive)
-;;     (shell-command
-;;      (format "%s --write %s"
-;;              (shell-quote-argument (executable-find "prettier"))
-;;              (shell-quote-argument (expand-file-name buffer-file-name))))
-;;     (revert-buffer t t t))
-;;   )
+(use-package prettierjs :no-require :disabled
+  :config
+  (defun my/prettier ()
+    (interactive)
+    (shell-command
+     (format "%s --write %s"
+             (shell-quote-argument (executable-find "prettier"))
+             (shell-quote-argument (expand-file-name buffer-file-name))))
+    (revert-buffer t t t))
+  )
 
 (use-package json-mode :ensure t)
 
@@ -879,11 +871,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 ;; インデントが階段状になってしまって想定した動きじゃないので保留
 ;; evilか何かと競合している
-;; (use-package org-src
-;;   :after org
-;;   :custom
-;;   (org-src-tab-acts-natively t) ; src block をインデントする
-;;   )
+(use-package org-src
+  :after org
+  ;;   :custom
+  ;;   (org-src-tab-acts-natively t) ; src block をインデントする
+  )
 
 (use-package org-agenda
   :after org
@@ -968,8 +960,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
            (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
   )
 
-;; (use-package ob-ipython :ensure t
-;;   :after ob)
+(use-package ob-ipython :ensure t :disabled
+  :after ob)
 
 (use-package org-capture
   :commands org-capture
@@ -1004,10 +996,10 @@ See `org-capture-templates' for more information."
 (use-package org-bullets :ensure t
   :hook (org-mode . org-bullets-mode))
 
-;; (use-package org-reveal :ensure t :disabled t
-;;   :init
-;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-;;   )
+(use-package org-reveal :ensure t :disabled
+  :init
+  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+  )
 
 (use-package ox-publish
   :after org
@@ -1129,13 +1121,6 @@ See `org-capture-templates' for more information."
   (typescript-indent-level 2)
   :mode ("\\.ts\\'")
   )
-
-;; (use-package tide :ensure t
-;;   :hook (typescript-mode . tide-setup)
-;;   :custom
-;;   (flycheck-check-syntax-automatically '(save mode-enabled))
-;;   (tide-completion-ignore-case t)
-;;   )
 
 (use-package plantuml-mode :ensure t
   :init
@@ -1954,7 +1939,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("RET" . yas-next-field-or-maybe-expand))
   )
 
-;; (use-package yasnippet-snippets :ensure t)
+(use-package yasnippet-snippets :ensure t :disabled)
 
 (use-package popup :ensure t
   :commands (popup-next popup-previous)
@@ -1984,13 +1969,13 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("C-p" . popup-previous))
   )
 
-;; (use-package yatemplate :ensure t
-;;   :after yasnippet
-;;   :config
-;;   ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
-;;   (yatemplate-fill-alist)
-;;   (auto-insert-mode 1)
-;;   )
+(use-package yatemplate :ensure t :disabled
+  :after yasnippet
+  :config
+  ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
+  (yatemplate-fill-alist)
+  (auto-insert-mode 1)
+  )
 
 (use-package key-binding :no-require
   :after (frame org)
