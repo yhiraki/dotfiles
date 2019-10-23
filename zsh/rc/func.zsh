@@ -16,6 +16,14 @@ repo() {
   fi
 }
 
+# checkout
+checkout () {
+  local branch=$(git branch -a | fzf | tr -d ' ')
+  local cmd=(git checkout $branch)
+  echo $cmd
+  $cmd
+}
+
 # fshow - git commit browser
 gitshow() {
   git log --graph --color=always \
