@@ -18,7 +18,7 @@ repo() {
 
 # checkout
 checkout () {
-  local branch=$(git branch -a | fzf | tr -d ' ')
+  local branch=$(git branch -a | fzf | xargs basename)
   local cmd=(git checkout $branch)
   echo $cmd
   $cmd
