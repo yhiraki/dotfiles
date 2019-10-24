@@ -1563,7 +1563,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     )
 
   (evil-define-key 'normal prog-mode-map
-    (kbd "K") 'eglot-help-at-point
+    ;; (kbd "K") 'eglot-help-at-point
     (kbd "\\f") 'lsp-format-buffer
     (kbd "\\m") 'lsp-ui-imenu
     (kbd "\\qa") 'quickrun-autorun-mode
