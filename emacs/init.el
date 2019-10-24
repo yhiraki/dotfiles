@@ -1297,9 +1297,12 @@ See `org-capture-templates' for more information."
     ("a" org-agenda "agenda")
     ("b" org-switchb "buffer")
     ("c" org-capture "capture")
-    ("i" org-clock-in "clock in")
     ("l" org-store-link "store link")
-    ("o" org-clock-out "clock out")
+    ;; org clock
+    ("I" org-clock-in "clock in")
+    ("O" org-clock-out "clock out")
+    ("Q" org-clock-cancel "clock cancel")
+    ("j" org-clock-goto "clock goto")
     )
 
   (defhydra hydra-twitter (:exit t)
