@@ -357,6 +357,10 @@
   :custom (wdired-allow-to-change-permissions t)
   )
 
+(use-package diredfl :ensure t :disabled
+  :config (diredfl-global-mode 1)
+  )
+
 (use-package flymake
 ;;   :commands flymake-mode
 ;;   :custom
@@ -900,6 +904,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
       (add-hook 'after-save-hook 'org-html-export-to-html nil t)
       (setq org-export-in-background t)
       (message "Enabled org html export on save for current buffer...")))
+
+  ;; https://emacs.stackexchange.com/questions/32473/edit-org-mode-tags-using-ido-or-ivy-completion
+  ;; =C-M-m= to add/remove tag
+  ;; =C-M-j= to fix tags
+  (global-set-key [remap org-set-tags-command] #'counsel-org-tag)
+
   :mode (("\\.org\\'" . org-mode))
   )
 
@@ -928,7 +938,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
      "-"
      "────────────────"))
-  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (org-refile-targets '((org-agenda-files :level . 1)))
   )
 
 (use-package ob
