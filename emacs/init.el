@@ -950,7 +950,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     (not (member lang '("python" "shell" "plantuml" "shell" "dot" "js" "C" "C++"))))
 
   ;; https://github.com/skuro/plantuml-mode
-  (push '("js" . js2) org-src-lang-modes)
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("console" . sh) org-src-lang-modes)
 
