@@ -2,5 +2,5 @@
 # name: init
 # key: init
 # --
-def __init__(self):
-    ${pass}
+def __init__(self, $1):
+    ${1:$(python-init-body yas-text)}
