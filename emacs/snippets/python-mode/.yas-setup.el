@@ -2,10 +2,20 @@
 (defvar yas-text)
 
 (defun python-split-args (arg-string)
-  "Split a python argument string into ((name, default)..) tuples"
+  "Split a python argument string into ((name, default, type)..) tuples"
   (mapcar (lambda (x)
-             (split-string x "[[:blank:]]*=[[:blank:]]*" t))
+            (let* ((arg (split-string x "[[:blank:]]*=[[:blank:]]*" t))
+                 (arg-w-type (split-string (nth 0 arg) ":")))
+              (list (nth 0 arg-w-type) (nth 1 arg) (nth 1 arg-w-type))))
           (split-string arg-string "[[:blank:]]*,[[:blank:]]*" t)))
+
+(defun python-init-body (text)
+  (let ((indent (concat "\n" (make-string (current-column) 32)))
+        (args (python-split-args text)))
+    (mapconcat
+     (lambda (x) (concat "self." (nth 0 x) " = " (nth 0 x))) args indent)
+    )
+  )
 
 (defun python-args-to-docstring ()
   "return docstring format for the python arguments in yas-text"
