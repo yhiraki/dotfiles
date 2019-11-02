@@ -2009,12 +2009,18 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("C-p" . popup-previous))
   )
 
-(use-package yatemplate :ensure t :disabled
-  :after yasnippet
+(use-package autoinsert
+  :custom
+  (auto-insert-query nil)
   :config
-  ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
-  (yatemplate-fill-alist)
   (auto-insert-mode 1)
+  )
+
+(use-package yatemplate :ensure t
+  :after (autoinsert yasnippet)
+  :config
+  (setq auto-insert-alist '())
+  (yatemplate-fill-alist)
   )
 
 (use-package key-binding :no-require
