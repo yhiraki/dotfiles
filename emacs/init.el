@@ -1949,8 +1949,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :hook (after-init . yas-global-mode)
 
   :custom
-  (yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
   (require-final-newline nil)
+  (yas-prompt-functions '(yas-completing-prompt
+                          yas-x-prompt
+                          yas-no-prompt))
 
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
