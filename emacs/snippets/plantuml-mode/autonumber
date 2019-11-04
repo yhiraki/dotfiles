@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Autonumber
+# group: sequence
+# --
+autonumber${1: ${40} ${10}${ "${<b>[000]}" }}
+$0

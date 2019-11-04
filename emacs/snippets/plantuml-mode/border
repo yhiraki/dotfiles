@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Border
+# key: ==
+# group: sequence
+# --
+== ${1:Initialization} ==
+$0

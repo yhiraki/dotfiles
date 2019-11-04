@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Box
+# key: box
+# --
+box "${Internal Service}"${ ${#LightBlue}}
+  ${participant ${Bob}}
+end box
+$0

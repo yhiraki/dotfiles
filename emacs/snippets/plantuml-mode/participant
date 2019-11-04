@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: participant
-# key: p
+# group: sequence
 # --
-participant "${Person}" as ${p}
+participant "${1:Person}"${2: as ${3:$1}}

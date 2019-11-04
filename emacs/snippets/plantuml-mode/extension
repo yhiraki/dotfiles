@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Extension
+# key: -|>
+# --
+ -$1|> $0

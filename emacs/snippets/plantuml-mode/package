@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: package
+# group: component
+# --
+${1:$$(yas-auto-next (plantuml-choose plantuml-component-group-keywords))} "${2:Description}" {
+  ${3:HTTP - [First Component]}
+}
+$0

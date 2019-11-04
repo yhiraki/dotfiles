@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Delay
+# key: ...
+# group: sequence
+# --
+... ${1:5 minures later} ...
+$0
