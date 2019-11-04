@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Arrow right
+# key: >
+# --
+ ${1:$$(yas-auto-next (plantuml-choose plantuml-arrow-right-alist))} $0

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Arrow
-# key: -
-# --
- ${1:$$(yas-auto-next (substring (yas-choose-value plantuml-arrow-alist) 0 plantuml-arrow-cut-description-point))} $0
