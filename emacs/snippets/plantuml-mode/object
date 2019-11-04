@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Object
+# --
+object ${1:user} {
+  ${2:${3:name} = "${4:Dummy}"}
+}

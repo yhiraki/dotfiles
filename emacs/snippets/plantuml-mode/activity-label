@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: activity-label
+# group: activity
+# key: :
+# --
+:${1:This is on defined on
+several **lines**};

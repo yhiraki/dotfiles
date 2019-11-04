@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Note multi-line
+# key: notem
+# --
+note ${1:right}${2: of ${3:Object}} 
+  $0
+end note

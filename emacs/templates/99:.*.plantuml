@@ -1,5 +1,12 @@
 @startuml
 
+' header Page Header
+' footer Page %page% of $lastpage%
+
+title Diagram
+
 $0
+
+' newpage
 
 @enduml

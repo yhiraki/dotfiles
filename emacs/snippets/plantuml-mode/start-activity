@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: start-activity
-# key: start-activity
+# key: start
 # --
 start
 :${Init Phase;

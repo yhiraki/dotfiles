@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: alt
-# key: alt
+# group: sequence
 # --
 alt ${1:condition}
   $3

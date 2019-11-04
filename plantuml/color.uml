@@ -1,6 +1,9 @@
 ' class diagram のアイコンを消す
 ' hide circle
 
+' ステート枠をシンプルにする
+hide empty description
+
 skinparam {
   monochrome true
   shadowing false

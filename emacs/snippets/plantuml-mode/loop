@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: loop
-# key: loop
+# group: sequence
 # --
 loop ${in N times}
   $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Note one-line
+# key: note
+# --
+note${1: ${2:right}}: $0

@@ -267,6 +267,11 @@
     (sp-local-pair "`" nil :actions nil)
     )
 
+  (sp-with-modes '(plantuml-mode)
+    (sp-local-pair "'" nil :actions nil)
+    (sp-local-pair "% " " %")
+    )
+
   (sp-with-modes '(web-mode html-mode)
     (sp-local-pair "\{% " " %\}")
     (sp-local-pair "\{# " " #\}")
@@ -522,6 +527,10 @@
   (git-gutter+-added-sign "┃")
   (git-gutter+-deleted-sign "▔")
   (git-gutter+-modified-sign "┃")
+  :config
+  (set-face-foreground 'git-gutter:added  nil :italic nil)
+  (set-face-foreground 'git-gutter:deleted  nil :italic nil)
+  (set-face-foreground 'git-gutter:modified  nil :italic nil)
   )
 
 (use-package recentf
@@ -651,10 +660,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :custom
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
+  (lsp-clients-javascript-typescript-server "typescript-language-server")
   (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
-  (lsp-clients-javascript-typescript-server "typescript-language-server")
   )
 
 (use-package lsp-vetur
@@ -1946,13 +1955,15 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package yasnippet :ensure t
   :diminish yas-minor-mode
-  :hook (after-init . yas-global-mode)
+  :hook
+  (after-init . yas-global-mode)
+  (yas-minor-mode
+   . (lambda ()
+       (setq yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
+       ))
 
   :custom
   (require-final-newline nil)
-  (yas-prompt-functions '(yas-completing-prompt
-                          yas-x-prompt
-                          yas-no-prompt))
 
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))

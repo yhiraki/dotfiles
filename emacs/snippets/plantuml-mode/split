@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: split
+# group: activity
+# key: split
+# --
+split
+  ${1::${2:Ready};}${3:
+split again
+  ${4::${Branch};}}
+end split
+$0

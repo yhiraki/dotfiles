@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: activate
-# key: a
+# group: sequence
 # --
 activate ${1:A}
   $0

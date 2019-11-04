@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Component
+# group: component
+# --
+[${1:Component}]${2: as ${3:"${4:Description}"}}

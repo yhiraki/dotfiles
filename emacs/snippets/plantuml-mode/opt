@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: opt
-# key: opt
+# group: sequence
 # --
 opt ${option}
   $0
