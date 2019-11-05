@@ -528,9 +528,9 @@
   (git-gutter+-deleted-sign "▔")
   (git-gutter+-modified-sign "┃")
   :config
-  (set-face-foreground 'git-gutter:added  nil :italic nil)
-  (set-face-foreground 'git-gutter:deleted  nil :italic nil)
-  (set-face-foreground 'git-gutter:modified  nil :italic nil)
+  (set-face-attribute 'git-gutter+-added  nil :italic nil)
+  (set-face-attribute 'git-gutter+-deleted  nil :italic nil)
+  (set-face-attribute 'git-gutter+-modified  nil :italic nil)
   )
 
 (use-package recentf
