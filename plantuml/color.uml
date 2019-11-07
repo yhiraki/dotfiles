@@ -1,8 +1,8 @@
 ' class diagram のアイコンを消す
 ' hide circle
 
-' ステート枠をシンプルにする 'scequence 図が書けないのでやめる
-' hide empty description
+' ステート枠をシンプルにする
+hide empty description
 
 skinparam {
   monochrome true
