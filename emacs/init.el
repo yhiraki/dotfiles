@@ -381,13 +381,13 @@
   )
 
 (use-package flycheck :ensure t
-  ;; :hook ((
+  :hook ((
   ;;         c++-mode
-  ;;         plantuml-mode
+          plantuml-mode
   ;;         python-mode
   ;;         vue-mode
   ;;         web-mode
-  ;;         ) . flycheck-mode)
+          ) . flycheck-mode)
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
@@ -956,11 +956,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("python" "shell" "plantuml" "shell" "dot" "js" "C" "C++"))))
+    (not (member lang '("python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "C++"))))
 
-  ;; https://github.com/skuro/plantuml-mode
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("console" . sh) org-src-lang-modes)
+  (push '("uml" . plantuml) org-src-lang-modes)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1208,7 +1208,7 @@ See `org-capture-templates' for more information."
       (call-process-shell-command cmd nil 0)))
 
   :mode
-  ("\\.puml\\'" . plantuml-mode)
+  ("\\.uml\\'" . plantuml-mode)
   ("\\.plantuml\\'" . plantuml-mode)
   :bind
   ("C-c C-s" . 'plantuml-save-png)
