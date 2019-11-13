@@ -1243,8 +1243,12 @@ See `org-capture-templates' for more information."
 (use-package vue-mode :ensure t
   :mode
   ("\\.vue\\'" . vue-mode)
-  :init
-  (add-hook 'vue-mode-hook (lambda () (setq syntax-ppss-table nil)))
+  :hook
+  (vue-mode
+   . (lambda ()
+       (setq syntax-ppss-table nil)
+       (add-hook 'after-save-hook 'mmm-parse-buffer nil t)
+       ))
   )
 
 (use-package mmm-mode
