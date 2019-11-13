@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ifmain-unittest
+# name: if __name__ ... unittest.main()
 # key: ifmu
 # --
 if __name__ == '__main__':
