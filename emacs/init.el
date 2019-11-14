@@ -514,7 +514,8 @@
   (remove-hook 'server-switch-hook 'magit-commit-diff)
   )
 
-(use-package git-timemachine :ensure t)
+(use-package git-timemachine :ensure t
+  :hook (git-timemachine-mode . evil-insert-state))
 
 (use-package git-gutter+ :ensure t
   :diminish
@@ -1307,6 +1308,7 @@ See `org-capture-templates' for more information."
     ("g" counsel-git-grep "grep")
     ("p" ivy-ghq-open "ghq")
     ("s" magit-status "status")
+    ("t" git-timemachine "timemachine")
     )
 
   (defhydra hydra-help (:exit t)
