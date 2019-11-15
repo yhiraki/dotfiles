@@ -1030,15 +1030,26 @@ See `org-capture-templates' for more information."
                    ":PROPERTIES:"
                    ,(concat ":EXPORT_FILE_NAME: " fname)
                    ":END:"
-                   "%?\n")          ;Place the cursor here finally
+                   "\t%?")          ;Place the cursor here finally
                  "\n")))
 
   (setq org-capture-templates
-        '(("m" "Memo\t\t- Text miscs" entry (file+headline "~/org/memo.org" "Memo") "** %?\n %U\n")
-          ("n" "Note\t\t- Notes" entry (file+headline "~/org/notes.org" "Notes") "** %?\n\t%a\n\t%T\n")
-          ("b" "Book\t\t- Books wish list" table-line (file+headline "~/org/books.org" "wish list") "|名前|価格|URL|電子版|追加日|\n|%?||||%U|" :table-line-pos "II-1")
-          ;; ("r" "Reading\t- Web surfing" entry (file+olp+datetree "~/org/reading.org") "* %?\n  %c\n  %T")
-          ("j" "Journal\t- Short logs like Twitter" entry (file+olp+datetree "~/org/journal.org") "* %?\n  %c\n  Entered on %U")
+        '(("m" "Memo\t\t- Miscs"
+           entry (file+headline "~/org/memo.org" "Memo")
+          "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t")
+
+          ("n" "Note\t\t- Notes"
+           entry (file+headline "~/org/notes.org" "Notes")
+           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
+
+          ("b" "Book\t\t- Books wish list"
+           table-line (file+headline "~/org/books.org" "wish list")
+           "|名前|価格|URL|電子版|追加日|\n|%?||||%U|" :table-line-pos "II-1")
+
+          ("j" "Journal\t- Short logs like Twitter"
+           entry (file+olp+datetree "~/org/journal.org")
+           "* %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
+
           ;; https://ox-hugo.scripter.co/doc/org-capture-setup
           ("B" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
            (function org-hugo-new-subtree-post-capture-template))
