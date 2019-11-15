@@ -1940,6 +1940,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
           ) . hide-mode-line-mode)
   )
 
+(use-package beacon :ensure t
+  :hook (after-init . beacon-mode))
+
 (use-package whitespace
   :diminish whitespace-mode
   :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
