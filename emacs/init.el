@@ -1928,6 +1928,18 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package smart-mode-line :ensure t)
 
+(use-package hide-mode-line :ensure t
+  :hook ((
+          dired-mode
+          image-mode
+          inferior-python-mode
+          org-agenda-mode
+          org-capture-mode
+          org-export-stack-mode
+          quickrun--mode
+          ) . hide-mode-line-mode)
+  )
+
 (use-package whitespace
   :diminish whitespace-mode
   :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
