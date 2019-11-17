@@ -534,6 +534,8 @@
   (set-face-attribute 'git-gutter+-modified  nil :italic nil)
   )
 
+(use-package gist :ensure)
+
 (use-package recentf
   :commands recentf-mode
   :custom
@@ -1938,13 +1940,14 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package hide-mode-line :ensure t
   :hook ((
           dired-mode
+          gist-list-mode
           image-mode
           inferior-python-mode
+          magit-mode
           org-agenda-mode
           org-capture-mode
           org-export-stack-mode
           quickrun--mode
-          magit-mode
           ) . hide-mode-line-mode)
   )
 
