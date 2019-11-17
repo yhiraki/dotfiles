@@ -1065,6 +1065,12 @@ See `org-capture-templates' for more information."
   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
   )
 
+(use-package org-download :ensure t
+  :custom
+  (org-download-screenshot-method "screencapture -i %s")
+  (org-download-method 'attach)
+  )
+
 (use-package ox-publish
   :after org
   :config
@@ -1691,6 +1697,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "\\*") 'org-ctrl-c-star
     (kbd "\\.") 'org-time-stamp
     (kbd "\\d") 'org-deadline
+    (kbd "\\g") 'org-mac-grab-link
     (kbd "\\i") 'org-clock-in
     (kbd "\\p") 'org-priority
     (kbd "\\q") 'org-set-tags-command
