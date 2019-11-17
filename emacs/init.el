@@ -1937,6 +1937,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
           org-capture-mode
           org-export-stack-mode
           quickrun--mode
+          magit-mode
           ) . hide-mode-line-mode)
   )
 
