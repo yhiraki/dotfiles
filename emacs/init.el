@@ -2018,19 +2018,20 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
 
+  ;;; C-k で表示させるので無効化
   ;; YASnippet のスニペットを候補に表示するための設定
   ;; https://emacs.stackexchange.com/questions/10431/get-company-to-show-suggestions-for-yasnippet-names
-  (defvar company-mode/enable-yas t
-    "Enable yasnippet for all backends.")
-  (defun company-mode/backend-with-yas (backend)
-    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-  (defun set-yas-as-company-backend ()
-    (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-    )
-  (add-hook 'company-mode-hook 'set-yas-as-company-backend)
+  ;; (defvar company-mode/enable-yas t
+  ;;   "Enable yasnippet for all backends.")
+  ;; (defun company-mode/backend-with-yas (backend)
+  ;;   (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+  ;;       backend
+  ;;     (append (if (consp backend) backend (list backend))
+  ;;             '(:with company-yasnippet))))
+  ;; (defun set-yas-as-company-backend ()
+  ;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  ;;   )
+  ;; (add-hook 'company-mode-hook 'set-yas-as-company-backend)
 
   ;; company tab and go 経由だと確定時に展開してくれないので return をバインドする
   ;; yas-maybe-expand を :bind で設定する方法がわからん…
