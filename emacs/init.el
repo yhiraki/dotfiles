@@ -534,7 +534,8 @@
   (git-gutter+-added ((t (:italic nil))))
   )
 
-(use-package gist :ensure)
+(use-package gist :ensure
+  :hook (gist-list-mode . evil-normal-state))
 
 (use-package recentf
   :commands recentf-mode
@@ -1318,6 +1319,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (defhydra hydra-git (:exit t)
     ("f" counsel-git "find")
     ("g" counsel-git-grep "grep")
+    ("lb" gist-buffer "gist buffer")
+    ("ll" gist-list "gist list")
     ("p" ivy-ghq-open "ghq")
     ("s" magit-status "status")
     ("t" git-timemachine "timemachine")
@@ -1827,6 +1830,25 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "c") 'git-timemachine-show-commit
     (kbd "?") 'git-timemachine-help
     (kbd "q") 'git-timemachine-quit
+    )
+
+  (evil-define-key 'normal gist-list-menu-mode-map
+    (kbd "RET") 'gist-fetch-current
+    (kbd "*") 'gist-star
+    (kbd "+") 'gist-add-buffer
+    (kbd "-") 'gist-remove-file
+    (kbd "^") 'gist-unstar
+    (kbd "b") 'gist-browse-current-url
+    (kbd "e") 'gist-edit-current-description
+    (kbd "f") 'gist-fork
+    (kbd "r") 'gist-list-reload
+    (kbd "K") 'gist-kill-current
+    (kbd "y") 'gist-print-current-url
+    (kbd "<tab>") 'gist-fetch-current-noselect
+    (kbd "q") 'quit-window
+    ;; ("/p" gist-list-push-visibility-limit)
+    ;; ("/t" gist-list-push-tag-limit)
+    ;; ("/w" gist-list-pop-limit)
     )
 
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
