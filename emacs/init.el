@@ -1018,6 +1018,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package ob-ipython :ensure t :disabled
   :after ob)
 
+(use-package ob-js
+  :config
+  (setq org-babel-js-function-wrapper
+        "require('util').inspect(function(){\n%s\n}());")
+  )
+
 (use-package org-capture
   :commands org-capture
 
