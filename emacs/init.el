@@ -529,9 +529,9 @@
   (git-gutter+-deleted-sign "▔")
   (git-gutter+-modified-sign "┃")
   :custom-face
-  (git-gutter+-modified ((t (:foreground "magenta" :weight bold :italic nil))))
-  (git-gutter+-deleted ((t (:foreground "red" :weight bold :italic nil))))
-  (git-gutter+-added ((t (:foreground "green" :weight bold :italic nil))))
+  (git-gutter+-modified ((t (:italic nil))))
+  (git-gutter+-deleted ((t (:italic nil))))
+  (git-gutter+-added ((t (:italic nil))))
   )
 
 (use-package gist :ensure)
