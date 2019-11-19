@@ -44,7 +44,7 @@
 
 (use-package startup :no-require
   :custom
-  (confirm-kill-emacs 'y-or-n-p)
+  (confirm-kill-emacs nil)
   :config
   (setq inhibit-startup-message t)
   (fset 'yes-or-no-p 'y-or-n-p)
@@ -1020,21 +1020,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package org-capture
   :commands org-capture
-  :config
-  (defun org-hugo-new-subtree-post-capture-template ()
-    "Returns `org-capture' template string for new Hugo post.
-See `org-capture-templates' for more information."
-    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-           (fname (org-hugo-slug title)))
-      (mapconcat #'identity
-                 `(
-                   ,(concat "* TODO " title)
-                   ":PROPERTIES:"
-                   ,(concat ":EXPORT_FILE_NAME: " fname)
-                   ":END:"
-                   "\t%?")          ;Place the cursor here finally
-                 "\n")))
 
+  :config
   (setq org-capture-templates
         '(("m" "Memo\t\t- Miscs"
            entry (file+headline "~/org/memo.org" "Memo")
@@ -1052,9 +1039,9 @@ See `org-capture-templates' for more information."
            entry (file+olp+datetree "~/org/journal.org")
            "* %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
 
-          ;; https://ox-hugo.scripter.co/doc/org-capture-setup
-          ("B" "Blog\t\t- Hugo post" entry (file+olp "~/org/blog.org" "Blog Ideas")
-           (function org-hugo-new-subtree-post-capture-template))
+          ("B" "Blog\t\t- Hugo post"
+           plain (file+olp "~/org/blog.org" "Blog Ideas")
+           "hugo%?")
           )
         )
   )
