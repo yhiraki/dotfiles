@@ -528,10 +528,10 @@
   (git-gutter+-added-sign "┃")
   (git-gutter+-deleted-sign "▔")
   (git-gutter+-modified-sign "┃")
-  :config
-  (set-face-attribute 'git-gutter+-added  nil :italic nil)
-  (set-face-attribute 'git-gutter+-deleted  nil :italic nil)
-  (set-face-attribute 'git-gutter+-modified  nil :italic nil)
+  :custom-face
+  (git-gutter+-modified ((t (:foreground "magenta" :weight bold :italic nil))))
+  (git-gutter+-deleted ((t (:foreground "red" :weight bold :italic nil))))
+  (git-gutter+-added ((t (:foreground "green" :weight bold :italic nil))))
   )
 
 (use-package gist :ensure)
