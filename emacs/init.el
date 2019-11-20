@@ -1956,6 +1956,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :hook ((
           dired-mode
           gist-list-mode
+          git-commit-mode
           image-mode
           inferior-python-mode
           magit-mode
