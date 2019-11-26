@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: start-state
+# key: *
+# --
+[*] --> $0

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: export default class ClassName extends Vue {...}
+# key: component
+# --
+import { Vue, Component } from 'vue-property-decorator'
+
+@Component
+export default class ${1:ClassName} extends Vue {
+  $0
+}

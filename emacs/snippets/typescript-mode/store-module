@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: store module
+# key: storeModule
+# --
+import store from '@/store'
+import { Module, VuexModule, Mutation, Action, MutationAction, getModule } from 'vuex-module-decorators'
+
+@Module({ dynamic: true, store, namespaced: true, name: '${1:name}' })
+class ${1:$(capitalize yas-text)}Module extends VuexModule {}
+
+export const ${1:$(capitalize yas-text)}Store = getModule(${1:$(capitalize yas-text)}Module)
