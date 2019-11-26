@@ -1067,6 +1067,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (org-download-method 'attach)
   )
 
+(use-package org-mac-link
+  :bind
+  (:map org-mode-map
+        ("C-c g" . org-mac-grab-link)
+        ))
+
 (use-package ox-publish
   :after org
   :config
