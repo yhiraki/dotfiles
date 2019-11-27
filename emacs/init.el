@@ -1040,7 +1040,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
           ("b" "Book\t\t- Books wish list"
            table-line (file+headline "~/org/books.org" "wish list")
-           "|名前|価格|URL|電子版|追加日|\n|%?||||%U|" :table-line-pos "II-1")
+           "|名前|価格|電子版|追加日|\n|%?|||%U|" :table-line-pos "II-1")
 
           ("j" "Journal\t- Short logs like Twitter"
            entry (file+olp+datetree "~/org/journal.org")
