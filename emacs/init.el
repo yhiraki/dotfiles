@@ -1579,6 +1579,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
   (evil-want-fine-undo 'fine)
+  (evil-toggle-key "C-M-z")
 
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
