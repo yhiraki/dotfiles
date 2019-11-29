@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: skinparam
+# key: skinparam
+# --
+' hide circle
+
+hide empty description
+
+skinparam {
+  monochrome true
+  shadowing false
+
+  ' classAttributeIconSize 0
+
+  componentStyle uml2
+}
