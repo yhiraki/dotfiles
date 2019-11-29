@@ -1198,7 +1198,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :init
   (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
   (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
-  (setq plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
+  (setq plantuml-jar-args
+        (list
+         "-charset" "UTF-8"
+         ;; "-config" (expand-file-name "~/.config/plantuml/color.uml")
+         )) ; ob-plantumlで使う
 
   :custom
   (plantuml-default-exec-mode 'jar)
