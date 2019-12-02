@@ -787,6 +787,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :config
   (setq quickrun-timeout-seconds 30)
 
+  (quickrun-set-default "c" "c/gcc")
+
   (quickrun-add-command "rust/script"
     '((:command . "cargo")
       (:exec    . ("%c script %o %s")))
