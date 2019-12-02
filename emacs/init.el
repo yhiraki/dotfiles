@@ -42,6 +42,14 @@
         meadow-p   (featurep 'meadow))
   )
 
+(use-package user-defined-functions-macos :no-require
+  :if darwin-p
+  :config
+  (defun my-open-current-dir ()
+    (interactive)
+    (shell-command "open ."))
+  )
+
 (use-package startup :no-require
   :custom
   (confirm-kill-emacs nil)
@@ -1321,9 +1329,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     ("b" counsel-switch-buffer "buffer")
     ("d" dired-sidebar-toggle-sidebar "sidebar")
     ("f" counsel-find-file "find file")
-    ("j" open-junk-file "junk file")
-    ("r" counsel-recentf "rencetf")
     ("g" counsel-rg "grep")
+    ("j" open-junk-file "junk file")
+    ("o" my-open-current-dir "open dir")
+    ("r" counsel-recentf "rencetf")
     )
 
   (defhydra hydra-git (:exit t)
