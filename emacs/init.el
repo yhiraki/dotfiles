@@ -1578,7 +1578,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         )
 
   (:map evil-insert-state-map
-        ("C-k" . 'company-yasnippet))
+        ("C-k" . 'company-yasnippet)
+        ("C-u" . (lambda ()
+                   (interactive)
+                   (evil-delete (point-at-bol) (point))))
+        )
 
   (:map evil-visual-state-map
         ("C-a" . 'evil-numbers/inc-at-pt)
