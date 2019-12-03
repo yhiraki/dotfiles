@@ -2161,7 +2161,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package key-binding :no-require
-  :after (frame org)
   :config
   ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
   (global-set-key (kbd "C-h") 'delete-backward-char)
