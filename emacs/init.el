@@ -1699,7 +1699,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     )
 
   (evil-define-key 'normal org-mode-map
-    (kbd "C-h") '(lambda () (interactive) (org-up-element) (evil-close-fold))
     (kbd "C-j") 'org-next-visible-heading
     (kbd "C-k") 'org-previous-visible-heading
     (kbd "M-h") 'org-metaleft
@@ -1713,10 +1712,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "t") 'org-todo
     (kbd "<") 'org-metaleft
     (kbd ">") 'org-metaright
-    (kbd "\\!") 'org-time-stamp-inactive
-    (kbd "\\*") 'org-ctrl-c-star
-    (kbd "\\.") 'org-time-stamp
-    (kbd "\\d") 'org-deadline
     (kbd "\\g") 'org-mac-grab-link
     (kbd "\\i") 'org-clock-in
     (kbd "\\p") 'org-priority
@@ -1727,8 +1722,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (kbd "\\xp") 'org-set-property
     (kbd "gh") 'outline-up-heading
     (kbd "gp") 'outline-previous-heading
-    ;; (kbd "}") (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
-    ;; (kbd "{") (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
     (kbd "\\ \\") 'hydra-outline/body
     )
 
