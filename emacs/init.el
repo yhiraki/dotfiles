@@ -2186,8 +2186,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "C-c l") 'org-store-link)
-
-  (global-set-key "\C-z" 'universal-argument)
+  (global-set-key (kbd "C-z") 'universal-argument)
   )
 
 (use-package cus-edit
