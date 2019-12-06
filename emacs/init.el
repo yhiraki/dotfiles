@@ -1890,6 +1890,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
+  (evil-set-initial-state 'snippet-mode 'insert)
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
