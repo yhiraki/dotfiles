@@ -964,6 +964,24 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (org-refile-targets '((org-agenda-files :level . 1)))
   )
 
+(use-package japanese-holidays :ensure t
+  :hook
+  (calendar-today-visible . japanese-holiday-mark-weekend)
+  (calendar-today-invisible . japanese-holiday-mark-weekend)
+)
+
+(use-package holidays
+  :after japanese-holidays
+  :custom
+  (calendar-holidays
+        (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+  )
+
+(use-package calendar
+  :custom
+  (calendar-mark-holidays-flag t)
+  )
+
 (use-package ob
   :custom
   (org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
