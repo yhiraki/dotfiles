@@ -1993,6 +1993,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package hide-mode-line :ensure t
   :hook ((
           dired-mode
+          dired-sidebar-mode
           gist-list-mode
           git-commit-mode
           image-mode
