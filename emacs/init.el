@@ -1077,6 +1077,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
           ("B" "Blog\t\t- Hugo post"
            plain (file+olp "~/org/blog.org" "Blog Ideas")
            "hugo%?")
+
+          ("i" "Inbox\t\t- Add TODO to Inbox"
+           entry (file "~/org/inbox.org")
+           "* TODO %?")
           )
         )
   )
@@ -1100,6 +1104,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (:map org-mode-map
         ("C-c g" . org-mac-grab-link)
         ))
+
+(use-package org-trello :ensure t)
 
 (use-package ox-publish
   :after org
