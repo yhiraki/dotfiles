@@ -10,6 +10,7 @@ emacs/eshell/
 emacs/straight/
 emacs/transient/
 emacs/undohist/
+emacs/.trello
 vim/undo/
 zsh/.zcompdump
 
