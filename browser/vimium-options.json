@@ -3,7 +3,7 @@
   "exclusionRules": [
     {
       "pattern": "https?://mail.google.com/*",
-      "passKeys": "jkxu?gc/xnNrpgio"
+      "passKeys": "jkxu?gc/xnNrpgio`"
     },
     {
       "pattern": "https?://feedly.com/*",
@@ -25,7 +25,7 @@
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "unmap H\nunmap L\nunmap T\nunmap X\nunmap d\nunmap o\nunmap t\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-b> scrollFullPageUp\nmap <c-f> scrollFullPageDown\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap D closeOtherTabs\nmap T Vomnibar.activateTabSelection\nmap d removeTab\nmap u restoreTab\nmap <c-]> passNextKey\nmap m Marks.activateCreateMode swap\nmap ` Marks.activateGotoMode swap",
+  "keyMappings": "unmap H\nunmap L\nunmap T\nunmap X\nunmap d\nunmap o\nunmap O\nunmap b\nunmap B\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-b> scrollFullPageUp\nmap <c-f> scrollFullPageDown\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap D closeOtherTabs\nmap T Vomnibar.activateTabSelection\nmap d removeTab\nmap u restoreTab\nmap <c-]> passNextKey\nmap m Marks.activateCreateMode swap\nmap ` Marks.activateGotoMode swap",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
