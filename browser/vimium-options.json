@@ -20,12 +20,16 @@
     {
       "pattern": "https?://drive.google.com/*",
       "passKeys": "gphjkl/Z"
+    },
+    {
+      "pattern": "https?://keep.google.com/*",
+      "passKeys": "/?jkJKnpNPcle#fx"
     }
   ],
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "unmap H\nunmap L\nunmap T\nunmap X\nunmap d\nunmap o\nunmap O\nunmap b\nunmap B\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-b> scrollFullPageUp\nmap <c-f> scrollFullPageDown\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap D closeOtherTabs\nmap T Vomnibar.activateTabSelection\nmap d removeTab\nmap u restoreTab\nmap <c-]> passNextKey\nmap m Marks.activateCreateMode swap\nmap ` Marks.activateGotoMode swap",
+  "keyMappings": "unmap J\nunmap K\nunmap H\nunmap L\nunmap T\nunmap X\nunmap d\nunmap o\nunmap O\nunmap b\nunmap B\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab\nmap <c-]> passNextKey",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
@@ -36,7 +40,7 @@
   "scrollStepSize": 60,
   "smoothScroll": false,
   "grabBackFocus": true,
-  "searchEngines": "w: http://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\non: http://eow.alc.co.jp/search?q=%s alc\nen: https://translate.google.co.jp/?source=osdd#auto/en/%s google翻訳→英語\nja: https://translate.google.co.jp/?source=osdd#auto/ja/%s google翻訳→日本語\nira: https://www.google.co.jp/search?q=site:https://www.irasutoya.com%20%s&tbm=isch いらすとや",
+  "searchEngines": "",
   "searchUrl": "https://www.google.com/search?q=",
   "userDefinedLinkHintCss": "input#vomnibarInput.vimiumReset {\n\tcolor: #FFF !important;\n  background-color: #111 !important;\n}\n\ndiv > .vimiumHintMarker {\n/* linkhint boxes */\nbackground: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565756),\ncolor-stop(100%,#242524));\nborder: 1px solid #e4e5e4;\nopacity: 1.0;\ntext-shadow: none !important;\n}\n\ndiv > .vimiumHintMarker span {\n/* linkhint text */\ncolor: #f1f2f1;\nfont-weight: normal;\nfont-size: 12px;\nfont-family: Avenir;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\ncolor: #969696;\n}\n\n#vomnibar {\n   border-color: black;\n   background-color: black;\n}\n\n#vomnibar .vomnibarSearchArea {\n   background-color: #222;\n   border-bottom: #3f3f3f;\n}\n\n#vomnibar input {\n   border-color: #393939;\n}\n\n#vomnibar ul {\n    background-color: #222;\n}\n\n#vomnibar li {\n   border-bottom: #3f3f3f;\n}\n\n#vomnibar li .vomnibarUrl {\n   color: #5287e3;\n}\n\n#vomnibar li .vomnibarMatch {\n   color: white;\n}\n\n#vomnibar li.vomnibarSelected {\n    background-color: #393939;\n}\n\n#vomnibar li em .vomnibarMatch, #vomnibar li .vomnibarTitle .vomnibarMatch {\n   color: white;\n}\n\n#vomnibar li em, #vomnibar li .vomnibarTitle {\n   color: #ddd;\n}"
 }
