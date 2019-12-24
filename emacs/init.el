@@ -545,6 +545,8 @@
 (use-package gist :ensure
   :hook (gist-list-mode . evil-normal-state))
 
+(use-package browse-at-remote :ensure t)
+
 (use-package recentf
   :commands recentf-mode
   :custom
@@ -1382,6 +1384,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     ("p" ivy-ghq-open "ghq")
     ("s" magit-status "status")
     ("t" git-timemachine "timemachine")
+    ("o" browse-at-remote "browse at remote")
     )
 
   (defhydra hydra-help (:exit t)
