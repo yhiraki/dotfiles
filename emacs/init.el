@@ -963,7 +963,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
      "-"
      "────────────────"))
-  (org-refile-targets '((org-agenda-files :level . 1)))
+  (org-refile-targets '((org-agenda-files :max-level . 1)))
   )
 
 (use-package japanese-holidays :ensure t
