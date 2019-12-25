@@ -914,7 +914,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "STARTED(s@!)" "WAIT(w@/!)" "|" "DONE(d@!)" "CANCEL(c@/!)")))
+   '((sequence "TODO(t)" "WAIT(w)" "|" "SOMEDAY(s)" "DONE(d)" "CANCEL(c)")))
   (org-log-done 'time) ; DONEの時刻を記録
 
   :config
@@ -963,7 +963,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
      "-"
      "────────────────"))
-  (org-refile-targets '((org-agenda-files :max-level . 1)))
+  (org-refile-targets '((org-agenda-files :maxlevel . 2)))
   )
 
 (use-package japanese-holidays :ensure t
@@ -1060,11 +1060,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
   :config
   (setq org-capture-templates
-        '(("m" "Memo\t\t- Miscs"
-           entry (file+headline "~/org/memo.org" "Memo")
-          "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t")
+        '(
+          ("i" "Inbox\t\t- Add entry to Inbox"
+           entry (file+headline "~/org/inbox.org" "Inbox")
+           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t\n\t")
 
-          ("n" "Note\t\t- Notes"
+          ("n" "Note\t\t- Taking note to source code"
            entry (file+headline "~/org/notes.org" "Notes")
            "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
 
@@ -1079,10 +1080,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
           ("B" "Blog\t\t- Hugo post"
            plain (file+olp "~/org/blog.org" "Blog Ideas")
            "hugo%?")
-
-          ("i" "Inbox\t\t- Add TODO to Inbox"
-           entry (file "~/org/inbox.trello")
-           "* TODO %?")
           )
         )
   )
