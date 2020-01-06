@@ -1425,6 +1425,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
   (defhydra hydra-global-leader (:exit t)
     ("G" hydra-google/body "google")
+    ("a" org-agenda "org-agenda")
     ("c" org-capture "org-cature")
     ("el" flycheck-list-errors "error")
     ("f" hydra-file-open/body "find file")
