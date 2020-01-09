@@ -386,9 +386,10 @@ Version 2019-11-04"
   )
 
 (use-package dired
+  :hook (dired-mode . dired-hide-details-mode)
   :config
   (add-hook 'dired-mode-hook
-            '(lambda() (setq line-spacing 3)))
+            '(lambda() (setq line-spacing 3)) t t)
   :bind
   (:map dired-mode-map
         ("G" . nil) ; 何故かハングアップするので無効化
