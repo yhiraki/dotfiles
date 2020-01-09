@@ -29,7 +29,7 @@
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "unmap J\nunmap K\nunmap H\nunmap L\nunmap T\nunmap X\nunmap d\nunmap o\nunmap O\nunmap b\nunmap B\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab\nmap <c-]> passNextKey",
+  "keyMappings": "unmap /\nunmap B\nunmap H\nunmap J\nunmap K\nunmap L\nunmap O\nunmap T\nunmap X\nunmap b\nunmap d\nunmap o\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-]> passNextKey\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
