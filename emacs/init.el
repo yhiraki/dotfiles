@@ -389,6 +389,10 @@ Version 2019-11-04"
   :config
   (add-hook 'dired-mode-hook
             '(lambda() (setq line-spacing 3)))
+  :bind
+  (:map dired-mode-map
+        ("G" . nil) ; 何故かハングアップするので無効化
+        )
   )
 
 (use-package dired-sidebar :ensure t
@@ -1697,16 +1701,17 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   ;;   )
 
   (evil-define-key 'normal dired-mode-map
-    (kbd "SPC") 'hydra-global-leader/body
     (kbd "C-j") 'dired-next-dirline
     (kbd "C-k") 'dired-prev-dirline
+    (kbd "G") 'evil-goto-line
+    (kbd "SPC") 'hydra-global-leader/body
+    (kbd "gg") 'evil-goto-first-line
+    (kbd "go") 'my-open-in-external-app
     )
 
   (evil-define-key 'normal dired-sidebar-mode-map
     (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
     (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
-    (kbd "gg") 'evil-goto-first-line
-    (kbd "G") 'evil-goto-line
     )
 
   (evil-define-key 'normal image-mode-map
