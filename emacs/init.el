@@ -386,10 +386,20 @@ Version 2019-11-04"
   )
 
 (use-package dired
-  :hook (dired-mode . dired-hide-details-mode)
+  :after evil
+  :hook
+  (dired-mode . dired-hide-details-mode)
   :config
   (add-hook 'dired-mode-hook
             '(lambda() (setq line-spacing 3)) t t)
+  (evil-define-key 'normal dired-mode-map
+    (kbd "C-j") 'dired-next-dirline
+    (kbd "C-k") 'dired-prev-dirline
+    (kbd "G") 'evil-goto-line
+    (kbd "SPC") 'hydra-global-leader/body
+    (kbd "gg") 'evil-goto-first-line
+    (kbd "go") 'my-open-in-external-app
+    )
   :bind
   (:map dired-mode-map
         ("G" . nil) ; 何故かハングアップするので無効化
@@ -397,9 +407,15 @@ Version 2019-11-04"
   )
 
 (use-package dired-sidebar :ensure t
+  :after evil
   :commands (dired-sidebar-toggle-sidebar)
   :custom
   (dired-sidebar-theme 'icons)
+  :config
+  (evil-define-key 'normal dired-sidebar-mode-map
+    (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
+    (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
+    )
   )
 
 (use-package all-the-icons-dired :ensure t
@@ -432,6 +448,7 @@ Version 2019-11-04"
   )
 
 (use-package flycheck :ensure t
+  :after evil
   :hook ((
   ;;         c++-mode
           plantuml-mode
@@ -469,6 +486,17 @@ Version 2019-11-04"
   ;;   :modes python-mode)
 
   ;; (push 'python-pycodestyle flycheck-checkers)
+
+  (evil-define-key 'normal flycheck-error-list-mode-map
+    (kbd "F") 'flycheck-error-list-reset-filter
+    (kbd "RET") 'flycheck-error-list-goto-error
+    (kbd "f") 'flycheck-error-list-set-filter
+    (kbd "j") 'flycheck-error-list-next-error
+    (kbd "k") 'flycheck-error-list-previous-error
+    (kbd "n") 'flycheck-error-list-next-error
+    (kbd "p") 'flycheck-error-list-previous-error
+    (kbd "q") 'quit-window
+    )
   )
 
 (use-package flyspell
@@ -566,7 +594,24 @@ Version 2019-11-04"
   )
 
 (use-package git-timemachine :ensure t
-  :hook (git-timemachine-mode . evil-insert-state))
+  :after evil
+  :config
+  (evil-define-key 'normal git-timemachine-mode-map
+    ;; Navigate
+    (kbd "p") 'git-timemachine-show-previous-revision
+    (kbd "n") 'git-timemachine-show-next-revision
+    (kbd "g") 'git-timemachine-show-nth-revision
+    (kbd "t") 'git-timemachine-show-revision-fuzzy
+    ;; Kill current revision
+    (kbd "w") 'git-timemachine-kill-abbreviated-revision
+    (kbd "W") 'git-timemachine-kill-revision
+    ;; Misc
+    (kbd "b") 'git-timemachine-blame
+    (kbd "c") 'git-timemachine-show-commit
+    (kbd "?") 'git-timemachine-help
+    (kbd "q") 'git-timemachine-quit
+    )
+  )
 
 (use-package git-gutter+ :ensure t
   :diminish
@@ -586,7 +631,27 @@ Version 2019-11-04"
   )
 
 (use-package gist :ensure
-  :hook (gist-list-mode . evil-normal-state))
+  :after evil
+  :config
+  (evil-define-key 'normal gist-list-menu-mode-map
+    (kbd "RET") 'gist-fetch-current
+    (kbd "*") 'gist-star
+    (kbd "+") 'gist-add-buffer
+    (kbd "-") 'gist-remove-file
+    (kbd "^") 'gist-unstar
+    (kbd "b") 'gist-browse-current-url
+    (kbd "e") 'gist-edit-current-description
+    (kbd "f") 'gist-fork
+    (kbd "r") 'gist-list-reload
+    (kbd "K") 'gist-kill-current
+    (kbd "y") 'gist-print-current-url
+    (kbd "<tab>") 'gist-fetch-current-noselect
+    (kbd "q") 'quit-window
+    ;; ("/p" gist-list-push-visibility-limit)
+    ;; ("/t" gist-list-push-tag-limit)
+    ;; ("/w" gist-list-pop-limit)
+    )
+  )
 
 (use-package browse-at-remote :ensure t)
 
@@ -828,10 +893,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package quickrun :ensure t
+  :after evil
   :commands quickrun
-  :config
-  (setq quickrun-timeout-seconds 30)
 
+  :custom
+  (quickrun-timeout-seconds 30)
+
+  :config
   (quickrun-set-default "c" "c/gcc")
 
   (quickrun-add-command "rust/script"
@@ -853,6 +921,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
     :override t)
+
+  (evil-define-key 'normal quickrun--mode-map
+    (kbd "q") 'evil-window-delete
+    )
   )
 
 (use-package csharp-mode :ensure t
@@ -883,9 +955,17 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   :commands clang-format-buffer)
 
 (use-package go-mode :ensure t
+  :after evil
   :mode ("\\.go\\'" . go-mode)
   :custom
   (gofmt-command "goimports")
+  :config
+  (evil-define-key 'normal go-mode-map
+    (kbd "\\f") 'gofmt
+    )
+  (evil-define-key 'visual go-mode-map
+    (kbd "\\f") 'gofmt
+    )
 )
 
 (use-package go-eldoc :ensure t
@@ -926,9 +1006,16 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     (revert-buffer t t t))
   )
 
-(use-package json-mode :ensure t)
+(use-package json-mode :ensure t
+  :after evil
+  :config
+  (evil-define-key 'normal json-mode-map
+    (kbd "\\f") 'json-pretty-print-buffer
+    )
+  )
 
 (use-package markdown-mode :ensure t
+  :after evil
   :custom
   (markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
   (markdown-gfm-use-electric-backquote nil)
@@ -936,6 +1023,44 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
   ("README\\.md\\'" . gfm-mode)
+  :config
+  (evil-define-key 'normal markdown-mode-map
+    (kbd "zc") 'markdown-hide-subtree
+    (kbd "zo") 'markdown-show-subtree
+    (kbd "TAB") 'markdown-cycle
+    )
+  )
+
+(use-package prog-mode
+  :after evil
+  :config
+  (evil-define-key 'normal prog-mode-map
+    (kbd "[e") 'flycheck-previous-error
+    (kbd "]e") 'flycheck-next-error
+    (kbd "\\f") 'lsp-format-buffer
+    (kbd "\\m") 'lsp-ui-imenu
+    (kbd "\\qa") 'quickrun-autorun-mode
+    (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
+    (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
+    (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
+    (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
+    (kbd "gd") 'xref-find-definitions
+    (kbd "gr") 'xref-find-references
+    ;; (kbd "K") 'eglot-help-at-point
+    )
+  (evil-define-key 'visual prog-mode-map
+    (kbd "\\f") 'lsp-format-region
+    (kbd "\\r") 'quickrun-region
+    (kbd "\\qr") 'quickrun-region
+    )
+  )
+
+(use-package view
+  :after evil
+  :config
+  (evil-define-key 'normal view-mode-map
+    (kbd "q") 'View-quit
+    )
   )
 
 (use-package edit-indirect :ensure t
@@ -943,6 +1068,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package org :ensure org-plus-contrib
+  :after evil
   :init
   (add-hook 'org-mode-hook
             '(lambda()
@@ -978,6 +1104,48 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ;; =C-M-j= to fix tags
   (global-set-key [remap org-set-tags-command] #'counsel-org-tag)
 
+  (evil-define-key 'normal org-mode-map
+    (kbd "C-j") 'org-next-visible-heading
+    (kbd "C-k") 'org-previous-visible-heading
+    (kbd "M-h") 'org-metaleft
+    (kbd "M-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-l") 'org-metaright
+    (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+    (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+    (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
+    (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
+    (kbd "t") 'org-todo
+    (kbd "<") 'org-metaleft
+    (kbd ">") 'org-metaright
+    (kbd "\\g") 'org-mac-grab-link
+    (kbd "\\i") 'org-clock-in
+    (kbd "\\p") 'org-priority
+    (kbd "\\q") 'org-set-tags-command
+    (kbd "\\s") 'org-schedule
+    (kbd "\\t") 'org-todo
+    (kbd "\\v") 'org-toggle-inline-images
+    (kbd "\\xp") 'org-set-property
+    (kbd "gh") 'outline-up-heading
+    (kbd "gp") 'outline-previous-heading
+    (kbd "\\ \\") 'hydra-outline/body
+    )
+
+  (evil-define-key 'insert org-mode-map
+    (kbd "M-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-h") 'org-metaleft
+    (kbd "M-l") 'org-metaright
+    (kbd "RET") 'org-return-indent
+    )
+
+  (evil-define-key 'visual org-mode-map
+    (kbd "M-j") 'org-metadown
+    (kbd "M-k") 'org-metaup
+    (kbd "M-h") 'org-metaleft
+    (kbd "M-l") 'org-metaright
+    )
+
   :mode (("\\.org\\'" . org-mode))
   )
 
@@ -990,7 +1158,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package org-agenda
-  :after org
+  :after (evil org)
   :commands (org-agenda org-refile)
   :init
   (add-hook 'org-agenda-mode-hook
@@ -1007,6 +1175,67 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      "-"
      "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
+  :config
+  (evil-define-key 'normal org-agenda-mode-map
+    (kbd "+") 'org-agenda-priority-up
+    (kbd "-") 'org-agenda-priority-down
+    (kbd ".") 'org-agenda-goto-today
+    (kbd "0") 'evil-digit-argument-or-evil-beginning-of-line
+    (kbd ":") 'org-agenda-set-tags
+    (kbd ";") 'org-timer-set-timer
+    (kbd "<") 'org-agenda-filter-by-category
+    (kbd "<RET>") 'org-agenda-switch-to
+    (kbd ">") 'org-agenda-date-prompt
+    (kbd "A") 'org-agenda-toggle-archive-tag
+    (kbd "D") 'org-agenda-deadline
+    (kbd "F") 'org-agenda-follow-mode
+    (kbd "H") 'org-agenda-holidays
+    (kbd "J") 'org-agenda-next-date-line
+    (kbd "K") 'org-agenda-previous-date-line
+    (kbd "L") 'org-agenda-recenter
+    (kbd "O") 'org-agenda-clock-out
+    (kbd "P") 'org-agenda-show-priority
+    (kbd "R") 'org-agenda-clockreport-mode
+    ;; (kbd "S") 'org-save-all-org-buffers
+    (kbd "T") 'org-agenda-show-tags
+    (kbd "X") 'org-agenda-clock-cancel
+    (kbd "Z") 'org-agenda-sunrise-sunset
+    (kbd "[") 'org-agenda-manipulate-query-add
+    (kbd "\\t") 'org-agenda-goto
+    (kbd "]") 'org-agenda-manipulate-query-subtract
+    ;; (kbd "b") 'org-agenda-earlier
+    ;; (kbd "e") 'org-agenda-set-effort
+    ;; (kbd "f") 'org-agenda-later
+    (kbd "g/") 'org-agenda-filter-by-tag
+    (kbd "gJ") 'org-agenda-clock-goto
+    (kbd "g\\") 'org-agenda-filter-by-tag-refine
+    (kbd "gh") 'org-agenda-holiday
+    (kbd "gj") 'org-agenda-goto-date
+    (kbd "gm") 'org-agenda-bulk-mark
+    (kbd "go") 'org-agenda-open-link
+    (kbd "gv") 'org-agenda-view-mode-dispatch
+    (kbd "I") 'org-agenda-clock-in
+    (kbd "j") 'org-agenda-next-line
+    (kbd "k") 'org-agenda-previous-line
+    (kbd "N") 'org-agenda-add-note
+    (kbd "o") 'delete-other-windows
+    (kbd "p") 'org-agenda-priority
+    (kbd "q") 'org-agenda-quit
+    (kbd "r") 'org-agenda-redo
+    (kbd "s") 'org-agenda-schedule
+    (kbd "t") 'org-agenda-todo
+    (kbd "u") 'org-agenda-bulk-unmark
+    (kbd "va") 'org-agenda-archives-mode
+    (kbd "vc") 'org-agenda-show-clocking-issues
+    (kbd "vd") 'org-agenda-day-view
+    (kbd "vl") 'org-agenda-log-mode
+    (kbd "vt") 'org-agenda-toggle-time-grid
+    (kbd "vw") 'org-agenda-week-view
+    ;; (kbd "x") 'org-agenda-exit
+    (kbd "y") 'org-agenda-todo-yesterday
+    ;; (kbd "{") 'org-agenda-manipulate-query-add-re
+    ;; (kbd "}") 'org-agenda-manipulate-query-subtract-re
+    )
   )
 
 (use-package japanese-holidays :ensure t
@@ -1194,16 +1423,32 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package cc-mode
+  :after evil
+  :mode (("\\.cpp\\'" . c++-mode))
   :config
   (setq-default sp-escape-quotes-after-insert nil)
-  :mode (("\\.cpp\\'" . c++-mode))
+  (evil-define-key 'normal c++-mode-map
+    (kbd "\\f") 'clang-format-buffer
+    )
+  (evil-define-key 'visual c++-mode-map
+    (kbd "\\f") 'clang-format-region
+    )
   )
 
 (use-package python :ensure t
+  :after evil
   :mode (("\\.py\\'" . python-mode))
   :custom
   (python-shell-interpreter "python3")
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
+  :config
+  (evil-define-key 'normal python-mode-map
+    (kbd "\\i") 'py-isort-buffer
+    ;; (kbd "\\f") 'py-yapf-buffer
+    )
+  (evil-define-key 'visual python-mode-map
+    (kbd "\\i") 'py-isort-region
+    )
   )
 
 (use-package py-yapf :ensure t
@@ -1332,6 +1577,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package web-mode :ensure t
+  :after evil
   :custom
   (web-mode-attr-indent-offset nil)
   (web-mode-code-indent-offset 2)
@@ -1342,6 +1588,12 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (web-mode-sql-indent-offset 2)
   (web-mode-style-padding 0)
   (web-mode-script-padding 0)
+  :config
+  (evil-define-key 'normal web-mode-map
+    (kbd "\\R") 'web-mode-element-rename
+    (kbd "zc") 'web-mode-fold-or-unfold
+    (kbd "zo") 'web-mode-fold-or-unfold
+    )
   :mode
   ("\\.[agj]sp\\'" . web-mode)
   ("\\.as[cp]x\\'" . web-mode)
@@ -1354,6 +1606,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package vue-mode :ensure t
+  :after evil
   :mode
   ("\\.vue\\'" . vue-mode)
   :hook
@@ -1362,6 +1615,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
        (setq syntax-ppss-table nil)
        (add-hook 'after-save-hook 'mmm-parse-buffer nil t)
        ))
+  :config
+  (evil-define-key 'normal vue-mode-map
+    (kbd "\\f") 'eslint-fix
+    )
   )
 
 (use-package mmm-mode
@@ -1380,6 +1637,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 (use-package vimrc-mode :ensure t
   :mode
   ("\\.vim\\(rc\\)?\\'" . vimrc-mode)
+  )
+
+(use-package image-mode
+  :after evil
+  :config
+  (evil-define-key 'normal image-mode-map
+    (kbd "q") 'evil-quit
+    )
   )
 
 (use-package emmet-mode :ensure t
@@ -1639,8 +1904,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil :ensure t
   :after hydra
-  :hook ((after-init . evil-mode)
-         (org-capture-mode . evil-insert-state))
+  :hook (after-init . evil-mode)
 
   :bind
   (:map evil-normal-state-map
@@ -1653,7 +1917,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("S-C-j" . 'evil-forward-section-begin)
         ("S-C-k" . 'evil-backward-section-begin)
         ("Y" . "y$")
-        ("SPC" . 'hydra-global-leader/body)
+        ("<SPC>" . 'hydra-global-leader/body)
         ;; ("C-w" .'hydra-operate-window/body)
         ;; ("C-b" . 'hydra-elscreen/body)
         )
@@ -1685,276 +1949,12 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
 
-  ;; (evil-define-key 'normal direx:direx-mode-map
-  ;;   (kbd "C-j") 'direx:next-sibling-item
-  ;;   (kbd "C-k") 'direx:previous-sibling-item
-  ;;   (kbd "D") 'direx:do-delete-files
-  ;;   (kbd "P") 'direx-project:jump-to-project-root
-  ;;   (kbd "R") 'direx:do-rename-file
-  ;;   (kbd "RET") 'direx:find-item
-  ;;   (kbd "SPC") 'direx:toggle-item
-  ;;   (kbd "c") 'direx:do-copy-files
-  ;;   (kbd "j") 'direx:next-item
-  ;;   (kbd "k") 'direx:previous-item
-  ;;   (kbd "o") 'direx:maybe-find-item
-  ;;   (kbd "q") 'evil-window-delete
-  ;;   (kbd "r") 'direx:refresh-whole-tree
-  ;;   )
-
-  (evil-define-key 'normal dired-mode-map
-    (kbd "C-j") 'dired-next-dirline
-    (kbd "C-k") 'dired-prev-dirline
-    (kbd "G") 'evil-goto-line
-    (kbd "SPC") 'hydra-global-leader/body
-    (kbd "gg") 'evil-goto-first-line
-    (kbd "go") 'my-open-in-external-app
-    )
-
-  (evil-define-key 'normal dired-sidebar-mode-map
-    (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
-    (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
-    )
-
-  (evil-define-key 'normal image-mode-map
-    (kbd "q") 'evil-quit
-    )
-
-  (evil-define-key 'normal prog-mode-map
-    ;; (kbd "K") 'eglot-help-at-point
-    (kbd "\\f") 'lsp-format-buffer
-    (kbd "\\m") 'lsp-ui-imenu
-    (kbd "\\qa") 'quickrun-autorun-mode
-    (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
-    (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
-    (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
-    (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
-    (kbd "gd") 'xref-find-definitions
-    (kbd "gr") 'xref-find-references
-    )
-
-  (evil-define-key 'visual prog-mode-map
-    (kbd "\\f") 'lsp-format-region
-    (kbd "\\r") 'quickrun-region
-    (kbd "\\qr") 'quickrun-region
-    )
-
-  (evil-define-key 'normal go-mode-map
-    (kbd "\\f") 'gofmt
-    )
-
-  (evil-define-key 'visual go-mode-map
-    (kbd "\\f") 'gofmt
-    )
-
-  (evil-define-key 'normal c++-mode-map
-    (kbd "\\f") 'clang-format-buffer
-    )
-
-  (evil-define-key 'visual c++-mode-map
-    (kbd "\\f") 'clang-format-region
-    )
-
-  (evil-define-key 'normal quickrun--mode-map
-    (kbd "q") 'evil-window-delete
-    )
-
-  (evil-define-key 'normal flycheck-error-list-mode-map
-    (kbd "F") 'flycheck-error-list-reset-filter
-    (kbd "RET") 'flycheck-error-list-goto-error
-    (kbd "f") 'flycheck-error-list-set-filter
-    (kbd "j") 'flycheck-error-list-next-error
-    (kbd "k") 'flycheck-error-list-previous-error
-    (kbd "n") 'flycheck-error-list-next-error
-    (kbd "p") 'flycheck-error-list-previous-error
-    (kbd "q") 'quit-window
-    )
-
-  (evil-define-key 'normal python-mode-map
-    (kbd "\\i") 'py-isort-buffer
-    ;; (kbd "\\f") 'py-yapf-buffer
-    )
-
-  ;; (evil-define-key 'visual python-mode-map
-  ;;   (kbd "\\i") 'py-isort-region
-  ;;   )
-
-  (evil-define-key 'normal markdown-mode-map
-    (kbd "zc") 'markdown-hide-subtree
-    (kbd "zo") 'markdown-show-subtree
-    (kbd "TAB") 'markdown-cycle
-    )
-
-  (evil-define-key 'normal org-mode-map
-    (kbd "C-j") 'org-next-visible-heading
-    (kbd "C-k") 'org-previous-visible-heading
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-j") 'org-metadown
-    (kbd "M-k") 'org-metaup
-    (kbd "M-l") 'org-metaright
-    (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-    (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-    (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
-    (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
-    (kbd "t") 'org-todo
-    (kbd "<") 'org-metaleft
-    (kbd ">") 'org-metaright
-    (kbd "\\g") 'org-mac-grab-link
-    (kbd "\\i") 'org-clock-in
-    (kbd "\\p") 'org-priority
-    (kbd "\\q") 'org-set-tags-command
-    (kbd "\\s") 'org-schedule
-    (kbd "\\t") 'org-todo
-    (kbd "\\v") 'org-toggle-inline-images
-    (kbd "\\xp") 'org-set-property
-    (kbd "gh") 'outline-up-heading
-    (kbd "gp") 'outline-previous-heading
-    (kbd "\\ \\") 'hydra-outline/body
-    )
-
-  (evil-define-key 'insert org-mode-map
-    (kbd "M-j") 'org-metadown
-    (kbd "M-k") 'org-metaup
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-l") 'org-metaright
-    (kbd "RET") 'org-return-indent
-    )
-
-  (evil-define-key 'visual org-mode-map
-    (kbd "M-j") 'org-metadown
-    (kbd "M-k") 'org-metaup
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-l") 'org-metaright
-    )
-
-  (evil-define-key 'normal org-src-mode-map
-    (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
-    )
-
-  (evil-define-key 'visual org-src-mode-map
-    (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
-    )
-
-  (evil-define-key 'insert org-src-mode-map
-    (kbd "C-c '") '(lambda () (interactive) (org-edit-src-exit) (evil-normal-state))
-    )
-
-  (evil-define-key 'normal json-mode-map
-    (kbd "\\f") 'json-pretty-print-buffer
-    )
-
-  (evil-define-key 'normal web-mode-map
-    (kbd "\\R") 'web-mode-element-rename
-    (kbd "zc") 'web-mode-fold-or-unfold
-    (kbd "zo") 'web-mode-fold-or-unfold
-    )
-
-  (evil-define-key 'normal vue-mode-map
-    (kbd "\\f") 'eslint-fix
-    )
-
-  (evil-define-key 'normal org-agenda-mode-map
-    (kbd "+") 'org-agenda-priority-up
-    (kbd "-") 'org-agenda-priority-down
-    (kbd ".") 'org-agenda-goto-today
-    (kbd "0") 'evil-digit-argument-or-evil-beginning-of-line
-    (kbd ":") 'org-agenda-set-tags
-    (kbd ";") 'org-timer-set-timer
-    (kbd "<") 'org-agenda-filter-by-category
-    (kbd "<RET>") 'org-agenda-switch-to
-    (kbd ">") 'org-agenda-date-prompt
-    (kbd "A") 'org-agenda-toggle-archive-tag
-    (kbd "D") 'org-agenda-deadline
-    (kbd "F") 'org-agenda-follow-mode
-    (kbd "H") 'org-agenda-holidays
-    (kbd "J") 'org-agenda-next-date-line
-    (kbd "K") 'org-agenda-previous-date-line
-    (kbd "L") 'org-agenda-recenter
-    (kbd "O") 'org-agenda-clock-out
-    (kbd "P") 'org-agenda-show-priority
-    (kbd "R") 'org-agenda-clockreport-mode
-    ;; (kbd "S") 'org-save-all-org-buffers
-    (kbd "T") 'org-agenda-show-tags
-    (kbd "X") 'org-agenda-clock-cancel
-    (kbd "Z") 'org-agenda-sunrise-sunset
-    (kbd "[") 'org-agenda-manipulate-query-add
-    (kbd "\\t") 'org-agenda-goto
-    (kbd "]") 'org-agenda-manipulate-query-subtract
-    ;; (kbd "b") 'org-agenda-earlier
-    ;; (kbd "e") 'org-agenda-set-effort
-    ;; (kbd "f") 'org-agenda-later
-    (kbd "g/") 'org-agenda-filter-by-tag
-    (kbd "gJ") 'org-agenda-clock-goto
-    (kbd "g\\") 'org-agenda-filter-by-tag-refine
-    (kbd "gh") 'org-agenda-holiday
-    (kbd "gj") 'org-agenda-goto-date
-    (kbd "gm") 'org-agenda-bulk-mark
-    (kbd "go") 'org-agenda-open-link
-    (kbd "gv") 'org-agenda-view-mode-dispatch
-    (kbd "I") 'org-agenda-clock-in
-    (kbd "j") 'org-agenda-next-line
-    (kbd "k") 'org-agenda-previous-line
-    (kbd "N") 'org-agenda-add-note
-    (kbd "o") 'delete-other-windows
-    (kbd "p") 'org-agenda-priority
-    (kbd "q") 'org-agenda-quit
-    (kbd "r") 'org-agenda-redo
-    (kbd "s") 'org-agenda-schedule
-    (kbd "t") 'org-agenda-todo
-    (kbd "u") 'org-agenda-bulk-unmark
-    (kbd "va") 'org-agenda-archives-mode
-    (kbd "vc") 'org-agenda-show-clocking-issues
-    (kbd "vd") 'org-agenda-day-view
-    (kbd "vl") 'org-agenda-log-mode
-    (kbd "vt") 'org-agenda-toggle-time-grid
-    (kbd "vw") 'org-agenda-week-view
-    ;; (kbd "x") 'org-agenda-exit
-    (kbd "y") 'org-agenda-todo-yesterday
-    ;; (kbd "{") 'org-agenda-manipulate-query-add-re
-    ;; (kbd "}") 'org-agenda-manipulate-query-subtract-re
-    )
-
-  (evil-define-key 'normal prog-mode-map
-    (kbd "[e") 'flycheck-previous-error
-    (kbd "]e") 'flycheck-next-error)
-
-  (evil-define-key 'normal git-timemachine-mode-map
-    ;; Navigate
-    (kbd "p") 'git-timemachine-show-previous-revision
-    (kbd "n") 'git-timemachine-show-next-revision
-    (kbd "g") 'git-timemachine-show-nth-revision
-    (kbd "t") 'git-timemachine-show-revision-fuzzy
-    ;; Kill current revision
-    (kbd "w") 'git-timemachine-kill-abbreviated-revision
-    (kbd "W") 'git-timemachine-kill-revision
-    ;; Misc
-    (kbd "b") 'git-timemachine-blame
-    (kbd "c") 'git-timemachine-show-commit
-    (kbd "?") 'git-timemachine-help
-    (kbd "q") 'git-timemachine-quit
-    )
-
-  (evil-define-key 'normal gist-list-menu-mode-map
-    (kbd "RET") 'gist-fetch-current
-    (kbd "*") 'gist-star
-    (kbd "+") 'gist-add-buffer
-    (kbd "-") 'gist-remove-file
-    (kbd "^") 'gist-unstar
-    (kbd "b") 'gist-browse-current-url
-    (kbd "e") 'gist-edit-current-description
-    (kbd "f") 'gist-fork
-    (kbd "r") 'gist-list-reload
-    (kbd "K") 'gist-kill-current
-    (kbd "y") 'gist-print-current-url
-    (kbd "<tab>") 'gist-fetch-current-noselect
-    (kbd "q") 'quit-window
-    ;; ("/p" gist-list-push-visibility-limit)
-    ;; ("/t" gist-list-push-tag-limit)
-    ;; ("/w" gist-list-pop-limit)
-    )
-
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
   (evil-set-initial-state 'org-agenda-mode 'normal)
   (evil-set-initial-state 'snippet-mode 'insert)
+  (evil-set-initial-state 'org-capture-mode 'insert)
+  (evil-set-initial-state 'gist-list-mode 'insert)
+  (evil-set-initial-state 'git-timemachine-mode 'insert)
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
