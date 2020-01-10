@@ -2034,7 +2034,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
   (push '("*xref*" :position bottom ) popwin:special-display-config)
   (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
-  (push '(image-mode) popwin:special-display-config)
+  ;; (push '(image-mode) popwin:special-display-config)
   )
 
 (use-package all-the-icons :ensure t)
