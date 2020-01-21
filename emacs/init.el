@@ -140,6 +140,10 @@ Version 2019-11-04"
   ;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
   )
 
+(use-package tempbuf
+  :hook ((dired-mode magit-mode) . turn-on-tempbuf-mode)
+  )
+
 (use-package vc-hooks
   :custom
   (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
