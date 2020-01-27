@@ -2075,7 +2075,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package beacon :ensure t
-  :hook (after-init . beacon-mode))
+  :hook (after-init . beacon-mode)
+  :diminish
+  )
 
 (use-package whitespace
   :diminish whitespace-mode
