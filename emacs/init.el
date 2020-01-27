@@ -2235,17 +2235,30 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package autoinsert
-  :custom
-  (auto-insert-query nil)
-  :config
-  (auto-insert-mode 1)
-  )
+  :hook (find-file . auto-insert)
 
-(use-package yatemplate :ensure t
-  :after (autoinsert yasnippet)
+  :custom
+  ;; (auto-insert-query nil)
+  (auto-insert-directory (concat user-emacs-directory "templates/"))
+
   :config
-  (setq auto-insert-alist '())
-  (yatemplate-fill-alist)
+  (defun my/autoinsert-yas-expand()
+    "Replace text in yasnippet template."
+    (yas/expand-snippet (buffer-string) (point-min) (point-max)))
+
+  ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
+  (dolist (x auto-insert-alist)
+    (when (equal "\\.el\\'" (car-safe (car x)))
+      (setcar (car x) "/src/.+\\.el\\'")))
+
+  (setq auto-insert-alist
+        (append '(
+                  (("test_.*\\.py\\'" "Python test") . ["test.py" my/autoinsert-yas-expand])
+                  (("\\.py\\'" "Python script") . ["template.py" my/autoinsert-yas-expand])
+                  (("\\.vue\\'" "Vue") . ["template-js.vue" my/autoinsert-yas-expand])
+                  )
+                auto-insert-alist)
+        )
   )
 
 (use-package key-binding :no-require
