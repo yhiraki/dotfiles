@@ -23,7 +23,7 @@ darwin*)
 
   function emacsclient-gui {
     local filename=$1
-    $EMACSCLIENT -c -a '' $filename & disown
+    bash -c "$EMACSCLIENT -c -a '' $filename &"
   }
 
   alias e="$EMACSCLIENT -nw -a ''"
