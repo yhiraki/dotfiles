@@ -2257,7 +2257,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         (append '(
                   (("test_.*\\.py\\'" "Python test") . ["test.py" my/autoinsert-yas-expand])
                   (("\\.py\\'" "Python script") . ["template.py" my/autoinsert-yas-expand])
-                  (("\\.vue\\'" "Vue") . ["template-js.vue" my/autoinsert-yas-expand])
+                  (("\\.vue\\'" "Vue") . ["template.vue" my/autoinsert-yas-expand])
+                  ((plantuml-mode "Plantuml") . ["template.plantuml" my/autoinsert-yas-expand])
                   )
                 auto-insert-alist)
         )
