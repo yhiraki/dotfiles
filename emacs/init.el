@@ -917,10 +917,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     :override t)
   (quickrun-set-default "c++" "c++/g++")
 
-  (quickrun-add-command "python"
+  (quickrun-add-command "python3"
     '((:command . "python3")
-      (:compile-only . "flake8 %s"))
-    :override t)
+      (:compile-only . "flake8 %s")))
+  (quickrun-set-default "python" "python3")
 
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
