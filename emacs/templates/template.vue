@@ -1,4 +1,4 @@
-<template>`(evil-insert-state)`
+<template>
 </template>
 
 <script lang="${1:js}">

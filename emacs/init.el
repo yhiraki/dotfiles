@@ -2136,9 +2136,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
    . (lambda ()
        (setq yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
        ))
+  (yas-before-expand-snippet . evil-insert-state)
 
   :custom
   (require-final-newline nil)
+  (yas-indent-line 'fixed)
 
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
@@ -2256,6 +2258,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (setq auto-insert-alist
         (append '(
                   (("test_.*\\.py\\'" "Python test") . ["test.py" my/autoinsert-yas-expand])
+                  (("setup.py\\'" "Python setup file") . "setup.py")
+                  (("setup.cfg\\'" "Python setup config") . ["setup.cfg" my/autoinsert-yas-expand])
                   (("\\.py\\'" "Python script") . ["template.py" my/autoinsert-yas-expand])
                   (("\\.vue\\'" "Vue") . ["template.vue" my/autoinsert-yas-expand])
                   ((plantuml-mode "Plantuml") . ["template.plantuml" my/autoinsert-yas-expand])

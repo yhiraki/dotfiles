@@ -1,4 +1,4 @@
-@startuml`(evil-insert-state)`
+@startuml
 
 ' header Page Header
 ' footer Page %page% of $lastpage%
