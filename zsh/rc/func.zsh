@@ -93,29 +93,30 @@ alias -g repof='$(_select-files-in-repo)'
 
 
 # 失敗した History は記録しない
+# エスケープを含むhistoryが改変されるので無効化
 # http://someneat.hatenablog.jp/entry/2017/07/25/073428
 # begin
-__record_command() {
-  typeset -g _LASTCMD=${1%%$'\n'}
-  return 1
-}
-zshaddhistory_functions+=(__record_command)
+# __record_command() {
+#   typeset -g _LASTCMD=${1%%$'\n'}
+#   return 1
+# }
+# zshaddhistory_functions+=(__record_command)
 
-__update_history() {
-  local last_status="$?"
+# __update_history() {
+#   local last_status="$?"
 
-  # hist_ignore_space
-  if [[ ! -n ${_LASTCMD%% *} ]]; then
-    return
-  fi
+#   # hist_ignore_space
+#   if [[ ! -n ${_LASTCMD%% *} ]]; then
+#     return
+#   fi
 
-  # hist_reduce_blanks
-  local cmd_reduce_blanks=$(echo ${_LASTCMD} | tr -s ' ')
+#   # hist_reduce_blanks
+#   local cmd_reduce_blanks=$(echo ${_LASTCMD} | tr -s ' ')
 
-  # Record the commands that have succeeded
-  if [[ ${last_status} == 0 ]]; then
-    print -sr -- "${cmd_reduce_blanks}"
-  fi
-}
-precmd_functions+=(__update_history)
+#   # Record the commands that have succeeded
+#   if [[ ${last_status} == 0 ]]; then
+#     print -sr -- "${cmd_reduce_blanks}"
+#   fi
+# }
+# precmd_functions+=(__update_history)
 # end
