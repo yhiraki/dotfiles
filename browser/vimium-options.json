@@ -29,7 +29,7 @@
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "unmap /\nunmap B\nunmap H\nunmap J\nunmap K\nunmap L\nunmap O\nunmap T\nunmap X\nunmap b\nunmap d\nunmap o\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-]> passNextKey\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab",
+  "keyMappings": "unmap /\nunmap <<\nunmap >>\nunmap B\nunmap H\nunmap J\nunmap K\nunmap L\nunmap O\nunmap T\nunmap X\nunmap b\nunmap d\nunmap o\nunmap t\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-]> passNextKey\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab\nmap > moveTabRight\nmap < moveTabLeft\nmap t Vomnibar.activateTabSelection",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
