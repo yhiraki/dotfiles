@@ -2268,6 +2268,12 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         )
   )
 
+(use-package emacs-lock
+  :config
+  (with-current-buffer "*scratch*"
+    (emacs-lock-mode 'kill))
+  )
+
 (use-package key-binding :no-require
   :config
   ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
