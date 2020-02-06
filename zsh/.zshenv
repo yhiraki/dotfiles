@@ -85,3 +85,10 @@ autoload -U compinit && compinit -C
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+export PY_TMUX_PANE_OPTIONS__GIT_CWD='fg=#bfbfbf'
+export PY_TMUX_PANE_OPTIONS__GIT_STATUS_ICONS='fg=red'
+export PY_TMUX_PANE_ICON__PYTHON=' '
+export PY_TMUX_PANE_ICON__GITHUB=' '
+export PY_TMUX_PANE_ICON__BITBUCKET=' '
+export PY_TMUX_PANE_ICON__BRANCH=''
