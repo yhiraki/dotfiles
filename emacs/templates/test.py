@@ -13,7 +13,7 @@ class Test${1:_$(capitalize yas-text)}(unittest.TestCase):
         pass
 
     def test_${2:hoge}(self):
-        ${0:pass}
+        ${3:pass}
 
 
 if __name__ == '__main__':
