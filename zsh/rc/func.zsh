@@ -1,8 +1,10 @@
-_fzf-select-repo-dir(){
+FF_CMD='gof'
+
+_ff-select-repo-dir(){
   local gitroot=$(ghq root)
   local reporoot=$(ghq list \
         | sed s:$gitroot/::g \
-        | $FZF_CMD -q "$*")
+        | $FF_CMD)
   if [ ! -z $reporoot ]
   then echo $gitroot/$reporoot
   fi
@@ -10,7 +12,7 @@ _fzf-select-repo-dir(){
 
 # repo - cd to repogitory dir
 repo() {
-  local repodir=$(_fzf-select-repo-dir "$*")
+  local repodir=$(_ff-select-repo-dir "$*")
   if [ ! -z $repodir ]
   then cd $repodir
   fi
@@ -18,34 +20,21 @@ repo() {
 
 # checkout
 checkout () {
-  local branch=$(git branch -a | fzf | xargs basename)
+  local branch=$(git branch -a | $FF_CMD | xargs basename)
   local cmd=(git checkout $branch)
   echo $cmd
   $cmd
-}
-
-# fshow - git commit browser
-gitshow() {
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-FZF-EOF"
 }
 
 gitroot(){
   cd $(git rev-parse --show-toplevel)
 }
 
-
-_fzf-select-files() {
+_ff-select-files() {
   IFS='
 '
   local -a declare files
-  files=($(cat - | $FZF_CMD --query="$1" -m --select-1 --exit-0))
+  files=($(cat - | $FF_CMD))
   # [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
   [[ -n "$files" ]] && echo "${files[@]}"
   unset IFS
@@ -55,13 +44,13 @@ fsh() {
   ssh $(cat ~/.ssh/config \
     | grep -i -e '^host' \
     | sed -e 's/host //i' \
-    | $FZF_CMD -q "$*")
+    | $FF_CMD)
 }
 
 fsql(){
   psql $(cat ~/.pgpass \
      | sed -E 's/:[^:]+$//' \
-     | $FZF_CMD -q "$*" \
+     | $FF_CMD \
      | sed -e 's/^/-h /' \
        -e 's/:/ -p /' \
        -e 's/:/ -d /' \
@@ -69,19 +58,19 @@ fsql(){
 }
 
 _select-files-in-dir(){
-  find $1 -type f | _fzf-select-files
+  find $1 -type f | _ff-select-files
 }
 
 _select-dirs-in-dir(){
-  find $1 -type d | _fzf-select-files
+  find $1 -type d | _ff-select-files
 }
 
 _select-dirs-in-repo(){
-  _select-dirs-in-dir $(_fzf-select-repo-dir)
+  _select-dirs-in-dir $(_ff-select-repo-dir)
 }
 
 _select-files-in-repo(){
-  _select-files-in-dir $(_fzf-select-repo-dir)
+  _select-files-in-dir $(_ff-select-repo-dir)
 }
 
 
