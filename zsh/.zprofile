@@ -59,6 +59,9 @@ export LOCATE_PATH="$HOME/var/db/locate.database"
 
 export PIPENV_VENV_IN_PROJECT=true
 
+# Fuzzy finder
+export FF_CMD='gof'
+
 # anyenv
 # eval "$(anyenv init -)"
 

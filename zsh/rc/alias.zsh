@@ -1,16 +1,12 @@
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-function locate-and-open {
-  local query=$1
-  locate -i $query | fzf | xargs open
-}
-alias f=locate-and-open
-
-alias co=checkout
-
-alias -g F="| fzf "
-alias -g FP="| fzf --preview '$FZF_PREVIEW_CMD'"
-alias -g O='F | xargs open'
-
 alias ls="ls --color=auto -F"
+
+alias -g dlf='$(find ~/Downloads -type f | '"$FF_CMD"')'
+alias -g dld='$(find ~/Downloads -type d | '"$FF_CMD"')'
+alias -g junkf='$(find ~/.cache/junkfile/ -type f | '"$FF_CMD"')'
+alias -g junkd='$(find ~/.cache/junkfile/ -type d | '"$FF_CMD"')'
+alias -g repof='$(find $(select-repo) -type f | '"$FF_CMD"')'
+alias -g repod='$(find $(select-repo) -type d | '"$FF_CMD"')'
+alias -g bra='$(branch-name)'

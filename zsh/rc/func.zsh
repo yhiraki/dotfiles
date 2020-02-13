@@ -1,54 +1,29 @@
-FF_CMD='gof'
-
 search-history-incremental () {
   history -n 1 | awk '!a[$0]++' | $FF_CMD
 }
 zle -N search-history-incremental
 
-_ff-select-repo-dir(){
-  local gitroot=$(ghq root)
-  local reporoot=$(ghq list \
-        | sed s:$gitroot/::g \
-        | $FF_CMD)
-  if [ ! -z $reporoot ]
-  then echo $gitroot/$reporoot
-  fi
+select-repo(){
+  echo $(ghq root)/$(ghq list | $FF_CMD)
 }
 
-# repo - cd to repogitory dir
 repo() {
-  local repodir=$(_ff-select-repo-dir "$*")
-  if [ ! -z $repodir ]
-  then cd $repodir
-  fi
+  cd $(select-repo)
 }
 
-# checkout
-checkout () {
-  local branch=$(git branch -a | $FF_CMD | xargs basename)
-  local cmd=(git checkout $branch)
-  echo $cmd
-  $cmd
+branch-name () {
+  echo $(git branch -a | $FF_CMD)
 }
 
 gitroot(){
   cd $(git rev-parse --show-toplevel)
 }
 
-_ff-select-files() {
-  IFS='
-'
-  local -a declare files
-  files=($(cat - | $FF_CMD))
-  # [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-  [[ -n "$files" ]] && echo "${files[@]}"
-  unset IFS
-}
-
 fsh() {
   ssh $(cat ~/.ssh/config \
     | grep -i -e '^host' \
     | sed -e 's/host //i' \
+    | sed -e '/*/d' \
     | $FF_CMD)
 }
 
@@ -61,29 +36,6 @@ fsql(){
        -e 's/:/ -d /' \
        -e 's/:/ -U /')
 }
-
-_select-files-in-dir(){
-  find $1 -type f | _ff-select-files
-}
-
-_select-dirs-in-dir(){
-  find $1 -type d | _ff-select-files
-}
-
-_select-dirs-in-repo(){
-  _select-dirs-in-dir $(_ff-select-repo-dir)
-}
-
-_select-files-in-repo(){
-  _select-files-in-dir $(_ff-select-repo-dir)
-}
-
-
-alias -g dlf='$(_select-files-in-dir ~/Downloads)'
-alias -g dld='$(_select-dirs-in-dir ~/Downloads)'
-alias -g junkf='$(_select-files-in-dir ~/.cache/junkfile/)'
-alias -g repod='$(_select-dirs-in-repo)'
-alias -g repof='$(_select-files-in-repo)'
 
 
 # 失敗した History は記録しない
