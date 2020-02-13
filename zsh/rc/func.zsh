@@ -1,5 +1,10 @@
 FF_CMD='gof'
 
+search-history-incremental () {
+  history -n 1 | awk '!a[$0]++' | $FF_CMD
+}
+zle -N search-history-incremental
+
 _ff-select-repo-dir(){
   local gitroot=$(ghq root)
   local reporoot=$(ghq list \
