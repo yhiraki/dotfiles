@@ -52,8 +52,8 @@ source $GHQROOT/github.com/'zsh-users/zsh-completions'/zsh-completions.plugin.zs
 source $GHQROOT/github.com/'zsh-users/zsh-syntax-highlighting'/zsh-syntax-highlighting.plugin.zsh
 
 source $ZDOTDIR/rc/alias.zsh
-source $ZDOTDIR/rc/bind.zsh
 source $ZDOTDIR/rc/func.zsh
+source $ZDOTDIR/rc/bind.zsh
 
 
 PS1='\$ '
@@ -65,18 +65,6 @@ which direnv > /dev/null \
 # zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 bindkey '^ ' autosuggest-accept
-
-if [ -d /usr/local/opt/fzf ]
-then
-  # Setup fzf
-  if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-    export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
-  fi
-  # Auto-completion
-  [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-  # Key bindings
-  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-fi
 
 # path sort by string length
 export PATH=$(echo $PATH \
