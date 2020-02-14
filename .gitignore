@@ -1,9 +1,3 @@
-### User ignore files
-
-vim/undo/
-zsh/.zcompdump
-
-
 ### https://raw.github.com/github/gitignore/df7b36ca7621c0bdf748c2d0a0abb792a3a0ccc1/Global/vim.gitignore
 
 # Swap
