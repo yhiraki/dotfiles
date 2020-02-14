@@ -1985,19 +1985,19 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package evil-magit :ensure t
   :after (evil magit)
 
-  :config
-  (defun my/echo-disabled ()
-    "Echo disabled."
-    (interactive)
-    (message "Disabled")
-    )
+  ;; :config
+  ;; (defun my/echo-disabled ()
+  ;;   "Echo disabled."
+  ;;   (interactive)
+  ;;   (message "Disabled")
+  ;;   )
 
-  (evil-define-key 'normal magit-mode-map
-    (kbd "x") 'my/echo-disabled
-    )
-  (evil-define-key 'visual magit-mode-map
-    (kbd "x") 'my/echo-disabled
-    )
+  ;; (evil-define-key 'normal magit-mode-map
+  ;;   (kbd "x") 'my/echo-disabled
+  ;;   )
+  ;; (evil-define-key 'visual magit-mode-map
+  ;;   (kbd "x") 'my/echo-disabled
+  ;;   )
   )
 
 (use-package evil-commentary :ensure t
