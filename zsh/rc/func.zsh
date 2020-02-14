@@ -1,10 +1,16 @@
+ff () {
+  $(echo ${FF_CMD} ${FF_OPTIONS})
+}
+
 search-history-incremental () {
-  history -n 1 | awk '!a[$0]++' | $FF_CMD
+  BUFFER=$(history -n 1 | awk '!a[$0]++' | ff)
+  CURSOR=$#BUFFER
+  zle reset-prompt
 }
 zle -N search-history-incremental
 
 select-repo(){
-  echo $(ghq root)/$(ghq list | $FF_CMD)
+  echo $(ghq root)/$(ghq list | ff)
 }
 
 repo() {
@@ -12,7 +18,7 @@ repo() {
 }
 
 branch-name () {
-  echo $(git branch -a | $FF_CMD)
+  echo $(git branch -a | ff)
 }
 
 gitroot(){
@@ -24,13 +30,13 @@ fsh() {
     | grep -i -e '^host' \
     | sed -e 's/host //i' \
     | sed -e '/*/d' \
-    | $FF_CMD)
+    | ff)
 }
 
 fsql(){
   psql $(cat ~/.pgpass \
      | sed -E 's/:[^:]+$//' \
-     | $FF_CMD \
+     | ff \
      | sed -e 's/^/-h /' \
        -e 's/:/ -p /' \
        -e 's/:/ -d /' \

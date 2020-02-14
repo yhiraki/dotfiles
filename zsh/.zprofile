@@ -61,6 +61,7 @@ export PIPENV_VENV_IN_PROJECT=true
 
 # Fuzzy finder
 export FF_CMD='gof'
+export FF_OPTIONS='-f'
 
 # anyenv
 # eval "$(anyenv init -)"
