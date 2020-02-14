@@ -2242,7 +2242,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :hook (find-file . auto-insert)
 
   :custom
-  ;; (auto-insert-query nil)
+  (auto-insert-query nil)
   (auto-insert-directory (concat user-emacs-directory "templates/"))
 
   :config
