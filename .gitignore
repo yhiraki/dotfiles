@@ -1,16 +1,5 @@
 ### User ignore files
 
-emacs/.cache/
-emacs/.lsp-session*
-emacs/bookmarks
-emacs/custom.el
-emacs/el-get/
-emacs/elpa/
-emacs/eshell/
-emacs/straight/
-emacs/transient/
-emacs/undohist/
-emacs/.trello
 vim/undo/
 zsh/.zcompdump
 
