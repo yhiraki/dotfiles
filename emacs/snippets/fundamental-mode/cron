@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: cron
+# key: cron
+# --
+${1:$(when (string= "?" yas-text) "┌──────── Minite: 0-59\n")
+}${2:$(when (string= "?" yas-text) "│ ┌──────── Hour: 0-23\n")
+}${3:$(when (string= "?" yas-text) "│ │ ┌─────── day: 1-31\n")
+}${4:$(when (string= "?" yas-text) "│ │ │ ┌─── month: 1-12\n")
+}${5:$(when (string= "?" yas-text) "│ │ │ │ ┌── week: 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat 7=Sun\n")
+}${1:?} ${2:?} ${3:?} ${4:?} ${5:?}
