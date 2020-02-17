@@ -29,20 +29,29 @@ fsh() {
   ssh $(cat ~/.ssh/config \
     | grep -i -e '^host' \
     | sed -e 's/host //i' \
-    | sed -e '/*/d' \
+          -e '/*/d' \
     | ff)
 }
 
 fsql(){
-  psql $(cat ~/.pgpass \
-     | sed -E 's/:[^:]+$//' \
-     | ff \
-     | sed -e 's/^/-h /' \
-       -e 's/:/ -p /' \
-       -e 's/:/ -d /' \
-       -e 's/:/ -U /')
+  psql $(
+    cat ~/.pgpass \
+      | sed -E 's/:[^:]+$//' \
+      | ff \
+      | sed -e 's/^/-h /' \
+            -e 's/:/ -p /' \
+            -e 's/:/ -d /' \
+            -e 's/:/ -U /')
 }
 
+find-dir () {
+  local d=$(echo $1 | sed -e "s:~:$HOME:")
+  echo "$d/"$(
+    find "$d" 2> /dev/null \
+      | sed -e "s:^$d/\?::" \
+            -e '/^$/d' \
+      | ${FF_CMD})
+}
 
 # 失敗した History は記録しない
 # エスケープを含むhistoryが改変されるので無効化
