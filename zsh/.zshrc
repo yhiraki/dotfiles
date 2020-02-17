@@ -55,9 +55,6 @@ source $ZDOTDIR/rc/func.zsh
 source $ZDOTDIR/rc/alias.zsh
 source $ZDOTDIR/rc/bind.zsh
 
-
-PS1='\$ '
-
 # direnv setup
 which direnv > /dev/null \
   && eval "$(direnv hook zsh)"
@@ -73,6 +70,29 @@ export PATH=$(echo $PATH \
          | sort -nr \
          | cut -d ' ' -f 2 \
          | tr '\n' :)
+
+autoload -Uz colors
+colors
+
+function check_last_exit_code() {
+  local code=$?
+  if [[ $code -gt 128 ]]
+  then
+    local sigid=$(($code - 128))
+    echo "%{$fg_bold[yellow]%}$signals[$((sigid + 1))] ($sigid)%{$reset_color%}"
+    return
+  fi
+  if [[ $code -ne 0 ]]
+  then
+    local rprompt=' '
+    rprompt+="%{$fg_bold[red]%}$code%{$reset_color%}"
+    echo "$rprompt"
+    return
+  fi
+}
+
+PROMPT='$ '
+RPROMPT='$(check_last_exit_code)'
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
