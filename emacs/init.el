@@ -1074,14 +1074,6 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package org :ensure org-plus-contrib
   :after evil
-  :init
-  (add-hook 'org-mode-hook
-            '(lambda()
-               (setq company-minimum-prefix-length 1)
-               (push 'company-capf company-backends)
-               (add-hook 'completion-at-point-functions
-                         'pcomplete-completions-at-point nil t)
-               ))
   :custom
   (org-directory "~/org/")
   (org-startup-with-inline-images nil)
