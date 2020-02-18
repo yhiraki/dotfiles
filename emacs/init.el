@@ -774,15 +774,14 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (setq twittering-use-master-password t))
 
 (use-package lsp-mode :ensure t
-  :hook ((
-          c++-mode
+  :hook ((c++-mode
           go-mode
           js-mode
           python-mode
           sh-mode
           typescript-mode
-          vue-mode
-          ) . lsp)
+          vue-mode)
+         . lsp)
 
   :custom
   (lsp-auto-guess-root t)
