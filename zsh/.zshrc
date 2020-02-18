@@ -45,10 +45,10 @@ msys*)
 esac
 
 GHQROOT=$(ghq root)
-source $GHQROOT/github.com/'paulirish/git-open'/git-open.plugin.zsh	
+source $GHQROOT/github.com/'paulirish/git-open'/git-open.plugin.zsh
 source $GHQROOT/github.com/'robbyrussell/oh-my-zsh/plugins/git'/git.plugin.zsh
 source $GHQROOT/github.com/'zsh-users/zsh-autosuggestions'/zsh-autosuggestions.plugin.zsh
-source $GHQROOT/github.com/'zsh-users/zsh-completions'/zsh-completions.plugin.zsh	
+source $GHQROOT/github.com/'zsh-users/zsh-completions'/zsh-completions.plugin.zsh
 source $GHQROOT/github.com/'zsh-users/zsh-syntax-highlighting'/zsh-syntax-highlighting.plugin.zsh
 
 source $ZDOTDIR/rc/func.zsh
