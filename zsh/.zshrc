@@ -148,3 +148,6 @@ which zprof > /dev/null \
   && zprof
 
 # zmodload zsh/zprof && zprof
+
+# Make status code '0'
+echo .zshrc loaded
