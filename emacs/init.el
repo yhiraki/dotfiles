@@ -800,6 +800,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package lsp-pyls
   :custom
+  (lsp-pyls-plugins-flake8-enabled t)
   (lsp-pyls-plugins-jedi-completion-include-params nil)
   (lsp-pyls-plugins-pylint-enabled nil)
   )
