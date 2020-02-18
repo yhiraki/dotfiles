@@ -311,6 +311,7 @@ Version 2019-11-04"
 
   :config
   (sp-pair "\{ " " \}")
+  (sp-pair "\[ " " \]")
 
   (sp-with-modes '(lisp-mode emacs-lisp-mode lisp-interaction-mode slime-mode)
     (sp-local-pair "'" nil :actions nil)
