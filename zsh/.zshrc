@@ -147,7 +147,40 @@ precmd() {
 check_elapsed_time() {
   if [ -n "$elapsed" ]
   then
-    echo "%{$fg_bold[green]%}$elapsed%{$reset_color%}ms"
+    local msec=1
+
+    if [ $elapsed -lt $(($msec * 500)) ]
+    then
+      local ms=$(($elapsed / ${msec}))
+      echo "%{$fg_bold[green]%}$ms%{$reset_color%}ms"
+      return
+    fi
+
+    local sec=$(($msec * 1000))
+    local min=$(($sec * 60))
+
+    if [ $elapsed -lt $min ]
+    then
+      local s=$(($elapsed / ${sec}.0))
+      echo "%{$fg_bold[green]%}$(printf %.1f $s)%{$reset_color%}s"
+      return
+    fi
+
+    local hour=$(($min * 60))
+
+    if [ $elapsed -lt $hour ]
+    then
+      local m=$(($elapsed / $min))
+      local s=$(($(($elapsed % $min)) / $sec))
+      echo -n "%{$fg_bold[green]%}$m%{$reset_color%}m"
+      echo "%{$fg_bold[green]%}$s%{$reset_color%}s"
+      return
+    fi
+
+    local h=$(($elapsed / $hour))
+    local m=$(($(($elapsed % $hour)) / $min))
+    echo -n "%{$fg_bold[green]%}$h%{$reset_color%}h"
+    echo "%{$fg_bold[green]%}$m%{$reset_color%}m"
   fi
 }
 
