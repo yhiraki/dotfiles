@@ -71,8 +71,7 @@ export PATH=$(echo $PATH \
          | cut -d ' ' -f 2 \
          | tr '\n' :)
 
-autoload -Uz colors
-colors
+autoload -Uz colors && colors
 
 signal_name () {
   local sigs=$(cat << EOF
@@ -117,15 +116,38 @@ check_last_exit_code() {
   if [ $code -gt 128 ]
   then
     local sigid=$(($code - 128))
-    echo "%{$fg_bold[yellow]%}$(signal_name $sigid)%{$reset_color%} ($sigid)"
+    echo "%{$fg_bold[yellow]%}$(signal_name $sigid)%{$reset_color%}($sigid)"
     return
   fi
   if [ $code -ne 0 ]
   then
-    local rprompt=' '
-    rprompt+="%{$fg_bold[red]%}$code%{$reset_color%}"
-    echo "$rprompt"
+    echo "%{$fg_bold[red]%}$code%{$reset_color%}"
     return
+  fi
+}
+
+preexec() {
+  cmd=$1
+  if [ -n "$cmd" ]
+  then
+    timer=$(($(date +%s%0N)/1000000))
+  fi
+}
+
+precmd() {
+  unset elapsed
+  if [ -n "$timer" ]
+  then
+    now=$(($(date +%s%0N)/1000000))
+    elapsed=$(($now-$timer))
+    unset timer
+  fi
+}
+
+check_elapsed_time() {
+  if [ -n "$elapsed" ]
+  then
+    echo "%{$fg_bold[green]%}$elapsed%{$reset_color%}ms"
   fi
 }
 
@@ -139,8 +161,12 @@ prompt() {
   echo "%{$fg_bold[red]%}$%{$reset_color%} "
 }
 
+rprompt() {
+  echo $(check_last_exit_code) $(check_elapsed_time)
+}
+
 PROMPT='$(prompt)'
-RPROMPT='$(check_last_exit_code)'
+RPROMPT='$(rprompt)'
 
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
