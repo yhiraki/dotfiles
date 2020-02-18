@@ -46,10 +46,9 @@ fsql(){
 
 find-dir () {
   local d=$(echo $1 | sed -e "s:~:$HOME:")
-  echo "$d/"$(
+  echo "$d"$(
     find "$d" 2> /dev/null \
-      | sed -e "s:^$d/\?::" \
-            -e '/^$/d' \
+      | sed -e "s:^$d/\?:/:" \
       | ${FF_CMD})
 }
 
