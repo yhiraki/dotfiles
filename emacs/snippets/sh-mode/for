@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: for
+# key: for
+# --
+for i in ${1:\$var}
+do
+  ${2:echo \$i}
+done

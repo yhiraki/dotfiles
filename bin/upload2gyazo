@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+IMAGEPATH=$1
+
+curl \
+  -i https://upload.gyazo.com/api/upload?access_token=$GYAZO_ACCESS_TOKEN \
+  -F "imagedata=@$IMAGEAPTH"
