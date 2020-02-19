@@ -328,6 +328,10 @@ Version 2019-11-04"
     (sp-local-pair "\{# " " #\}")
     )
 
+  (sp-with-modes '(sh-mode)
+    (sp-local-pair "%\{" "%\}")
+    )
+
   ;; https://github.com/Fuco1/smartparens/issues/80
   (defun my-open-block-c-mode (id action context)
     (when (eq action 'insert)
