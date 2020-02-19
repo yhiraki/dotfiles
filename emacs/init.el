@@ -2270,6 +2270,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
                   (("\\.py\\'" "Python script") . ["template.py" my/autoinsert-yas-expand])
                   (("\\.vue\\'" "Vue") . ["template.vue" my/autoinsert-yas-expand])
                   ((plantuml-mode "Plantuml") . ["template.plantuml" my/autoinsert-yas-expand])
+                  ((sh-mode "Shell script") . ["template.sh" my/autoinsert-yas-expand])
                   )
                 auto-insert-alist)
         )
