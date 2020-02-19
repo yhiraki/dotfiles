@@ -5,3 +5,5 @@
 [core]
   editor = "/usr/local/bin/emacsclient -nw -a ''"
   excludesfile = ~/.gitexclude
+[rebase]
+	autostash = true
