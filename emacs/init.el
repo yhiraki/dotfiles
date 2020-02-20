@@ -458,13 +458,9 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :after evil
-  :hook ((
-  ;;         c++-mode
-          plantuml-mode
-  ;;         python-mode
-  ;;         vue-mode
-  ;;         web-mode
-          ) . flycheck-mode)
+  :hook ((plantuml-mode
+          sh-mode)
+         . flycheck-mode)
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
