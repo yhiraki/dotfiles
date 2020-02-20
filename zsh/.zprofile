@@ -13,22 +13,18 @@ export PATH="$PATH:$DOTDIR/bin"
 
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
-for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}
-do
-  if [ -d /usr/local/opt/$i/libexec ]
-  then
+for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}; do
+  if [ -d /usr/local/opt/$i/libexec ]; then
     export PATH="/usr/local/opt/$i/libexec/gnubin:$PATH"
     export MANPATH="/usr/local/opt/$i/libexec/gnuman:$MANPATH"
   fi
 done
 
-if [ -d /usr/local/opt/openssl/ ]
-then
+if [ -d /usr/local/opt/openssl/ ]; then
   export PATH="/usr/local/opt/openssl/bin:$PATH"
 fi
 
-if [ -d /usr/local/opt/llvm/ ]
-then
+if [ -d /usr/local/opt/llvm/ ]; then
   export PATH="/usr/local/opt/llvm/bin:$PATH"
 fi
 
@@ -64,25 +60,17 @@ export PIPENV_VENV_IN_PROJECT=true
 # export FF_OPTIONS='-f -i "^(\\.git|\\.hg|\\.svn|_darcs|\\.bzr|\\.pyc|\\.venv)$"'
 export FF_CMD='fzf'
 
-# anyenv
-# eval "$(anyenv init -)"
-
-# gcloud
-# source $HOME/bin/google-cloud-sdk/path.zsh.inc
-
 export SSH_AGENT_RC=/tmp/ssh-agent-rc
 
-if [ ! -f $SSH_AGENT_RC ]
-then
-  ssh-agent > $SSH_AGENT_RC
+if [ ! -f $SSH_AGENT_RC ]; then
+  ssh-agent >$SSH_AGENT_RC
   ssh-add
 fi
 
-. $SSH_AGENT_RC
+source "$SSH_AGENT_RC"
 
-if ! kill -s 0 $SSH_AGENT_PID
-then
-  ssh-agent > $SSH_AGENT_RC
+if ! kill -s 0 "$SSH_AGENT_PID"; then
+  ssh-agent >$SSH_AGENT_RC
   ssh-add
-  . $SSH_AGENT_RC
+  source "$SSH_AGENT_RC"
 fi

@@ -1,55 +1,54 @@
-ff () {
-  $(echo ${FF_CMD} ${FF_OPTIONS})
+ff() {
+  ${FF_CMD} ${FF_OPTIONS}
 }
 
-search-history-incremental () {
+search-history-incremental() {
   BUFFER=$(history -n 1 | awk '!a[$0]++' | ff)
   CURSOR=$#BUFFER
   zle reset-prompt
 }
 zle -N search-history-incremental
 
-select-repo(){
-  echo $(ghq root)/$(ghq list | ff)
+select-repo() {
+  echo "$(ghq root)/$(ghq list | ff)"
 }
 
 repo() {
-  cd $(select-repo)
+  cd "$(select-repo)" || exit
 }
 
-branch-name () {
-  echo $(git branch -a | ff)
+branch-name() {
+  git branch -a | ff
 }
 
-gitroot(){
-  cd $(git rev-parse --show-toplevel)
+gitroot() {
+  cd "$(git rev-parse --show-toplevel)" || exit
 }
 
 fsh() {
-  ssh $(cat ~/.ssh/config \
-    | grep -i -e '^host' \
-    | sed -e 's/host //i' \
-          -e '/*/d' \
-    | ff)
+  ssh "$(grep ~/.ssh/config -i -e '^host' |
+    sed -e 's/host //i' \
+      -e '/*/d' |
+    ff)"
 }
 
-fsql(){
-  psql $(
-    cat ~/.pgpass \
-      | sed -E 's/:[^:]+$//' \
-      | ff \
-      | sed -e 's/^/-h /' \
-            -e 's/:/ -p /' \
-            -e 's/:/ -d /' \
-            -e 's/:/ -U /')
+fsql() {
+  psql "$(
+    sed -E 's/:[^:]+$//' ~/.pgpass | ff |
+      sed -e 's/^/-h /' \
+        -e 's/:/ -p /' \
+        -e 's/:/ -d /' \
+        -e 's/:/ -U /'
+  )"
 }
 
-find-dir () {
-  local d=$(echo $1 | sed -e "s:~:$HOME:")
-  echo "$d"$(
-    find "$d" 2> /dev/null \
-      | sed -e "s:^$d/\?:/:" \
-      | ${FF_CMD})
+find-dir() {
+  local d="${1//~/$HOME}"
+  echo "$d$(
+    find '$d' 2>/dev/null |
+      sed -e 's:^$d/\?:/:' |
+      ${FF_CMD}
+  )"
 }
 
 # 失敗した History は記録しない
