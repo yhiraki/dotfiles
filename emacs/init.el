@@ -778,7 +778,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
           go-mode
           js-mode
           python-mode
-          sh-mode
+          ;; sh-mode
           typescript-mode
           vue-mode)
          . lsp)
