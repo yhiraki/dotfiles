@@ -1162,15 +1162,17 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package org-agenda
-  :after (evil org)
+  :after org
   :commands (org-agenda org-refile)
+  :demand t
+
   :init
   (add-hook 'org-agenda-mode-hook
             '(lambda()
-               (custom-set-variables '(org-agenda-files (list
-                                       org-directory
-                                       (concat org-directory "projects"))))
-               ))
+               (custom-set-variables
+                '(org-agenda-files
+                  (list org-directory (concat org-directory "projects"))))))
+
   :custom
   (org-agenda-current-time-string "← now")
   (org-agenda-time-grid ;; Format is changed from 9.1
@@ -1179,67 +1181,11 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      "-"
      "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  :config
-  (evil-define-key 'normal org-agenda-mode-map
-    (kbd "+") 'org-agenda-priority-up
-    (kbd "-") 'org-agenda-priority-down
-    (kbd ".") 'org-agenda-goto-today
-    (kbd "0") 'evil-digit-argument-or-evil-beginning-of-line
-    (kbd ":") 'org-agenda-set-tags
-    (kbd ";") 'org-timer-set-timer
-    (kbd "<") 'org-agenda-filter-by-category
-    (kbd "<RET>") 'org-agenda-switch-to
-    (kbd ">") 'org-agenda-date-prompt
-    (kbd "A") 'org-agenda-toggle-archive-tag
-    (kbd "D") 'org-agenda-deadline
-    (kbd "F") 'org-agenda-follow-mode
-    (kbd "H") 'org-agenda-holidays
-    (kbd "J") 'org-agenda-next-date-line
-    (kbd "K") 'org-agenda-previous-date-line
-    (kbd "L") 'org-agenda-recenter
-    (kbd "O") 'org-agenda-clock-out
-    (kbd "P") 'org-agenda-show-priority
-    (kbd "R") 'org-agenda-clockreport-mode
-    ;; (kbd "S") 'org-save-all-org-buffers
-    (kbd "T") 'org-agenda-show-tags
-    (kbd "X") 'org-agenda-clock-cancel
-    (kbd "Z") 'org-agenda-sunrise-sunset
-    (kbd "[") 'org-agenda-manipulate-query-add
-    (kbd "\\t") 'org-agenda-goto
-    (kbd "]") 'org-agenda-manipulate-query-subtract
-    ;; (kbd "b") 'org-agenda-earlier
-    ;; (kbd "e") 'org-agenda-set-effort
-    ;; (kbd "f") 'org-agenda-later
-    (kbd "g/") 'org-agenda-filter-by-tag
-    (kbd "gJ") 'org-agenda-clock-goto
-    (kbd "g\\") 'org-agenda-filter-by-tag-refine
-    (kbd "gh") 'org-agenda-holiday
-    (kbd "gj") 'org-agenda-goto-date
-    (kbd "gm") 'org-agenda-bulk-mark
-    (kbd "go") 'org-agenda-open-link
-    (kbd "gv") 'org-agenda-view-mode-dispatch
-    (kbd "I") 'org-agenda-clock-in
-    (kbd "j") 'org-agenda-next-line
-    (kbd "k") 'org-agenda-previous-line
-    (kbd "N") 'org-agenda-add-note
-    (kbd "o") 'delete-other-windows
-    (kbd "p") 'org-agenda-priority
-    (kbd "q") 'org-agenda-quit
-    (kbd "r") 'org-agenda-redo
-    (kbd "s") 'org-agenda-schedule
-    (kbd "t") 'org-agenda-todo
-    (kbd "u") 'org-agenda-bulk-unmark
-    (kbd "va") 'org-agenda-archives-mode
-    (kbd "vc") 'org-agenda-show-clocking-issues
-    (kbd "vd") 'org-agenda-day-view
-    (kbd "vl") 'org-agenda-log-mode
-    (kbd "vt") 'org-agenda-toggle-time-grid
-    (kbd "vw") 'org-agenda-week-view
-    ;; (kbd "x") 'org-agenda-exit
-    (kbd "y") 'org-agenda-todo-yesterday
-    ;; (kbd "{") 'org-agenda-manipulate-query-add-re
-    ;; (kbd "}") 'org-agenda-manipulate-query-subtract-re
-    )
+
+  :bind
+  (:map org-agenda-mode-map
+        ("j" . next-line)
+        ("k" . previous-line))
   )
 
 (use-package japanese-holidays :ensure t
@@ -1954,11 +1900,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (evil-declare-change-repeat 'company-complete)
 
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
-  (evil-set-initial-state 'org-agenda-mode 'normal)
+  (evil-set-initial-state 'org-agenda-mode 'emacs)
   (evil-set-initial-state 'snippet-mode 'insert)
   (evil-set-initial-state 'org-capture-mode 'insert)
   (evil-set-initial-state 'gist-list-mode 'insert)
-  (evil-set-initial-state 'git-timemachine-mode 'insert)
+  (evil-set-initial-state 'git-timemachine-mode 'emacs)
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
