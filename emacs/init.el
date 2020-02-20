@@ -1682,9 +1682,13 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
   (defhydra hydra-emacs-operation (:exit t)
     ("e" eval-buffer "eval-buffer")
-    ("i" (progn (interactive) (find-file user-init-file)) "init.el")
     ("k" kill-emacs "kill emacs")
     ("r" restart-emacs "restart emacs")
+    )
+
+  (defhydra hydra-find-dotfiles (:exit t)
+    ("z" (progn (interactive) (find-file "~/.config/zsh/.zshrc")) ".zshrc")
+    ("e" (progn (interactive) (find-file user-init-file)) "init.el")
     )
 
   (defhydra hydra-narrow (:exit t)
@@ -1699,6 +1703,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     ("G" hydra-google/body "google")
     ("a" org-agenda "org-agenda")
     ("c" org-capture "org-cature")
+    ("d" hydra-find-dotfiles/body "dotfiles")
     ("el" flycheck-list-errors "error")
     ("f" hydra-file-open/body "find file")
     ("g" hydra-git/body "git")
