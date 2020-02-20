@@ -1,7 +1,6 @@
 #!/bin/bash
 
-if ! which ffmpeg > /dev/null
-then
+if ! command -v ffmpeg >/dev/null; then
   echo "install ffmpeg"
   exit 1
 fi

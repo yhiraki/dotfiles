@@ -1,9 +1,8 @@
 #!/bin/bash
 
-JARFILE=$HOME/lib/java/plantuml.jar
-if [ -e $JARFILE ]
-then
-        java -jar $JARFILE -tpng $@
+JARFILE="$HOME/lib/java/plantuml.jar"
+if [ -e "$JARFILE" ]; then
+  java -jar "$JARFILE" -tpng "$@"
 else
-        echo "$JARFILE not found."
+  echo "$JARFILE not found."
 fi
