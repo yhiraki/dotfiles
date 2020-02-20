@@ -1419,6 +1419,20 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   ("\\.?sh\\'" . shell-script-mode)
   )
 
+(use-package shfmt :straight
+  (shfmt :type git :host github :repo "amake/shfmt.el")
+  :after evil
+
+  :custom
+  (shfmt-arguments '("-i" "2" "-ci"))
+
+  :config
+  (evil-define-key 'normal sh-mode-map
+    (kbd "\\f") 'shfmt-buffer)
+  (evil-define-key 'visual sh-mode-map
+    (kbd "\\f") 'shfmt-region)
+  )
+
 (use-package sql
   :config
   (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
