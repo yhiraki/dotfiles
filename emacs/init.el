@@ -226,12 +226,11 @@ Version 2019-11-04"
   )
 
 (use-package fira-code-mode :disabled
-  :hook ((
-         prog-mode
+  :hook ((prog-mode
          gfm-mode
          markdown-mode
-         org-mode
-         ) . (lambda ()
+         org-mode)
+         . (lambda ()
                (when window-system
                  (fira-code-mode)
                  )
@@ -988,12 +987,10 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   )
 
 (use-package add-node-modules-path :ensure t
-  :hook (
-         js-mode
+  :hook (js-mode
          typescript-mode
          web-mode
-         vue-mode
-         )
+         vue-mode)
   )
 
 (use-package eslint-fix :ensure t
@@ -2062,8 +2059,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package smart-mode-line :ensure t)
 
 (use-package hide-mode-line :ensure t
-  :hook ((
-          dired-mode
+  :hook ((dired-mode
           dired-sidebar-mode
           gist-list-mode
           git-commit-mode
@@ -2073,8 +2069,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
           org-agenda-mode
           org-capture-mode
           org-export-stack-mode
-          quickrun--mode
-          ) . hide-mode-line-mode)
+          quickrun--mode)
+         . hide-mode-line-mode)
   )
 
 (use-package beacon :ensure t
