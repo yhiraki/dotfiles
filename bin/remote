@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ -z "$REMOTE_WORKSPACE" ]
-then
+if [ -z "$REMOTE_WORKSPACE" ]; then
   echo Set env REMOTE_WORKSPACE 1>&2
   exit 1
 fi
@@ -10,8 +9,7 @@ fi
 PWD_REL=$(echo $(pwd) | sed -e s:$HOME:~:)
 CMD="cd $PWD_REL"
 
-if [ $# -eq 0 ]
-then
+if [ $# -eq 0 ]; then
   CMD="$CMD && bash"
 else
   CMD="$CMD && $*"
