@@ -1708,7 +1708,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     ("f" hydra-file-open/body "find file")
     ("g" hydra-git/body "git")
     ("h" hydra-help/body "help")
-    ("k" kill-this-buffer "kill buffer")
+    ("k" (message "Disabled. use :bw") "kill buffer")
     ("n" hydra-narrow/body "narrow")
     ("o" hydra-org/body "org")
     ("q" nil "quit")
