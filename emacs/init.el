@@ -88,12 +88,14 @@ Version 2019-11-04"
     (shell-command "open ."))
   )
 
-(use-package startup :no-require
-  :custom
-  (confirm-kill-emacs nil)
+(use-package yes-no :no-require
+  :config
+  (fset 'yes-or-no-p 'y-or-n-p)
+  )
+
+(use-package startup :no-require ; cannot require
   :config
   (setq inhibit-startup-message t)
-  (fset 'yes-or-no-p 'y-or-n-p)
   )
 
 (use-package diminish :ensure t)
@@ -107,23 +109,39 @@ Version 2019-11-04"
   )
 
 (use-package scroll :no-require
+  :config
+  (setq scroll-conservatively 1)
+  )
+
+(use-package scroll-bar
+  :config
+  (scroll-bar-mode 0)
+  )
+
+(use-package mwheel
   :custom
   (mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
   (mouse-wheel-progressive-speed nil) ; don't accelerate scrolling
   (mouse-wheel-follow-mouse 't) ; scroll window under mouse
-  :config
-  (setq scroll-conservatively 1)
-  (scroll-bar-mode 0)
   )
 
-(use-package menu :no-require
+(use-package frame
+  :custom
+  (initial-frame-alist
+        (append
+         '((ns-transparent-titlebar . t) ;; タイトルバーを透過
+           (vertical-scroll-bars . nil) ;; スクロールバーを消す
+           (ns-appearance . dark) ;; 26.1 {light, dark}
+           (internal-border-width . 0) ;; 余白を消す
+           ))
+        )
   :config
   (menu-bar-mode -1)
   (tool-bar-mode -1)
-  (column-number-mode t)
+  (setq default-frame-alist initial-frame-alist)
   )
 
-(use-package cursor :no-require
+(use-package paren
   :config
   (show-paren-mode 1) ;; 対応する括弧を光らせる
   )
@@ -184,14 +202,12 @@ Version 2019-11-04"
   (modify-syntax-entry ?_ "w" (standard-syntax-table)) ; 単語境界をvim風に
   )
 
-(use-package meta-key :no-require
+(use-package ns-win
   :config
-  (when (eq system-type 'darwin)
-    (setq mac-option-modifier 'meta)
-    )
+  (setq mac-option-modifier 'meta)
   )
 
-(use-package font :no-require
+(use-package faces
   :config
   ;; Osaka + Menlo
   ;; (when (eq system-type 'darwin)
@@ -218,11 +234,16 @@ Version 2019-11-04"
   ;; |　　　　　|😀😀😀😀😀😀| ; TODO: 絵文字の幅がおかしい
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
+  )
 
+(use-package mule-cmds :no-require ; cannot require
+  :config
   ;; unicode の一部を1文字幅として扱う
   ;; "┃" : git-gutter
   ;; "│" : highlight-indent-guides
   (set-language-environment "English")
+  ;; magitでの文字化け対策
+  (prefer-coding-system 'utf-8)
   )
 
 (use-package fira-code-mode :disabled
@@ -237,16 +258,11 @@ Version 2019-11-04"
                ))
   )
 
-(use-package encoding :no-require
-  :config
-  ;; magitでの文字化け対策
-  (prefer-coding-system 'utf-8)
-  )
-
 (use-package files
   :custom
-  (require-final-newline t)
+  (confirm-kill-emacs nil)
   (find-file-visit-truename t)
+  (require-final-newline t)
   :config
   (setq save-silently t)
   )
@@ -358,36 +374,6 @@ Version 2019-11-04"
 (use-package s :ensure t)
 
 (use-package f :ensure t)
-
-;; mac port 版の emacs のみ
-(use-package ime :no-require :disabled
-  :init
-  (add-hook 'evil-normal-state-entry-hook
-            '(lambda ()
-               (mac-toggle-input-method nil)))
-  (add-hook 'evil-normal-state-entry-hook 'mac-change-language-to-us)
-  ;; ミニバッファを開いたときに英字にする（閉じてもモードは戻らない）
-  (add-hook 'minibuffer-setup-hook 'mac-change-language-to-us)
-  :config
-  ;; http://blog.ichiroc.in/entry/2013/09/06/075832
-  ;; Google日本語入力をベースにする
-  ;; これがないと(mac-toggle-input-method t) で、ことえりが有効になってしまう。
-  (mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
-  )
-
-(use-package appearance :no-require
-  :custom
-  (initial-frame-alist
-        (append
-         '((ns-transparent-titlebar . t) ;; タイトルバーを透過
-           (vertical-scroll-bars . nil) ;; スクロールバーを消す
-           (ns-appearance . dark) ;; 26.1 {light, dark}
-           (internal-border-width . 0) ;; 余白を消す
-           ))
-        )
-  :config
-  (setq default-frame-alist initial-frame-alist)
-  )
 
 (use-package emojify :ensure t :disabled
   :hook (after-init . global-emojify-mode)
@@ -1687,8 +1673,8 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     )
 
   (defhydra hydra-find-dotfiles (:exit t)
-    ("z" (progn (interactive) (find-file "~/.config/zsh/.zshrc")) ".zshrc")
-    ("e" (progn (interactive) (find-file user-init-file)) "init.el")
+    ("z" (find-file "~/.config/zsh/.zshrc") ".zshrc")
+    ("e" (find-file user-init-file) "init.el")
     )
 
   (defhydra hydra-narrow (:exit t)
