@@ -42,12 +42,12 @@ fsql() {
   )"
 }
 
-find-dir() {
+find-file() {
   local d="${1//~/$HOME}"
   echo "$d$(
-    find '$d' 2>/dev/null |
-      sed -e 's:^$d/\?:/:' |
-      ${FF_CMD}
+    find "$d" 2>/dev/null |
+      sed -e "s:^$d/\?:/:" |
+      ff
   )"
 }
 
