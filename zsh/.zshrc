@@ -67,10 +67,6 @@ done
 command -v direnv >/dev/null &&
   eval "$(direnv hook zsh)"
 
-# zsh-autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
-bindkey '^ ' autosuggest-accept
-
 # path sort by string length
 export PATH=$(echo "$PATH" |
   tr : '\n' |
