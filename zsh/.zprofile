@@ -74,3 +74,14 @@ if ! kill -s 0 "$SSH_AGENT_PID"; then
   ssh-add
   source "$SSH_AGENT_RC"
 fi
+
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+
+export PY_TMUX_PANE_OPTIONS__GIT_CWD='fg=#bfbfbf'
+export PY_TMUX_PANE_OPTIONS__GIT_STATUS_ICONS='fg=red'
+export PY_TMUX_PANE_ICON__PYTHON=' '
+export PY_TMUX_PANE_ICON__GITHUB=' '
+export PY_TMUX_PANE_ICON__BITBUCKET=' '
+export PY_TMUX_PANE_ICON__BRANCH=''
+
+echo '.zprofile loaded'

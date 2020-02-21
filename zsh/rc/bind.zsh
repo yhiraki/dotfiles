@@ -16,3 +16,6 @@ bindkey -M viins '^R'  search-history-incremental
 bindkey -M viins '^U'  backward-kill-line
 bindkey -M viins '^W'  backward-kill-word
 bindkey -M viins '^Y'  yank
+
+# zsh-autosuggestions
+bindkey '^ ' autosuggest-accept
