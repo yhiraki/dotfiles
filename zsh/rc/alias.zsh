@@ -3,8 +3,8 @@ alias ....='cd ../../..'
 
 alias ls="ls --color=auto -F"
 
-alias -g dlf='$(find-dir ~/Downloads)'
-alias -g junkf='$(find-dir ~/.cache/junkfile/)'
-alias -g repof='$(find-dir $(select-repo))'
+alias -g dlf='$(find-file ~/Downloads)'
+alias -g junkf='$(find-file ~/.cache/junkfile/)'
+alias -g repof='$(find-file $(select-repo))'
 
 alias -g bra='$(basename $(branch-name))'
