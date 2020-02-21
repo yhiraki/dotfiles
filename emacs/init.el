@@ -1692,7 +1692,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
     )
 
   (defhydra hydra-narrow (:exit t)
-    ("b" org-narrow-to-block "blodk")
+    ("b" org-narrow-to-block "block")
     ("e" org-narrow-to-element "element")
     ("f" narrow-to-defun "defun")
     ("s" org-narrow-to-subtree "subtree")
