@@ -82,9 +82,7 @@ setopt prompt_subst
 # autoload -U promptinit && promptinit
 autoload -U compinit && compinit -C
 
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
+XDG_CONFIG_HOME="$HOME/.config"
+XDG_CACHE_HOME="$HOME/.cache"
 
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-
-echo .zshenv loaded
+ZDOTDIR="$XDG_CONFIG_HOME/zsh"
