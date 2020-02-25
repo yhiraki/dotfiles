@@ -1403,6 +1403,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (sh-indent-for-case-alt '+)
   :mode
   ("\\.?sh\\'" . shell-script-mode)
+  ("\\.?shrc.*\\'" . shell-script-mode)
   )
 
 (use-package shfmt :straight
