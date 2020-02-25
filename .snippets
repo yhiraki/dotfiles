@@ -1,4 +1,8 @@
 awk '$5 >= 100 { print }' #| $5 greater than or equal to 100
+awk '$5 ~ /hoge/'         #| $5 matches regexp
+awk 'BEGIN{ i=0 } { print ++i,$0 } END{ print "(" i ")" }' #| print with line number
+awk 'NR>1'                #| exclude header line
+awk '{print gsub(/a/, "b", $0)}' #| count ocuurences of a and replace it to b
 sed -e '/\/\*/,/\*\//d'   #| delete multiline comment (C, JavaScript...)
 sed -e '/^#/d'            #| delete singleline comment (sh, Python...)
 sed -e '/^$/d'            #| delete blank line
