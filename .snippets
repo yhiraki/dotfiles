@@ -1,0 +1,6 @@
+awk '$5 >= 100 { print }' #| $5 greater than or equal to 100
+sed -e '/\/\*/,/\*\//d'   #| delete multiline comment (C, JavaScript...)
+sed -e '/^#/d'            #| delete singleline comment (sh, Python...)
+sed -e '/^$/d'            #| delete blank line
+sed -e '1,3d'             #| delete line 1 to 3
+sed -e '1d'               #| delete line 1
