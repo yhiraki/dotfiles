@@ -19,3 +19,5 @@ bindkey -M viins '^Y'  yank
 
 # zsh-autosuggestions
 bindkey '^ ' autosuggest-accept
+
+bindkey '^X^R' find-snippet

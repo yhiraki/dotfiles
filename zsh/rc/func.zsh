@@ -1,3 +1,10 @@
+insert-buffer() {
+  local arg
+  arg="$1"
+  RBUFFER="${arg}${RBUFFER}"
+  CURSOR+=${#arg}
+}
+
 ff() {
   ${FF_CMD} ${FF_OPTIONS}
 }
@@ -50,6 +57,16 @@ find-file() {
       ff
   )"
 }
+
+find-snippet() {
+  local c
+  c="｜"
+  insert-buffer "$(
+    sed -e '/^#/d' -e '/^$/d' -e 's/#|/'$c'/' ~/.snippets | ff |
+      sed -e 's/ *'$c'.*$//'
+  )"
+}
+zle -N find-snippet
 
 # 失敗した History は記録しない
 # エスケープを含むhistoryが改変されるので無効化
