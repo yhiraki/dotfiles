@@ -1,3 +1,10 @@
+# Buffer operation helper
+
+ignore-history() {
+  BUFFER=" ${BUFFER}"
+  CURSOR+=1
+}
+
 insert-buffer() {
   local arg
   arg="$1"
@@ -5,28 +12,37 @@ insert-buffer() {
   CURSOR+=${#arg}
 }
 
+replace-buffer(){
+  BUFFER="$1"
+  CURSOR+=$#BUFFER
+}
+
+
+# Fuzzy finder
+
 ff() {
   ${FF_CMD} ${FF_OPTIONS}
 }
 
-search-history-incremental() {
-  BUFFER=$(history -n 1 | awk '!a[$0]++' | ff)
-  CURSOR=$#BUFFER
-  zle reset-prompt
-}
-zle -N search-history-incremental
-
-select-repo() {
+ff-select-repo() {
   echo "$(ghq root)/$(ghq list | ff)"
 }
 
-repo() {
-  cd "$(select-repo)" || exit
+ff-branch-name() {
+  git branch -a | ff | tail -c +3
 }
 
-branch-name() {
-  git branch -a | ff
+ff-find-file() {
+  local d="${1//~/$HOME}"
+  echo "$d$(
+    find "$d" 2>/dev/null |
+      sed -e "s:^$d/\?:/:" |
+      ff
+  )"
 }
+
+
+# cli
 
 gitroot() {
   cd "$(git rev-parse --show-toplevel)" || exit
@@ -49,16 +65,20 @@ fsql() {
   )"
 }
 
-find-file() {
-  local d="${1//~/$HOME}"
-  echo "$d$(
-    find "$d" 2>/dev/null |
-      sed -e "s:^$d/\?:/:" |
-      ff
-  )"
+repo() {
+  cd "$(ff-select-repo)" || exit
 }
 
-find-snippet() {
+
+# Widgets
+
+widget-search-history-incremental() {
+  replace-buffer "$(history -n 1 | awk '!a[$0]++' | ff)"
+  zle reset-prompt
+}
+zle -N widget-search-history-incremental
+
+widget-find-snippet() {
   local c
   c="｜"
   insert-buffer "$(
@@ -66,33 +86,40 @@ find-snippet() {
       sed -e 's/ *'$c'.*$//'
   )"
 }
-zle -N find-snippet
+zle -N widget-find-snippet
 
-# 失敗した History は記録しない
-# エスケープを含むhistoryが改変されるので無効化
-# http://someneat.hatenablog.jp/entry/2017/07/25/073428
-# begin
-# __record_command() {
-#   typeset -g _LASTCMD=${1%%$'\n'}
-#   return 1
-# }
-# zshaddhistory_functions+=(__record_command)
+widget-branch-name() {
+  insert-buffer "$(ff-branch-name)"
+  ignore-history
+}
+zle -N widget-branch-name
 
-# __update_history() {
-#   local last_status="$?"
+widget-find-download-file(){
+  insert-buffer "$(ff-find-file ~/Downloads)"
+  ignore-history
+}
+zle -N widget-find-download-file
 
-#   # hist_ignore_space
-#   if [[ ! -n ${_LASTCMD%% *} ]]; then
-#     return
-#   fi
+widget-find-junkfile(){
+  insert-buffer "$(ff-find-file ~/.cache/junkfile/)"
+  ignore-history
+}
+zle -N widget-find-junkfile
 
-#   # hist_reduce_blanks
-#   local cmd_reduce_blanks=$(echo ${_LASTCMD} | tr -s ' ')
+widget-find-repo-file(){
+  insert-buffer "$(ff-find-file $(ff-select-repo))"
+  ignore-history
+}
+zle -N widget-find-repo-file
 
-#   # Record the commands that have succeeded
-#   if [[ ${last_status} == 0 ]]; then
-#     print -sr -- "${cmd_reduce_blanks}"
-#   fi
-# }
-# precmd_functions+=(__update_history)
-# end
+widget-find-current-repo-file(){
+  insert-buffer "$(gitroot && ff-find-file .)"
+  ignore-history
+}
+zle -N widget-find-current-repo-file
+
+widget-find-file(){
+  insert-buffer "$(ff-find-file .)"
+  ignore-history
+}
+zle -N widget-find-file
