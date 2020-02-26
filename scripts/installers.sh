@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 install_emacs() {
-  local version
-  version=${1:=26.3}
+  local version="$1"
+  version="${version:=26.3}"
   case "${OSNAME}" in
   osx)
     brew cask install emacs@${version}
