@@ -16,7 +16,8 @@ install_emacs() {
       brew cask install emacs
       ;;
     linux)
-      sudo add-apt-repository ppa:kelleyk/emacs
+      sudo add-apt-repository -y ppa:kelleyk/emacs
+      sudo apt-get update
       case "${version}" in
         25*) sudo apt-get install -y emacs25=${version}* ;;
         26*) sudo apt-get install -y emacs26=${version}* ;;
