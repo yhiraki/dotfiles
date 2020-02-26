@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 setup_env() {
-  declare OSNAME
-
   _ostype() {
     case $(uname | tr '[:upper:]' '[:lower:]') in
       linux*) echo linux ;;
@@ -13,6 +11,8 @@ setup_env() {
   }
   OSNAME="$(_ostype)"
   unset -f _ostype
+
+  export OSNAME
 }
 
 setup_package_manager() {
