@@ -10,8 +10,8 @@ install_emacs() {
   linux)
     sudo add-apt-repository ppa:kelleyk/emacs
     case "${version}" in
-      25*) apt-get install -y emacs25=${version}* ;;
-      26*) apt-get install -y emacs26=${version}* ;;
+      25*) sudo apt-get install -y emacs25=${version}* ;;
+      26*) sudo apt-get install -y emacs26=${version}* ;;
       *) exit 1
     esac
     ;;
