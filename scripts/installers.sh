@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+install_essentials () {
+  case "${OSNAME}" in
+    osx) ;;
+    linux) sudo apt-get install -y git ;;
+  esac
+}
+
 install_emacs() {
   local version="$1"
   version="${version:=26.3}"
