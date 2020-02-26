@@ -22,8 +22,9 @@ jobs:
     - name: Setup emacs
       run: |
         source scripts/setup.sh
+        source scripts/install/emacs.sh
         setup()
-        ./scripts/install/emacs.sh
+        install_emacs()
     - name: Launch emacs
       run: |
         emacs -l emacs/init.el -batch

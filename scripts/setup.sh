@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 setup_env() {
   _ostype() {
     case $(uname | tr '[:upper:]' '[:lower:]') in
