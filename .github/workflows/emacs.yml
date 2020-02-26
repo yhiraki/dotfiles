@@ -5,7 +5,7 @@ on:
     paths:
       - ".github/workflows/emacs.yml"
       - "emacs/**/*.el"
-      - "scripts/**/*"
+      - "scripts/*"
 
 jobs:
   build:
