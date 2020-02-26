@@ -30,7 +30,7 @@ install_emacs() {
 install_zsh () {
   case "${OSNAME}" in
     osx) brew install zsh ;;
-    linnx) sudo apt-get install -y zsh ;;
+    linux) sudo apt-get install -y zsh ;;
     *) exit 1 ;;
   esac
 }
