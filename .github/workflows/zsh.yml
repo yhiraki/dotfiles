@@ -1,0 +1,32 @@
+name: zsh
+
+on:
+  push:
+    paths:
+      - ".github/workflows/emacs.yml"
+      - "zsh/"
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 4
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup zsh
+      run: |
+        source scripts/setup.sh
+        source scripts/installers.sh
+        setup
+        install_essentials
+        install_zsh
+    - name: Launch zsh
+      run: |
+        mkdir -p ~/.config/zsh
+        ln -s zsh/.zshenv ~/.config/zsh
+        ln -s zsh/.zprofile ~/.config/zsh
+        zsh -l zsh/.zshrc
