@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: case
+# key: case
+# --
+case ${"\${OSNAME}"} in
+  ${osx) brew install emacs ;;}
+esac

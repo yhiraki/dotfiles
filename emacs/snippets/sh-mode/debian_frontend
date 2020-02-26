@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: debian_frontend
+# key: debian_frontend
+# https://www.debian.org/releases/sarge/s390/ch05s02.html.ja
+# --
+export DEBIAN_FRONTEND=noninteractive
