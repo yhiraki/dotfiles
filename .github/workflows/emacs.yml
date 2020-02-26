@@ -24,7 +24,7 @@ jobs:
         source scripts/setup.sh
         source scripts/installers.sh
         setup
-        install_emacs
+        install_emacs ${{ matrix.emacs-version }}
     - name: Launch emacs
       run: |
         emacs -l emacs/init.el -batch
