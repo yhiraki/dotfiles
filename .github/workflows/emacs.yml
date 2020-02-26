@@ -1,0 +1,27 @@
+name: Emacs
+
+on:
+  push:
+    paths:
+      - ".github/workflows/emacs.yml"
+      - "emacs/**/*.el"
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 4
+      matrix:
+        os: [macos-latest]
+        emacs-verion: [26.3]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup emacs
+      run: |
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        brew cask install emacs
+    - name: Launch emacs
+      run: |
+        emacs -l emacs/init.el -batch
