@@ -203,6 +203,7 @@ Version 2019-11-04"
   )
 
 (use-package ns-win
+  :if darwin-p
   :config
   (setq mac-option-modifier 'meta)
   )
