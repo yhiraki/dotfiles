@@ -20,8 +20,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: Setup emacs
       run: |
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        brew cask install emacs
+        source scripts/setup.sh
+        setup()
+        ./scripts/install/emacs.sh
     - name: Launch emacs
       run: |
         emacs -l emacs/init.el -batch
