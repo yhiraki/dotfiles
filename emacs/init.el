@@ -222,7 +222,7 @@ Version 2019-11-04"
   ;; Cica
   (set-face-attribute 'default nil
                       :family "Cica"
-                      :height 140
+                      :height 160
                       )
 
   ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
