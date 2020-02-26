@@ -1063,7 +1063,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")))
+   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
 
   :config
@@ -1138,6 +1138,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
+     ("MEETING" :foreground "blue" :weight bold)
      ))
 )
 
