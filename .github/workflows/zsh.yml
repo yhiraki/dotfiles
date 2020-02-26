@@ -3,8 +3,9 @@ name: zsh
 on:
   push:
     paths:
-      - ".github/workflows/emacs.yml"
+      - ".github/workflows/zsh.yml"
       - "zsh/"
+      - "scripts/*"
 
 jobs:
   build:
