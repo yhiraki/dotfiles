@@ -1138,7 +1138,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
-     ("MEETING" :foreground "blue" :weight bold)
+     ("MEETING" :foreground "light blue" :weight bold)
      ))
 )
 
@@ -2009,7 +2009,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package color-theme-sanityinc-tomorrow :ensure t)
 
-(use-package smart-mode-line :ensure t)
+(use-package smart-mode-line :ensure t
+  :custom
+  (sml/no-confirm-load-theme t)
+  )
 
 (use-package hide-mode-line :ensure t
   :hook ((dired-mode
@@ -2242,5 +2245,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :custom
   (custom-file (concat user-emacs-directory "custom.el"))
   :config
-  (load custom-file)
+  (when (file-exists-p custom-file)
+    (load custom-file))
   )
