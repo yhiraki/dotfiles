@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/emacs.yml"
       - "emacs/**/*.el"
+      - "scripts/*"
 
 jobs:
   build:
@@ -13,15 +14,18 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
         emacs-verion: [26.3]
 
     steps:
     - uses: actions/checkout@v1
     - name: Setup emacs
       run: |
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-        brew cask install emacs
+        source scripts/setup.sh
+        source scripts/installers.sh
+        setup
+        install_essentials
+        install_emacs ${{ matrix.emacs-version }}
     - name: Launch emacs
       run: |
         emacs -l emacs/init.el -batch

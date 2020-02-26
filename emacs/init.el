@@ -203,6 +203,7 @@ Version 2019-11-04"
   )
 
 (use-package ns-win
+  :if darwin-p
   :config
   (setq mac-option-modifier 'meta)
   )
@@ -717,18 +718,8 @@ Version 2019-11-04"
   :commands (ivy-ghq-open)
   )
 
-(use-package path :no-require
-  :config
-  (defun set-exec-path-from-shell-PATH ()
-    "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
-
-This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
-    (interactive)
-    (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-      (setenv "PATH" path-from-shell)
-      (setq exec-path (split-string path-from-shell path-separator))))
-
-  (set-exec-path-from-shell-PATH)
+(use-package exec-path-from-shell :ensure t
+  :init (exec-path-from-shell-initialize)
   )
 
 (use-package pangu-spacing :ensure t
@@ -1313,7 +1304,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
         ("C-c g" . org-mac-grab-link)
         ))
 
-(use-package org-trello :ensure t
+(use-package org-trello :ensure t :disabled
   ;; https://org-trello.github.io/usage.html#automatic-org-trello-files-in-emacs
   :hook
   (org-mode
@@ -1409,6 +1400,7 @@ This is particularly useful under Mac OSX, where GUI apps are not started from a
 
 (use-package shfmt :straight
   (shfmt :type git :host github :repo "amake/shfmt.el")
+  :if (executable-find "shfmt")
   :after evil
 
   :custom
