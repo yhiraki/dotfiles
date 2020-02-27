@@ -1,5 +1,5 @@
-configure_tmux () {
-  if ! command -v tmux > /dev/null; then
+configure_tmux() {
+  if ! command -v tmux >/dev/null; then
     return
   fi
 
@@ -12,7 +12,7 @@ configure_tmux () {
   fi
 
   function my_refresh_tmux_status() {
-    if [[ -n $TMUX ]]; then
+    if [[ -n "$TMUX" ]]; then
       tmux refresh-client -S
     fi
   }
