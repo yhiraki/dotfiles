@@ -1,10 +1,12 @@
 autoload -Uz add-zsh-hook
 
-if [[ -z "$TMUX" ]]; then
-  if tmux list-session >/dev/null; then
-    exec tmux a
-  else
-    exec tmux new-session
+if command -v tmux > /dev/null; then
+  if [[ -z "$TMUX" ]]; then
+    if tmux list-session >/dev/null; then
+      exec tmux a
+    else
+      exec tmux new-session
+    fi
   fi
 fi
 
