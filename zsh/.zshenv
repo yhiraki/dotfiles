@@ -71,11 +71,6 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # 単語の一部として扱われる文字
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-# zmvの設定
-# http://mollifier.hatenablog.com/entry/20101227/
-autoload -Uz zmv
-alias zmv='noglob zmv -W'
-
 # 色を使う
 setopt prompt_subst
 
