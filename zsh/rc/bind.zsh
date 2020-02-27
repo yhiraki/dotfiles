@@ -41,4 +41,4 @@ bindkey -M viins '\egb' widget-branch-name
 bindkey -M viins '\egf' widget-find-current-repo-file
 bindkey -M viins '\egg' widget-find-repo-file
 
-bindkey '^X^R' find-snippet
+bindkey '^X^R' widget-find-snippet
