@@ -1,47 +1,15 @@
 autoload -Uz add-zsh-hook
 
-if command -v tmux > /dev/null; then
-  if [[ -z "$TMUX" ]]; then
-    if tmux list-session >/dev/null; then
-      exec tmux a
-    else
-      exec tmux new-session
-    fi
-  fi
-fi
-
-function my_refresh_tmux_status() {
-  if [[ -n $TMUX ]]; then
-    tmux refresh-client -S
-  fi
-}
-add-zsh-hook periodic my_refresh_tmux_status
-
-case ${OSTYPE} in
-  darwin*)
-    EMACSCLIENT="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-
-    function emacsclient-gui() {
-      local filename=$1
-      bash -c "$EMACSCLIENT -c -a '' $filename &"
-    }
-
-    alias e='$EMACSCLIENT -nw -a ""'
-    alias ge=emacsclient-gui
-    ;;
-  linux*) ;;
-
-  msys*)
-    if command -v start >/dev/null; then
-      function mstart() {
-        for arg in "$@"; do
-          start "$arg"
-        done
-      }
-      alias start=mstart
-    fi
-    ;;
-esac
+plugins_local=(
+  tmux.zsh
+  func.zsh
+  alias.zsh
+  bind.zsh
+  os.zsh
+)
+for p in "${plugins_local[@]}"; do
+  source "$ZDOTDIR/rc/$p"
+done
 
 plugins_repo=(
   paulirish/git-open
@@ -54,15 +22,6 @@ plugins_repo=(
 GHQROOT=$(ghq root)
 for p in "${plugins_repo[@]}"; do
   source $GHQROOT/github.com/$p/*.plugin.zsh
-done
-
-plugins_local=(
-  func.zsh
-  alias.zsh
-  bind.zsh
-)
-for p in "${plugins_local[@]}"; do
-  source "$ZDOTDIR/rc/$p"
 done
 
 # direnv setup
