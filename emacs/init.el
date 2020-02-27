@@ -1129,7 +1129,7 @@ Version 2019-11-04"
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
-     ("MEETING" :foreground "light blue" :weight bold)
+     ("MEETING" :foreground "sky blue" :weight bold)
      ))
 )
 
