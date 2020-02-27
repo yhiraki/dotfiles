@@ -1,28 +1,34 @@
 autoload -Uz add-zsh-hook
 
-plugins_local=(
-  tmux.zsh
-  func.zsh
-  alias.zsh
-  bind.zsh
-  os.zsh
-)
-for p in "${plugins_local[@]}"; do
-  source "$ZDOTDIR/rc/$p"
-done
+load_plugins() {
+  plugins_local=(
+    tmux.zsh
+    func.zsh
+    alias.zsh
+    bind.zsh
+    os.zsh
+  )
+  for p in "${plugins_local[@]}"; do
+    source "$ZDOTDIR/rc/$p"
+  done
 
-plugins_repo=(
-  paulirish/git-open
-  robbyrussell/oh-my-zsh/plugins/git
-  zsh-users/zsh-autosuggestions
-  zsh-users/zsh-completions
-  zsh-users/zsh-syntax-highlighting
-  yhiraki/zsh-simple-prompt
-)
-GHQROOT=$(ghq root)
-for p in "${plugins_repo[@]}"; do
-  source $GHQROOT/github.com/$p/*.plugin.zsh
-done
+  command -v ghq >/dev/null || return
+
+  plugins_repo=(
+    paulirish/git-open
+    robbyrussell/oh-my-zsh/plugins/git
+    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-completions
+    zsh-users/zsh-syntax-highlighting
+    yhiraki/zsh-simple-prompt
+  )
+  root=$(ghq root)
+  for p in "${plugins_repo[@]}"; do
+    source $root/github.com/$p/*.plugin.zsh
+  done
+}
+load_plugins
+unset -f load_plugins
 
 # direnv setup
 command -v direnv >/dev/null &&
