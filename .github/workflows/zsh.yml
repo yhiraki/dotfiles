@@ -28,7 +28,7 @@ jobs:
         install_zsh
     - name: Launch zsh
       run: |
-        mkdir -p ~/.config/zsh
-        ln -s zsh/.zshenv ~/.config/zsh
-        ln -s zsh/.zprofile ~/.config/zsh
-        zsh -l zsh/.zshrc
+        mkdir -p ~/.config
+        ln -s zsh/.zshrc ~/
+        ln -s zsh/ ~/.config/zsh
+        zsh -l
