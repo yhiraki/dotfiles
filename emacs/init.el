@@ -2235,6 +2235,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package cus-edit
+  :hook (kill-emacs-hook . (lambda () (delete-file custom-file)))
   :custom
   (custom-file (concat user-emacs-directory "custom.el"))
   :config
