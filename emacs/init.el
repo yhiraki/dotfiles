@@ -1054,7 +1054,7 @@ Version 2019-11-04"
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)" "MEETING(m)")))
+   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "AGENDA(a)" "|" "DONE(d)" "CANCELLED(c)" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
 
   :config
@@ -1129,6 +1129,7 @@ Version 2019-11-04"
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
+     ("AGENDA" :foreground "sky blue" :weight bold)
      ("MEETING" :foreground "sky blue" :weight bold)
      ))
 )
