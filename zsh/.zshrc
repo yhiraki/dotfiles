@@ -47,6 +47,11 @@ export PATH=$(echo "$PATH" |
 command -v zprof >/dev/null &&
   zprof
 
+# https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+# https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
+fpath=($ZDOTDIR/completion $fpath)
+autoload -Uz compinit && compinit -i
+
 # zmodload zsh/zprof && zprof
 
 # Make status code '0'
