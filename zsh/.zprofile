@@ -59,6 +59,7 @@ export PIPENV_VENV_IN_PROJECT=true
 # export FF_CMD='gof'
 # export FF_OPTIONS='-f -i "^(\\.git|\\.hg|\\.svn|_darcs|\\.bzr|\\.pyc|\\.venv)$"'
 export FF_CMD='fzf'
+export FF_OPTIONS='--no-sort --bind=ctrl-k:kill-line'
 
 export SSH_AGENT_RC=/tmp/ssh-agent-rc
 

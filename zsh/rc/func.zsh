@@ -21,7 +21,7 @@ replace-buffer(){
 # Fuzzy finder
 
 ff() {
-  ${FF_CMD} ${FF_OPTIONS}
+  eval "${FF_CMD} ${FF_OPTIONS}"
 }
 
 ff-select-repo() {
