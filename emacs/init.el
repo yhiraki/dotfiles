@@ -894,11 +894,6 @@ Version 2019-11-04"
     :override t)
   (quickrun-set-default "c++" "c++/g++")
 
-  (quickrun-add-command "python3"
-    '((:command . "python3")
-      (:compile-only . "flake8 %s")))
-  (quickrun-set-default "python" "python3")
-
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
     :override t)
@@ -1378,6 +1373,18 @@ Version 2019-11-04"
   (evil-define-key 'visual python-mode-map
     (kbd "\\i") 'py-isort-region
     )
+  )
+
+(use-package auto-virtualenvwrapper :ensure t
+  :hook (python-mode . auto-virtualenvwrapper-activate)
+  :config
+  (defun quickrun-auto-virtualenvwrapper-find-executalbe (command)
+    (concat (auto-virtualenvwrapper-find-virtualenv-path) "bin/" command))
+
+  (quickrun-add-command "python-venv"
+    '((:command . (lambda() (quickrun-auto-virtualenvwrapper-find-executalbe "python3")))
+      (:compile-only . (lambda () (quickrun-auto-virtualenvwrapper-find-executalbe "flake8 %s"))))
+    :default "python")
   )
 
 (use-package py-yapf :ensure t
