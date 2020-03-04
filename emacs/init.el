@@ -1186,7 +1186,7 @@ Version 2019-11-04"
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "C++"))))
+    (not (member lang '("elisp" "python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "C++"))))
 
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("console" . sh) org-src-lang-modes)
@@ -1194,7 +1194,7 @@ Version 2019-11-04"
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
+   '((emacs-lisp . t) (python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
    )
 
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
