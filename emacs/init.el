@@ -1219,11 +1219,12 @@ Version 2019-11-04"
   )
 
 (use-package ob-python
-  :after ob
-  :custom
-  (org-babel-python-command "python3")
-  :config
-  (push '(:session . "default") org-babel-default-header-args:python)
+  :after (ob auto-virtualenvwrapper)
+  :hook (org-mode
+         . (lambda ()
+             (setq-local
+              org-babel-python-command
+              (quickrun-auto-virtualenvwrapper-find-executalbe "python"))))
   )
 
 (use-package ob-C
