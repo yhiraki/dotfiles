@@ -85,4 +85,6 @@ export PY_TMUX_PANE_ICON__GITHUB=' '
 export PY_TMUX_PANE_ICON__BITBUCKET=' '
 export PY_TMUX_PANE_ICON__BRANCH=''
 
+export SPL_PROMPT_NOTIFY_TIME_MIN=10000
+
 echo '.zprofile loaded'
