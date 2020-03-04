@@ -1253,9 +1253,8 @@ Version 2019-11-04"
 
 (use-package org-capture
   :commands org-capture
-
-  :config
-  (setq org-capture-templates
+  :custom
+  (org-capture-templates
         '(
           ("i" "Inbox\t\t- Add entry to Inbox"
            entry (file+headline "~/org/inbox.org" "Inbox")
