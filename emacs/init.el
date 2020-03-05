@@ -693,7 +693,6 @@ Version 2019-11-04"
   :after ivy)
 
 (use-package ivy-rich :ensure t
-  :after (ivy counsel)
   :hook (ivy-mode . ivy-rich-mode)
   )
 
@@ -704,7 +703,7 @@ Version 2019-11-04"
   )
 
 (use-package swiper :ensure t
-  :commands swiper
+  :commands (swiper swiper-isearch)
   )
 
 (use-package ivy-ghq :straight
@@ -716,7 +715,7 @@ Version 2019-11-04"
   :init (exec-path-from-shell-initialize)
   )
 
-(use-package pangu-spacing :ensure t
+(use-package pangu-spacing :ensure t :disabled
   :custom
   ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
   ;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
@@ -738,10 +737,11 @@ Version 2019-11-04"
 
 (use-package twittering-mode :ensure t
   :commands (twit)
-  :init
+  :custom
   ;; master-password を設定する際に注意すること
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
-  (setq twittering-use-master-password t))
+  (twittering-use-master-password t)
+  )
 
 (use-package lsp-mode :ensure t
   :hook ((c++-mode
@@ -1010,6 +1010,13 @@ Version 2019-11-04"
     (kbd "\\qr") 'quickrun-region
     )
   )
+
+(use-package xref
+  :bind
+  (:map xref--xref-buffer-mode-map
+        ("j" . #'xref-next-line)
+        ("k" . #'xref-prev-line)
+        ))
 
 (use-package view
   :after evil
@@ -1859,7 +1866,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :bind
   (:map evil-normal-state-map
-        ("/" . 'swiper)
+        ("/" . 'swiper-isearch)
         ("C-a" . evil-numbers/inc-at-pt)
         ;; ("C-x" . evil-numbers/dec-at-pt)
         ("C-j" . 'evil-forward-paragraph)
@@ -1901,11 +1908,12 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (evil-declare-change-repeat 'company-complete)
 
   ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
-  (evil-set-initial-state 'org-agenda-mode 'emacs)
-  (evil-set-initial-state 'snippet-mode 'insert)
-  (evil-set-initial-state 'org-capture-mode 'insert)
   (evil-set-initial-state 'gist-list-mode 'insert)
   (evil-set-initial-state 'git-timemachine-mode 'emacs)
+  (evil-set-initial-state 'org-agenda-mode 'emacs)
+  (evil-set-initial-state 'org-capture-mode 'insert)
+  (evil-set-initial-state 'snippet-mode 'insert)
+  (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
