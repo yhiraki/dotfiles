@@ -1378,12 +1378,16 @@ Version 2019-11-04"
 (use-package auto-virtualenvwrapper :ensure t
   :hook (python-mode . auto-virtualenvwrapper-activate)
   :config
-  (defun quickrun-auto-virtualenvwrapper-find-executalbe (command)
-    (concat (auto-virtualenvwrapper-find-virtualenv-path) "bin/" command))
+  (defun find-virtualenv-executalbe (command)
+    (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
+      (if path
+          (concat path "bin/" command)
+        (let ((exe (executable-find command)))
+              (if exe exe command)))))
 
   (quickrun-add-command "python-venv"
-    '((:command . (lambda() (quickrun-auto-virtualenvwrapper-find-executalbe "python3")))
-      (:compile-only . (lambda () (quickrun-auto-virtualenvwrapper-find-executalbe "flake8 %s"))))
+    '((:command . (lambda() (find-virtualenv-executalbe "python3")))
+      (:compile-only . (lambda () (concat (find-virtualenv-executalbe "flake8") " %s"))))
     :default "python")
   )
 
