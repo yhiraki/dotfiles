@@ -171,19 +171,12 @@ Version 2019-11-04"
   )
 
 (use-package autorevert
-  :config
-  (global-auto-revert-mode t)
+  :hook (after-init . global-auto-revert-mode)
   )
 
 (use-package executable
-  :config
-  (add-hook 'after-save-hook
-            'executable-make-buffer-file-executable-if-script-p) ; shegang を見て自動で +x する
-  )
-
-(use-package display-line-numbers
-  ;; :hook (prog-mode . display-line-numbers-mode)
-  ;; :config (setq display-line-numbers-type 'relative)
+  ;; shegang を見て自動で +x する
+  :hook (after-save . executable-make-buffer-file-executable-if-script-p)
   )
 
 (use-package cc-vars
@@ -382,11 +375,14 @@ Version 2019-11-04"
 
 (use-package dired
   :after evil
+
   :hook
-  (dired-mode . dired-hide-details-mode)
+  (dired-mode
+   . (lambda()
+       (dired-hide-details-mode 1)
+       (setq-local line-spacing 3)))
+
   :config
-  (add-hook 'dired-mode-hook
-            '(lambda() (setq line-spacing 3)) t t)
   (evil-define-key 'normal dired-mode-map
     (kbd "C-j") 'dired-next-dirline
     (kbd "C-k") 'dired-prev-dirline
@@ -395,6 +391,7 @@ Version 2019-11-04"
     (kbd "gg") 'evil-goto-first-line
     (kbd "go") 'my-open-in-external-app
     )
+
   :bind
   (:map dired-mode-map
         ("G" . nil) ; 何故かハングアップするので無効化
@@ -406,6 +403,7 @@ Version 2019-11-04"
   :commands (dired-sidebar-toggle-sidebar)
   :custom
   (dired-sidebar-theme 'icons)
+
   :config
   (evil-define-key 'normal dired-sidebar-mode-map
     (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
@@ -422,10 +420,6 @@ Version 2019-11-04"
   (:map dired-mode-map
         ("e" . wdired-change-to-wdired-mode))
   :custom (wdired-allow-to-change-permissions t)
-  )
-
-(use-package diredfl :ensure t :disabled
-  :config (diredfl-global-mode 1)
   )
 
 (use-package flymake
@@ -793,10 +787,16 @@ Version 2019-11-04"
 
 (use-package company :ensure t
   :diminish company-mode
-  :hook (after-init
-         . (lambda()
-              (global-company-mode)
-              (company-tng-configure-default)))
+  :hook
+  ;; evil でも動くようにする
+  ;; https://github.com/expez/company-quickhelp/issues/63
+  (company-completion-started
+   . (lambda (&rest ignore)
+       (when evil-mode
+         (when (evil-insert-state-p)
+           (define-key evil-insert-state-map (kbd "C-n") nil)
+           (define-key evil-insert-state-map (kbd "C-p") nil)
+           ))))
 
   :custom
   (company-auto-complete nil)
@@ -813,18 +813,6 @@ Version 2019-11-04"
   (company-tooltip-limit 10)
   (completion-ignore-case t)
 
-  :config
-  ;; evil でも動くようにする
-  ;; https://github.com/expez/company-quickhelp/issues/63
-  (add-hook
-   'company-completion-started-hook
-   '(lambda (&rest ignore)
-     (when evil-mode
-       (when (evil-insert-state-p)
-         (define-key evil-insert-state-map (kbd "C-n") nil)
-         (define-key evil-insert-state-map (kbd "C-p") nil)
-         ))))
-
   :bind
   (:map company-active-map
         ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
@@ -836,15 +824,9 @@ Version 2019-11-04"
   (:map company-search-map
         ("C-n" . 'company-select-next)
         ("C-p" . 'company-select-previous)
-
-        ;; tab and go のため再割り当て
-        ;; ("RET" . 'company-complete)
-        ;; ([return] . 'company-complete)
         )
   )
 
-;; company tab and go が動かないのでしばらく無効化
-;; https://github.com/company-mode/company-mode/pull/706
 (use-package company-box :ensure t :disabled
   :hook (company-mode . company-box-mode)
   :custom
@@ -1181,6 +1163,8 @@ Version 2019-11-04"
   )
 
 (use-package ob
+  :hook
+  (org-babel-after-execute . org-display-inline-images)
   :custom
   (org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
   :config
@@ -1196,8 +1180,6 @@ Version 2019-11-04"
    'org-babel-load-languages
    '((emacs-lisp . t) (python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
    )
-
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
   )
 
 (use-package ob-plantuml
@@ -1219,12 +1201,13 @@ Version 2019-11-04"
   )
 
 (use-package ob-python
-  :after (ob auto-virtualenvwrapper)
   :hook (org-mode
          . (lambda ()
-             (setq-local
-              org-babel-python-command
-              (quickrun-auto-virtualenvwrapper-find-executalbe "python"))))
+             (use-package auto-virtualenvwrapper
+               :config
+               (setq-local
+                org-babel-python-command
+                (find-virtualenv-executable "python3")))))
   )
 
 (use-package ob-C
@@ -1237,10 +1220,10 @@ Version 2019-11-04"
 
 (use-package ob-async :ensure t
   :after ob
-  :config
-  (add-hook 'ob-async-pre-execute-src-block-hook
-        '(lambda ()
-           (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
+  :hook
+  (ob-async-pre-execute-src-block
+   . (lambda ()
+       (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
   )
 
 (use-package ob-ipython :ensure t :disabled
@@ -1378,7 +1361,7 @@ Version 2019-11-04"
 (use-package auto-virtualenvwrapper :ensure t
   :hook (python-mode . auto-virtualenvwrapper-activate)
   :config
-  (defun find-virtualenv-executalbe (command)
+  (defun find-virtualenv-executable (command)
     (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
       (if path
           (concat path "bin/" command)
@@ -1386,8 +1369,8 @@ Version 2019-11-04"
               (if exe exe command)))))
 
   (quickrun-add-command "python-venv"
-    '((:command . (lambda() (find-virtualenv-executalbe "python3")))
-      (:compile-only . (lambda () (concat (find-virtualenv-executalbe "flake8") " %s"))))
+    '((:command . (lambda() (find-virtualenv-executable "python3")))
+      (:compile-only . (lambda () (concat (find-virtualenv-executable "flake8") " %s"))))
     :default "python")
   )
 
@@ -1436,20 +1419,22 @@ Version 2019-11-04"
 (use-package sql-indent :ensure t
   :after sql
   :commands sqlind-setup
-  :init
-  (add-hook 'sqlind-minor-mode-hook
-            '(lambda ()
-              (setq sqlind-indentation-offsets-alist
-                    my-sql-indentation-offsets-alist)))
-  (add-hook 'sql-mode-hook
-            '(lambda ()
-              (sqlind-minor-mode)
-              (sql-set-product "postgres")
-              ))
-  (add-hook 'sql-interactive-mode-hook
-            '(lambda ()
-              (toggle-truncate-lines t)))
 
+  :hook
+  (sqlind-minor-mode
+   . (lambda ()
+      (setq-local sqlind-indentation-offsets-alist
+            my-sql-indentation-offsets-alist)))
+  (sql-mode
+   . (lambda ()
+      (sqlind-minor-mode)
+      (sql-set-product "postgres")))
+  (sql-interactive-mode
+   . (lambda ()
+       (toggle-truncate-lines t)
+       (sqli-add-hooks)))
+
+  :init
   ;; https://github.com/xlighting/happy-emacs.d/blob/12e8369cd7934600703b61bb1c278d77dab0c3a2/modules/init-sql.el
   (defun sql-add-newline-first (output)
     "In a SQLi buffer,The table formatting is ugly because the top boundary of the
@@ -1459,7 +1444,7 @@ Version 2019-11-04"
     "Add hooks to `sql-interactive-mode-hook'."
     (add-hook 'comint-preoutput-filter-functions
               'sql-add-newline-first))
-  (add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
+
   :config
   (setq sql-indent-offset 2)
   (defvar my-sql-indentation-offsets-alist
@@ -1544,12 +1529,14 @@ Version 2019-11-04"
   (web-mode-sql-indent-offset 2)
   (web-mode-style-padding 0)
   (web-mode-script-padding 0)
+
   :config
   (evil-define-key 'normal web-mode-map
     (kbd "\\R") 'web-mode-element-rename
     (kbd "zc") 'web-mode-fold-or-unfold
     (kbd "zo") 'web-mode-fold-or-unfold
     )
+
   :mode
   ("\\.[agj]sp\\'" . web-mode)
   ("\\.as[cp]x\\'" . web-mode)
@@ -1565,12 +1552,14 @@ Version 2019-11-04"
   :after evil
   :mode
   ("\\.vue\\'" . vue-mode)
+
   :hook
   (vue-mode
    . (lambda ()
        (setq syntax-ppss-table nil)
        (add-hook 'after-save-hook 'mmm-parse-buffer nil t)
        ))
+
   :config
   (evil-define-key 'normal vue-mode-map
     (kbd "\\f") 'eslint-fix
@@ -1615,13 +1604,14 @@ Version 2019-11-04"
   )
 
 (use-package smartrep :ensure t
-  :after evil
-  :config
-  (smartrep-define-key evil-normal-state-map
-      "C-c" '(("+" . 'evil-numbers/inc-at-pt)
-              ("=" . 'evil-numbers/inc-at-pt)
-              ("-" . 'evil-numbers/dec-at-pt)
-              ))
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (smartrep-define-key evil-normal-state-map
+           "C-c" '(("+" . 'evil-numbers/inc-at-pt)
+                   ("=" . 'evil-numbers/inc-at-pt)
+                   ("-" . 'evil-numbers/dec-at-pt)
+                   ))))
   )
 
 (use-package hydra :ensure t
@@ -1919,70 +1909,49 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
-  :after evil
-  :init
-  (add-hook 'dired-mode-hook 'my-rename-dired-buffer)
-  :config
-  ;; https://www.reddit.com/r/emacs/comments/8rg6zk/question_add_dired_buffers_to_evil_jump_list/
-  (defun my-rename-dired-buffer ()
-    (interactive)
-    (unless (string-match-p "Dired:" (buffer-name))
-      (rename-buffer (concat "Dired:" (buffer-name)))))
+  :hook
+  (dired-mode . my-rename-dired-buffer)
+  (evil-after-load
+   . (lambda ()
+       ;; https://www.reddit.com/r/emacs/comments/8rg6zk/question_add_dired_buffers_to_evil_jump_list/
+       (defun my-rename-dired-buffer ()
+         (interactive)
+         (unless (string-match-p "Dired:" (buffer-name))
+           (rename-buffer (concat "Dired:" (buffer-name)))))
 
-  (setq evil--jumps-buffer-targets "\\(\\*\\(\\new\\|scratch\\)\\*\\|Dired:.+\\)")
-  (evil-add-command-properties #'dired-find-file :jump t)
+       (setq evil--jumps-buffer-targets "\\(\\*\\(\\new\\|scratch\\)\\*\\|Dired:.+\\)")
+       (evil-add-command-properties #'dired-find-file :jump t)
+       ))
   )
 
 (use-package evil-surround :ensure t
-  :after evil
-  :config
-  (global-evil-surround-mode 1)
+  :hook (after-init . global-evil-surround-mode)
   )
 
 (use-package evil-magit :ensure t
-  :after (evil magit)
-
-  ;; :config
-  ;; (defun my/echo-disabled ()
-  ;;   "Echo disabled."
-  ;;   (interactive)
-  ;;   (message "Disabled")
-  ;;   )
-
-  ;; (evil-define-key 'normal magit-mode-map
-  ;;   (kbd "x") 'my/echo-disabled
-  ;;   )
-  ;; (evil-define-key 'visual magit-mode-map
-  ;;   (kbd "x") 'my/echo-disabled
-  ;;   )
+  :hook (magit-mode . evil-magit-init)
   )
 
 (use-package evil-commentary :ensure t
   :diminish evil-commentary-mode
-  :after evil
-  :config
-  (evil-commentary-mode)
+  :hook (after-init . evil-commentary-mode)
   )
 
 (use-package evil-matchit :ensure t
-  :after evil
-  :config
-  (global-evil-matchit-mode 1)
+  :hook (after-init . global-evil-matchit-mode)
   )
 
 (use-package evil-lion :ensure t
-  :after evil
-  :config
-  (evil-lion-mode)
+  :hook (after-init . evil-lion-mode)
   )
 
 (use-package evil-escape :ensure t
-  :after evil
+  :hook (after-init . evil-escape-mode)
   )
 
 (use-package evil-numbers :straight
   (evil-numbers :type git :host github :repo "janpath/evil-numbers")
-  :after evil
+  :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   )
 
 (use-package popwin :ensure t
@@ -2093,7 +2062,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (after-init . yas-global-mode)
   (yas-minor-mode
    . (lambda ()
-       (setq yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
+       (setq-local yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
        ))
   (yas-before-expand-snippet . evil-insert-state)
 
@@ -2119,14 +2088,15 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   ;;   )
   ;; (add-hook 'company-mode-hook 'set-yas-as-company-backend)
 
-  ;; company tab and go 経由だと確定時に展開してくれないので return をバインドする
-  ;; yas-maybe-expand を :bind で設定する方法がわからん…
-  (define-key yas-minor-mode-map (kbd "RET") yas-maybe-expand)
 
   :bind
   (:map yas-keymap
         ("<tab>" . nil)
         ("RET" . yas-next-field-or-maybe-expand))
+  ;; (:map yas-minor-mode-map
+  ;;       ;; company tab and go 経由だと確定時に展開してくれないので return をバインドする
+  ;;       ;; yas-maybe-expand を :bind で設定する方法がわからん…
+  ;;       ("RET" . yas-maybe-expand))
   )
 
 (use-package google-this :ensure t
@@ -2246,10 +2216,12 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package cus-edit
-  :hook (kill-emacs-hook . (lambda () (delete-file custom-file)))
+  :hook
+  (after-init
+   . (lambda ()
+       (when (file-exists-p custom-file)
+         (load custom-file))))
+  (kill-emacs . (lambda () (delete-file custom-file)))
   :custom
   (custom-file (concat user-emacs-directory "custom.el"))
-  :config
-  (when (file-exists-p custom-file)
-    (load custom-file))
   )
