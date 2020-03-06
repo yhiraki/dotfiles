@@ -374,23 +374,21 @@ Version 2019-11-04"
   )
 
 (use-package dired
-  :after evil
-
   :hook
   (dired-mode
    . (lambda()
        (dired-hide-details-mode 1)
        (setq-local line-spacing 3)))
-
-  :config
-  (evil-define-key 'normal dired-mode-map
-    (kbd "C-j") 'dired-next-dirline
-    (kbd "C-k") 'dired-prev-dirline
-    (kbd "G") 'evil-goto-line
-    (kbd "SPC") 'hydra-global-leader/body
-    (kbd "gg") 'evil-goto-first-line
-    (kbd "go") 'my-open-in-external-app
-    )
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal dired-mode-map
+         (kbd "C-j") 'dired-next-dirline
+         (kbd "C-k") 'dired-prev-dirline
+         (kbd "G") 'evil-goto-line
+         (kbd "SPC") 'hydra-global-leader/body
+         (kbd "gg") 'evil-goto-first-line
+         (kbd "go") 'my-open-in-external-app
+         )))
 
   :bind
   (:map dired-mode-map
@@ -399,16 +397,18 @@ Version 2019-11-04"
   )
 
 (use-package dired-sidebar :ensure t
-  :after evil
   :commands (dired-sidebar-toggle-sidebar)
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal dired-sidebar-mode-map
+         (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
+         (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
+         )))
+
   :custom
   (dired-sidebar-theme 'icons)
-
-  :config
-  (evil-define-key 'normal dired-sidebar-mode-map
-    (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
-    (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
-    )
   )
 
 (use-package all-the-icons-dired :ensure t
@@ -437,10 +437,22 @@ Version 2019-11-04"
   )
 
 (use-package flycheck :ensure t
-  :after evil
-  :hook ((plantuml-mode
-          sh-mode)
-         . flycheck-mode)
+  :hook
+  ((plantuml-mode
+    sh-mode)
+   . flycheck-mode)
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal flycheck-error-list-mode-map
+         (kbd "F") 'flycheck-error-list-reset-filter
+         (kbd "RET") 'flycheck-error-list-goto-error
+         (kbd "f") 'flycheck-error-list-set-filter
+         (kbd "j") 'flycheck-error-list-next-error
+         (kbd "k") 'flycheck-error-list-previous-error
+         (kbd "n") 'flycheck-error-list-next-error
+         (kbd "p") 'flycheck-error-list-previous-error
+         (kbd "q") 'quit-window
+         )))
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
@@ -471,17 +483,6 @@ Version 2019-11-04"
   ;;   :modes python-mode)
 
   ;; (push 'python-pycodestyle flycheck-checkers)
-
-  (evil-define-key 'normal flycheck-error-list-mode-map
-    (kbd "F") 'flycheck-error-list-reset-filter
-    (kbd "RET") 'flycheck-error-list-goto-error
-    (kbd "f") 'flycheck-error-list-set-filter
-    (kbd "j") 'flycheck-error-list-next-error
-    (kbd "k") 'flycheck-error-list-previous-error
-    (kbd "n") 'flycheck-error-list-next-error
-    (kbd "p") 'flycheck-error-list-previous-error
-    (kbd "q") 'quit-window
-    )
   )
 
 (use-package flyspell
@@ -579,24 +580,25 @@ Version 2019-11-04"
   )
 
 (use-package git-timemachine :ensure t
-  :after evil
-  :config
-  (evil-define-key 'normal git-timemachine-mode-map
-    ;; Navigate
-    (kbd "p") 'git-timemachine-show-previous-revision
-    (kbd "n") 'git-timemachine-show-next-revision
-    (kbd "g") 'git-timemachine-show-nth-revision
-    (kbd "t") 'git-timemachine-show-revision-fuzzy
-    ;; Kill current revision
-    (kbd "w") 'git-timemachine-kill-abbreviated-revision
-    (kbd "W") 'git-timemachine-kill-revision
-    ;; Misc
-    (kbd "b") 'git-timemachine-blame
-    (kbd "c") 'git-timemachine-show-commit
-    (kbd "?") 'git-timemachine-help
-    (kbd "q") 'git-timemachine-quit
+  :hook
+    (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal git-timemachine-mode-map
+         ;; Navigate
+         (kbd "p") 'git-timemachine-show-previous-revision
+         (kbd "n") 'git-timemachine-show-next-revision
+         (kbd "g") 'git-timemachine-show-nth-revision
+         (kbd "t") 'git-timemachine-show-revision-fuzzy
+         ;; Kill current revision
+         (kbd "w") 'git-timemachine-kill-abbreviated-revision
+         (kbd "W") 'git-timemachine-kill-revision
+         ;; Misc
+         (kbd "b") 'git-timemachine-blame
+         (kbd "c") 'git-timemachine-show-commit
+         (kbd "?") 'git-timemachine-help
+         (kbd "q") 'git-timemachine-quit
+         )))
     )
-  )
 
 (use-package git-gutter+ :ensure t
   :diminish
@@ -616,26 +618,27 @@ Version 2019-11-04"
   )
 
 (use-package gist :ensure
-  :after evil
-  :config
-  (evil-define-key 'normal gist-list-menu-mode-map
-    (kbd "RET") 'gist-fetch-current
-    (kbd "*") 'gist-star
-    (kbd "+") 'gist-add-buffer
-    (kbd "-") 'gist-remove-file
-    (kbd "^") 'gist-unstar
-    (kbd "b") 'gist-browse-current-url
-    (kbd "e") 'gist-edit-current-description
-    (kbd "f") 'gist-fork
-    (kbd "r") 'gist-list-reload
-    (kbd "K") 'gist-kill-current
-    (kbd "y") 'gist-print-current-url
-    (kbd "<tab>") 'gist-fetch-current-noselect
-    (kbd "q") 'quit-window
-    ;; ("/p" gist-list-push-visibility-limit)
-    ;; ("/t" gist-list-push-tag-limit)
-    ;; ("/w" gist-list-pop-limit)
-    )
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal gist-list-menu-mode-map
+         (kbd "RET") 'gist-fetch-current
+         (kbd "*") 'gist-star
+         (kbd "+") 'gist-add-buffer
+         (kbd "-") 'gist-remove-file
+         (kbd "^") 'gist-unstar
+         (kbd "b") 'gist-browse-current-url
+         (kbd "e") 'gist-edit-current-description
+         (kbd "f") 'gist-fork
+         (kbd "r") 'gist-list-reload
+         (kbd "K") 'gist-kill-current
+         (kbd "y") 'gist-print-current-url
+         (kbd "<tab>") 'gist-fetch-current-noselect
+         (kbd "q") 'quit-window
+         ;; ("/p" gist-list-push-visibility-limit)
+         ;; ("/t" gist-list-push-tag-limit)
+         ;; ("/w" gist-list-pop-limit)
+         )))
   )
 
 (use-package browse-at-remote :ensure t)
@@ -856,8 +859,15 @@ Version 2019-11-04"
   )
 
 (use-package quickrun :ensure t
-  :after evil
   :commands quickrun
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal quickrun--mode-map
+         (kbd "q") 'evil-window-delete
+         )
+       ))
 
   :custom
   (quickrun-timeout-seconds 30)
@@ -879,10 +889,6 @@ Version 2019-11-04"
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
     :override t)
-
-  (evil-define-key 'normal quickrun--mode-map
-    (kbd "q") 'evil-window-delete
-    )
   )
 
 (use-package csharp-mode :ensure t
@@ -913,18 +919,22 @@ Version 2019-11-04"
   :commands clang-format-buffer)
 
 (use-package go-mode :ensure t
-  :after evil
   :mode ("\\.go\\'" . go-mode)
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal go-mode-map
+         (kbd "\\f") 'gofmt
+         )
+       (evil-define-key 'visual go-mode-map
+         (kbd "\\f") 'gofmt
+         )
+       ))
+
   :custom
   (gofmt-command "goimports")
-  :config
-  (evil-define-key 'normal go-mode-map
-    (kbd "\\f") 'gofmt
-    )
-  (evil-define-key 'visual go-mode-map
-    (kbd "\\f") 'gofmt
-    )
-)
+  )
 
 (use-package go-eldoc :ensure t
   :hook (go-mode . go-eldoc-setup)
@@ -963,52 +973,57 @@ Version 2019-11-04"
   )
 
 (use-package json-mode :ensure t
-  :after evil
-  :config
-  (evil-define-key 'normal json-mode-map
-    (kbd "\\f") 'json-pretty-print-buffer
-    )
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal json-mode-map
+         (kbd "\\f") 'json-pretty-print-buffer
+         )
+       ))
   )
 
 (use-package markdown-mode :ensure t
-  :after evil
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal markdown-mode-map
+         (kbd "zc") 'markdown-hide-subtree
+         (kbd "zo") 'markdown-show-subtree
+         (kbd "TAB") 'markdown-cycle
+         )))
+
   :custom
   (markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
   (markdown-gfm-use-electric-backquote nil)
+
   :mode
   ("\\.markdown\\'" . markdown-mode)
   ("\\.md\\'" . markdown-mode)
   ("README\\.md\\'" . gfm-mode)
-  :config
-  (evil-define-key 'normal markdown-mode-map
-    (kbd "zc") 'markdown-hide-subtree
-    (kbd "zo") 'markdown-show-subtree
-    (kbd "TAB") 'markdown-cycle
-    )
   )
 
 (use-package prog-mode
-  :after evil
-  :config
-  (evil-define-key 'normal prog-mode-map
-    (kbd "[e") 'flycheck-previous-error
-    (kbd "]e") 'flycheck-next-error
-    (kbd "\\f") 'lsp-format-buffer
-    (kbd "\\m") 'lsp-ui-imenu
-    (kbd "\\qa") 'quickrun-autorun-mode
-    (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
-    (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
-    (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
-    (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
-    (kbd "gd") 'xref-find-definitions
-    (kbd "gr") 'xref-find-references
-    ;; (kbd "K") 'eglot-help-at-point
-    )
-  (evil-define-key 'visual prog-mode-map
-    (kbd "\\f") 'lsp-format-region
-    (kbd "\\r") 'quickrun-region
-    (kbd "\\qr") 'quickrun-region
-    )
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal prog-mode-map
+         (kbd "[e") 'flycheck-previous-error
+         (kbd "]e") 'flycheck-next-error
+         (kbd "\\f") 'lsp-format-buffer
+         (kbd "\\m") 'lsp-ui-imenu
+         (kbd "\\qa") 'quickrun-autorun-mode
+         (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
+         (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
+         (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
+         (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
+         (kbd "gd") 'xref-find-definitions
+         (kbd "gr") 'xref-find-references
+         )
+       (evil-define-key 'visual prog-mode-map
+         (kbd "\\f") 'lsp-format-region
+         (kbd "\\r") 'quickrun-region
+         (kbd "\\qr") 'quickrun-region
+         )))
   )
 
 (use-package xref
@@ -1019,11 +1034,12 @@ Version 2019-11-04"
         ))
 
 (use-package view
-  :after evil
-  :config
-  (evil-define-key 'normal view-mode-map
-    (kbd "q") 'View-quit
-    )
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal view-mode-map
+         (kbd "q") 'View-quit
+         )))
   )
 
 (use-package edit-indirect :ensure t
@@ -1031,7 +1047,51 @@ Version 2019-11-04"
   )
 
 (use-package org :ensure org-plus-contrib
-  :after (evil hydra)
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal org-mode-map
+         (kbd "C-j") 'org-next-visible-heading
+         (kbd "C-k") 'org-previous-visible-heading
+         (kbd "M-h") 'org-metaleft
+         (kbd "M-j") 'org-metadown
+         (kbd "M-k") 'org-metaup
+         (kbd "M-l") 'org-metaright
+         (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+         (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+         (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
+         (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
+         (kbd "t") 'org-todo
+         (kbd "<") 'org-metaleft
+         (kbd ">") 'org-metaright
+         (kbd "\\g") 'org-mac-grab-link
+         (kbd "\\i") 'org-clock-in
+         (kbd "\\p") 'org-priority
+         (kbd "\\q") 'org-set-tags-command
+         (kbd "\\s") 'org-schedule
+         (kbd "\\t") 'org-todo
+         (kbd "\\v") 'org-toggle-inline-images
+         (kbd "\\xp") 'org-set-property
+         (kbd "gh") 'outline-up-heading
+         (kbd "gp") 'outline-previous-heading
+         (kbd "\\ \\") 'hydra-outline/body
+         )
+
+       (evil-define-key 'insert org-mode-map
+         (kbd "M-j") 'org-metadown
+         (kbd "M-k") 'org-metaup
+         (kbd "M-h") 'org-metaleft
+         (kbd "M-l") 'org-metaright
+         (kbd "RET") 'org-return-indent
+         )
+
+       (evil-define-key 'visual org-mode-map
+         (kbd "M-j") 'org-metadown
+         (kbd "M-k") 'org-metaup
+         (kbd "M-h") 'org-metaleft
+         (kbd "M-l") 'org-metaright
+         )))
+
   :custom
   (org-directory "~/org/")
   (org-startup-with-inline-images nil)
@@ -1061,48 +1121,6 @@ Version 2019-11-04"
   ;; =C-M-m= to add/remove tag
   ;; =C-M-j= to fix tags
   (global-set-key [remap org-set-tags-command] #'counsel-org-tag)
-
-  (evil-define-key 'normal org-mode-map
-    (kbd "C-j") 'org-next-visible-heading
-    (kbd "C-k") 'org-previous-visible-heading
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-j") 'org-metadown
-    (kbd "M-k") 'org-metaup
-    (kbd "M-l") 'org-metaright
-    (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-    (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-    (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
-    (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
-    (kbd "t") 'org-todo
-    (kbd "<") 'org-metaleft
-    (kbd ">") 'org-metaright
-    (kbd "\\g") 'org-mac-grab-link
-    (kbd "\\i") 'org-clock-in
-    (kbd "\\p") 'org-priority
-    (kbd "\\q") 'org-set-tags-command
-    (kbd "\\s") 'org-schedule
-    (kbd "\\t") 'org-todo
-    (kbd "\\v") 'org-toggle-inline-images
-    (kbd "\\xp") 'org-set-property
-    (kbd "gh") 'outline-up-heading
-    (kbd "gp") 'outline-previous-heading
-    (kbd "\\ \\") 'hydra-outline/body
-    )
-
-  (evil-define-key 'insert org-mode-map
-    (kbd "M-j") 'org-metadown
-    (kbd "M-k") 'org-metaup
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-l") 'org-metaright
-    (kbd "RET") 'org-return-indent
-    )
-
-  (evil-define-key 'visual org-mode-map
-    (kbd "M-j") 'org-metadown
-    (kbd "M-k") 'org-metaup
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-l") 'org-metaright
-    )
 
   :mode (("\\.org\\'" . org-mode))
   )
@@ -1340,32 +1358,39 @@ Version 2019-11-04"
   )
 
 (use-package cc-mode
-  :after evil
   :mode (("\\.cpp\\'" . c++-mode))
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal c++-mode-map
+         (kbd "\\f") 'clang-format-buffer
+         )
+       (evil-define-key 'visual c++-mode-map
+         (kbd "\\f") 'clang-format-region
+         )))
+
   :config
   (setq-default sp-escape-quotes-after-insert nil)
-  (evil-define-key 'normal c++-mode-map
-    (kbd "\\f") 'clang-format-buffer
-    )
-  (evil-define-key 'visual c++-mode-map
-    (kbd "\\f") 'clang-format-region
-    )
   )
 
 (use-package python :ensure t
-  :after evil
   :mode (("\\.py\\'" . python-mode))
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal python-mode-map
+         (kbd "\\i") 'py-isort-buffer
+         ;; (kbd "\\f") 'py-yapf-buffer  ;; use lsp instead
+         )
+       (evil-define-key 'visual python-mode-map
+         (kbd "\\i") 'py-isort-region
+         )))
+
   :custom
   (python-shell-interpreter "python3")
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
-  :config
-  (evil-define-key 'normal python-mode-map
-    (kbd "\\i") 'py-isort-buffer
-    ;; (kbd "\\f") 'py-yapf-buffer
-    )
-  (evil-define-key 'visual python-mode-map
-    (kbd "\\i") 'py-isort-region
-    )
   )
 
 (use-package auto-virtualenvwrapper :ensure t
@@ -1406,16 +1431,18 @@ Version 2019-11-04"
 (use-package shfmt :straight
   (shfmt :type git :host github :repo "amake/shfmt.el")
   :if (executable-find "shfmt")
-  :after evil
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal sh-mode-map
+         (kbd "\\f") 'shfmt-buffer)
+       (evil-define-key 'visual sh-mode-map
+         (kbd "\\f") 'shfmt-region)
+       ))
 
   :custom
   (shfmt-arguments '("-i" "2" "-ci"))
-
-  :config
-  (evil-define-key 'normal sh-mode-map
-    (kbd "\\f") 'shfmt-buffer)
-  (evil-define-key 'visual sh-mode-map
-    (kbd "\\f") 'shfmt-region)
   )
 
 (use-package sql
@@ -1528,7 +1555,15 @@ Version 2019-11-04"
   )
 
 (use-package web-mode :ensure t
-  :after evil
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal web-mode-map
+         (kbd "\\R") 'web-mode-element-rename
+         (kbd "zc") 'web-mode-fold-or-unfold
+         (kbd "zo") 'web-mode-fold-or-unfold
+         )))
+
   :custom
   (web-mode-attr-indent-offset nil)
   (web-mode-code-indent-offset 2)
@@ -1539,13 +1574,6 @@ Version 2019-11-04"
   (web-mode-sql-indent-offset 2)
   (web-mode-style-padding 0)
   (web-mode-script-padding 0)
-
-  :config
-  (evil-define-key 'normal web-mode-map
-    (kbd "\\R") 'web-mode-element-rename
-    (kbd "zc") 'web-mode-fold-or-unfold
-    (kbd "zo") 'web-mode-fold-or-unfold
-    )
 
   :mode
   ("\\.[agj]sp\\'" . web-mode)
@@ -1559,7 +1587,6 @@ Version 2019-11-04"
   )
 
 (use-package vue-mode :ensure t
-  :after evil
   :mode
   ("\\.vue\\'" . vue-mode)
 
@@ -1569,11 +1596,11 @@ Version 2019-11-04"
        (setq syntax-ppss-table nil)
        (add-hook 'after-save-hook 'mmm-parse-buffer nil t)
        ))
-
-  :config
-  (evil-define-key 'normal vue-mode-map
-    (kbd "\\f") 'eslint-fix
-    )
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal vue-mode-map
+         (kbd "\\f") 'eslint-fix
+         )))
   )
 
 (use-package mmm-mode
@@ -1595,11 +1622,12 @@ Version 2019-11-04"
   )
 
 (use-package image-mode
-  :after evil
-  :config
-  (evil-define-key 'normal image-mode-map
-    (kbd "q") 'evil-quit
-    )
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal image-mode-map
+         (kbd "q") 'evil-quit
+         )))
   )
 
 (use-package emmet-mode :ensure t
