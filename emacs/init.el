@@ -2105,10 +2105,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (:map yas-keymap
         ("<tab>" . nil)
         ("RET" . yas-next-field-or-maybe-expand))
-  ;; (:map yas-minor-mode-map
-  ;;       ;; company tab and go 経由だと確定時に展開してくれないので return をバインドする
-  ;;       ;; yas-maybe-expand を :bind で設定する方法がわからん…
-  ;;       ("RET" . yas-maybe-expand))
   )
 
 (use-package google-this :ensure t
