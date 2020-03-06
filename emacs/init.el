@@ -1958,6 +1958,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil-escape :ensure t
   :hook (after-init . evil-escape-mode)
+  :diminish
   )
 
 (use-package evil-numbers :straight
