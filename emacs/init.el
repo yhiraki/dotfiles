@@ -422,20 +422,6 @@ Version 2019-11-04"
   :custom (wdired-allow-to-change-permissions t)
   )
 
-(use-package flymake
-;;   :commands flymake-mode
-;;   :custom
-;;   (flymake-error-bitmap nil)
-;;   (flymake-note-bitmap nil)
-;;   (flymake-warning-bitmap nil)
-;;   :config
-;;   flymakeが起動していてもマーカーを見えなくする。 eglotで勝手にflymakeが起動してしまう対策。
-;;   eglot--managed-mode-hook を設定したので様子見
-;;   (set-face-underline 'flymake-error nil)
-;;   (set-face-underline 'flymake-note nil)
-;;   (set-face-underline 'flymake-warning nil)
-  )
-
 (use-package flycheck :ensure t
   :hook
   ((plantuml-mode
