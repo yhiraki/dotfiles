@@ -2150,34 +2150,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package yasnippet-snippets :ensure t :disabled)
 
-(use-package popup :ensure t
-  :commands (popup-next popup-previous)
-  :init
-  ;; use popup menu for yas-choose-value
-  ;; https://www.emacswiki.org/emacs/Yasnippet
-  (defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
-    (when (featurep 'popup)
-      (popup-menu*
-       (mapcar
-        (lambda (choice)
-          (popup-make-item
-           (or (and display-fn (funcall display-fn choice))
-               choice)
-           :value choice))
-        choices)
-       :prompt prompt
-       ;; start isearch mode immediately
-       :isearch t
-       )))
-  :bind
-  (:map popup-menu-keymap
-        ("C-n" . popup-next)
-        ("TAB" . popup-next)
-        ("<tab>" . popup-next)
-        ("<backtab>" . popup-previous)
-        ("C-p" . popup-previous))
-  )
-
 (use-package autoinsert
   :hook (find-file . auto-insert)
 
