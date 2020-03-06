@@ -690,7 +690,7 @@ Version 2019-11-04"
   )
 
 (use-package ivy-hydra :ensure t
-  :after ivy)
+  :after (ivy hydra))
 
 (use-package ivy-rich :ensure t
   :hook (ivy-mode . ivy-rich-mode)
@@ -1031,14 +1031,17 @@ Version 2019-11-04"
   )
 
 (use-package org :ensure org-plus-contrib
-  :after evil
+  :after (evil hydra)
   :custom
   (org-directory "~/org/")
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "AGENDA(a)" "|" "DONE(d)" "CANCELLED(c)" "MEETING(m)")))
+   '((sequence
+      "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "AGENDA(a)"
+      "|"
+      "DONE(d)" "CANCELLED(c)" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
 
   :config
