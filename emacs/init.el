@@ -751,6 +751,7 @@ Version 2019-11-04"
   (lsp-response-timeout 1)
 
   :config
+  ;; https://github.com/seagle0128/.emacs.d/blob/50d9de85ba4ff2aa5daa2603d366cde2f3e89242/lisp/init-lsp.el#L426-L458
   (setq centaur-lsp 'lsp-mode)
   (cl-defmacro lsp-org-babel-enable (lang)
     "Support LANG in org source code block."
@@ -760,7 +761,8 @@ Version 2019-11-04"
       `(progn
          (defun ,intern-pre (info)
            (let ((filename (or (->> info caddr (alist-get :file))
-                               buffer-file-name)))
+                               buffer-file-name
+                               "*org-src-lsp*")))
              (unless filename
                (user-error "LSP:: specify `:file' property to enable."))
 
