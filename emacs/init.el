@@ -588,11 +588,9 @@ Version 2019-11-04"
 
 (use-package git-gutter+ :ensure t
   :diminish
-  )
-
-(use-package git-gutter-fringe+ :ensure t
-  :after git-gutter+
-  :hook (after-init . global-git-gutter+-mode)
+  :hook
+  ((find-file after-save after-revert) . (lambda () (git-gutter+-mode 1)))
+  ((before-save before-revert) . (lambda () (git-gutter+-mode -1)))
   :custom
   (git-gutter+-added-sign "┃")
   (git-gutter+-deleted-sign "▔")
