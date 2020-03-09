@@ -161,6 +161,11 @@ Version 2019-11-04"
   :custom-face
   (fringe ((t (:background nil))))
  )
+
+(use-package autosave :no-require
+  :config
+  (setq auto-save-timeout 10)
+  (setq auto-save-interval 100)  ;; key typing count
   )
 
 (use-package tempbuf
