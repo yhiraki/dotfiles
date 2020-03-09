@@ -156,6 +156,11 @@ Version 2019-11-04"
   (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
   (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
   ;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
+(use-package fringe
+  :custom-face
+  (fringe ((t (:background nil))))
+ )
   )
 
 (use-package tempbuf
