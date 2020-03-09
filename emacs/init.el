@@ -598,17 +598,36 @@ Version 2019-11-04"
 
 (use-package git-gutter+ :ensure t
   :diminish
+
   :hook
-  ((find-file after-save after-revert) . (lambda () (git-gutter+-mode 1)))
-  ((before-save before-revert) . (lambda () (git-gutter+-mode -1)))
+  ((find-file
+    after-save
+    after-revert
+    evil-insert-state-entry)
+   . git-gutter+-turn-on)
+  (evil-normal-state-entry
+   . git-gutter+-refresh)
+  (before-save
+   . git-gutter+-turn-off)
+
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal git-gutter+-mode-map
+         (kbd "]g") 'git-gutter+-previous-hunk
+         (kbd "[g") 'git-gutter+-next-hunk
+         (kbd "\\gs") 'git-gutter+-stage-hunks
+         (kbd "\\gr") 'git-gutter+-revert-hunks)
+       ))
+
   :custom
   (git-gutter+-added-sign "┃")
   (git-gutter+-deleted-sign "▔")
   (git-gutter+-modified-sign "┃")
+
   :custom-face
-  (git-gutter+-modified ((t (:italic nil))))
-  (git-gutter+-deleted ((t (:italic nil))))
-  (git-gutter+-added ((t (:italic nil))))
+  (git-gutter+-modified ((t (:italic nil :underline nil))))
+  (git-gutter+-deleted ((t (:italic nil :underline nil))))
+  (git-gutter+-added ((t (:italic nil :underline nil))))
   )
 
 (use-package gist :ensure
