@@ -155,7 +155,7 @@ Version 2019-11-04"
   :config
   (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
   (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
-  ;; (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+  )
 
 (use-package fringe
   :custom-face
@@ -1058,6 +1058,11 @@ Version 2019-11-04"
          (kbd "\\r") 'quickrun-region
          (kbd "\\qr") 'quickrun-region
          )))
+  )
+
+(use-package executable
+  :hook
+  (after-save . executable-make-buffer-file-executable-if-script-p)
   )
 
 (use-package xref
