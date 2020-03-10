@@ -157,6 +157,18 @@ Version 2019-11-04"
   (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
   )
 
+(use-package simple
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'process-menu-mode 'emacs)
+       ))
+  :bind
+  (:map process-menu-mode-map
+        ("j" . next-line)
+        ("k" . previous-line)
+        ))
+
 (use-package fringe
   :custom-face
   (fringe ((t (:background nil))))
