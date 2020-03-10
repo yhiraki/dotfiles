@@ -591,6 +591,7 @@ Version 2019-11-04"
   :hook
     (evil-after-load
    . (lambda ()
+       (evil-set-initial-state 'git-timemachine-mode 'emacs)
        (evil-define-key 'normal git-timemachine-mode-map
          ;; Navigate
          (kbd "p") 'git-timemachine-show-previous-revision
@@ -646,6 +647,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
+       (evil-set-initial-state 'gist-list-mode 'insert)
        (evil-define-key 'normal gist-list-menu-mode-map
          (kbd "RET") 'gist-fetch-current
          (kbd "*") 'gist-star
@@ -1097,6 +1099,12 @@ Version 2019-11-04"
   )
 
 (use-package xref
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
+       ))
+
   :bind
   (:map xref--xref-buffer-mode-map
         ("j" . #'xref-next-line)
@@ -1220,12 +1228,16 @@ Version 2019-11-04"
   :commands (org-agenda org-refile)
   :demand t
 
-  :init
-  (add-hook 'org-agenda-mode-hook
-            '(lambda()
-               (custom-set-variables
-                '(org-agenda-files
-                  (list org-directory (concat org-directory "projects"))))))
+  :hook
+  (org-agenda-mode
+   . (lambda()
+       (custom-set-variables
+        '(org-agenda-files
+          (list org-directory (concat org-directory "projects"))))))
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'org-agenda-mode 'emacs)
+       ))
 
   :custom
   (org-agenda-current-time-string "← now")
@@ -1335,6 +1347,12 @@ Version 2019-11-04"
 
 (use-package org-capture
   :commands org-capture
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'org-capture-mode 'insert)
+       ))
+
   :custom
   (org-capture-templates
         '(
@@ -2007,14 +2025,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
-
-  ;; https://gist.github.com/amirrajan/301e74dc844a4c9ffc3830dc4268f177
-  (evil-set-initial-state 'gist-list-mode 'insert)
-  (evil-set-initial-state 'git-timemachine-mode 'emacs)
-  (evil-set-initial-state 'org-agenda-mode 'emacs)
-  (evil-set-initial-state 'org-capture-mode 'insert)
-  (evil-set-initial-state 'snippet-mode 'insert)
-  (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
@@ -2175,6 +2185,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
        (setq-local yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
        ))
   (yas-before-expand-snippet . evil-insert-state)
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'snippet-mode 'insert)
+       ))
 
   :custom
   (require-final-newline nil)
