@@ -1250,8 +1250,8 @@ Version 2019-11-04"
 
   :bind
   (:map org-agenda-mode-map
-        ("j" . next-line)
-        ("k" . previous-line))
+        ("j" . org-agenda-next-item)
+        ("k" . org-agenda-previous-item))
   )
 
 (use-package japanese-holidays :ensure t
