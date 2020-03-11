@@ -733,8 +733,12 @@ Version 2019-11-04"
   )
 
 (use-package swiper :ensure t
-  :commands (swiper swiper-isearch)
-  )
+  :commands (swiper-isearch swiper-isearch-backward)
+  :bind
+  (:map evil-normal-state-map
+        ("/" . 'swiper-isearch)
+        ("?" . 'swiper-isearch-backward)
+  ))
 
 (use-package ivy-ghq :straight
   (ivy-ghq :type git :host github :repo "analyticd/ivy-ghq")
@@ -1998,10 +2002,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :bind
   (:map evil-normal-state-map
-        ("/" . 'swiper-isearch)
-        ("?" . 'swiper-isearch-backward)
-        ("C-a" . evil-numbers/inc-at-pt)
-        ;; ("C-x" . evil-numbers/dec-at-pt)
         ("C-j" . 'evil-forward-paragraph)
         ("C-k" . 'evil-backward-paragraph)
         ("C-l" . 'evil-ex-nohighlight)
@@ -2021,11 +2021,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         )
 
   (:map evil-visual-state-map
-        ("C-a" . 'evil-numbers/inc-at-pt)
-        ("C-x" . 'evil-numbers/dec-at-pt)
         ("SPC" . 'hydra-global-leader/body)
-        ("g C-a" . 'evil-numbers/inc-at-pt-incremental)
-        ("g C-x" . 'evil-numbers/dec-at-pt-incremental)
         )
 
   :custom
@@ -2086,7 +2082,17 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package evil-numbers :straight
   (evil-numbers :type git :host github :repo "janpath/evil-numbers")
   :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
-  )
+  :bind
+  (:map evil-normal-state-map
+        ("C-a" . evil-numbers/inc-at-pt)
+        ("C-x" . evil-numbers/dec-at-pt)
+        )
+  (:map evil-visual-state-map
+        ("C-a" . 'evil-numbers/inc-at-pt)
+        ("C-x" . 'evil-numbers/dec-at-pt)
+        ("g C-a" . 'evil-numbers/inc-at-pt-incremental)
+        ("g C-x" . 'evil-numbers/dec-at-pt-incremental)
+        ))
 
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
@@ -2318,7 +2324,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-z") 'universal-argument)
+  (global-set-key (kbd "C-q") 'universal-argument)
+  (global-set-key (kbd "C-s") 'Control-X-prefix)
+  )
+
+(use-package cus-edit
   )
 
 (use-package cus-edit
