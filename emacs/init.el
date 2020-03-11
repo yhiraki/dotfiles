@@ -1435,7 +1435,18 @@ Version 2019-11-04"
 (use-package ox-html
   :custom
   (org-html-htmlize-output-type 'css)
-  )
+  (org-html-mathjax-options
+   '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+     (scale "100")
+     (align "center")
+     (font "TeX")
+     (linebreaks "false")
+     (autonumber "AMS")
+     (indent "0em")
+     (multlinewidth "85%")
+     (tagindent ".8em")
+     (tagside "right"))
+   ))
 
 (use-package ox-rst :ensure t
   :after ox
