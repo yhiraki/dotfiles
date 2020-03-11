@@ -1999,6 +1999,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :bind
   (:map evil-normal-state-map
         ("/" . 'swiper-isearch)
+        ("?" . 'swiper-isearch-backward)
         ("C-a" . evil-numbers/inc-at-pt)
         ;; ("C-x" . evil-numbers/dec-at-pt)
         ("C-j" . 'evil-forward-paragraph)
