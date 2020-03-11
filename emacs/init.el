@@ -734,6 +734,7 @@ Version 2019-11-04"
 
 (use-package swiper :ensure t
   :commands (swiper-isearch swiper-isearch-backward)
+  :after evil
   :bind
   (:map evil-normal-state-map
         ("/" . 'swiper-isearch)
@@ -2082,6 +2083,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package evil-numbers :straight
   (evil-numbers :type git :host github :repo "janpath/evil-numbers")
   :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
+  :after evil
   :bind
   (:map evil-normal-state-map
         ("C-a" . evil-numbers/inc-at-pt)
