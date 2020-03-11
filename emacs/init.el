@@ -1452,6 +1452,8 @@ Version 2019-11-04"
   :after ox
   )
 
+(use-package htmlize :ensure t)
+
 (use-package electric
   :hook (python-mode . electric-indent-mode)
   )
