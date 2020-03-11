@@ -19,7 +19,7 @@ ${1:$(when (equal yas-text "js")
 "import { Vue, Component } from 'vue-property-decorator'
 
 @Component
-export default class CassName extends Vue {
+export default class ClassName extends Vue {
 }")}
 </script>
 
