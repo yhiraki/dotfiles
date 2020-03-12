@@ -872,6 +872,7 @@ Version 2019-11-04"
            (define-key evil-insert-state-map (kbd "C-n") nil)
            (define-key evil-insert-state-map (kbd "C-p") nil)
            ))))
+  (after-init . global-company-mode)
 
   :custom
   (company-auto-complete nil)
