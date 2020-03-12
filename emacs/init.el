@@ -865,13 +865,13 @@ Version 2019-11-04"
   :hook
   ;; evil でも動くようにする
   ;; https://github.com/expez/company-quickhelp/issues/63
-  (company-completion-started
-   . (lambda (&rest ignore)
-       (when evil-mode
-         (when (evil-insert-state-p)
-           (define-key evil-insert-state-map (kbd "C-n") nil)
-           (define-key evil-insert-state-map (kbd "C-p") nil)
-           ))))
+  ;; (company-completion-started
+  ;;  . (lambda (&rest ignore)
+  ;;      (when evil-mode
+  ;;        (when (evil-insert-state-p)
+  ;;          (define-key evil-insert-state-map (kbd "C-n") nil)
+  ;;          (define-key evil-insert-state-map (kbd "C-p") nil)
+  ;;          ))))
   (after-init . global-company-mode)
 
   :custom
