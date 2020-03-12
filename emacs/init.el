@@ -2331,9 +2331,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package cus-edit
-  )
-
-(use-package cus-edit
   :hook
   (after-init
    . (lambda ()
