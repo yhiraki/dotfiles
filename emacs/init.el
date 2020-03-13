@@ -2238,6 +2238,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   ;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
   ;;   )
   ;; (add-hook 'company-mode-hook 'set-yas-as-company-backend)
+
+  :bind
+  (:map yas-keymap
+        ("<tab>" . nil)
+        ("RET" . yas-next-field-or-maybe-expand))
   )
 
 (use-package google-this :ensure t
