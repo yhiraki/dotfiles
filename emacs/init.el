@@ -1814,7 +1814,7 @@ Version 2019-11-04"
 
   (defhydra hydra-emacs-operation (:exit t)
     ("e" eval-buffer "eval-buffer")
-    ("k" kill-emacs "kill emacs")
+    ("k" save-buffers-kill-emacs "kill emacs")
     ("r" restart-emacs "restart emacs")
     )
 
