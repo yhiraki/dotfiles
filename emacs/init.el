@@ -181,7 +181,12 @@ Version 2019-11-04"
   )
 
 (use-package tempbuf
-  :hook ((dired-mode magit-mode) . turn-on-tempbuf-mode)
+  :hook
+  ((dired-mode magit-mode) . turn-on-tempbuf-mode)
+  (find-file
+   . (lambda ()
+       (when (string-match "^/private/tmp\\|^/tmp" (buffer-file-name))
+         (turn-on-tempbuf-mode))))
   )
 
 (use-package vc-hooks
