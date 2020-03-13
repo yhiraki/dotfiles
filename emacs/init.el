@@ -887,7 +887,6 @@ Version 2019-11-04"
   (company-dabbrev-ignore-case t)
   (company-etags-ignore-case t)
   (company-idle-delay 0.2)
-  (company-lsp-cache-candidates 'auto)
   (company-minimum-prefix-length 2)
   (company-selection-wrap-around t)
   (company-tooltip-idle-delay 0.1)
@@ -917,6 +916,8 @@ Version 2019-11-04"
 (use-package company-lsp :ensure t
   :after (company yasnippet)
   :commands company-lsp
+  :custom
+  (company-lsp-cache-candidates 'auto)
   :config
   ;; https://github.com/tigersoldier/company-lsp/issues/103
   (push '(gopls . nil) company-lsp-filter-candidates )
