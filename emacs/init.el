@@ -1239,11 +1239,6 @@ Version 2019-11-04"
   :demand t
 
   :hook
-  (org-agenda-mode
-   . (lambda()
-       (custom-set-variables
-        '(org-agenda-files
-          (list org-directory (concat org-directory "projects"))))))
   (evil-after-load
    . (lambda ()
        (evil-set-initial-state 'org-agenda-mode 'emacs)
