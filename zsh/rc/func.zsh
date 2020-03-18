@@ -73,7 +73,7 @@ repo() {
 # Widgets
 
 widget-search-history-incremental() {
-  replace-buffer "$(history -n 1 | awk '!a[$0]++' | ff)"
+  replace-buffer "$(history -n 1 | tac | ff)"
   zle reset-prompt
 }
 zle -N widget-search-history-incremental
