@@ -1747,6 +1747,11 @@ Version 2019-11-04"
   (emmet-indent-after-insert nil)
 )
 
+(use-package text-mode
+  :mode
+  ("\\.qrinput\\'" . text-mode)
+  )
+
 (use-package gitignore-mode :ensure t
   :mode
   ("\\(\\.git\\|docker\\)ignore\\'" . gitignore-mode)
