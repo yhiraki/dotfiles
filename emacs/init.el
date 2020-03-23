@@ -1260,11 +1260,19 @@ Version 2019-11-04"
      "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
 
+  :config
+  (setq org-agenda-files (list org-directory))
+
   :bind
   (:map org-agenda-mode-map
         ("j" . org-agenda-next-item)
         ("k" . org-agenda-previous-item))
   )
+
+(use-package org-clock
+  :custom
+  (org-clock-out-remove-zero-time-clocks nil)
+   )
 
 (use-package japanese-holidays :ensure t
   :hook
