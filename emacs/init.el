@@ -1480,17 +1480,6 @@ Version 2019-11-04"
 
 (use-package cc-mode
   :mode (("\\.cpp\\'" . c++-mode))
-
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal c++-mode-map
-         (kbd "\\f") 'clang-format-buffer
-         )
-       (evil-define-key 'visual c++-mode-map
-         (kbd "\\f") 'clang-format-region
-         )))
-
   :config
   (setq-default sp-escape-quotes-after-insert nil)
   )
