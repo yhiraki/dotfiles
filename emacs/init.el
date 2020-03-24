@@ -2313,6 +2313,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
                   (("test_.*\\.py\\'" "Python test") . ["test.py" my/autoinsert-yas-expand])
                   (("setup.py\\'" "Python setup file") . "setup.py")
                   (("setup.cfg\\'" "Python setup config") . ["setup.cfg" my/autoinsert-yas-expand])
+                  (("\\.cpp\\'" "C++ setup file") . ["template.cpp" my/autoinsert-yas-expand])
                   (("\\.py\\'" "Python script") . ["template.py" my/autoinsert-yas-expand])
                   (("\\.vue\\'" "Vue") . ["template.vue" my/autoinsert-yas-expand])
                   ((plantuml-mode "Plantuml") . ["template.plantuml" my/autoinsert-yas-expand])
