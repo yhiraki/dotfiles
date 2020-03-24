@@ -801,6 +801,7 @@ Version 2019-11-04"
          . lsp)
 
   :custom
+  (lsp-auto-configure nil) ;; Avoid automatically push company-lsp to company-backends.
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
   (lsp-clients-javascript-typescript-server "typescript-language-server")
@@ -848,6 +849,9 @@ Version 2019-11-04"
 
   (lsp-org-babel-enable "python")
   )
+
+(use-package lsp-clients
+  :after lsp-mode)
 
 (use-package lsp-vetur
   :custom
@@ -921,13 +925,12 @@ Version 2019-11-04"
   )
 
 (use-package company-lsp :ensure t
-  :after (company yasnippet)
-  :commands company-lsp
+  :after (company lsp-mode)
   :custom
   (company-lsp-cache-candidates 'auto)
   :config
   ;; https://github.com/tigersoldier/company-lsp/issues/103
-  (push '(gopls . nil) company-lsp-filter-candidates )
+  (push '(gopls . nil) company-lsp-filter-candidates)
   (push 'company-lsp company-backends)
   )
 
@@ -2228,20 +2231,19 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
 
-  ;;; C-k で表示させるので無効化
   ;; YASnippet のスニペットを候補に表示するための設定
   ;; https://emacs.stackexchange.com/questions/10431/get-company-to-show-suggestions-for-yasnippet-names
-  ;; (defvar company-mode/enable-yas t
-  ;;   "Enable yasnippet for all backends.")
-  ;; (defun company-mode/backend-with-yas (backend)
-  ;;   (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-  ;;       backend
-  ;;     (append (if (consp backend) backend (list backend))
-  ;;             '(:with company-yasnippet))))
-  ;; (defun set-yas-as-company-backend ()
-  ;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-  ;;   )
-  ;; (add-hook 'company-mode-hook 'set-yas-as-company-backend)
+  (defvar company-mode/enable-yas t
+    "Enable yasnippet for all backends.")
+  (defun company-mode/backend-with-yas (backend)
+    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (defun set-yas-as-company-backend ()
+    (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+    )
+  (add-hook 'company-mode-hook 'set-yas-as-company-backend)
 
   :bind
   (:map yas-keymap
