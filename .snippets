@@ -8,3 +8,4 @@ sed -e '/^#/d'            #| delete singleline comment (sh, Python...)
 sed -e '/^$/d'            #| delete blank line
 sed -e '1,3d'             #| delete line 1 to 3
 sed -e '1d'               #| delete line 1
+npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | xargs npm -g rm  #| Uninstall all npm global packages
