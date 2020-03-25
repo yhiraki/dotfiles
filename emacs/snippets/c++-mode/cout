@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: cout
+# name: std::cout << ...
 # key: cout
 # --
 std::cout << ${"hoge"};

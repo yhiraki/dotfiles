@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: transform
-# key: transform
-# --
-std::transform(${1:data}.begin(), $1.end(), $1.begin(), ${2:tolower});$0

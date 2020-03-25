@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: cron
+# name: 0 12 * * *
 # key: cron
 # --
 ${1:$(when (string= "?" yas-text) "┌──────── Minite: 0-59\n")

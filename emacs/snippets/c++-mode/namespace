@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: namespace
+# name: using namespace ...;
 # key: ns
 # --
 using namespace ${std::literals};

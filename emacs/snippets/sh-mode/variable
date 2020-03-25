@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: variable
+# name: "${HOGE}"
 # key: $
 # --
 "\${${1:HOGE}}"$0

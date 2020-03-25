@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: cout_endl
+# name: std::cout << ... << std::endl;
 # key: coutl
 # --
 std::cout << ${"hoge"} << std::endl;
