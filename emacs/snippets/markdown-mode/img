@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: img
+# name: ![description](url)
 # key: img
 # --
 ![${description}](${url})$0

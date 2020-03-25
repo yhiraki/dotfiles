@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: while
+# name: while true; do ... done
 # key: while
 # --
 while ${1:true}; do

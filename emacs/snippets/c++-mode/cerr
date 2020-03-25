@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: cerr
+# name: std::cerr << ...
 # key: cerr
 # --
 std::cerr << ${hoge};$0
