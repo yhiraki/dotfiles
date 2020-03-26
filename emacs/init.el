@@ -1402,6 +1402,10 @@ Version 2019-11-04"
         )
   )
 
+(use-package org-checklist
+  :after org
+  )
+
 (use-package org-bullets :ensure t
   :hook (org-mode . org-bullets-mode))
 
