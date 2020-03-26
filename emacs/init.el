@@ -2110,19 +2110,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("g C-x" . 'evil-numbers/dec-at-pt-incremental)
         ))
 
-(use-package popwin :ensure t
-  :hook (after-init . popwin-mode)
-  :config
-  (push '("*Error*") popwin:special-display-config)
-  (push '("*Org Src" :regexp t) popwin:special-display-config)
-  (push '("*Help*" :position right :width 0.5) popwin:special-display-config)
-  (push '("*Org-Babel Error Output*") popwin:special-display-config)
-  (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
-  (push '("*xref*" :position bottom ) popwin:special-display-config)
-  (push '("magit:*" :regexp t :position bottom :height 0.5) popwin:special-display-config)
-  ;; (push '(image-mode) popwin:special-display-config)
-  )
-
 (use-package all-the-icons :ensure t)
 
 (use-package theme :no-require
