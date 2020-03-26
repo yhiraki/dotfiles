@@ -458,9 +458,7 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :hook
-  ((plantuml-mode
-    sh-mode)
-   . flycheck-mode)
+  ((prog-mode) . flycheck-mode)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal flycheck-error-list-mode-map
