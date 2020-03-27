@@ -1398,6 +1398,11 @@ Version 2019-11-04"
            "hugo%?")
           )
         )
+
+  :bind
+  (:map org-capture-mode-map
+        ("C-c C-k" . (lambda () (interactive) (message "Abort is disabled")))
+        )
   )
 
 (use-package org-checklist
