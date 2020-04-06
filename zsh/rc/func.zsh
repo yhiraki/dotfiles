@@ -45,7 +45,11 @@ ff-find-file() {
 # cli
 
 gitroot() {
-  cd "$(git rev-parse --show-toplevel)" || exit
+  echo "$(git rev-parse --show-toplevel)"
+}
+
+cdroot() {
+  cd "$(gitroot)" || exit
 }
 
 fsh() {
@@ -113,7 +117,7 @@ widget-find-repo-file(){
 zle -N widget-find-repo-file
 
 widget-find-current-repo-file(){
-  insert-buffer "$(gitroot && ff-find-file .)"
+  insert-buffer "$(ff-find-file $(gitroot))"
   ignore-history
 }
 zle -N widget-find-current-repo-file
