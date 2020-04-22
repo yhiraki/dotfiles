@@ -1379,7 +1379,7 @@ Version 2019-11-04"
         '(
           ("i" "Inbox\t\t- Add entry to Inbox"
            entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t\n\t")
+           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t")
 
           ("n" "Note\t\t- Taking note to source code"
            entry (file+headline "~/org/notes.org" "Notes")
