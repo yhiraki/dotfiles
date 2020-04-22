@@ -1638,6 +1638,7 @@ Version 2019-11-04"
 
   :custom
   (plantuml-default-exec-mode 'jar)
+  (plantuml-indent-level 2)
 
   :config
   ;; (setq plantuml-output-type "svg")
