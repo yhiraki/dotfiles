@@ -628,8 +628,8 @@ Version 2019-11-04"
     after-revert
     evil-insert-state-entry)
    . git-gutter+-turn-on)
-  (evil-normal-state-entry
-   . git-gutter+-refresh)
+  ;; (evil-normal-state-entry
+  ;;  . git-gutter+-refresh)
   (before-save
    . git-gutter+-turn-off)
 
