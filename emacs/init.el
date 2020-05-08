@@ -314,15 +314,6 @@ Version 2019-11-04"
   (open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
   )
 
-(use-package volatile-highlights :ensure t
-  :diminish volatile-highlights-mode
-  :hook ((prog-mode org-mode) . volatile-highlights-mode)
-  :config
-  (vhl/define-extension 'evil 'evil-paste-after 'evil-paste-before
-                        'evil-paste-pop 'evil-move)
-  (vhl/install-extension 'evil)
-  )
-
 (use-package highlight-indent-guides :ensure t
   :diminish highlight-indent-guides-mode
   :hook
@@ -2115,6 +2106,14 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("g C-a" . 'evil-numbers/inc-at-pt-incremental)
         ("g C-x" . 'evil-numbers/dec-at-pt-incremental)
         ))
+
+(use-package evil-goggles :ensure t
+  :hook (after-init . evil-goggles-mode)
+  :custom
+  (evil-goggles-duration 0.100)
+  :config
+  (evil-goggles-use-diff-faces)
+  )
 
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
