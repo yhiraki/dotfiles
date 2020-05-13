@@ -2016,7 +2016,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (:map evil-normal-state-map
         ("C-j" . 'evil-forward-paragraph)
         ("C-k" . 'evil-backward-paragraph)
-        ("C-l" . 'evil-ex-nohighlight)
         ("S-C-j" . 'evil-forward-section-begin)
         ("S-C-k" . 'evil-backward-section-begin)
         ("Y" . "y$")
