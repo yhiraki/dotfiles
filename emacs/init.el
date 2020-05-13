@@ -111,6 +111,7 @@ Version 2019-11-04"
 (use-package scroll :no-require
   :config
   (setq scroll-conservatively 1)
+  (setq scroll-margin 5)
   )
 
 (use-package scroll-bar
