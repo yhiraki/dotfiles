@@ -431,12 +431,10 @@ Version 2019-11-04"
          (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
          (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
          )))
-
-  :custom
-  (dired-sidebar-theme 'icons)
   )
 
 (use-package all-the-icons-dired :ensure t
+  :hook (dired-mode . all-the-icons-dired-mode)
   )
 
 (use-package wdired :ensure t
