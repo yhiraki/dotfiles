@@ -1149,7 +1149,9 @@ Version 2019-11-04"
          (kbd "M-k") 'org-metaup
          (kbd "M-l") 'org-metaright
          (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+         (kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
          (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+         (kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
          (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
          (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
          (kbd "t") 'org-todo
