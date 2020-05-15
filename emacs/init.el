@@ -719,6 +719,9 @@ Version 2019-11-04"
   :bind (:map ivy-minibuffer-map ([escape] . 'minibuffer-keyboard-quit))
   )
 
+(use-package all-the-icons-ivy :ensure t
+  :hook (after-init . all-the-icons-ivy-setup))
+
 (use-package ivy-hydra :ensure t
   :after (ivy hydra))
 
