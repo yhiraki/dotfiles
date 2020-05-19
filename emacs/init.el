@@ -2020,14 +2020,14 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :bind
   (:map evil-normal-state-map
+        ("<SPC>" . 'hydra-global-leader/body)
+        ("C-h" . 'evil-backward-char)
         ("C-j" . 'evil-forward-paragraph)
         ("C-k" . 'evil-backward-paragraph)
+        ("C-l" . 'redraw-display)
         ("S-C-j" . 'evil-forward-section-begin)
         ("S-C-k" . 'evil-backward-section-begin)
         ("Y" . "y$")
-        ("<SPC>" . 'hydra-global-leader/body)
-        ;; ("C-w" .'hydra-operate-window/body)
-        ;; ("C-b" . 'hydra-elscreen/body)
         )
 
   (:map evil-insert-state-map
