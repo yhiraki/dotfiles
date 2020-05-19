@@ -190,6 +190,8 @@ Version 2019-11-04"
          (turn-on-tempbuf-mode))))
   )
 
+(use-package midnight)
+
 (use-package vc-hooks
   :custom
   (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
