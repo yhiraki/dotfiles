@@ -136,9 +136,9 @@ Version 2019-11-04"
            (internal-border-width . 0) ;; 余白を消す
            ))
         )
+  (menu-bar-mode nil)
+  (tool-bar-mode nil)
   :config
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
   (setq default-frame-alist initial-frame-alist)
   )
 
