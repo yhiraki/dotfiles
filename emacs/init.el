@@ -883,10 +883,12 @@ Version 2019-11-04"
   ;;          (define-key evil-insert-state-map (kbd "C-p") nil)
   ;;          ))))
   (after-init . global-company-mode)
+  (TeX-mode . edit-category-table-for-company-dabbrev)
 
   :custom
   (company-auto-complete nil)
   (company-candidates-cache t)
+  (company-dabbrev-char-regexp "\\cs")
   (company-dabbrev-code-ignore-case t)
   (company-dabbrev-downcase nil)
   (company-dabbrev-ignore-case t)
@@ -897,6 +899,19 @@ Version 2019-11-04"
   (company-tooltip-idle-delay 0.1)
   (company-tooltip-limit 10)
   (completion-ignore-case t)
+
+  :config
+  ;; company-dabbrevで日本語を補完しない
+  ;; https://qiita.com/wktkshn/items/3ac46671d1c242a59f7e
+  (defun edit-category-table-for-company-dabbrev (&optional table)
+    (define-category ?s "word constituents for company-dabbrev" table)
+    (let ((i 0))
+      (while (< i 128)
+        (if (equal ?w (char-syntax i))
+            (modify-category-entry i ?s table)
+          (modify-category-entry i ?s table t))
+        (setq i (1+ i)))))
+  (edit-category-table-for-company-dabbrev)
 
   :bind
   (:map company-active-map
