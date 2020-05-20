@@ -467,6 +467,7 @@ Version 2019-11-04"
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
   (flycheck-python-pylint-executable "python3")
+  (flycheck-deferred-syntax-check t)
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
