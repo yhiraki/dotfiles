@@ -1042,6 +1042,9 @@ Version 2019-11-04"
 (use-package js
   :custom
   (js-indent-level 2)
+  :mode
+  ("\\.js\\'" . js-mode)
+  ("\\.jsx\\'" . js-jsx-mode)
   )
 
 (use-package css-mode
@@ -1671,7 +1674,8 @@ Version 2019-11-04"
 (use-package typescript-mode :ensure t
   :custom
   (typescript-indent-level 2)
-  :mode ("\\.ts\\'")
+  :mode
+  ("\\.tsx?\\'")
   )
 
 (use-package plantuml-mode :ensure t
@@ -1800,7 +1804,7 @@ Version 2019-11-04"
   )
 
 (use-package emmet-mode :ensure t
-  :hook (sgml-mode css-mode web-mode xml-mode)
+  :hook (sgml-mode css-mode web-mode xml-mode js-jsx-mode typescript-mode)
   :custom
   (emmet-indent-after-insert nil)
 )
