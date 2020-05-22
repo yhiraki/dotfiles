@@ -743,6 +743,7 @@ Version 2019-11-04"
   :after evil
   :bind
   (:map evil-normal-state-map
+        ("*" . 'swiper-isearch-thing-at-point)
         ("/" . 'swiper-isearch)
         ("?" . 'swiper-isearch-backward)
   ))
