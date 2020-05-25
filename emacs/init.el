@@ -1826,8 +1826,14 @@ Version 2019-11-04"
        (smartrep-define-key evil-normal-state-map
            "C-c" '(("+" . 'evil-numbers/inc-at-pt)
                    ("=" . 'evil-numbers/inc-at-pt)
-                   ("-" . 'evil-numbers/dec-at-pt)
-                   ))))
+                   ("-" . 'evil-numbers/dec-at-pt)))
+       (smartrep-define-key evil-normal-state-map
+           "C-w" '(("+" . 'evil-window-increase-height)
+                   ("-" . 'evil-window-decrease-height)
+                   ("=" . 'balance-windows)
+                   ("<" . 'evil-window-decrease-width)
+                   (">" . 'evil-window-increase-width)))
+       ))
   )
 
 (use-package hydra :ensure t
