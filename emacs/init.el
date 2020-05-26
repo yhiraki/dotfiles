@@ -757,7 +757,7 @@ Version 2019-11-04"
   :init (exec-path-from-shell-initialize)
   )
 
-(use-package pangu-spacing :ensure t :disabled
+(use-package pangu-spacing :ensure t
   :custom
   ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
   ;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
@@ -769,7 +769,7 @@ Version 2019-11-04"
             (group-n 2 (category japanese))))
 
   ;; 見た目ではなくて実際にスペースを入れる
-  (pangu-spacing-real-insert-separtor t)
+  ;; (pangu-spacing-real-insert-separtor t)
 
   ;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
   ;; :hook
