@@ -951,8 +951,7 @@ Version 2019-11-04"
   (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
   )
 
-;; リソースを食うので停止
-(use-package company-tabnine :ensure t :disabled
+(use-package company-tabnine :ensure t :disabled  ; リソースを食うので停止
   :config
   (add-to-list 'company-backends #'company-tabnine)
   )
