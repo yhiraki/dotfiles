@@ -738,15 +738,15 @@ Version 2019-11-04"
   (counsel-yank-pop-separator "\n-------\n")
   )
 
-(use-package swiper :ensure t
+(use-package swiper :ensure t :disabled  ; 遅いので無効化
   :commands (swiper-isearch swiper-isearch-backward)
   :after evil
   :bind
   (:map evil-normal-state-map
         ("*" . 'swiper-isearch-thing-at-point)
         ("/" . 'swiper-isearch)
-        ("?" . 'swiper-isearch-backward)
-  ))
+        ("?" . 'swiper-isearch-backward))
+  )
 
 (use-package ivy-ghq :straight
   (ivy-ghq :type git :host github :repo "analyticd/ivy-ghq")
