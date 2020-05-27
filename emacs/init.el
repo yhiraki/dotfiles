@@ -921,6 +921,7 @@ Version 2019-11-04"
         ("C-n" . 'company-select-next)
         ("C-p" . 'company-select-previous)
         ("C-s" . 'company-filter-candidates)
+        ("<tab>" . 'yas-expand-from-trigger-key)
         )
   (:map company-search-map
         ("C-n" . 'company-select-next)
