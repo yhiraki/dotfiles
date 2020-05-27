@@ -1463,11 +1463,6 @@ Version 2019-11-04"
 (use-package org-bullets :ensure t
   :hook (org-mode . org-bullets-mode))
 
-(use-package org-reveal :ensure t :disabled
-  :init
-  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-  )
-
 (use-package org-download :ensure t
   :custom
   (org-download-screenshot-method "screencapture -i %s")
@@ -1529,6 +1524,12 @@ Version 2019-11-04"
      (tagindent ".8em")
      (tagside "right"))
    ))
+
+(use-package ox-reveal :ensure t
+  :after ox
+  :custom
+  (org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+  )
 
 (use-package ox-rst :ensure t
   :after ox
