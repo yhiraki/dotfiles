@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mode
+# key: mode
+# --
+# -*- mode: $1; -*-
