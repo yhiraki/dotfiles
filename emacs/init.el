@@ -409,18 +409,25 @@ Version 2019-11-04"
        (setq-local line-spacing 3)))
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal dired-mode-map
-         (kbd "C-j") 'dired-next-dirline
-         (kbd "C-k") 'dired-prev-dirline
-         (kbd "G") 'evil-goto-line
-         (kbd "SPC") 'hydra-global-leader/body
+       (evil-set-initial-state 'dired-mode 'emacs)
+       (evil-define-key 'emacs dired-mode-map
          (kbd "gg") 'evil-goto-first-line
          (kbd "go") 'my-open-in-external-app
-         )))
+         )
+         ))
 
   :bind
   (:map dired-mode-map
-        ("G" . nil) ; 何故かハングアップするので無効化
+        ("C-b" . evil-scroll-page-up)
+        ("C-f" . evil-scroll-page-down)
+        ("C-j" . dired-next-dirline)
+        ("C-k" . dired-prev-dirline)
+        ("G"   . evil-goto-line)
+        ("SPC" . hydra-global-leader/body)
+        ;; ("gg"  . evil-goto-first-line)
+        ;; ("go"  . my-open-in-external-app)
+        ("j"   . dired-next-line)
+        ("k"   . dired-previous-line)
         )
   )
 
@@ -430,10 +437,14 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal dired-sidebar-mode-map
-         (kbd "l") '(lambda () (interactive) (dired-subtree-insert) (dired-sidebar-redisplay-icons))
-         (kbd "h") '(lambda () (interactive) (dired-subtree-remove))
-         )))
+       (evil-set-initial-state 'dired-mode 'emacs)
+         ))
+
+  :bind
+  (:map dired-sidebar-mode-map
+        ("l" . (lambda () (interactive) (save-excursion (dired-subtree-insert)) (dired-sidebar-redisplay-icons)))
+        ("h" . (lambda () (interactive) (dired-subtree-remove) (dired-sidebar-redisplay-icons)))
+        )
   )
 
 (use-package all-the-icons-dired :ensure t
