@@ -100,6 +100,9 @@ Version 2019-11-04"
 
 (use-package diminish :ensure t)
 
+(use-package abbrev
+  :diminish)
+
 (use-package server
   :hook (after-init
          . (lambda ()
@@ -2188,6 +2191,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil-goggles :ensure t
   :hook (after-init . evil-goggles-mode)
+  :diminish
   :custom
   (evil-goggles-duration 0.100)
   :config
