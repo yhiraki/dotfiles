@@ -431,6 +431,7 @@ Version 2019-11-04"
         ;; ("go"  . my-open-in-external-app)
         ("j"   . dired-next-line)
         ("k"   . dired-previous-line)
+        (":"   . evil-ex)
         )
   )
 
