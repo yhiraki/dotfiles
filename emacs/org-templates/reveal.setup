@@ -1,0 +1,7 @@
+# -*- mode: org; -*-
+
+#+OPTIONS: num:nil toc:nil
+#+REVEAL_INIT_OPTIONS: width:1200, height:800, controlsLayout: 'bottom-right', slideNumber:"c/t", margin: 0, minScale:0.2, maxScale:2.5
+#+REVEAL_THEME: black
+#+REVEAL_TRANS: linear
+#+REVEAL_HLEVEL: 999
