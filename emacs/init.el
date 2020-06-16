@@ -1481,7 +1481,8 @@ Version 2019-11-04"
 (use-package org-download :ensure t
   :custom
   (org-download-screenshot-method "screencapture -i %s")
-  (org-download-method 'attach)
+  (org-download-image-dir (concat org-directory "images"))
+  (org-download-heading-lvl nil)
   )
 
 (use-package org-mac-link
