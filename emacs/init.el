@@ -465,7 +465,7 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :hook
-  ((prog-mode) . flycheck-mode)
+  ;; ((prog-mode) . flycheck-mode)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal flycheck-error-list-mode-map
@@ -877,8 +877,13 @@ Version 2019-11-04"
   )
 
 (use-package lsp-ui :ensure t
+  :hook
+  (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-sideline-enable nil)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-flycheck-enable t)
+  (lsp-ui-flycheck-live-reporting t)
+  (lsp-ui-sideline-enable t)
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
@@ -1926,7 +1931,8 @@ Version 2019-11-04"
     ("a" org-agenda "org-agenda")
     ("c" org-capture "org-cature")
     ("d" hydra-find-dotfiles/body "dotfiles")
-    ("el" flycheck-list-errors "error")
+    ;; ("el" flycheck-list-errors "error")
+    ("el" lsp-ui-flycheck-list "error")
     ("f" hydra-file-open/body "find file")
     ("g" hydra-git/body "git")
     ("h" hydra-help/body "help")
