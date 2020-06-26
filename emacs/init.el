@@ -2435,6 +2435,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (global-set-key (kbd "C-s") 'Control-X-prefix)
   )
 
+(use-package rocket-chat-post)
+
 (use-package cus-edit
   :hook
   (after-init
