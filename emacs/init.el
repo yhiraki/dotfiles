@@ -2445,3 +2445,13 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :custom
   (custom-file (concat user-emacs-directory "custom.el"))
   )
+
+(use-package init-local :no-require
+  :hook
+  (after-init
+   . (lambda ()
+       (when (file-exists-p user-emacs-file-local)
+         (load user-emacs-file-local))))
+  :custom
+  (user-emacs-file-local (concat user-emacs-directory "init.local.el"))
+  )
