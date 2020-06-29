@@ -1905,6 +1905,7 @@ Version 2019-11-04"
     ("h" twit "home")
     ("m" twittering-mentions-timeline "mentions")
     ("u" twittering-update-status-interactive "update")
+    ("r" rocket-chat-edit "rocket chat")
     )
 
   (defhydra hydra-emacs-operation (:exit t)
@@ -2435,7 +2436,15 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (global-set-key (kbd "C-s") 'Control-X-prefix)
   )
 
-(use-package rocket-chat-post)
+(use-package my-org-feed)
+
+(use-package rocket-chat-post
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'rocket-chat-edit-mode 'insert)
+       ))
+  )
 
 (use-package cus-edit
   :hook

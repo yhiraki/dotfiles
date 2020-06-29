@@ -27,25 +27,68 @@
 (defvar rocket-chat-post-executable "rocket-post")
 
 (defun rocket-chat-post (msg &optional room)
-  "Post message to rocket.chat"
+  "Post message to rocket.chat."
   (when (executable-find rocket-chat-post-executable)
     (let ((cmd (list rocket-chat-post-executable msg)))
       (when room (nconc cmd (list "--room" room)))
-      (add-to-list 'cmd "&" t)
       (message (mapconcat #'concat cmd " "))
       (call-process-shell-command
-       (mapconcat #'shell-quote-argument cmd " ")))))
+       (concat
+        (mapconcat #'shell-quote-argument cmd " ")
+        "&")))))
 
 (defun rocket-chat-post-buffer ()
-  "Post buffer to rocket.chat"
+  "Post buffer to rocket.chat."
   (interactive)
   (rocket-chat-post-region (point-min) (point-max)))
 
 (defun rocket-chat-post-region (begin end)
-  "Post region to rocket.chat"
+  "Post region to rocket.chat."
   (interactive "r")
   (rocket-chat-post
    (buffer-substring-no-properties begin end)))
+
+(defvar rocket-chat-post-tmp-buffer-name "*tmp-rocket-chat*")
+
+(defun open-new-rocket-chat-post-tmp-buffer ()
+  "Open new rocket chat post buffer."
+  (let* ((name rocket-chat-post-tmp-buffer-name)
+         (buf (if (get-buffer name)
+                  (get-buffer name)
+                (let ((b (generate-new-buffer name)))
+                  (set-buffer-major-mode b)
+                  b))))
+    (pop-to-buffer buf)
+    (with-current-buffer rocket-chat-post-tmp-buffer-name
+      (rocket-chat-edit-mode))
+    )
+  "")
+
+(defun rocket-char-post-buffer-and-close ()
+  "Post message from tmp buffer."
+  (interactive)
+  (when (string= (buffer-name) rocket-chat-post-tmp-buffer-name)
+    (rocket-chat-post-buffer)
+    (quit-window (buffer-name))))
+
+(defvar rocket-chat-edit-mode-map (make-sparse-keymap))
+
+(defun rocket-chat-edit-mode ()
+  "Rocket chat post mode."
+  (interactive)
+  (kill-all-local-variables)
+  (setq mode-name "RocketChatEdit")
+  (setq major-mode 'rocket-chat-edit-mode)
+  (use-local-map rocket-chat-edit-mode-map)
+  (run-hooks 'rocket-chat-edit-mode-hook))
+
+(define-key rocket-chat-edit-mode-map (kbd "C-c C-c") 'rocket-char-post-buffer-and-close)
+(define-key rocket-chat-edit-mode-map (kbd "C-c C-k") '(lambda () (interactive) (quit-window rocket-chat-post-tmp-buffer-name)))
+
+(defun rocket-chat-edit ()
+  "Rocket chat edit."
+  (interactive)
+  (open-new-rocket-chat-post-tmp-buffer))
 
 (provide 'rocket-chat-post)
 ;;; rocket-chat-post.el ends here
