@@ -72,18 +72,16 @@
     (quit-window (buffer-name))))
 
 (defvar rocket-chat-edit-mode-map (make-sparse-keymap))
-
-(defun rocket-chat-edit-mode ()
-  "Rocket chat post mode."
-  (interactive)
-  (kill-all-local-variables)
-  (setq mode-name "RocketChatEdit")
-  (setq major-mode 'rocket-chat-edit-mode)
-  (use-local-map rocket-chat-edit-mode-map)
-  (run-hooks 'rocket-chat-edit-mode-hook))
-
 (define-key rocket-chat-edit-mode-map (kbd "C-c C-c") 'rocket-char-post-buffer-and-close)
 (define-key rocket-chat-edit-mode-map (kbd "C-c C-k") '(lambda () (interactive) (quit-window rocket-chat-post-tmp-buffer-name)))
+
+(define-minor-mode rocket-chat-edit-mode
+  "Rocket chat edit mode."
+  :init-value nil
+  :lighter " RocketChatEdit"
+  :keymap rocket-chat-edit-mode-map
+  :group 'rocket-chat-edit
+  )
 
 (defun rocket-chat-edit ()
   "Rocket chat edit."
