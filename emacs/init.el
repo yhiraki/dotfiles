@@ -1,3 +1,30 @@
+;;; init.el --- Emacs init file                      -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2020  yhiraki
+
+;; Author: yhiraki <coffexpr at gmail.com>
+;; Keywords: init
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;;
+
+;;; Code:
+
+
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
@@ -32,17 +59,11 @@
 
 (straight-use-package 'use-package)
 
-(use-package package-utils :ensure t)
+(defvar darwin-p (eq system-type 'darwin))
+(defvar linux-p (eq system-type 'gnu/linux))
+(defvar carbon-p (eq system-type 'mac))
+(defvar meadow-p (featurep 'meadow))
 
-(use-package global :no-require
-  :config
-  ;; system-type predicates
-  ;; from http://d.hatena.ne.jp/tomoya/20090807/1249601308
-  (setq darwin-p   (eq system-type 'darwin)
-        linux-p    (eq system-type 'gnu/linux)
-        carbon-p   (eq system-type 'mac)
-        meadow-p   (featurep 'meadow))
-  )
 
 (use-package user-defined-functions :no-require
   :config
@@ -379,7 +400,7 @@ Version 2019-11-04"
     (when (eq action 'insert)
       (newline)
       (indent-according-to-mode)
-      (previous-line)
+      (forward-line)
       (indent-according-to-mode)))
 
   (sp-with-modes '(prog-mode vue-mode)
@@ -823,7 +844,7 @@ Version 2019-11-04"
 
   :config
   ;; https://github.com/seagle0128/.emacs.d/blob/50d9de85ba4ff2aa5daa2603d366cde2f3e89242/lisp/init-lsp.el#L426-L458
-  (setq centaur-lsp 'lsp-mode)
+  (defvar centaur-lsp 'lsp-mode)
   (cl-defmacro lsp-org-babel-enable (lang)
     "Support LANG in org source code block."
     (cl-check-type lang stringp)
@@ -835,7 +856,7 @@ Version 2019-11-04"
                                buffer-file-name
                                "*org-src-lsp*")))
              (unless filename
-               (user-error "LSP:: specify `:file' property to enable."))
+               (user-error "LSP:: specify `:file' property to enable"))
 
              (setq buffer-file-name filename)
              (pcase centaur-lsp
@@ -1244,18 +1265,6 @@ Version 2019-11-04"
   (org-log-done 'time) ; DONEの時刻を記録
 
   :config
-  ;; https://www.reddit.com/r/emacs/comments/4golh1/how_to_auto_export_html_when_saving_in_orgmode/?st=jeqpsmte&sh=3faa76e8
-  (defun toggle-org-html-export-on-save ()
-    (interactive)
-    (if (memq 'org-html-export-to-html after-save-hook)
-        (progn
-          (remove-hook 'after-save-hook 'org-html-export-to-html t)
-          (setq org-export-in-background nil)
-          (message "Disabled org html export on save for current buffer..."))
-      (add-hook 'after-save-hook 'org-html-export-to-html nil t)
-      (setq org-export-in-background t)
-      (message "Enabled org html export on save for current buffer...")))
-
   ;; https://emacs.stackexchange.com/questions/32473/edit-org-mode-tags-using-ido-or-ivy-completion
   ;; =C-M-m= to add/remove tag
   ;; =C-M-j= to fix tags
@@ -1387,14 +1396,18 @@ Version 2019-11-04"
    )
   )
 
+(defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
+(defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
+(defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
+
 (use-package ob-plantuml
   :after (ob plantuml-mode s)
   :custom
-  (org-plantuml-jar-path plantuml-jar-path)
+  (org-plantuml-jar-path my/plantuml-jar-path)
   (plantuml-server-url nil)
   :config
-  (push (cons ':java plantuml-java-options) org-babel-default-header-args:plantuml)
-  (push (cons ':cmdline (s-join " " plantuml-jar-args)) org-babel-default-header-args:plantuml)
+  (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
+  (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
   (push '(:async) org-babel-default-header-args:plantuml)
   (push '(:cache . "yes") org-babel-default-header-args:plantuml)
   )
@@ -1512,12 +1525,6 @@ Version 2019-11-04"
        (org-trello-sync-buffer t)
        ))
   :mode ("\\.trello$" . org-mode)
-  )
-
-(use-package ox-publish
-  :after org
-  :config
-  (setq org-publish-directory "~/public_html/")
   )
 
 (use-package ox-confluence
@@ -1705,42 +1712,15 @@ Version 2019-11-04"
   )
 
 (use-package plantuml-mode :ensure t
-  :init
-  (setq plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
-  (setq plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
-  (setq plantuml-jar-args
-        (list
-         "-charset" "UTF-8"
-         ;; "-config" (expand-file-name "~/.config/plantuml/color.uml")
-         )) ; ob-plantumlで使う
-
   :custom
   (plantuml-default-exec-mode 'jar)
   (plantuml-indent-level 2)
+  (plantuml-jar-args my/plantuml-jar-args)
+  (plantuml-jar-path my/plantuml-jar-path)
+  (plantuml-java-options my/plantuml-java-options)
 
   :config
   ;; (setq plantuml-output-type "svg")
-
-  ;; plantumlをpngで保存する関数
-  (defun plantuml-save-png ()
-    (interactive)
-    (when (buffer-modified-p)
-      (map-y-or-n-p "Save this buffer before executing PlantUML?"
-                    'save-buffer (list (current-buffer))))
-    (let ((code (buffer-string))
-          out-file
-          cmd)
-      (when (string-match "^\\s-*@startuml\\s-+\\(\\S-+\\)\\s*$" code)
-        (setq out-file (match-string 1 code)))
-      (setq cmd (concat
-                 plantuml-java-options " "
-                 (shell-quote-argument plantuml-jar-path) " "
-                 (and out-file (concat "-t" (file-name-extension out-file))) " "
-                 (s-join " " plantuml-jar-args) " "
-                 (f-dirname (buffer-file-name))
-                 ))
-      (message cmd)
-      (call-process-shell-command cmd nil 0)))
 
   :mode
   ("\\.uml\\'" . plantuml-mode)
@@ -1853,7 +1833,7 @@ Version 2019-11-04"
            "C-c" '(("+" . 'evil-numbers/inc-at-pt)
                    ("=" . 'evil-numbers/inc-at-pt)
                    ("-" . 'evil-numbers/dec-at-pt)))
-       (smartrep-define-key evil-normal-state-map
+       (smartrep-define-key evil-visual-state-map
            "C-w" '(("+" . 'evil-window-increase-height)
                    ("-" . 'evil-window-decrease-height)
                    ("=" . 'balance-windows)
@@ -2397,7 +2377,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config
   (defun my/autoinsert-yas-expand()
     "Replace text in yasnippet template."
-    (yas/expand-snippet (buffer-string) (point-min) (point-max)))
+    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
   ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
   (dolist (x auto-insert-alist)
@@ -2465,6 +2445,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
    . (lambda ()
        (when (file-exists-p user-emacs-file-local)
          (load user-emacs-file-local))))
-  :custom
-  (user-emacs-file-local (concat user-emacs-directory "init.local.el"))
+  :config
+  (defvar user-emacs-file-local (concat user-emacs-directory "init.local.el"))
   )
+
+
+(provide 'init)
+;;; init.el ends here
