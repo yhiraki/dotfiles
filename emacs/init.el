@@ -2441,6 +2441,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package my-org-feed)
 
 (use-package rocket-chat-post
+  :commands rocket-chat-edit
   :hook
   (evil-after-load
    . (lambda ()
