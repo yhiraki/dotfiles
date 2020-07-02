@@ -159,7 +159,7 @@ Version 2019-11-04"
 
 (use-package buffer :no-require
   :config
-  (setq-default indicate-buffer-boundaries 'right) ;; バッファの終端を表示
+  (setq-default indicate-buffer-boundaries 'left) ;; バッファの終端を表示
   (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
   )
 
