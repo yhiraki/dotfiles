@@ -1133,6 +1133,7 @@ Version 2019-11-04"
        (evil-define-key 'normal prog-mode-map
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
+         (kbd "\\e") 'lsp-ui-flycheck-list
          (kbd "\\f") 'lsp-format-buffer
          (kbd "\\m") 'lsp-ui-imenu
          (kbd "\\qa") 'quickrun-autorun-mode
@@ -1934,8 +1935,6 @@ Version 2019-11-04"
     ("a" org-agenda "org-agenda")
     ("c" org-capture "org-cature")
     ("d" hydra-find-dotfiles/body "dotfiles")
-    ;; ("el" flycheck-list-errors "error")
-    ("el" lsp-ui-flycheck-list "error")
     ("f" hydra-file-open/body "find file")
     ("g" hydra-git/body "git")
     ("h" hydra-help/body "help")
