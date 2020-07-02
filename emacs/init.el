@@ -465,7 +465,7 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :hook
-  ;; ((prog-mode) . flycheck-mode)
+  ((emacs-lisp-mode) . flycheck-mode)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal flycheck-error-list-mode-map
