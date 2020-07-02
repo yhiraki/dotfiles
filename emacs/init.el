@@ -1023,7 +1023,7 @@ Version 2019-11-04"
 
 (use-package hideshow
   :diminish hs-minor-mode
-  :hook (emacs-lisp-mode . my/hs-minor-mode-hide-all)
+  :hook (prog-mode . my/hs-minor-mode-hide-all)
   :config
   (defun my/hs-minor-mode-hide-all ()
     (hs-minor-mode)
