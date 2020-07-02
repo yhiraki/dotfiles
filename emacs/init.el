@@ -32,6 +32,8 @@
 
 (straight-use-package 'use-package)
 
+(use-package package-utils :ensure t)
+
 (use-package global :no-require
   :config
   ;; system-type predicates
