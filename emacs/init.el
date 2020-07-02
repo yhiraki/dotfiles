@@ -1136,10 +1136,10 @@ Version 2019-11-04"
          (kbd "\\f") 'lsp-format-buffer
          (kbd "\\m") 'lsp-ui-imenu
          (kbd "\\qa") 'quickrun-autorun-mode
-         (kbd "\\qc") '(lambda () (interactive) (save-buffer) (quickrun-compile-only))
-         (kbd "\\qr") '(lambda () (interactive) (save-buffer) (quickrun))
-         (kbd "\\qs") '(lambda () (interactive) (save-buffer) (quickrun-shell))
-         (kbd "\\r") '(lambda () (interactive) (save-buffer) (quickrun))
+         (kbd "\\qc") 'quickrun-compile-only
+         (kbd "\\qr") 'quickrun
+         (kbd "\\qs") 'quickrun-shell
+         (kbd "\\r")  'quickrun
          (kbd "gd") 'xref-find-definitions
          (kbd "gr") 'xref-find-references
          )
