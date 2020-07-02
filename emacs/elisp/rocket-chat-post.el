@@ -78,10 +78,17 @@
 (define-minor-mode rocket-chat-edit-mode
   "Rocket chat edit mode."
   :init-value nil
-  :lighter " RocketChatEdit"
+  :lighter " RChat"
   :keymap rocket-chat-edit-mode-map
   :group 'rocket-chat-edit
   )
+
+(defun auto-enable-rocket-chat-edit-mode ()
+  "Automatically set minor mode."
+  (when (string= rocket-chat-post-tmp-buffer-name (buffer-name))
+    (rocket-chat-edit-mode)))
+
+(add-hook 'after-change-major-mode-hook 'auto-enable-rocket-chat-edit-mode)
 
 (defun rocket-chat-edit ()
   "Rocket chat edit."
