@@ -64,6 +64,7 @@
 (defvar carbon-p (eq system-type 'mac))
 (defvar meadow-p (featurep 'meadow))
 
+(use-package package-utils :ensure t)
 
 (use-package user-defined-functions :no-require
   :config
