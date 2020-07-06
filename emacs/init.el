@@ -1138,16 +1138,23 @@ Version 2019-11-04"
 
 (use-package markdown-mode :ensure t
   :hook
+  ((markdown-mode gfm-mode) . outline-hide-subtree)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal markdown-mode-map
-         (kbd "zc") 'markdown-hide-subtree
-         (kbd "zo") 'markdown-show-subtree
+         (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
+         (kbd "zc") 'outline-hide-subtree
          (kbd "TAB") 'markdown-cycle
-         )))
+         )
+       (evil-define-key 'normal gfm-mode-map
+         (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
+         (kbd "zc") 'outline-hide-subtree
+         (kbd "TAB") 'markdown-cycle
+         )
+       ))
 
   :custom
-  (markdown-command "pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css")
+  (markdown-command "pandoc -s -t html5 -c ~/.emacs.d/css/github.css")
   (markdown-gfm-use-electric-backquote nil)
 
   :mode
