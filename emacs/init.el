@@ -1089,6 +1089,8 @@ Version 2019-11-04"
   :hook (go-mode . go-eldoc-setup)
 )
 
+(use-package protobuf-mode :ensure t)
+
 (use-package js
   :custom
   (js-indent-level 2)
