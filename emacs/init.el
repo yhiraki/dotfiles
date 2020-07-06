@@ -1054,6 +1054,12 @@ Version 2019-11-04"
   )
 
 (use-package elisp-mode
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-define-key 'normal emacs-lisp-mode-map
+         (kbd "\\e") 'flycheck-list-errors
+         )))
   :mode
   ("\\.el\\'" . emacs-lisp-mode)
   )
