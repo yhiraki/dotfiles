@@ -1224,6 +1224,12 @@ Version 2019-11-04"
   :commands edit-indirect-region
   )
 
+(use-package replace
+  :bind
+  (:map occur-mode-map
+        ("j" . next-line)
+        ("k" . previous-line)))
+
 (use-package org :ensure org-plus-contrib
   :hook
   (evil-after-load
