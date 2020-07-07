@@ -1252,6 +1252,11 @@ Version 2019-11-04"
          (kbd ">") 'org-metaright
          (kbd "\\g") 'org-mac-grab-link
          (kbd "\\i") 'org-clock-in
+         (kbd "\\nb") 'org-narrow-to-block
+         (kbd "\\ne") 'org-narrow-to-element
+         (kbd "\\nf") 'narrow-to-defun
+         (kbd "\\ns") 'org-narrow-to-subtree
+         (kbd "\\nw") 'widen
          (kbd "\\p") 'org-priority
          (kbd "\\q") 'org-set-tags-command
          (kbd "\\s") 'org-schedule
@@ -1929,14 +1934,6 @@ Version 2019-11-04"
     ("e" (find-file user-init-file) "init.el")
     )
 
-  (defhydra hydra-narrow (:exit t)
-    ("b" org-narrow-to-block "block")
-    ("e" org-narrow-to-element "element")
-    ("f" narrow-to-defun "defun")
-    ("s" org-narrow-to-subtree "subtree")
-    ("w" widen "widen")
-    )
-
   (defhydra hydra-global-leader (:exit t)
     ("G" hydra-google/body "google")
     ("a" org-agenda "org-agenda")
@@ -1946,7 +1943,6 @@ Version 2019-11-04"
     ("g" hydra-git/body "git")
     ("h" hydra-help/body "help")
     ("k" (message "Disabled. use :bw") "kill buffer")
-    ("n" hydra-narrow/body "narrow")
     ("o" hydra-org/body "org")
     ("q" nil "quit")
     ("t" hydra-twitter/body "twitter")
