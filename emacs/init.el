@@ -396,6 +396,11 @@ Version 2019-11-04"
     (sp-local-pair "%\{" "%\}")
     )
 
+  ;; {|}
+  ;;  ↓
+  ;; {
+  ;;  |
+  ;; }
   ;; https://github.com/Fuco1/smartparens/issues/80
   (defun my-open-block-c-mode (id action context)
     (when (eq action 'insert)
@@ -404,9 +409,9 @@ Version 2019-11-04"
       (forward-line)
       (indent-according-to-mode)))
 
-  (sp-with-modes '(prog-mode vue-mode)
-    (sp-local-pair  "{" nil :post-handlers '((my-open-block-c-mode "RET")))
-    )
+  ;; (sp-with-modes '(prog-mode vue-mode)
+  ;;   (sp-local-pair  "{" nil :post-handlers '((my-open-block-c-mode "RET")))
+  ;;   )
   )
 
 (use-package restart-emacs :ensure t
