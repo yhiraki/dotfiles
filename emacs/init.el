@@ -916,9 +916,10 @@ Version 2019-11-04"
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-        ([remap xref-find-references] . #'lsp-ui-peek-find-references)
-        )
-  )
+        ([remap xref-find-references] . #'lsp-ui-peek-find-references))
+  (:map lsp-ui-peek-mode-map
+        ("j" . lsp-ui-peek--select-next)
+        ("k" . lsp-ui-peek--select-prev)))
 
 (use-package company :ensure t
   :diminish company-mode
