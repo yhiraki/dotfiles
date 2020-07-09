@@ -1054,8 +1054,8 @@ Version 2019-11-04"
   :config
   (defun my/hs-minor-mode-hide-all ()
     (hs-minor-mode)
-    (hs-hide-all)
-    )
+    (when (> (count-lines (point-min) (point-max)) (frame-height))
+      (hs-hide-all)))
   )
 
 (use-package elisp-mode
