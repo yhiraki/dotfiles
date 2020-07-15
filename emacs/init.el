@@ -673,8 +673,8 @@ Version 2019-11-04"
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal git-gutter+-mode-map
-         (kbd "]g") 'git-gutter+-previous-hunk
-         (kbd "[g") 'git-gutter+-next-hunk
+         (kbd "[g") 'git-gutter+-previous-hunk
+         (kbd "]g") 'git-gutter+-next-hunk
          (kbd "\\gs") 'git-gutter+-stage-hunks
          (kbd "\\gr") 'git-gutter+-revert-hunks)
        ))
