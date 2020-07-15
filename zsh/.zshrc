@@ -21,6 +21,7 @@ load_plugins() {
     zsh-users/zsh-completions
     zsh-users/zsh-syntax-highlighting
     yhiraki/zsh-simple-prompt
+    marlonrichert/zsh-autocomplete
   )
   root=$(ghq root)
   for p in "${plugins_repo[@]}"; do
