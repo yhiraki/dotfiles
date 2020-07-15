@@ -967,11 +967,14 @@ Version 2019-11-04"
           (modify-category-entry i ?s table t))
         (setq i (1+ i)))))
   (edit-category-table-for-company-dabbrev)
+  (add-to-list 'company-frontends 'company-tng-frontend)
 
   :bind
   (:map company-active-map
         ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
         ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
+        ("RET" . nil)
+        ("<return>" . nil)
         ("C-n" . 'company-select-next)
         ("C-p" . 'company-select-previous)
         ("C-s" . 'company-filter-candidates)
@@ -980,6 +983,10 @@ Version 2019-11-04"
   (:map company-search-map
         ("C-n" . 'company-select-next)
         ("C-p" . 'company-select-previous)
+        ("C-h" . 'company-search-delete-char)
+        ("<space>" . nil)
+        ("RET" . 'company-complete-selection)
+        ("<return>" . 'company-complete-selection)
         )
   )
 
