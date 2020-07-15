@@ -494,7 +494,7 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :hook
-  ((emacs-lisp-mode) . flycheck-mode)
+  ((prog-mode) . flycheck-mode)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal flycheck-error-list-mode-map
@@ -1176,7 +1176,7 @@ Version 2019-11-04"
        (evil-define-key 'normal prog-mode-map
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
-         (kbd "\\e") 'lsp-ui-flycheck-list
+         (kbd "\\e") 'flycheck-list-errors
          (kbd "\\f") 'lsp-format-buffer
          (kbd "\\m") 'lsp-ui-imenu
          (kbd "\\qa") 'quickrun-autorun-mode
