@@ -215,6 +215,8 @@ Version 2019-11-04"
    . (lambda ()
        (when (string-match "^/private/tmp\\|^/tmp" (buffer-file-name))
          (turn-on-tempbuf-mode))))
+  :custom
+  (tempbuf-kill-message nil)
   )
 
 (use-package midnight)
