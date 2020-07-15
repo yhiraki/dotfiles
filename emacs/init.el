@@ -903,6 +903,8 @@ Version 2019-11-04"
   (lsp-pyls-plugins-flake8-enabled t)
   (lsp-pyls-plugins-jedi-completion-include-params nil)
   (lsp-pyls-plugins-pylint-enabled nil)
+  (lsp-pyls-plugins-yapf-enabled t)
+  (lsp-pyls-plugins-autopep8-enabled nil)
   )
 
 (use-package lsp-ui :ensure t
