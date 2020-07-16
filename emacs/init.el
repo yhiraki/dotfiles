@@ -1132,16 +1132,8 @@ Version 2019-11-04"
   :commands eslint-fix
   )
 
-(use-package prettierjs :no-require :disabled
-  :config
-  (defun my/prettier ()
-    (interactive)
-    (shell-command
-     (format "%s --write %s"
-             (shell-quote-argument (executable-find "prettier"))
-             (shell-quote-argument (expand-file-name buffer-file-name))))
-    (revert-buffer t t t))
-  )
+(use-package prettier-js :ensure t
+  :commands prettier-js)
 
 (use-package json-mode :ensure t
   :hook
@@ -1162,6 +1154,7 @@ Version 2019-11-04"
          (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
          (kbd "zc") 'outline-hide-subtree
          (kbd "TAB") 'markdown-cycle
+         (kbd "\\f") 'prettier-js
          )
        (evil-define-key 'normal gfm-mode-map
          (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
@@ -1833,11 +1826,11 @@ Version 2019-11-04"
   )
 
 (use-package yaml-mode :ensure t
-  :bind
-  (:map yaml-mode-map ("\C-m" . 'newline-and-indent))
-  :mode
-  ("\\.ya?ml\\'")
-  )
+  :hook (evil-after-load
+         . (lambda ()
+             (evil-define-key 'normal yaml-mode-map
+               (kbd "C-m") 'newline-and-indent
+               (kbd "\\f") 'prettier-js))))
 
 (use-package vimrc-mode :ensure t
   :mode
