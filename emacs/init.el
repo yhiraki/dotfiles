@@ -1240,8 +1240,8 @@ Version 2019-11-04"
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal org-mode-map
-         (kbd "C-j") 'org-next-visible-heading
-         (kbd "C-k") 'org-previous-visible-heading
+         (kbd "C-S-j") 'org-next-visible-heading
+         (kbd "C-S-k") 'org-previous-visible-heading
          (kbd "M-h") 'org-metaleft
          (kbd "M-j") 'org-metadown
          (kbd "M-k") 'org-metaup
@@ -1271,6 +1271,7 @@ Version 2019-11-04"
          (kbd "gh") 'outline-up-heading
          (kbd "gp") 'outline-previous-heading
          (kbd "\\ \\") 'hydra-outline/body
+         (kbd "\\f") '(lambda () (interactive) (indent-region (point-min) (point-max)) (whitespace-cleanup))
          )
 
        (evil-define-key 'insert org-mode-map
@@ -1286,6 +1287,8 @@ Version 2019-11-04"
          (kbd "M-k") 'org-metaup
          (kbd "M-h") 'org-metaleft
          (kbd "M-l") 'org-metaright
+         (kbd "\\f") '(lambda (begin end)
+                        (interactive "r") (indent-region begin end) (whitespace-cleanup-region begin end))
          )))
 
   (org-after-todo-statistics . org-summary-todo)
