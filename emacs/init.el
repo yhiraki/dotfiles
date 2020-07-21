@@ -1271,7 +1271,7 @@ Version 2019-11-04"
          (kbd "gh") 'outline-up-heading
          (kbd "gp") 'outline-previous-heading
          (kbd "\\ \\") 'hydra-outline/body
-         (kbd "\\f") '(lambda () (interactive) (indent-region (point-min) (point-max)) (whitespace-cleanup))
+         (kbd "\\f") 'whitespace-cleanup
          )
 
        (evil-define-key 'insert org-mode-map
@@ -1287,8 +1287,6 @@ Version 2019-11-04"
          (kbd "M-k") 'org-metaup
          (kbd "M-h") 'org-metaleft
          (kbd "M-l") 'org-metaright
-         (kbd "\\f") '(lambda (begin end)
-                        (interactive "r") (indent-region begin end) (whitespace-cleanup-region begin end))
          )))
 
   (org-after-todo-statistics . org-summary-todo)
