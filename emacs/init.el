@@ -1871,7 +1871,7 @@ Version 2019-11-04"
            "C-c" '(("+" . 'evil-numbers/inc-at-pt)
                    ("=" . 'evil-numbers/inc-at-pt)
                    ("-" . 'evil-numbers/dec-at-pt)))
-       (smartrep-define-key evil-visual-state-map
+       (smartrep-define-key evil-normal-state-map
            "C-w" '(("+" . 'evil-window-increase-height)
                    ("-" . 'evil-window-decrease-height)
                    ("=" . 'balance-windows)
