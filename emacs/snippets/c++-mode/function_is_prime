@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: is_prime(11) => true
+# key: function_is_prime
+# --
+bool is_prime(long v) {
+  if (v < 2)
+    return false;
+  for (int i = 2; i * i <= v; ++i)
+    if (v % i == 0)
+      return false;
+  return true;
+}

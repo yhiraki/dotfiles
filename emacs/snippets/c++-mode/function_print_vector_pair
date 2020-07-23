@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: printVector() => {1, 2} {3, 5} 
+# key: function_print_vector_pair
+# --
+template <typename First, typename Second>
+void print_vector(const std::vector<std::pair<First, Second>> &a, char sep = ' ',
+                 size_t max = 1000) {
+  for (std::size_t i = 0; i < a.size(); ++i) {
+    if (!max) {
+      std::cout << "...";
+      break;
+    }
+    if (i > 0)
+      std::cout << sep;
+    std::cout << "{" << a.at(i).first << ", " << a.at(i).second << "}";
+    --max;
+  }
+  std::cout << std::endl;
+}

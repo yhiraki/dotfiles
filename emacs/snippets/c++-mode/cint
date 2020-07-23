@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: int a, b; std::cin >> a >> b;
+# key: cint
+# --
+${1:int} ${2:a}; std::cin >> ${1:$(s-join " >> " (mapcar 's-trim (s-split "," yas-text)))};

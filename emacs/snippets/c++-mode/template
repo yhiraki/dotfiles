@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: template <typename T>
-# key: template
-# --
-template <typename ${T}>$0

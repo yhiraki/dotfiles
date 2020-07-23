@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: prime_enumeration(5) => [2 3 5]
+# key: function_prime_enumeration
+# --
+void prime_enumeration(const int n, std::vector<${1:int}> &primes) {
+  if (n < 2)
+    return;
+  std::vector<bool> p(n + 1, true);
+  p.at(0) = false;
+  p.at(1) = false;
+  for (int i = 2; i * i <= n; ++i)
+    for (int j = i + i; j <= n; j += i)
+      p.at(j) = false;
+  for (int i = 0; i <= n; ++i)
+    if (p.at(i))
+      primes.push_back(i);
+}
