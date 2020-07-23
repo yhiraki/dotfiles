@@ -2437,8 +2437,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (global-set-key (kbd "C-s") 'Control-X-prefix)
   )
 
-(use-package my-org-feed)
-
 (use-package rocket-chat-post
   :commands rocket-chat-edit
   :hook
