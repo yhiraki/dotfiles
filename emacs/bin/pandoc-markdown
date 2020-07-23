@@ -1,2 +1,0 @@
-#!/bin/bash
-pandoc -s --self-contained -t html5 -c ~/.emacs.d/css/github.css $*
