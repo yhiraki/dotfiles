@@ -44,20 +44,11 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; load straight.el
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
+(package-install 'use-package)
+;;; Install quelpa itself:
+(use-package quelpa-use-package :ensure t
+  :init (setq quelpa-update-melpa-p nil)
+  :config (quelpa-use-package-activate-advice))
 
 (defvar darwin-p (eq system-type 'darwin))
 (defvar linux-p (eq system-type 'gnu/linux))
@@ -794,8 +785,8 @@ Version 2019-11-04"
         ("?" . 'swiper-isearch-backward))
   )
 
-(use-package ivy-ghq :straight
-  (ivy-ghq :type git :host github :repo "analyticd/ivy-ghq")
+(use-package ivy-ghq
+  :quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
   :commands (ivy-ghq-open)
   )
 
@@ -1670,8 +1661,8 @@ Version 2019-11-04"
   ("\\.?shrc.*\\'" . shell-script-mode)
   )
 
-(use-package shfmt :straight
-  (shfmt :type git :host github :repo "amake/shfmt.el")
+(use-package shfmt
+  :quelpa (shfmt :type git :fetcher github :repo "amake/shfmt.el")
   :if (executable-find "shfmt")
 
   :hook
@@ -2192,8 +2183,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :diminish
   )
 
-(use-package evil-numbers :straight
-  (evil-numbers :type git :host github :repo "janpath/evil-numbers")
+(use-package evil-numbers
+  :quelpa (evil-numbers :type git :fetcher github :repo "janpath/evil-numbers")
   :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   :after evil
   :bind
