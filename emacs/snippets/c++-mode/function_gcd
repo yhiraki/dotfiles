@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: gcd
+# key: function_gcd
+# --
+${1:$(when (string= yas-text "T") "template <typename T>\n")
+}${1:T} gcd($1 a, $1 b) {
+  if (b == 0)
+    return a;
+  else
+    return gcd(b, a % b);
+}

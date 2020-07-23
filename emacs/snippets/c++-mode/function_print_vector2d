@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: printVector2d() => 1 2 3 4  1 2 3 4...
+# key: function_print_vector2d
+# --
+template <typename T>
+void print_vector2d(const std::vector<std::vector<T>> &a, char sep = ' ',
+                   size_t max = 1000) {
+  for (std::size_t i = 0; i < a.size(); ++i) {
+    for (std::size_t j = 0; j < a.at(i).size(); ++j) {
+      if (!max) {
+        std::cout << "..." << std::endl;
+        return;
+      }
+      if (j > 0)
+        std::cout << sep;
+      std::cout << a.at(i).at(j);
+      --max;
+    }
+    std::cout << std::endl;
+  }
+  std::cout << std::endl;
+}
