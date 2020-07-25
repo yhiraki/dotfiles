@@ -44,10 +44,11 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(package-install 'use-package)
-;;; Install quelpa itself:
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
 (use-package quelpa-use-package :ensure t
-  :init (setq quelpa-update-melpa-p nil)
+  :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
 
 (defvar darwin-p (eq system-type 'darwin))
