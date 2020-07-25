@@ -488,7 +488,7 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :hook
-  ((prog-mode) . flycheck-mode)
+  ((prog-mode yaml-mode) . flycheck-mode)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal flycheck-error-list-mode-map
@@ -1063,12 +1063,6 @@ Version 2019-11-04"
   )
 
 (use-package elisp-mode
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal emacs-lisp-mode-map
-         (kbd "\\e") 'flycheck-list-errors
-         )))
   :mode
   ("\\.el\\'" . emacs-lisp-mode)
   )
@@ -1822,8 +1816,12 @@ Version 2019-11-04"
   :hook (evil-after-load
          . (lambda ()
              (evil-define-key 'normal yaml-mode-map
+               (kbd "\\e") 'flycheck-list-errors
                (kbd "C-m") 'newline-and-indent
                (kbd "\\f") 'prettier-js))))
+
+(use-package flycheck-yamllint :ensure t
+  :hook (yaml-mode . flycheck-yamllint-setup))
 
 (use-package vimrc-mode :ensure t
   :mode
