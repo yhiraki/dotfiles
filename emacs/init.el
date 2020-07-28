@@ -881,6 +881,7 @@ Version 2019-11-04"
                           (upcase ,lang))))))))
 
   (lsp-org-babel-enable "python")
+  (lsp-org-babel-enable "cpp")
   )
 
 (use-package lsp-clients
@@ -1405,6 +1406,7 @@ Version 2019-11-04"
   (org-babel-after-execute . org-display-inline-images)
   :custom
   (org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  (org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
