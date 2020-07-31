@@ -1053,6 +1053,8 @@ Version 2019-11-04"
   :mode
   ("Dockerfile\\'" . dockerfile-mode))
 
+(use-package docker-compose-mode :ensure t)
+
 (use-package hideshow
   :diminish hs-minor-mode
   :hook (prog-mode . my/hs-minor-mode-hide-all)
