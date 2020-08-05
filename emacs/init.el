@@ -2133,22 +2133,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (evil-mode 1)
   )
 
-(use-package evil-jumps-push-on-find-file :no-require
-  :hook
-  (dired-mode . my-rename-dired-buffer)
-  (evil-after-load
-   . (lambda ()
-       ;; https://www.reddit.com/r/emacs/comments/8rg6zk/question_add_dired_buffers_to_evil_jump_list/
-       (defun my-rename-dired-buffer ()
-         (interactive)
-         (unless (string-match-p "Dired:" (buffer-name))
-           (rename-buffer (concat "Dired:" (buffer-name)))))
-
-       (setq evil--jumps-buffer-targets "\\(\\*\\(\\new\\|scratch\\)\\*\\|Dired:.+\\)")
-       (evil-add-command-properties #'dired-find-file :jump t)
-       ))
-  )
-
 (use-package evil-surround :ensure t
   :hook (after-init . global-evil-surround-mode)
   )
@@ -2168,11 +2152,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil-lion :ensure t
   :hook (after-init . evil-lion-mode)
-  )
-
-(use-package evil-escape :ensure t
-  :hook (after-init . evil-escape-mode)
-  :diminish
   )
 
 (use-package evil-numbers
