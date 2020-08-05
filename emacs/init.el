@@ -2095,7 +2095,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil :ensure t
   :after hydra
-  :hook (after-init . evil-mode)
 
   :bind
   (:map evil-normal-state-map
@@ -2131,6 +2130,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
+  (evil-mode 1)
   )
 
 (use-package evil-jumps-push-on-find-file :no-require
