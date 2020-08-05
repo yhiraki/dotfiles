@@ -2190,23 +2190,24 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package all-the-icons :ensure t)
 
-(use-package theme :no-require
-  :after (color-theme-sanityinc-tomorrow smart-mode-line)
-  :hook
-  (after-init
-   . (lambda ()
-       ;; (set-frame-parameter nil 'alpha 90)
-       (load-theme 'sanityinc-tomorrow-bright t)
-       (sml/setup)
-       ))
-  )
+(use-package color-theme-sanityinc-tomorrow :ensure t :disabled
+  :hook (after-init
+         . (lambda ()
+             (load-theme 'sanityinc-tomorrow-bright t))))
 
-(use-package color-theme-sanityinc-tomorrow :ensure t)
-
-(use-package smart-mode-line :ensure t
+(use-package smart-mode-line :ensure t :disabled
   :custom
   (sml/no-confirm-load-theme t)
   )
+
+(use-package doom-themes :ensure t
+  :config (load-theme 'doom-sourcerer t))
+
+(use-package doom-modeline :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (when (daemonp)
+    (setq doom-modeline-icon t)))
 
 (use-package hide-mode-line :ensure t
   :hook ((dired-mode
