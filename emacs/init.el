@@ -834,7 +834,6 @@ Version 2019-11-04"
          . lsp)
 
   :custom
-  (lsp-auto-configure nil) ;; Avoid automatically push company-lsp to company-backends.
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
   (lsp-clients-javascript-typescript-server "typescript-language-server")
@@ -987,16 +986,6 @@ Version 2019-11-04"
   :hook (company-mode . company-box-mode)
   :custom
   (company-box-icons-alist 'company-box-icons-all-the-icons)
-  )
-
-(use-package company-lsp :ensure t
-  :after (company lsp-mode)
-  :custom
-  (company-lsp-cache-candidates 'auto)
-  :config
-  ;; https://github.com/tigersoldier/company-lsp/issues/103
-  (push '(gopls . nil) company-lsp-filter-candidates)
-  (push 'company-lsp company-backends)
   )
 
 (use-package company-statistics :ensure t
