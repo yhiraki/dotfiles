@@ -1231,6 +1231,7 @@ Version 2019-11-04"
          (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
          (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
          (kbd "t") 'org-todo
+         (kbd "T") '(lambda () (interactive) (org-call-with-arg 'org-todo 'right))
          (kbd "<") 'org-metaleft
          (kbd ">") 'org-metaright
          (kbd "\\g") 'org-mac-grab-link
@@ -1276,7 +1277,10 @@ Version 2019-11-04"
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")
+   '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
+     (sequence "|" "CANCELLED(c)")
+     (sequence "WAITING(w)" "STARTED(s)" "|")
+     (sequence "SOMEDAY(S)" "|" "DONE(d)")
      (sequence "AGENDA(a)" "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
 
@@ -1325,13 +1329,13 @@ Version 2019-11-04"
   :custom
   (org-todo-keyword-faces
    '(("TODO" :foreground "red" :weight bold)
+     ("STARTED" :foreground "orange red" :weight bold)
      ("WAITING" :foreground "orange" :weight bold)
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
      ("AGENDA" :foreground "sky blue" :weight bold)
-     ("MEETING" :foreground "sky blue" :weight bold)
-     ))
+     ("MEETING" :foreground "sky blue" :weight bold)))
 )
 
 (use-package org-src
@@ -1370,9 +1374,39 @@ Version 2019-11-04"
   )
 
 (use-package org-clock
+  :hook
+  (kill-emacs . my:org-clock-out-and-save-when-exit)
+  (org-after-todo-state-change . my:org-clock-in-if-starting)
+  (org-after-todo-state-change . my:org-clock-out-if-waiting)
+
   :custom
-  (org-clock-out-remove-zero-time-clocks nil)
-   )
+  (org-clock-out-remove-zero-time-clocks t)
+
+  :config
+  ;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
+  (defun my:org-clock-out-and-save-when-exit ()
+    "Save buffers and stop clocking when kill emacs."
+    (when (org-clocking-p)
+      (org-clock-out)
+      (save-some-buffers t)))
+
+  ;; https://passingloop.tumblr.com/post/10150860851/org-clock-in-if-starting
+  (defun my:org-clock-in-if-starting ()
+    "Clock in when the task is marked STARTED."
+    (when (and (string= org-state "STARTED")
+               (not (string= org-last-state org-state)))
+      (org-clock-in)))
+
+  (defadvice org-clock-in (after sacha activate)
+    "Set this task's status to 'STARTED'."
+    (org-todo "STARTED"))
+
+  (defun my:org-clock-out-if-waiting ()
+    "Clock in when the task is marked STARTED."
+    (when (and (string= org-state "WAITING")
+               (not (string= org-last-state org-state)))
+      (org-clock-out)))
+  )
 
 (use-package japanese-holidays :ensure t
   :hook
@@ -1494,8 +1528,8 @@ Version 2019-11-04"
            "|名前|価格|電子版|追加日|\n|%?|||%U|" :table-line-pos "II-1")
 
           ("j" "Journal\t- Short logs like Twitter"
-           entry (file+olp+datetree "~/org/journal.org")
-           "* %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
+           entry (file+olp+datetree "~/org/journal.org" "Journal")
+           "* %?\n\t%T")
 
           ("B" "Blog\t\t- Hugo post"
            plain (file+olp "~/org/blog.org" "Blog Ideas")
