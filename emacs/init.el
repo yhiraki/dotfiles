@@ -679,9 +679,9 @@ Version 2019-11-04"
   (git-gutter+-modified-sign "┃")
 
   :custom-face
-  (git-gutter+-modified ((t (:italic nil :underline nil))))
-  (git-gutter+-deleted ((t (:italic nil :underline nil))))
-  (git-gutter+-added ((t (:italic nil :underline nil))))
+  (git-gutter+-modified ((t (:italic nil :underline nil :foreground "orange"))))
+  (git-gutter+-deleted ((t (:italic nil :underline nil :foreground "red"))))
+  (git-gutter+-added ((t (:italic nil :underline nil :foreground "green"))))
   )
 
 (use-package gist :ensure
