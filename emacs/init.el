@@ -817,10 +817,16 @@ Version 2019-11-04"
 
 (use-package twittering-mode :ensure t
   :commands (twit)
+
   :custom
   ;; master-password を設定する際に注意すること
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (twittering-use-master-password t)
+
+  :config
+  ;; https://github.com/hayamiz/twittering-mode/issues/154
+  (when (>= 27 emacs-major-version)
+    (defalias 'epa--decode-coding-string 'decode-coding-string))
   )
 
 (use-package lsp-mode :ensure t
