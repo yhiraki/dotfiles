@@ -2414,7 +2414,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
   (dolist (x auto-insert-alist)
     (when (equal "\\.el\\'" (car-safe (car x)))
-      (setcar (car x) "/src/.+\\.el\\'")))
+      (setcar (car x) "/src/[^/]+\\.el\\'")))
 
   (setq auto-insert-alist
         (append '(
