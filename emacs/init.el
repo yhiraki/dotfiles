@@ -254,38 +254,54 @@ Version 2019-11-04"
 
 (use-package faces
   :if darwin-p
+
   :config
-  ;; Osaka + Menlo
-  ;; (set-face-attribute 'default nil
-  ;;                     :family "Menlo"
-  ;;                     :height 120)
-  ;; (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
-  ;; (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+  (defvar yhiraki-font 'cica)
 
-  ;; Cica
-  (set-face-attribute 'default nil
-                      :family "Cica"
-                      :height 140
-                      )
+  (defun my-reload-font ()
+    ;; Osaka + Menlo
+    (when (eq yhiraki-font 'osaka)
+      (set-face-attribute 'default nil
+                          :family "Menlo"
+                          :height 120)
+      (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
+      (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+      )
 
-  ;; Jetbrains mono
-  ;; (set-face-attribute 'default nil
-  ;;                     :family "Jetbrains Mono"
-  ;;                     :height 130
-  ;;                     )
-  ;; (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
-  ;; (push '("Osaka" . 1.3) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+    ;; Cica
+    (when (eq yhiraki-font 'cica)
+      (set-face-attribute 'default nil
+                          :family "Cica"
+                          :height 160)
+      ;; apple color emoji
+      (push '("Apple color emoji" . 0.8) face-font-rescale-alist) ; 4文字幅に揃える
+      )
 
-  ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
+    ;; Jetbrains mono
+    (when (eq yhiraki-font 'jetbrains-mono)
+      (set-face-attribute 'default nil
+                          :family "Jetbrains Mono"
+                          :height 140)
+      ;; 日本語
+      (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
+      (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+      ;; apple color emoji
+      (push '("Apple color emoji" . 0.9) face-font-rescale-alist) ; 4文字幅に揃える
+      )
+    )
+
+  ;; http://misohena.jp/blog/2017-09-26-symbol- font-settings-for-emacs25.html
   ;; TODO: インデント可視化用のunicode文字は半角幅にしたいので無効化
   ;; (setq use-default-font-for-symbols nil) ; 記号をデフォルトのフォントにしない ○△□が全角幅になる
 
   ;; |あいうえお|かきくけこ|
   ;; |１２３４５|一二三四五|
   ;; |①②③④⑤|○△□☆…|
-  ;; |　　　　　|😀😀😀😀😀😀| ; TODO: 絵文字の幅がおかしい
+  ;; |😀😀😀😀😀|
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
+
+  (add-hook 'after-make-frame-functions '(lambda (frame) (my-reload-font)))
   )
 
 (use-package mule-cmds :no-require ; cannot require
