@@ -1558,6 +1558,11 @@ Version 2019-11-04"
            entry (file+headline "~/org/inbox.org" "Inbox")
            "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t")
 
+          ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
+          ("I" "Interrupt\t\t- Add interrupt task to Inbox"
+           entry (file+headline "~/org/inbox.org" "Inbox")
+           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t" :clock-in t :clock-resume t)
+
           ("n" "Note\t\t- Taking note to source code"
            entry (file+headline "~/org/notes.org" "Notes")
            "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
