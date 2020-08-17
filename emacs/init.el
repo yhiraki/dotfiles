@@ -847,12 +847,9 @@ Version 2019-11-04"
 
 (use-package lsp-mode :ensure t
   :hook ((c++-mode
-          go-mode
           js-mode
-          python-mode
           ;; sh-mode
-          typescript-mode
-          vue-mode)
+          typescript-mode)
          . lsp)
 
   :custom
@@ -911,12 +908,14 @@ Version 2019-11-04"
   :after lsp-mode)
 
 (use-package lsp-vetur
+  :hook (vue . lsp)
   :custom
   (lsp-vetur-format-default-formatter-ts "eslint")
   (lsp-vetur-format-default-formatter-js "eslint")
   )
 
 (use-package lsp-pyls
+  :hook (python . lsp)
   :custom
   (lsp-pyls-plugins-flake8-enabled t)
   (lsp-pyls-plugins-jedi-completion-include-params nil)
@@ -924,6 +923,16 @@ Version 2019-11-04"
   (lsp-pyls-plugins-yapf-enabled t)
   (lsp-pyls-plugins-autopep8-enabled nil)
   )
+
+(use-package lsp-python-ms :disabled  ; formatting providorが無いと言われるので様子見
+  :ensure t
+  :custom (lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp))))
+
+(use-package lsp-go
+  :hook (go . lsp))
 
 (use-package lsp-ui :ensure t
   :hook
