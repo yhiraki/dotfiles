@@ -903,6 +903,8 @@ Version 2019-11-04"
 
   (lsp-org-babel-enable "python")
   (lsp-org-babel-enable "cpp")
+  (lsp-org-babel-enable "js")
+  (lsp-org-babel-enable "typescript")
   )
 
 (use-package lsp-clients
@@ -1457,7 +1459,7 @@ Version 2019-11-04"
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("elisp" "python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "C++"))))
+    (not (member lang '("elisp" "python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "cpp" "typescript"))))
 
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("console" . sh) org-src-lang-modes)
@@ -1465,9 +1467,15 @@ Version 2019-11-04"
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t) (python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
-   )
-  )
+   '((emacs-lisp . t)
+     (python . t)
+     (plantuml . t)
+     (shell . t)
+     (dot . t)
+     (js . t)
+     (typescript . t)
+     (C . t))
+   ))
 
 (defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
@@ -1525,6 +1533,8 @@ Version 2019-11-04"
   (setq org-babel-js-function-wrapper
         "require('util').inspect(function(){\n%s\n}());")
   )
+
+(use-package ob-typescript :ensure t)
 
 (use-package org-capture
   :commands org-capture
