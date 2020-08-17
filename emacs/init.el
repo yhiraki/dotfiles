@@ -1071,9 +1071,7 @@ Version 2019-11-04"
   ("\\.cs\\'" . csharp-mode)
   )
 
-(use-package dockerfile-mode :ensure t
-  :mode
-  ("Dockerfile\\'" . dockerfile-mode))
+(use-package dockerfile-mode :ensure t)
 
 (use-package docker-compose-mode :ensure t)
 
@@ -1671,8 +1669,6 @@ Version 2019-11-04"
   )
 
 (use-package python :ensure t
-  :mode (("\\.py\\'" . python-mode))
-
   :hook
   (evil-after-load
    . (lambda ()
@@ -1718,11 +1714,7 @@ Version 2019-11-04"
   (sh-basic-offset 2)
   (sh-indentation 2)
   (sh-indent-for-case-label 0)
-  (sh-indent-for-case-alt '+)
-  :mode
-  ("\\.?sh\\'" . shell-script-mode)
-  ("\\.?shrc.*\\'" . shell-script-mode)
-  )
+  (sh-indent-for-case-alt '+))
 
 (use-package shfmt
   :quelpa (shfmt :type git :fetcher github :repo "amake/shfmt.el")
@@ -1744,10 +1736,7 @@ Version 2019-11-04"
 (use-package sql
   :config
   (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
-  (setq sql-postgres-login-params (append sql-postgres-login-params '(port)))
-  :mode
-  ("\\.sql\\'" . sql-mode)
-  )
+  (setq sql-postgres-login-params (append sql-postgres-login-params '(port))))
 
 (use-package sql-indent :ensure t
   :after sql
@@ -1792,16 +1781,13 @@ Version 2019-11-04"
       ,@sqlind-default-indentation-offsets-alist))
   )
 
-(use-package toml-mode :ensure t
-  :mode ("\\.toml\\'")
-  )
+(use-package toml-mode :ensure t)
 
 (use-package typescript-mode :ensure t
   :custom
   (typescript-indent-level 2)
   :mode
-  ("\\.tsx?\\'")
-  )
+  ("\\.tsx?\\'"))
 
 (use-package plantuml-mode :ensure t
   :custom
@@ -1858,9 +1844,6 @@ Version 2019-11-04"
   )
 
 (use-package vue-mode :ensure t
-  :mode
-  ("\\.vue\\'" . vue-mode)
-
   :hook
   (vue-mode
    . (lambda ()
