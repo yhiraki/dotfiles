@@ -1056,8 +1056,8 @@ Version 2019-11-04"
     :default "rust")
 
   (quickrun-add-command "c++/g++"
-    '((:exec . ("%c -std=c++14 %o -o %e %s" "%e %a"))
-      (:compile-only . "%c -Wall -Wextra -std=c++14 %o -o %e %s"))
+    '((:exec . ("%c -Wall -Wextra -std=c++14 -fsanitize=undefined %o -o %e %s" "%e %a"))
+      (:compile-only . "%c -Wall -Wextra -std=c++14 -fsanitize=undefined %o -o %e %s"))
     :override t)
   (quickrun-set-default "c++" "c++/g++")
 
