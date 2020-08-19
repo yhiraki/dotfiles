@@ -288,8 +288,9 @@ Version 2019-11-04"
       ;; apple color emoji
       (push '("Apple color emoji" . 0.9) face-font-rescale-alist) ; 4文字幅に揃える
       )
+
+    (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple color emoji")
     )
-  (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple color emoji")
 
   ;; http://misohena.jp/blog/2017-09-26-symbol- font-settings-for-emacs25.html
   ;; TODO: インデント可視化用のunicode文字は半角幅にしたいので無効化
