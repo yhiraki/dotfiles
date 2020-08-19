@@ -923,7 +923,7 @@ Version 2019-11-04"
   )
 
 (use-package lsp-pyls
-  :hook (python . lsp)
+  :hook (python-mode . lsp)
   :custom
   (lsp-pyls-plugins-flake8-enabled t)
   (lsp-pyls-plugins-jedi-completion-include-params nil)
