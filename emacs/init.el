@@ -1861,6 +1861,7 @@ Version 2019-11-04"
        (evil-define-key 'normal vue-mode-map
          (kbd "\\f") 'eslint-fix
          )))
+  (vue-mode . lsp)
   )
 
 (use-package mmm-mode
