@@ -809,7 +809,7 @@ Version 2019-11-04"
   )
 
 (use-package exec-path-from-shell :ensure t
-  :init (exec-path-from-shell-initialize)
+  :hook (after-init . exec-path-from-shell-initialize)
   )
 
 (use-package pangu-spacing :ensure t
