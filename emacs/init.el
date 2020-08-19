@@ -255,10 +255,14 @@ Version 2019-11-04"
 (use-package faces
   :if darwin-p
 
+  :hook
+  (after-init . my-reload-font)
+  (after-make-frame-functions . my-reload-font)
+
   :config
   (defvar yhiraki-font 'cica)
 
-  (defun my-reload-font ()
+  (defun my-reload-font (&optional frame)
     ;; Osaka + Menlo
     (when (eq yhiraki-font 'osaka)
       (set-face-attribute 'default nil
@@ -289,7 +293,11 @@ Version 2019-11-04"
       (push '("Apple color emoji" . 0.9) face-font-rescale-alist) ; 4文字幅に揃える
       )
 
-    (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple color emoji")
+    ;; この行のせいでdaemonが起動できない？
+    ;; (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
+
+    (remove-hook 'after-init-hook #'my-reload-font)
+    (remove-hook 'after-make-frame-functions #'my-reload-font)
     )
 
   ;; http://misohena.jp/blog/2017-09-26-symbol- font-settings-for-emacs25.html
@@ -302,8 +310,6 @@ Version 2019-11-04"
   ;; |😀😀😀😀😀|
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
-
-  (add-hook 'after-make-frame-functions '(lambda (frame) (my-reload-font)))
   )
 
 (use-package mule-cmds :no-require ; cannot require
