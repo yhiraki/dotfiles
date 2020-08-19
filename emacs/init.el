@@ -385,7 +385,7 @@ Version 2019-11-04"
   :hook (after-init . smartparens-global-mode)
 
   :config
-  (sp-pair "\{ " " \}")
+  ;; (sp-pair "\{ " " \}")
   ;; (sp-pair "\[ " " \]")
 
   (sp-with-modes '(lisp-mode emacs-lisp-mode lisp-interaction-mode slime-mode)
