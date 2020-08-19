@@ -459,28 +459,23 @@ Version 2019-11-04"
        (setq-local line-spacing 3)))
   (evil-after-load
    . (lambda ()
-       (evil-set-initial-state 'dired-mode 'emacs)
-       (evil-define-key 'emacs dired-mode-map
-         (kbd "gg") 'evil-goto-first-line
-         (kbd "go") 'my-open-in-external-app
-         )
-         ))
+       (evil-set-initial-state 'dired-mode 'emacs)))
 
   :bind
   (:map dired-mode-map
+        (":"   . evil-ex)
         ("C-b" . evil-scroll-page-up)
         ("C-f" . evil-scroll-page-down)
         ("C-j" . dired-next-dirline)
         ("C-k" . dired-prev-dirline)
         ("G"   . evil-goto-line)
         ("SPC" . hydra-global-leader/body)
-        ;; ("gg"  . evil-goto-first-line)
-        ;; ("go"  . my-open-in-external-app)
+        ("e"   . wdired-change-to-wdired-mode)
+        ("g"   . nil)
+        ("gg"  . evil-goto-first-line)
+        ("go"  . my-open-in-external-app)
         ("j"   . dired-next-line)
-        ("k"   . dired-previous-line)
-        (":"   . evil-ex)
-        )
-  )
+        ("k"   . dired-previous-line)))
 
 (use-package dired-sidebar :ensure t
   :commands (dired-sidebar-toggle-sidebar)
@@ -502,11 +497,8 @@ Version 2019-11-04"
   :hook (dired-mode . all-the-icons-dired-mode)
   )
 
-(use-package wdired :ensure t
+(use-package wdired
   :commands (wdired-change-to-wdired-mode)
-  :bind
-  (:map dired-mode-map
-        ("e" . wdired-change-to-wdired-mode))
   :custom (wdired-allow-to-change-permissions t)
   )
 
