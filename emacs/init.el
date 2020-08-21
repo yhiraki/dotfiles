@@ -904,9 +904,6 @@ Version 2019-11-04"
   (lsp-org-babel-enable "typescript")
   )
 
-(use-package lsp-clients
-  :after lsp-mode)
-
 (use-package lsp-vetur
   :hook (vue . lsp)
   :custom
