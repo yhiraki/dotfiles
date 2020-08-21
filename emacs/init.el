@@ -1074,7 +1074,11 @@ Version 2019-11-04"
 
 (use-package hideshow
   :diminish hs-minor-mode
-  :hook (prog-mode . my/hs-minor-mode-hide-all)
+  :hook
+  (prog-mode . hi-minor-mode)
+  ;; ジャンプしたときに自動的に展開して特定の行に移動してくれるようにしたい
+  ;; (prog-mode . my/hs-minor-mode-hide-all)
+  ;; (xref-after-jump . (lambda () (hs-show-block)))
   :config
   (defun my/hs-minor-mode-hide-all ()
     (hs-minor-mode)
