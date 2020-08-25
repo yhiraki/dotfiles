@@ -256,7 +256,7 @@ Version 2019-11-04"
   :if darwin-p
 
   :hook
-  (after-init . my-reload-font)
+  ;; (after-init . my-reload-font) ;; daemon起動時にフリーズするので無効化
   (after-make-frame-functions . my-reload-font)
 
   :config
