@@ -1061,6 +1061,11 @@ Version 2019-11-04"
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
     :override t)
+
+  (quickrun-add-command "python-venv"
+    '((:command . (lambda() (find-virtualenv-executable "python3")))
+      (:compile-only . (lambda () (concat (find-virtualenv-executable "flake8") " %s"))))
+    :default "python")
   )
 
 (use-package csharp-mode :ensure t
@@ -1692,19 +1697,17 @@ Version 2019-11-04"
   )
 
 (use-package auto-virtualenvwrapper :ensure t
+  :commands auto-virtualenvwrapper-find-virtualenv-path
+
   :hook (python-mode . auto-virtualenvwrapper-activate)
-  :config
+
+  :init
   (defun find-virtualenv-executable (command)
     (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
       (if path
           (concat path "bin/" command)
         (let ((exe (executable-find command)))
               (if exe exe command)))))
-
-  (quickrun-add-command "python-venv"
-    '((:command . (lambda() (find-virtualenv-executable "python3")))
-      (:compile-only . (lambda () (concat (find-virtualenv-executable "flake8") " %s"))))
-    :default "python")
   )
 
 (use-package py-yapf :ensure t
