@@ -700,6 +700,9 @@ Version 2019-11-04"
   (git-gutter+-added ((t (:italic nil :underline nil :foreground "green"))))
   )
 
+(use-package git-messenger :ensure t
+  :commnads git-messenger:popup-message)
+
 (use-package gist :ensure
   :hook
   (evil-after-load
@@ -1953,6 +1956,7 @@ Version 2019-11-04"
     ("s" magit-status "status")
     ("t" git-timemachine "timemachine")
     ("o" browse-at-remote "browse at remote")
+    ("m" git-messenger:popup-message "git messenger")
     )
 
   (defhydra hydra-help (:exit t)
