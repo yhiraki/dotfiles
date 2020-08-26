@@ -294,7 +294,7 @@ Version 2019-11-04"
       )
 
     ;; この行のせいでdaemonが起動できない？
-    ;; (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
+    (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
 
     (remove-hook 'after-init-hook #'my-reload-font)
     (remove-hook 'after-make-frame-functions #'my-reload-font)
