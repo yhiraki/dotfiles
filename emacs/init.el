@@ -384,6 +384,7 @@ Version 2019-11-04"
   :diminish which-key-mode
   :hook (after-init . which-key-mode)
   :custom
+  (which-key-use-C-h-commands nil)
   (which-key-allow-evil-operators t)
   )
 
