@@ -2200,33 +2200,32 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
+  (evil-add-command-properties #'find-file :jump t)
   (evil-mode 1)
   )
 
 (use-package evil-surround :ensure t
-  :hook (evil-after-load . global-evil-surround-mode)
-  )
+  :after evil
+  :config (global-evil-surround-mode))
 
 (use-package evil-magit :ensure t
-  :hook (magit-mode . evil-magit-init)
-  )
+  :hook (magit-mode . evil-magit-init))
 
 (use-package evil-commentary :ensure t
   :diminish evil-commentary-mode
-  :hook (evil-after-load . evil-commentary-mode)
-  )
+  :after evil
+  :config (evil-commentary-mode))
 
 (use-package evil-matchit :ensure t
-  :hook (evil-after-load . global-evil-matchit-mode)
-  )
+  :after evil
+  :config (global-evil-matchit-mode))
 
 (use-package evil-lion :ensure t
-  :hook (evil-after-load . evil-lion-mode)
-  )
+  :after evil
+  :config (evil-lion-mode))
 
 (use-package evil-numbers
   :quelpa (evil-numbers :type git :fetcher github :repo "janpath/evil-numbers")
-  :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   :after evil
   :bind
   (:map evil-normal-state-map
@@ -2241,13 +2240,13 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ))
 
 (use-package evil-goggles :ensure t
-  :hook (after-init . evil-goggles-mode)
+  :after evil
   :diminish
   :custom
   (evil-goggles-duration 0.050)
   :config
   (evil-goggles-use-diff-faces)
-  )
+  (evil-goggles-mode))
 
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
