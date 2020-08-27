@@ -2193,10 +2193,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :custom
   (evil-ex-search-vim-style-regexp t)
-  (evil-search-module 'evil-search)
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
-  (evil-want-fine-undo 'fine)
   (evil-toggle-key "C-M-z")
 
   :config
@@ -2206,7 +2204,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package evil-surround :ensure t
-  :hook (after-init . global-evil-surround-mode)
+  :hook (evil-after-load . global-evil-surround-mode)
   )
 
 (use-package evil-magit :ensure t
@@ -2215,15 +2213,15 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil-commentary :ensure t
   :diminish evil-commentary-mode
-  :hook (after-init . evil-commentary-mode)
+  :hook (evil-after-load . evil-commentary-mode)
   )
 
 (use-package evil-matchit :ensure t
-  :hook (after-init . global-evil-matchit-mode)
+  :hook (evil-after-load . global-evil-matchit-mode)
   )
 
 (use-package evil-lion :ensure t
-  :hook (after-init . evil-lion-mode)
+  :hook (evil-after-load . evil-lion-mode)
   )
 
 (use-package evil-numbers
@@ -2246,7 +2244,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :hook (after-init . evil-goggles-mode)
   :diminish
   :custom
-  (evil-goggles-duration 0.100)
+  (evil-goggles-duration 0.050)
   :config
   (evil-goggles-use-diff-faces)
   )
