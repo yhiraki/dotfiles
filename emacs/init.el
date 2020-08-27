@@ -701,7 +701,7 @@ Version 2019-11-04"
   )
 
 (use-package git-messenger :ensure t
-  :commnads git-messenger:popup-message)
+  :commands git-messenger:popup-message)
 
 (use-package gist :ensure
   :hook
