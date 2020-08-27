@@ -2470,8 +2470,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package key-binding :no-require
   :config
-  ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (global-set-key (kbd "C-h") 'delete-backward-char)
+  (define-key key-translation-map [?\C-h] [?\C-?])
+  ;; (global-set-key (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "C-c l") 'org-store-link)
