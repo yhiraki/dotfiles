@@ -263,6 +263,9 @@ Version 2019-11-04"
   (defvar yhiraki-font 'cica)
 
   (defun my-reload-font (&optional frame)
+    "reload my font settings"
+    (interactive)
+
     ;; Osaka + Menlo
     (when (eq yhiraki-font 'osaka)
       (set-face-attribute 'default nil
