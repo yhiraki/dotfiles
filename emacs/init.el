@@ -1205,6 +1205,8 @@ Version 2019-11-04"
        (evil-define-key 'normal prog-mode-map
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
+
+         (kbd "\\R")  'lsp-rename
          (kbd "\\e") 'flycheck-list-errors
          (kbd "\\f") 'lsp-format-buffer
          (kbd "\\m") 'lsp-ui-imenu
@@ -1213,13 +1215,26 @@ Version 2019-11-04"
          (kbd "\\qr") 'quickrun
          (kbd "\\qs") 'quickrun-shell
          (kbd "\\r")  'quickrun
+
          (kbd "gd") 'xref-find-definitions
          (kbd "gr") 'xref-find-references
          )
        (evil-define-key 'visual prog-mode-map
+         (kbd "[e") 'flycheck-previous-error
+         (kbd "]e") 'flycheck-next-error
+
+         (kbd "\\R")  'lsp-rename
+         (kbd "\\e") 'flycheck-list-errors
          (kbd "\\f") 'lsp-format-region
-         (kbd "\\r") 'quickrun-region
+         (kbd "\\m") 'lsp-ui-imenu
+         (kbd "\\qa") 'quickrun-autorun-mode
+         (kbd "\\qc") 'quickrun-compile-only
          (kbd "\\qr") 'quickrun-region
+         (kbd "\\qs") 'quickrun-shell
+         (kbd "\\r") 'quickrun-region
+
+         (kbd "gd") 'xref-find-definitions
+         (kbd "gr") 'xref-find-references
          )))
   )
 
