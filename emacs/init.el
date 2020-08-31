@@ -942,6 +942,8 @@ Version 2019-11-04"
 (use-package lsp-ui :ensure t
   :hook
   (lsp-mode . lsp-ui-mode)
+  (after-init . company-tng-mode)
+
   :custom
   (lsp-ui-doc-enable nil)
   (lsp-ui-flycheck-enable t)
@@ -971,7 +973,7 @@ Version 2019-11-04"
   (TeX-mode . edit-category-table-for-company-dabbrev)
 
   :custom
-  (company-auto-complete nil)
+  (company-auto-commit nil)
   (company-candidates-cache t)
   (company-dabbrev-char-regexp "\\cs")
   (company-dabbrev-code-ignore-case t)
@@ -997,7 +999,7 @@ Version 2019-11-04"
           (modify-category-entry i ?s table t))
         (setq i (1+ i)))))
   (edit-category-table-for-company-dabbrev)
-  (add-to-list 'company-frontends 'company-tng-frontend)
+  ;; (add-to-list 'company-frontends 'company-tng-frontend)
 
   :bind
   (:map company-active-map
