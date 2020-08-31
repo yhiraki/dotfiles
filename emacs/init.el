@@ -475,6 +475,7 @@ Version 2019-11-04"
         ("G"   . evil-goto-line)
         ("SPC" . hydra-global-leader/body)
         ("e"   . wdired-change-to-wdired-mode)
+        ("r"   . revert-buffer)
         ("g"   . nil)
         ("gg"  . evil-goto-first-line)
         ("go"  . my-open-in-external-app)
