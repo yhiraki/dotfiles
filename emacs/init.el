@@ -2012,16 +2012,11 @@ Version 2019-11-04"
     ("r" restart-emacs "restart emacs")
     )
 
-  (defhydra hydra-find-dotfiles (:exit t)
-    ("z" (find-file "~/.config/zsh/.zshrc") ".zshrc")
-    ("e" (find-file user-init-file) "init.el")
-    )
-
   (defhydra hydra-global-leader (:exit t)
     ("G" hydra-google/body "google")
     ("a" org-agenda "org-agenda")
+    ("b" counsel-bookmark "bookmarks")
     ("c" org-capture "org-cature")
-    ("d" hydra-find-dotfiles/body "dotfiles")
     ("f" hydra-file-open/body "find file")
     ("g" hydra-git/body "git")
     ("h" hydra-help/body "help")
