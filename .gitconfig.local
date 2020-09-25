@@ -1,8 +1,8 @@
 [ghq]
 	root = ~/src
 [core]
-  editor = "/usr/local/bin/emacsclient -nw -a ''"
-  excludesfile = ~/.gitexclude
-  pager = cat
+	editor = "emacsclient -nw -a ''"
+	excludesfile = ~/.gitexclude
+	pager = cat
 [rebase]
 	autostash = true
