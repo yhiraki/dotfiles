@@ -44,10 +44,11 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(package-install 'use-package)
-;;; Install quelpa itself:
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
 (use-package quelpa-use-package :ensure t
-  :init (setq quelpa-update-melpa-p nil)
+  :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
 
 (defvar darwin-p (eq system-type 'darwin))
@@ -253,36 +254,63 @@ Version 2019-11-04"
 
 (use-package faces
   :if darwin-p
+
+  :hook
+  ;; (after-init . my-reload-font) ;; daemon起動時にフリーズするので無効化
+  (after-make-frame-functions . my-reload-font)
+
   :config
-  ;; Osaka + Menlo
-  ;; (set-face-attribute 'default nil
-  ;;                     :family "Menlo"
-  ;;                     :height 120)
-  ;; (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
-  ;; (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+  (defvar yhiraki-font 'cica)
 
-  ;; Cica
-  (set-face-attribute 'default nil
-                      :family "Cica"
-                      :height 140
-                      )
+  (defun my-reload-font (&optional frame)
+    "reload my font settings"
+    (interactive)
 
-  ;; Jetbrains mono
-  ;; (set-face-attribute 'default nil
-  ;;                     :family "Jetbrains Mono"
-  ;;                     :height 130
-  ;;                     )
-  ;; (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
-  ;; (push '("Osaka" . 1.3) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+    ;; Osaka + Menlo
+    (when (eq yhiraki-font 'osaka)
+      (set-face-attribute 'default nil
+                          :family "Menlo"
+                          :height 120)
+      (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
+      (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+      )
 
-  ;; http://misohena.jp/blog/2017-09-26-symbol-font-settings-for-emacs25.html
+    ;; Cica
+    (when (eq yhiraki-font 'cica)
+      (set-face-attribute 'default nil
+                          :family "Cica"
+                          :height 160)
+      ;; apple color emoji
+      (push '("Apple color emoji" . 0.8) face-font-rescale-alist) ; 4文字幅に揃える
+      )
+
+    ;; Jetbrains mono
+    (when (eq yhiraki-font 'jetbrains-mono)
+      (set-face-attribute 'default nil
+                          :family "Jetbrains Mono"
+                          :height 140)
+      ;; 日本語
+      (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
+      (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
+      ;; apple color emoji
+      (push '("Apple color emoji" . 0.9) face-font-rescale-alist) ; 4文字幅に揃える
+      )
+
+    ;; この行のせいでdaemonが起動できない？
+    (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
+
+    (remove-hook 'after-init-hook #'my-reload-font)
+    (remove-hook 'after-make-frame-functions #'my-reload-font)
+    )
+
+  ;; http://misohena.jp/blog/2017-09-26-symbol- font-settings-for-emacs25.html
   ;; TODO: インデント可視化用のunicode文字は半角幅にしたいので無効化
   ;; (setq use-default-font-for-symbols nil) ; 記号をデフォルトのフォントにしない ○△□が全角幅になる
 
   ;; |あいうえお|かきくけこ|
   ;; |１２３４５|一二三四五|
   ;; |①②③④⑤|○△□☆…|
-  ;; |　　　　　|😀😀😀😀😀😀| ; TODO: 絵文字の幅がおかしい
+  ;; |😀😀😀😀😀|
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
   )
@@ -359,6 +387,7 @@ Version 2019-11-04"
   :diminish which-key-mode
   :hook (after-init . which-key-mode)
   :custom
+  (which-key-use-C-h-commands nil)
   (which-key-allow-evil-operators t)
   )
 
@@ -367,7 +396,7 @@ Version 2019-11-04"
   :hook (after-init . smartparens-global-mode)
 
   :config
-  (sp-pair "\{ " " \}")
+  ;; (sp-pair "\{ " " \}")
   ;; (sp-pair "\[ " " \]")
 
   (sp-with-modes '(lisp-mode emacs-lisp-mode lisp-interaction-mode slime-mode)
@@ -434,28 +463,24 @@ Version 2019-11-04"
        (setq-local line-spacing 3)))
   (evil-after-load
    . (lambda ()
-       (evil-set-initial-state 'dired-mode 'emacs)
-       (evil-define-key 'emacs dired-mode-map
-         (kbd "gg") 'evil-goto-first-line
-         (kbd "go") 'my-open-in-external-app
-         )
-         ))
+       (evil-set-initial-state 'dired-mode 'emacs)))
 
   :bind
   (:map dired-mode-map
+        (":"   . evil-ex)
         ("C-b" . evil-scroll-page-up)
         ("C-f" . evil-scroll-page-down)
         ("C-j" . dired-next-dirline)
         ("C-k" . dired-prev-dirline)
         ("G"   . evil-goto-line)
         ("SPC" . hydra-global-leader/body)
-        ;; ("gg"  . evil-goto-first-line)
-        ;; ("go"  . my-open-in-external-app)
+        ("e"   . wdired-change-to-wdired-mode)
+        ("r"   . revert-buffer)
+        ("g"   . nil)
+        ("gg"  . evil-goto-first-line)
+        ("go"  . my-open-in-external-app)
         ("j"   . dired-next-line)
-        ("k"   . dired-previous-line)
-        (":"   . evil-ex)
-        )
-  )
+        ("k"   . dired-previous-line)))
 
 (use-package dired-sidebar :ensure t
   :commands (dired-sidebar-toggle-sidebar)
@@ -477,17 +502,14 @@ Version 2019-11-04"
   :hook (dired-mode . all-the-icons-dired-mode)
   )
 
-(use-package wdired :ensure t
+(use-package wdired
   :commands (wdired-change-to-wdired-mode)
-  :bind
-  (:map dired-mode-map
-        ("e" . wdired-change-to-wdired-mode))
   :custom (wdired-allow-to-change-permissions t)
   )
 
 (use-package flycheck :ensure t
   :hook
-  ((prog-mode) . flycheck-mode)
+  ((prog-mode yaml-mode) . flycheck-mode)
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal flycheck-error-list-mode-map
@@ -678,10 +700,13 @@ Version 2019-11-04"
   (git-gutter+-modified-sign "┃")
 
   :custom-face
-  (git-gutter+-modified ((t (:italic nil :underline nil))))
-  (git-gutter+-deleted ((t (:italic nil :underline nil))))
-  (git-gutter+-added ((t (:italic nil :underline nil))))
+  (git-gutter+-modified ((t (:italic nil :underline nil :foreground "orange"))))
+  (git-gutter+-deleted ((t (:italic nil :underline nil :foreground "red"))))
+  (git-gutter+-added ((t (:italic nil :underline nil :foreground "green"))))
   )
+
+(use-package git-messenger :ensure t
+  :commands git-messenger:popup-message)
 
 (use-package gist :ensure
   :hook
@@ -791,7 +816,7 @@ Version 2019-11-04"
   )
 
 (use-package exec-path-from-shell :ensure t
-  :init (exec-path-from-shell-initialize)
+  :hook (after-init . exec-path-from-shell-initialize)
   )
 
 (use-package pangu-spacing :ensure t
@@ -816,24 +841,26 @@ Version 2019-11-04"
 
 (use-package twittering-mode :ensure t
   :commands (twit)
+
   :custom
   ;; master-password を設定する際に注意すること
   ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
   (twittering-use-master-password t)
+
+  :config
+  ;; https://github.com/hayamiz/twittering-mode/issues/154
+  (when (>= 27 emacs-major-version)
+    (defalias 'epa--decode-coding-string 'decode-coding-string))
   )
 
 (use-package lsp-mode :ensure t
   :hook ((c++-mode
-          go-mode
           js-mode
-          python-mode
           ;; sh-mode
-          typescript-mode
-          vue-mode)
+          typescript-mode)
          . lsp)
 
   :custom
-  (lsp-auto-configure nil) ;; Avoid automatically push company-lsp to company-backends.
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
   (lsp-clients-javascript-typescript-server "typescript-language-server")
@@ -880,18 +907,20 @@ Version 2019-11-04"
                           (upcase ,lang))))))))
 
   (lsp-org-babel-enable "python")
+  (lsp-org-babel-enable "cpp")
+  (lsp-org-babel-enable "js")
+  (lsp-org-babel-enable "typescript")
   )
 
-(use-package lsp-clients
-  :after lsp-mode)
-
 (use-package lsp-vetur
+  :hook (vue . lsp)
   :custom
   (lsp-vetur-format-default-formatter-ts "eslint")
   (lsp-vetur-format-default-formatter-js "eslint")
   )
 
 (use-package lsp-pyls
+  :hook (python-mode . lsp)
   :custom
   (lsp-pyls-plugins-flake8-enabled t)
   (lsp-pyls-plugins-jedi-completion-include-params nil)
@@ -900,9 +929,21 @@ Version 2019-11-04"
   (lsp-pyls-plugins-autopep8-enabled nil)
   )
 
+(use-package lsp-python-ms :disabled  ; formatting providorが無いと言われるので様子見
+  :ensure t
+  :custom (lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp))))
+
+(use-package lsp-go
+  :hook (go . lsp))
+
 (use-package lsp-ui :ensure t
   :hook
   (lsp-mode . lsp-ui-mode)
+  (after-init . company-tng-mode)
+
   :custom
   (lsp-ui-doc-enable nil)
   (lsp-ui-flycheck-enable t)
@@ -932,7 +973,7 @@ Version 2019-11-04"
   (TeX-mode . edit-category-table-for-company-dabbrev)
 
   :custom
-  (company-auto-complete nil)
+  (company-auto-commit nil)
   (company-candidates-cache t)
   (company-dabbrev-char-regexp "\\cs")
   (company-dabbrev-code-ignore-case t)
@@ -958,7 +999,7 @@ Version 2019-11-04"
           (modify-category-entry i ?s table t))
         (setq i (1+ i)))))
   (edit-category-table-for-company-dabbrev)
-  (add-to-list 'company-frontends 'company-tng-frontend)
+  ;; (add-to-list 'company-frontends 'company-tng-frontend)
 
   :bind
   (:map company-active-map
@@ -985,16 +1026,6 @@ Version 2019-11-04"
   :hook (company-mode . company-box-mode)
   :custom
   (company-box-icons-alist 'company-box-icons-all-the-icons)
-  )
-
-(use-package company-lsp :ensure t
-  :after (company lsp-mode)
-  :custom
-  (company-lsp-cache-candidates 'auto)
-  :config
-  ;; https://github.com/tigersoldier/company-lsp/issues/103
-  (push '(gopls . nil) company-lsp-filter-candidates)
-  (push 'company-lsp company-backends)
   )
 
 (use-package company-statistics :ensure t
@@ -1032,14 +1063,19 @@ Version 2019-11-04"
     :default "rust")
 
   (quickrun-add-command "c++/g++"
-    '((:exec . ("%c -std=c++14 %o -o %e %s" "%e %a"))
-      (:compile-only . "%c -Wall -Wextra -std=c++14 %o -o %e %s"))
+    '((:exec . ("%c -Wall -Wextra -std=c++14 -fsanitize=undefined %o -o %e %s" "%e %a"))
+      (:compile-only . "%c -Wall -Wextra -std=c++14 -fsanitize=undefined %o -o %e %s"))
     :override t)
   (quickrun-set-default "c++" "c++/g++")
 
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
     :override t)
+
+  (quickrun-add-command "python-venv"
+    '((:command . (lambda() (find-virtualenv-executable "python3")))
+      (:compile-only . (lambda () (concat (find-virtualenv-executable "flake8") " %s"))))
+    :default "python")
   )
 
 (use-package csharp-mode :ensure t
@@ -1047,13 +1083,17 @@ Version 2019-11-04"
   ("\\.cs\\'" . csharp-mode)
   )
 
-(use-package dockerfile-mode :ensure t
-  :mode
-  ("Dockerfile\\'" . dockerfile-mode))
+(use-package dockerfile-mode :ensure t)
+
+(use-package docker-compose-mode :ensure t)
 
 (use-package hideshow
   :diminish hs-minor-mode
-  :hook (prog-mode . my/hs-minor-mode-hide-all)
+  :hook
+  (prog-mode . hs-minor-mode)
+  ;; ジャンプしたときに自動的に展開して特定の行に移動してくれるようにしたい
+  ;; (prog-mode . my/hs-minor-mode-hide-all)
+  ;; (xref-after-jump . (lambda () (hs-show-block)))
   :config
   (defun my/hs-minor-mode-hide-all ()
     (hs-minor-mode)
@@ -1062,12 +1102,6 @@ Version 2019-11-04"
   )
 
 (use-package elisp-mode
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal emacs-lisp-mode-map
-         (kbd "\\e") 'flycheck-list-errors
-         )))
   :mode
   ("\\.el\\'" . emacs-lisp-mode)
   )
@@ -1171,6 +1205,8 @@ Version 2019-11-04"
        (evil-define-key 'normal prog-mode-map
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
+
+         (kbd "\\R")  'lsp-rename
          (kbd "\\e") 'flycheck-list-errors
          (kbd "\\f") 'lsp-format-buffer
          (kbd "\\m") 'lsp-ui-imenu
@@ -1179,13 +1215,26 @@ Version 2019-11-04"
          (kbd "\\qr") 'quickrun
          (kbd "\\qs") 'quickrun-shell
          (kbd "\\r")  'quickrun
+
          (kbd "gd") 'xref-find-definitions
          (kbd "gr") 'xref-find-references
          )
        (evil-define-key 'visual prog-mode-map
+         (kbd "[e") 'flycheck-previous-error
+         (kbd "]e") 'flycheck-next-error
+
+         (kbd "\\R")  'lsp-rename
+         (kbd "\\e") 'flycheck-list-errors
          (kbd "\\f") 'lsp-format-region
-         (kbd "\\r") 'quickrun-region
+         (kbd "\\m") 'lsp-ui-imenu
+         (kbd "\\qa") 'quickrun-autorun-mode
+         (kbd "\\qc") 'quickrun-compile-only
          (kbd "\\qr") 'quickrun-region
+         (kbd "\\qs") 'quickrun-shell
+         (kbd "\\r") 'quickrun-region
+
+         (kbd "gd") 'xref-find-definitions
+         (kbd "gr") 'xref-find-references
          )))
   )
 
@@ -1244,6 +1293,7 @@ Version 2019-11-04"
          (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
          (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
          (kbd "t") 'org-todo
+         (kbd "T") '(lambda () (interactive) (org-call-with-arg 'org-todo 'right))
          (kbd "<") 'org-metaleft
          (kbd ">") 'org-metaright
          (kbd "\\g") 'org-mac-grab-link
@@ -1289,7 +1339,10 @@ Version 2019-11-04"
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "|" "DONE(d)" "CANCELLED(c)")
+   '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
+     (sequence "|" "CANCELLED(c)")
+     (sequence "WAITING(w)" "STARTED(s)" "|")
+     (sequence "SOMEDAY(S)" "|" "DONE(d)")
      (sequence "AGENDA(a)" "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
 
@@ -1338,13 +1391,13 @@ Version 2019-11-04"
   :custom
   (org-todo-keyword-faces
    '(("TODO" :foreground "red" :weight bold)
+     ("STARTED" :foreground "orange red" :weight bold)
      ("WAITING" :foreground "orange" :weight bold)
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
      ("AGENDA" :foreground "sky blue" :weight bold)
-     ("MEETING" :foreground "sky blue" :weight bold)
-     ))
+     ("MEETING" :foreground "sky blue" :weight bold)))
 )
 
 (use-package org-src
@@ -1383,9 +1436,39 @@ Version 2019-11-04"
   )
 
 (use-package org-clock
+  :hook
+  (kill-emacs . my:org-clock-out-and-save-when-exit)
+  (org-after-todo-state-change . my:org-clock-in-if-starting)
+  (org-after-todo-state-change . my:org-clock-out-if-waiting)
+
   :custom
-  (org-clock-out-remove-zero-time-clocks nil)
-   )
+  (org-clock-out-remove-zero-time-clocks t)
+
+  :config
+  ;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
+  (defun my:org-clock-out-and-save-when-exit ()
+    "Save buffers and stop clocking when kill emacs."
+    (when (org-clocking-p)
+      (org-clock-out)
+      (save-some-buffers t)))
+
+  ;; https://passingloop.tumblr.com/post/10150860851/org-clock-in-if-starting
+  (defun my:org-clock-in-if-starting ()
+    "Clock in when the task is marked STARTED."
+    (when (and (string= org-state "STARTED")
+               (not (string= org-last-state org-state)))
+      (org-clock-in)))
+
+  (defadvice org-clock-in (after sacha activate)
+    "Set this task's status to 'STARTED'."
+    (org-todo "STARTED"))
+
+  (defun my:org-clock-out-if-waiting ()
+    "Clock in when the task is marked STARTED."
+    (when (and (string= org-state "WAITING")
+               (not (string= org-last-state org-state)))
+      (org-clock-out)))
+  )
 
 (use-package japanese-holidays :ensure t
   :hook
@@ -1410,10 +1493,11 @@ Version 2019-11-04"
   (org-babel-after-execute . org-display-inline-images)
   :custom
   (org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  (org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("elisp" "python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "C++"))))
+    (not (member lang '("elisp" "python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "cpp" "typescript"))))
 
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("console" . sh) org-src-lang-modes)
@@ -1421,9 +1505,15 @@ Version 2019-11-04"
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t) (python . t) (plantuml . t) (shell . t) (dot . t) (js . t) (C . t))
-   )
-  )
+   '((emacs-lisp . t)
+     (python . t)
+     (plantuml . t)
+     (shell . t)
+     (dot . t)
+     (js . t)
+     (typescript . t)
+     (C . t))
+   ))
 
 (defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
@@ -1482,6 +1572,8 @@ Version 2019-11-04"
         "require('util').inspect(function(){\n%s\n}());")
   )
 
+(use-package ob-typescript :ensure t)
+
 (use-package org-capture
   :commands org-capture
   :hook
@@ -1497,6 +1589,11 @@ Version 2019-11-04"
            entry (file+headline "~/org/inbox.org" "Inbox")
            "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t")
 
+          ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
+          ("I" "Interrupt\t\t- Add interrupt task to Inbox"
+           entry (file+headline "~/org/inbox.org" "Inbox")
+           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t" :clock-in t :clock-resume t)
+
           ("n" "Note\t\t- Taking note to source code"
            entry (file+headline "~/org/notes.org" "Notes")
            "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
@@ -1506,8 +1603,8 @@ Version 2019-11-04"
            "|名前|価格|電子版|追加日|\n|%?|||%U|" :table-line-pos "II-1")
 
           ("j" "Journal\t- Short logs like Twitter"
-           entry (file+olp+datetree "~/org/journal.org")
-           "* %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
+           entry (file+olp+datetree "~/org/journal.org" "Journal")
+           "* %?\n\t%T")
 
           ("B" "Blog\t\t- Hugo post"
            plain (file+olp "~/org/blog.org" "Blog Ideas")
@@ -1608,8 +1705,6 @@ Version 2019-11-04"
   )
 
 (use-package python :ensure t
-  :mode (("\\.py\\'" . python-mode))
-
   :hook
   (evil-after-load
    . (lambda ()
@@ -1627,19 +1722,17 @@ Version 2019-11-04"
   )
 
 (use-package auto-virtualenvwrapper :ensure t
+  :commands auto-virtualenvwrapper-find-virtualenv-path
+
   :hook (python-mode . auto-virtualenvwrapper-activate)
-  :config
+
+  :init
   (defun find-virtualenv-executable (command)
     (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
       (if path
           (concat path "bin/" command)
         (let ((exe (executable-find command)))
               (if exe exe command)))))
-
-  (quickrun-add-command "python-venv"
-    '((:command . (lambda() (find-virtualenv-executable "python3")))
-      (:compile-only . (lambda () (concat (find-virtualenv-executable "flake8") " %s"))))
-    :default "python")
   )
 
 (use-package py-yapf :ensure t
@@ -1655,11 +1748,7 @@ Version 2019-11-04"
   (sh-basic-offset 2)
   (sh-indentation 2)
   (sh-indent-for-case-label 0)
-  (sh-indent-for-case-alt '+)
-  :mode
-  ("\\.?sh\\'" . shell-script-mode)
-  ("\\.?shrc.*\\'" . shell-script-mode)
-  )
+  (sh-indent-for-case-alt '+))
 
 (use-package shfmt
   :quelpa (shfmt :type git :fetcher github :repo "amake/shfmt.el")
@@ -1681,10 +1770,7 @@ Version 2019-11-04"
 (use-package sql
   :config
   (setq sql-mysql-login-params (append sql-mysql-login-params '(port)))
-  (setq sql-postgres-login-params (append sql-postgres-login-params '(port)))
-  :mode
-  ("\\.sql\\'" . sql-mode)
-  )
+  (setq sql-postgres-login-params (append sql-postgres-login-params '(port))))
 
 (use-package sql-indent :ensure t
   :after sql
@@ -1729,16 +1815,13 @@ Version 2019-11-04"
       ,@sqlind-default-indentation-offsets-alist))
   )
 
-(use-package toml-mode :ensure t
-  :mode ("\\.toml\\'")
-  )
+(use-package toml-mode :ensure t)
 
 (use-package typescript-mode :ensure t
   :custom
   (typescript-indent-level 2)
   :mode
-  ("\\.tsx?\\'")
-  )
+  ("\\.tsx?\\'"))
 
 (use-package plantuml-mode :ensure t
   :custom
@@ -1795,9 +1878,6 @@ Version 2019-11-04"
   )
 
 (use-package vue-mode :ensure t
-  :mode
-  ("\\.vue\\'" . vue-mode)
-
   :hook
   (vue-mode
    . (lambda ()
@@ -1809,6 +1889,7 @@ Version 2019-11-04"
        (evil-define-key 'normal vue-mode-map
          (kbd "\\f") 'eslint-fix
          )))
+  (vue-mode . lsp)
   )
 
 (use-package mmm-mode
@@ -1821,8 +1902,12 @@ Version 2019-11-04"
   :hook (evil-after-load
          . (lambda ()
              (evil-define-key 'normal yaml-mode-map
+               (kbd "\\e") 'flycheck-list-errors
                (kbd "C-m") 'newline-and-indent
                (kbd "\\f") 'prettier-js))))
+
+(use-package flycheck-yamllint :ensure t
+  :hook (yaml-mode . flycheck-yamllint-setup))
 
 (use-package vimrc-mode :ensure t
   :mode
@@ -1893,6 +1978,7 @@ Version 2019-11-04"
     ("s" magit-status "status")
     ("t" git-timemachine "timemachine")
     ("o" browse-at-remote "browse at remote")
+    ("m" git-messenger:popup-message "git messenger")
     )
 
   (defhydra hydra-help (:exit t)
@@ -2103,7 +2189,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package evil :ensure t
   :after hydra
-  :hook (after-init . evil-mode)
 
   :bind
   (:map evil-normal-state-map
@@ -2130,62 +2215,39 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :custom
   (evil-ex-search-vim-style-regexp t)
-  (evil-search-module 'evil-search)
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
-  (evil-want-fine-undo 'fine)
   (evil-toggle-key "C-M-z")
 
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
-  )
-
-(use-package evil-jumps-push-on-find-file :no-require
-  :hook
-  (dired-mode . my-rename-dired-buffer)
-  (evil-after-load
-   . (lambda ()
-       ;; https://www.reddit.com/r/emacs/comments/8rg6zk/question_add_dired_buffers_to_evil_jump_list/
-       (defun my-rename-dired-buffer ()
-         (interactive)
-         (unless (string-match-p "Dired:" (buffer-name))
-           (rename-buffer (concat "Dired:" (buffer-name)))))
-
-       (setq evil--jumps-buffer-targets "\\(\\*\\(\\new\\|scratch\\)\\*\\|Dired:.+\\)")
-       (evil-add-command-properties #'dired-find-file :jump t)
-       ))
+  (evil-add-command-properties #'find-file :jump t)
+  (evil-mode 1)
   )
 
 (use-package evil-surround :ensure t
-  :hook (after-init . global-evil-surround-mode)
-  )
+  :after evil
+  :config (global-evil-surround-mode))
 
 (use-package evil-magit :ensure t
-  :hook (magit-mode . evil-magit-init)
-  )
+  :hook (magit-mode . evil-magit-init))
 
 (use-package evil-commentary :ensure t
   :diminish evil-commentary-mode
-  :hook (after-init . evil-commentary-mode)
-  )
+  :after evil
+  :config (evil-commentary-mode))
 
 (use-package evil-matchit :ensure t
-  :hook (after-init . global-evil-matchit-mode)
-  )
+  :after evil
+  :config (global-evil-matchit-mode))
 
 (use-package evil-lion :ensure t
-  :hook (after-init . evil-lion-mode)
-  )
-
-(use-package evil-escape :ensure t
-  :hook (after-init . evil-escape-mode)
-  :diminish
-  )
+  :after evil
+  :config (evil-lion-mode))
 
 (use-package evil-numbers
   :quelpa (evil-numbers :type git :fetcher github :repo "janpath/evil-numbers")
-  :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   :after evil
   :bind
   (:map evil-normal-state-map
@@ -2200,13 +2262,13 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ))
 
 (use-package evil-goggles :ensure t
-  :hook (after-init . evil-goggles-mode)
+  :after evil
   :diminish
   :custom
-  (evil-goggles-duration 0.100)
+  (evil-goggles-duration 0.050)
   :config
   (evil-goggles-use-diff-faces)
-  )
+  (evil-goggles-mode))
 
 (use-package popwin :ensure t
   :hook (after-init . popwin-mode)
@@ -2219,23 +2281,24 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package all-the-icons :ensure t)
 
-(use-package theme :no-require
-  :after (color-theme-sanityinc-tomorrow smart-mode-line)
-  :hook
-  (after-init
-   . (lambda ()
-       ;; (set-frame-parameter nil 'alpha 90)
-       (load-theme 'sanityinc-tomorrow-bright t)
-       (sml/setup)
-       ))
-  )
+(use-package color-theme-sanityinc-tomorrow :ensure t :disabled
+  :hook (after-init
+         . (lambda ()
+             (load-theme 'sanityinc-tomorrow-bright t))))
 
-(use-package color-theme-sanityinc-tomorrow :ensure t)
-
-(use-package smart-mode-line :ensure t
+(use-package smart-mode-line :ensure t :disabled
   :custom
   (sml/no-confirm-load-theme t)
   )
+
+(use-package doom-themes :ensure t
+  :config (load-theme 'doom-sourcerer t))
+
+(use-package doom-modeline :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (when (daemonp)
+    (setq doom-modeline-icon t)))
 
 (use-package hide-mode-line :ensure t
   :hook ((dired-mode
@@ -2402,7 +2465,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
   (dolist (x auto-insert-alist)
     (when (equal "\\.el\\'" (car-safe (car x)))
-      (setcar (car x) "/src/.+\\.el\\'")))
+      (setcar (car x) "/src/[^/]+\\.el\\'")))
 
   (setq auto-insert-alist
         (append '(
@@ -2428,8 +2491,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package key-binding :no-require
   :config
-  ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (global-set-key (kbd "C-h") 'delete-backward-char)
+  (define-key key-translation-map [?\C-h] [?\C-?])
+  ;; (global-set-key (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "C-c l") 'org-store-link)
