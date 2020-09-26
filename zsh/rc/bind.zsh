@@ -44,6 +44,10 @@ bindkey -M viins '^Xgb' widget-branch-name
 bindkey -M viins '^Xgf' widget-find-current-repo-file
 bindkey -M viins '^Xgg' widget-find-repo-file
 
+# autoloads
+bindkey -M viins "^Xe" edit-command-line
+bindkey -M viins "^Xl" insert-last-word
+
 # snippet
 bindkey -M viins '^X^k' widget-find-snippet
 

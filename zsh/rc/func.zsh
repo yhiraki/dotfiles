@@ -133,3 +133,12 @@ widget-select-widgets(){
   $(print -l ${(ok)functions} | grep -E '^widget-' | fzf)
 }
 zle -N widget-select-widgets
+
+
+# autoloads
+
+autoload -z edit-command-line
+zle -N edit-command-line
+
+autoload smart-insert-last-word
+zle -N insert-last-word smart-insert-last-word
