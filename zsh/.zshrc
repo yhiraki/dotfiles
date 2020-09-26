@@ -6,7 +6,6 @@ load_plugins() {
     func.zsh
     alias.zsh
     bind.zsh
-    os.zsh
   )
   for p in "${plugins_local[@]}"; do
     source "$ZDOTDIR/rc/$p"
