@@ -34,11 +34,22 @@ bindkey -M viins '^Y' yank
 # zsh-autosuggestions
 bindkey '^ ' autosuggest-accept
 
-bindkey -M viins '\efd' widget-find-download-file
-bindkey -M viins '\eff' widget-find-file
-bindkey -M viins '\efj' widget-find-junkfile
-bindkey -M viins '\egb' widget-branch-name
-bindkey -M viins '\egf' widget-find-current-repo-file
-bindkey -M viins '\egg' widget-find-repo-file
+# find files
+bindkey -M viins '^Xfd' widget-find-download-file
+bindkey -M viins '^Xff' widget-find-file
+bindkey -M viins '^Xfj' widget-find-junkfile
 
-bindkey '^X^R' widget-find-snippet
+# git
+bindkey -M viins '^Xgb' widget-branch-name
+bindkey -M viins '^Xgf' widget-find-current-repo-file
+bindkey -M viins '^Xgg' widget-find-repo-file
+
+# autoloads
+bindkey -M viins "^Xe" edit-command-line
+bindkey -M viins "^Xl" insert-last-word
+
+# snippet
+bindkey -M viins '^X^k' widget-find-snippet
+
+# all widgets
+bindkey -M viins '^X^X' widget-select-widgets

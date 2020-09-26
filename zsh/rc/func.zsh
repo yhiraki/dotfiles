@@ -127,3 +127,18 @@ widget-find-file(){
   ignore-history
 }
 zle -N widget-find-file
+
+widget-select-widgets(){
+  # https://superuser.com/questions/681575/any-way-to-get-list-of-functions-defined-in-zsh-like-alias-command-for-aliases
+  $(print -l ${(ok)functions} | grep -E '^widget-' | fzf)
+}
+zle -N widget-select-widgets
+
+
+# autoloads
+
+autoload -z edit-command-line
+zle -N edit-command-line
+
+autoload smart-insert-last-word
+zle -N insert-last-word smart-insert-last-word
