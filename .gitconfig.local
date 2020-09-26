@@ -6,3 +6,5 @@
   pager = cat
 [rebase]
 	autostash = true
+[push]
+  default = current
