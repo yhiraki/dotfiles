@@ -498,6 +498,8 @@ Version 2019-11-04"
         )
   )
 
+(use-package dired-filter :ensure t)
+
 (use-package all-the-icons-dired :ensure t
   :hook (dired-mode . all-the-icons-dired-mode)
   )
