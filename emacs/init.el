@@ -1569,27 +1569,25 @@ Version 2019-11-04"
 
 (use-package org-capture
   :commands org-capture
+
   :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-set-initial-state 'org-capture-mode 'insert)
-       ))
+  (org-capture-mode . evil-insert-state)
 
   :custom
   (org-capture-templates
         '(
           ("i" "Inbox\t\t- Add entry to Inbox"
            entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t")
+           "** %?\n%T")
 
           ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
           ("I" "Interrupt\t\t- Add interrupt task to Inbox"
            entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%T\n\t" :clock-in t :clock-resume t)
+           "** %?\n%T" :clock-in t :clock-resume t)
 
           ("n" "Note\t\t- Taking note to source code"
            entry (file+headline "~/org/notes.org" "Notes")
-           "** %?\n\t:PROPERTIES:\n\t:CREATED: %U\n\t:END:\n\t%a\n\t")
+           "** %?\n%a")
 
           ("b" "Book\t\t- Books wish list"
            table-line (file+headline "~/org/books.org" "wish list")
@@ -1597,7 +1595,7 @@ Version 2019-11-04"
 
           ("j" "Journal\t- Short logs like Twitter"
            entry (file+olp+datetree "~/org/journal.org" "Journal")
-           "* %?\n\t%T")
+           "* %?\n%T")
 
           ("B" "Blog\t\t- Hugo post"
            plain (file+olp "~/org/blog.org" "Blog Ideas")
