@@ -687,15 +687,6 @@ Version 2019-11-04"
   (before-save
    . git-gutter+-turn-off)
 
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal git-gutter+-mode-map
-         (kbd "[g") 'git-gutter+-previous-hunk
-         (kbd "]g") 'git-gutter+-next-hunk
-         (kbd "\\gs") 'git-gutter+-stage-hunks
-         (kbd "\\gr") 'git-gutter+-revert-hunks)
-       ))
-
   :custom
   (git-gutter+-added-sign "┃")
   (git-gutter+-deleted-sign "▔")
@@ -2197,6 +2188,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("S-C-j" . 'evil-forward-section-begin)
         ("S-C-k" . 'evil-backward-section-begin)
         ("Y" . "y$")
+        ("[g" . 'git-gutter+-previous-hunk)
+        ("]g" . 'git-gutter+-next-hunk)
+        ("\\gs" . 'git-gutter+-stage-hunks)
+        ("\\gr" . 'git-gutter+-revert-hunks)
         )
 
   (:map evil-insert-state-map
@@ -2208,7 +2203,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   (:map evil-visual-state-map
         ("SPC" . 'hydra-global-leader/body)
-        )
+        ("[g" . 'git-gutter+-previous-hunk)
+        ("]g" . 'git-gutter+-next-hunk)
+        ("\\gs" . 'git-gutter+-stage-hunks)
+        ("\\gr" . 'git-gutter+-revert-hunks)
+  )
 
   :custom
   (evil-ex-search-vim-style-regexp t)
