@@ -234,12 +234,6 @@ Version 2019-11-04"
   :custom (c-basic-offset 2)
   )
 
-(use-package indent :no-require
-  :config
-  (setq-default tab-width 2)
-  (setq-default indent-tabs-mode nil)
-  )
-
 (use-package syntax :no-require
   :config
   ;; http://tarao.hatenablog.com/entry/20130304/evil_config#vim-word
