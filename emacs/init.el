@@ -1572,12 +1572,12 @@ Version 2019-11-04"
   (org-capture-templates
         '(
           ("i" "Inbox\t\t- Add entry to Inbox"
-           entry (file+headline "~/org/inbox.org" "Inbox")
+           entry (file+headline "~/org/tasks.org" "Inbox")
            "** %?\n%T")
 
           ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
-          ("I" "Interrupt\t\t- Add interrupt task to Inbox"
-           entry (file+headline "~/org/inbox.org" "Inbox")
+          ("I" "Interrupt\t\t- Add an interrupt task"
+           entry (file+headline "~/org/tasks.org" "Tasks")
            "** %?\n%T" :clock-in t :clock-resume t)
 
           ("b" "Book\t\t- Books wish list"
