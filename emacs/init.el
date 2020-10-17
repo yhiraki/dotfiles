@@ -1580,10 +1580,6 @@ Version 2019-11-04"
            entry (file+headline "~/org/inbox.org" "Inbox")
            "** %?\n%T" :clock-in t :clock-resume t)
 
-          ("n" "Note\t\t- Taking note to source code"
-           entry (file+headline "~/org/notes.org" "Notes")
-           "** %?\n%a")
-
           ("b" "Book\t\t- Books wish list"
            table-line (file+headline "~/org/books.org" "wish list")
            "|名前|価格|電子版|追加日|\n|%?|||%U|" :table-line-pos "II-1")
