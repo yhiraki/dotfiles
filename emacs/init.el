@@ -1585,7 +1585,7 @@ Version 2019-11-04"
            "** %?\n%a")
 
           ("b" "Book\t\t- Books wish list"
-           table-line (file+headline "~/org/books.org" "wish list")
+           table-line (file+headline "~/org/wishlist.org" "wish list")
            "|名前|価格|電子版|追加日|\n|%?|||%U|" :table-line-pos "II-1")
 
           ("j" "Journal\t- Short logs like Twitter"
