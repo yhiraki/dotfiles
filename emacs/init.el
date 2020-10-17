@@ -1447,10 +1447,6 @@ Version 2019-11-04"
                (not (string= org-last-state org-state)))
       (org-clock-in)))
 
-  (defadvice org-clock-in (after sacha activate)
-    "Set this task's status to 'STARTED'."
-    (org-todo "STARTED"))
-
   (defun my:org-clock-out-if-waiting ()
     "Clock in when the task is marked STARTED."
     (when (and (string= org-state "WAITING")
