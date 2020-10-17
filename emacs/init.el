@@ -250,8 +250,8 @@ Version 2019-11-04"
   :if darwin-p
 
   :hook
-  ;; (after-init . my-reload-font) ;; daemon起動時にフリーズするので無効化
-  (after-make-frame-functions . my-reload-font)
+  (window-setup . my-reload-font)
+  (find-file . set-apple-color-emoji)
 
   :config
   (defvar yhiraki-font 'cica)
@@ -290,12 +290,13 @@ Version 2019-11-04"
       (push '("Apple color emoji" . 0.9) face-font-rescale-alist) ; 4文字幅に揃える
       )
 
-    ;; この行のせいでdaemonが起動できない？
-    (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
-
-    (remove-hook 'after-init-hook #'my-reload-font)
-    (remove-hook 'after-make-frame-functions #'my-reload-font)
+    (remove-hook 'window-setup-hook #'my-reload-font)
     )
+
+  (defun set-apple-color-emoji ()
+    "set apple color emoji"
+    (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
+    (remove-hook 'find-file-hook #'set-apple-color-emoji))
 
   ;; http://misohena.jp/blog/2017-09-26-symbol- font-settings-for-emacs25.html
   ;; TODO: インデント可視化用のunicode文字は半角幅にしたいので無効化
