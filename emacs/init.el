@@ -1600,8 +1600,39 @@ Version 2019-11-04"
   :after org
   )
 
-(use-package org-bullets :ensure t
-  :hook (org-mode . org-bullets-mode))
+(use-package org-superstar :ensure t
+  :hook (org-mode . org-superstar-mode)
+
+  :config
+  (set-face-attribute 'org-superstar-item nil :height 1.2)
+  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
+  (set-face-attribute 'org-superstar-leading nil :height 1.3)
+
+  ;; Set different bullets, with one getting a terminal fallback.
+  (setq org-superstar-headline-bullets-list
+	'("◉" ("🞛" ?◈) "○" "▷"))
+  ;; Stop cycling bullets to emphasize hierarchy of headlines.
+  (setq org-superstar-cycle-headline-bullets nil)
+  ;; Hide away leading stars on terminal.
+  (setq org-superstar-leading-fallback ?\s)
+
+  (setq org-hidden-keywords '(title))
+
+  ;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
+  (set-face-attribute 'org-level-3 nil :inherit 'outline-3 :height 1.1) ;\large
+  (set-face-attribute 'org-level-2 nil :inherit 'outline-2 :height 1.2) ;\Large
+  (set-face-attribute 'org-level-1 nil :inherit 'outline-1 :height 1.4) ;\LARGE
+
+  ;; Only use the first 4 styles and do not cycle.
+  (setq org-cycle-level-faces nil)
+  (setq org-n-level-faces 4)
+
+  ;; Document Title, (\huge)
+  (set-face-attribute 'org-document-title nil
+		      :height 2.074
+		      :foreground 'unspecified
+		      :inherit 'org-level-8)
+  )
 
 (use-package org-download :ensure t
   :custom
