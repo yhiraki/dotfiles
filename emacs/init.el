@@ -1320,6 +1320,7 @@ Version 2019-11-04"
 
   (org-after-todo-statistics . org-summary-todo)
   (org-checkbox-statistics . my/org-checkbox-todo)
+  (org-mode . org-indent-mode)
 
   :custom
   (org-directory "~/org/")
@@ -1333,6 +1334,7 @@ Version 2019-11-04"
      (sequence "SOMEDAY(S)" "|" "DONE(d)")
      (sequence "AGENDA(a)" "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
+  (org-hidden-keywords '(title))
 
   :config
   ;; https://emacs.stackexchange.com/questions/32473/edit-org-mode-tags-using-ido-or-ivy-completion
@@ -1376,6 +1378,7 @@ Version 2019-11-04"
 
 (use-package org-faces
   :after org
+
   :custom
   (org-todo-keyword-faces
    '(("TODO" :foreground "red" :weight bold)
@@ -1386,12 +1389,21 @@ Version 2019-11-04"
      ("CANCELLED" :foreground "forest green" :weight bold)
      ("AGENDA" :foreground "sky blue" :weight bold)
      ("MEETING" :foreground "sky blue" :weight bold)))
-)
+  ;; Only use the first 4 styles and do not cycle.
+  (org-cycle-level-faces nil)
+  (org-n-level-faces 4)
 
-(use-package org-src
-  :after org
-  :custom
-  (org-src-tab-acts-natively t) ; src block をインデントする
+  :config
+  ;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
+  (set-face-attribute 'org-level-3 nil :inherit 'outline-3 :height 1.1) ;\large
+  (set-face-attribute 'org-level-2 nil :inherit 'outline-2 :height 1.2) ;\Large
+  (set-face-attribute 'org-level-1 nil :inherit 'outline-1 :height 1.4) ;\LARGE
+
+  ;; Document Title, (\huge)
+  (set-face-attribute 'org-document-title nil
+		      :height 2.074
+		      :foreground 'unspecified
+		      :inherit 'org-level-8)
   )
 
 (use-package org-agenda
@@ -1603,35 +1615,18 @@ Version 2019-11-04"
 (use-package org-superstar :ensure t
   :hook (org-mode . org-superstar-mode)
 
+  :custom
+  ;; Set different bullets, with one getting a terminal fallback.
+  (org-superstar-headline-bullets-list '("◉" ("🞛" ?◈) "○" "▷"))
+  ;; Stop cycling bullets to emphasize hierarchy of headlines.
+  (org-superstar-cycle-headline-bullets nil)
+  ;; Hide away leading stars on terminal.
+  (org-superstar-leading-fallback ?\s)
+
   :config
   (set-face-attribute 'org-superstar-item nil :height 1.2)
   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
   (set-face-attribute 'org-superstar-leading nil :height 1.3)
-
-  ;; Set different bullets, with one getting a terminal fallback.
-  (setq org-superstar-headline-bullets-list
-	'("◉" ("🞛" ?◈) "○" "▷"))
-  ;; Stop cycling bullets to emphasize hierarchy of headlines.
-  (setq org-superstar-cycle-headline-bullets nil)
-  ;; Hide away leading stars on terminal.
-  (setq org-superstar-leading-fallback ?\s)
-
-  (setq org-hidden-keywords '(title))
-
-  ;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-  (set-face-attribute 'org-level-3 nil :inherit 'outline-3 :height 1.1) ;\large
-  (set-face-attribute 'org-level-2 nil :inherit 'outline-2 :height 1.2) ;\Large
-  (set-face-attribute 'org-level-1 nil :inherit 'outline-1 :height 1.4) ;\LARGE
-
-  ;; Only use the first 4 styles and do not cycle.
-  (setq org-cycle-level-faces nil)
-  (setq org-n-level-faces 4)
-
-  ;; Document Title, (\huge)
-  (set-face-attribute 'org-document-title nil
-		      :height 2.074
-		      :foreground 'unspecified
-		      :inherit 'org-level-8)
   )
 
 (use-package org-download :ensure t
