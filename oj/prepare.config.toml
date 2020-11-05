@@ -1,0 +1,6 @@
+# oj-prepare --config-file で指定するファイル
+# Macの場合は ~/Library/Application Support/online-judge-tools/prepare.config.toml にあるので注意する
+
+[templates]
+"main.cpp" = "a.cpp"
+"main.py" = "a.py"

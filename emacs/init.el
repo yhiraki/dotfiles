@@ -2490,6 +2490,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         )
   )
 
+(use-package oj :ensure t
+  :custom
+  (oj-default-online-judge 'atcoder))
+
 (use-package emacs-lock
   :config
   (with-current-buffer "*scratch*"
