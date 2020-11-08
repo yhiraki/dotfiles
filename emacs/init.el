@@ -1060,10 +1060,10 @@ Version 2019-11-04"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
     :override t)
 
-  (quickrun-add-command "python-venv"
-    '((:command . (lambda() (find-virtualenv-executable "python3")))
-      (:compile-only . (lambda () (concat (find-virtualenv-executable "flake8") " %s"))))
-    :default "python")
+  (quickrun-add-command "python"
+    '((:command . "python3")
+      (:compile-only . "flake8 %s"))
+    :override t)
   )
 
 (use-package csharp-mode :ensure t
