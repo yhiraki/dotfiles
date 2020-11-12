@@ -958,6 +958,7 @@ Version 2019-11-04"
   ;;          (define-key evil-insert-state-map (kbd "C-p") nil)
   ;;          ))))
   (after-init . global-company-mode)
+  (after-init . company-tng-mode)
   (TeX-mode . edit-category-table-for-company-dabbrev)
 
   :custom
@@ -971,6 +972,7 @@ Version 2019-11-04"
   (company-idle-delay 0.2)
   (company-minimum-prefix-length 2)
   (company-selection-wrap-around t)
+  (company-tng-auto-configure nil) ; keymap(company-active-map)が変更されないようにoff
   (company-tooltip-idle-delay 0.1)
   (company-tooltip-limit 10)
   (completion-ignore-case t)
