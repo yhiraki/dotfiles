@@ -935,6 +935,7 @@ Version 2019-11-04"
   (lsp-ui-flycheck-enable t)
   (lsp-ui-flycheck-live-reporting t)
   (lsp-ui-sideline-enable t)
+
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
