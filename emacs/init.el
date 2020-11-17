@@ -2228,6 +2228,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
   (evil-add-command-properties #'find-file :jump t)
+  (evil-add-command-properties #'xref-find-definitions :jump t)
+  (evil-add-command-properties #'xref-find-references :jump t)
   (evil-mode 1)
   )
 
