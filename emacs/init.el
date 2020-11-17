@@ -928,7 +928,6 @@ Version 2019-11-04"
 (use-package lsp-ui :ensure t
   :hook
   (lsp-mode . lsp-ui-mode)
-  (after-init . company-tng-mode)
 
   :custom
   (lsp-ui-doc-enable nil)
