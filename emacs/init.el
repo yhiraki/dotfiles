@@ -639,11 +639,9 @@ Version 2019-11-04"
 
 (use-package magit :ensure t
   :commands (magit-status)
-  :custom (magit-save-repository-buffers nil)
-  :config
-  ;; magit-commit 時に diff が開くのをやめる
-  ;; https://qiita.com/egg_chicken/items/948f8df70069334e8296
-  (remove-hook 'server-switch-hook 'magit-commit-diff)
+  :custom
+  (magit-save-repository-buffers nil)
+  (magit-diff-refine-hunk 'all)
   )
 
 (use-package git-timemachine :ensure t
