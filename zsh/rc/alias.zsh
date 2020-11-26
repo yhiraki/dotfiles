@@ -1,18 +1,8 @@
-case ${OSTYPE} in
-  darwin*)
-    EMACSCLIENT="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
-    ;;
-  linux*) 
-    EMACSCLIENT=$(command -v emacsclient)
-    ;;
-esac
-
 function emacsclient-gui() {
-  local filename=$1
-  bash -c "$EMACSCLIENT -c -a '' $filename &"
+  bash -c "emacsclient -c -a '' $1 &"
 }
 
-alias e='$EMACSCLIENT -nw -a ""'
+alias e='emacsclient -nw -a ""'
 alias ge=emacsclient-gui
 
 alias ...='cd ../..'
