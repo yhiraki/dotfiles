@@ -90,4 +90,10 @@ export PY_TMUX_PANE_ICON__BRANCH=''
 
 export SPL_PROMPT_NOTIFY_TIME_MIN=10000
 
+# iterm transparent title bar
+# https://codematters.blog/custom-iterm2-titlebar-background-colors-a088c6f2ec60
+echo -e "\033]6;1;bg;red;brightness;34\a"
+echo -e "\033]6;1;bg;green;brightness;34\a"
+echo -e "\033]6;1;bg;blue;brightness;34\a"
+
 echo '.zprofile loaded'
