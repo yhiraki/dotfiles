@@ -638,7 +638,7 @@ Version 2019-11-04"
   )
 
 (use-package magit :ensure t
-  :commands (magit-status)
+  :commands (magit-status magit-stage)
   :custom
   (magit-save-repository-buffers nil)
   (magit-diff-refine-hunk 'all)
