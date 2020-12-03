@@ -1637,21 +1637,6 @@ Version 2019-11-04"
         ("C-c g" . org-mac-grab-link)
         ))
 
-(use-package org-trello :ensure t :disabled
-  ;; https://org-trello.github.io/usage.html#automatic-org-trello-files-in-emacs
-  :hook
-  (org-mode
-   . (lambda ()
-       (let ((filename (buffer-file-name (current-buffer))))
-         (when (and filename (string= "trello" (file-name-extension filename)))
-           (org-trello-mode)))))
-  (org-trello-mode
-   . (lambda ()
-       (org-trello-sync-buffer t)
-       ))
-  :mode ("\\.trello$" . org-mode)
-  )
-
 (use-package ox-confluence
   :after ox
   )
