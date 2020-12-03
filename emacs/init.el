@@ -2522,23 +2522,24 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
 (use-package cus-edit
   :hook
-  (after-init
-   . (lambda ()
-       (when (file-exists-p custom-file)
-         (load custom-file))))
+  (after-init . (lambda () (load custom-file t)))
   (kill-emacs . (lambda () (delete-file custom-file)))
   :custom
   (custom-file (concat user-emacs-directory "custom.el"))
   )
 
+(use-package init-candidate :no-require
+  :hook
+  (after-init . (lambda () (load my/user-emacs-file-candidate t)))
+  :config
+  (defvar my/user-emacs-file-candidate (concat user-emacs-directory "init.candidate.el"))
+  )
+
 (use-package init-local :no-require
   :hook
-  (after-init
-   . (lambda ()
-       (when (file-exists-p user-emacs-file-local)
-         (load user-emacs-file-local))))
+  (after-init . (lambda () (load my/user-emacs-file-local t)))
   :config
-  (defvar user-emacs-file-local (concat user-emacs-directory "init.local.el"))
+  (defvar my/user-emacs-file-local (concat user-emacs-directory "init.local.el"))
   )
 
 
