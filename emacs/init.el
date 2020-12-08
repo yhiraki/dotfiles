@@ -750,14 +750,14 @@ Version 2019-11-04"
       (concat dirname (file-name-nondirectory FILE))))
   )
 
-(use-package undohist :ensure t
-  :hook (after-init . undohist-initialize)
-  :custom
-  (undohist-ignored-files '("COMMIT_EDITMSG"))
-  )
+(use-package undo-fu :ensure t)
 
-(use-package undo-tree :ensure t
-  :diminish undo-tree-mode)
+(use-package undo-fu-session :ensure t
+  :after undo-fu
+  :hook (after-init . global-undo-fu-session-mode)
+  :custom
+  (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
+  )
 
 (use-package ivy :ensure t
   :diminish ivy-mode
@@ -2011,7 +2011,6 @@ Version 2019-11-04"
     ("q" nil "quit")
     ("s" magit-status "git status")
     ("t" hydra-twitter/body "twitter")
-    ("u" undo-tree-visualize "undotree")
     ("z" hydra-emacs-operation/body "emacs")
     )
 
@@ -2170,7 +2169,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package evil :ensure t
-  :after hydra
+  :after (hydra undo-fu)
 
   :bind
   (:map evil-normal-state-map
@@ -2208,6 +2207,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
   (evil-toggle-key "C-M-z")
+  (evil-undo-system 'undo-fu)
 
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
