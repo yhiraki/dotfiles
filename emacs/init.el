@@ -477,20 +477,31 @@ Version 2019-11-04"
         ("j"   . dired-next-line)
         ("k"   . dired-previous-line)))
 
-(use-package dired-sidebar :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-set-initial-state 'dired-mode 'emacs)
-         ))
+(use-package dired-subtree :ensure t
+  :after dired
+  :commands (dired-subtree-insert dired-subtree-remove)
 
   :bind
-  (:map dired-sidebar-mode-map
-        ("l" . (lambda () (interactive) (save-excursion (dired-subtree-insert)) (dired-sidebar-redisplay-icons)))
-        ("h" . (lambda () (interactive) (dired-subtree-remove) (dired-sidebar-redisplay-icons)))
-        )
+  (:map dired-mode-map
+	("l" . my-dired-subtree-insert)
+	("h" . my-dired-subtree-remove))
+
+  :config
+  ;; for all-the-icons
+  ;; https://github.com/Fuco1/dired-hacks/issues/155
+  (defun my-dired-subtree-insert ()
+    (interactive)
+    (dired-subtree-insert)
+    (revert-buffer))
+  (defun my-dired-subtree-remove ()
+    (interactive)
+    (dired-subtree-remove)
+    (revert-buffer))
+  )
+
+(use-package dired-sidebar :ensure t
+  :after dired-subtree
+  :commands (dired-sidebar-toggle-sidebar)
   )
 
 (use-package dired-filter :ensure t)
