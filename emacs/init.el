@@ -469,7 +469,6 @@ Version 2019-11-04"
         ("C-k" . dired-prev-dirline)
         ("G"   . evil-goto-line)
         ("SPC" . hydra-global-leader/body)
-        ("e"   . wdired-change-to-wdired-mode)
         ("r"   . revert-buffer)
         ("g"   . nil)
         ("gg"  . evil-goto-first-line)
@@ -513,6 +512,9 @@ Version 2019-11-04"
 (use-package wdired
   :commands (wdired-change-to-wdired-mode)
   :custom (wdired-allow-to-change-permissions t)
+  :bind
+  (:map dired-mode-map
+        ("e"   . wdired-change-to-wdired-mode))
   )
 
 (use-package flycheck :ensure t
