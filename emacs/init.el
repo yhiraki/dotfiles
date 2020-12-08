@@ -511,7 +511,14 @@ Version 2019-11-04"
 
 (use-package wdired
   :commands (wdired-change-to-wdired-mode)
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+       (evil-set-initial-state 'wdired-mode 'normal)))
+
   :custom (wdired-allow-to-change-permissions t)
+
   :bind
   (:map dired-mode-map
         ("e"   . wdired-change-to-wdired-mode))
