@@ -47,6 +47,10 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+;; for imenu support
+(setq use-package-enable-imenu-support t)
+(require 'use-package)
+
 (use-package quelpa-use-package :ensure t
   :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
@@ -2040,6 +2044,7 @@ Version 2019-11-04"
     )
 
   (defhydra hydra-global-leader (:exit t)
+    ("/" counsel-imenu "imenu")
     ("G" hydra-google/body "google")
     ("a" org-agenda "org-agenda")
     ("b" counsel-bookmark "bookmarks")
