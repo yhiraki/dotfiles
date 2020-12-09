@@ -813,6 +813,8 @@ Version 2019-11-04"
   :after ivy
   :custom
   (counsel-yank-pop-separator "\n-------\n")
+  :bind
+  ("M-x" . counsel-M-x)
   )
 
 (use-package swiper :ensure t :disabled  ; 遅いので無効化
@@ -1973,7 +1975,7 @@ Version 2019-11-04"
   :config
 
   (defhydra hydra-file-open (:exit t)
-    ("b" switch-to-buffer "buffer")
+    ("b" counsel-switch-buffer "buffer")
     ("d" dired-sidebar-toggle-sidebar "sidebar")
     ("f" counsel-find-file "find file")
     ("g" counsel-rg "grep")
