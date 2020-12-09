@@ -140,11 +140,21 @@ Version 2019-11-04"
   :config
   (setq scroll-conservatively 1)
   (setq scroll-margin 0)
+
+  ;; 画面上のカーソル位置を一定にする
+  ;; http://emacs.rubikitch.com/mouse-wheel/
+  (setq scroll-preserve-screen-position 'always)
   )
 
 (use-package scroll-bar
   :config
-  (scroll-bar-mode 0)
+  (scroll-bar-mode -1)
+  )
+
+(use-package smooth-scrolling :ensure t
+  :hook (after-init . smooth-scrolling-mode)
+  :custom
+  (smooth-scroll-margin 1)
   )
 
 (use-package mwheel
