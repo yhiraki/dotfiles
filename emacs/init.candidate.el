@@ -9,7 +9,11 @@
   (org-trello-mode
    . (lambda ()
        (org-trello-sync-buffer t)
-       ))
+       (evil-define-key 'normal org-trello-mode-map
+	 (kbd "\\r") 'org-trello-sync-card
+	 (kbd "\\s") 'org-trello-sync-buffer
+	 )))
+
   :mode
   ("\\.trello\\'" . org-mode)
   )
