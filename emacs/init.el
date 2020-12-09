@@ -56,7 +56,16 @@
 (defvar carbon-p (eq system-type 'mac))
 (defvar meadow-p (featurep 'meadow))
 
-(use-package package-utils :ensure t)
+(use-package package
+  :bind
+  (:map package-menu-mode-map
+	("j" . next-line)
+	("k" . previous-line)
+	("C-f" . evil-scroll-page-down)
+	("C-b" . evil-scroll-page-up)
+	("H" . evil-window-top)
+	("L" . evil-window-bottom)
+	))
 
 (use-package user-defined-functions :no-require
   :config
