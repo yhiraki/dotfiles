@@ -1089,12 +1089,20 @@ Version 2019-11-04"
   (quickrun-add-command "c++14/g++"
     '((:command . "g++")
       (:exec    . ("%c -x c++ %o -o %e %s" "%e %a"))
-      (:compile-only . "%c %o -o %e %s")
+      (:compile-only . "%c -g %o -o a.out %s")
       (:remove  . ("%e"))
       (:description . "Compile C++ file with g++ and execute")
       (:cmdopt . "-Wall -Wextra -pedantic -std=c++14 -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlong-long -Wshift-overflow -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector"))
     )
-  (quickrun-set-default "c++" "c++14/g++")
+  (quickrun-add-command "c++17/g++"
+    '((:command . "g++")
+      (:exec    . ("%c -x c++ %o -o %e %s" "%e %a"))
+      (:compile-only . "%c -g %o -o a.out %s")
+      (:remove  . ("%e"))
+      (:description . "Compile C++ file with g++ and execute")
+      (:cmdopt . "-Wall -Wextra -pedantic -std=c++17 -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlong-long -Wshift-overflow -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector"))
+    )
+  (quickrun-set-default "c++" "c++17/g++")
 
   (quickrun-add-command "typescript"
     '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
