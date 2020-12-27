@@ -1472,7 +1472,8 @@ Version 2019-11-04"
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
 
   :config
-  (setq org-agenda-files (list org-directory))
+  (setq org-agenda-files 
+	(directory-files-recursively "~/org/" "\\.\\(org\\|trello\\)$"))
 
   :bind
   (:map org-agenda-mode-map
