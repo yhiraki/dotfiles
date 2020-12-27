@@ -1114,10 +1114,7 @@ Version 2019-11-04"
     :override t)
   )
 
-(use-package csharp-mode :ensure t
-  :mode
-  ("\\.cs\\'" . csharp-mode)
-  )
+(use-package csharp-mode :ensure t)
 
 (use-package dockerfile-mode :ensure t)
 
