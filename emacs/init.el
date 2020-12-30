@@ -1427,8 +1427,9 @@ Version 2019-11-04"
   :custom
   (org-todo-keyword-faces
    '(("TODO" :foreground "red" :weight bold)
-     ("STARTED" :foreground "orange red" :weight bold)
-     ("WAITING" :foreground "orange" :weight bold)
+     ("STARTED" :foreground "orange" :weight bold)
+     ("DOING" :foreground "orange" :weight bold)
+     ("WAITING" :foreground "light pink" :weight bold)
      ("SOMEDAY" :foreground "dark gray")
      ("DONE" :foreground "forest green" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
