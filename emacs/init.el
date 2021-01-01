@@ -1641,7 +1641,7 @@ Version 2019-11-04"
 
           ("j" "Journal\t- Short logs like Twitter"
            entry (file+olp+datetree "~/org/journal.org" "Journal")
-           "* %?\n%T")
+	   "* %(format-time-string \"%h:%m\") %?")
 
           ("B" "Blog\t\t- Hugo post"
            plain (file+olp "~/org/blog.org" "Blog Ideas")
