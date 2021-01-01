@@ -1329,7 +1329,6 @@ Version 2019-11-04"
          (kbd "T") '(lambda () (interactive) (org-call-with-arg 'org-todo 'right))
          (kbd "<") 'org-metaleft
          (kbd ">") 'org-metaright
-         (kbd "\\g") 'org-mac-grab-link
          (kbd "\\i") 'org-clock-in
          (kbd "\\nb") 'org-narrow-to-block
          (kbd "\\ne") 'org-narrow-to-element
