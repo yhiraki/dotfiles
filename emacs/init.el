@@ -2002,7 +2002,7 @@ Version 2019-11-04"
   :config
 
   (defhydra hydra-file-open (:exit t)
-    ("b" counsel-switch-buffer "buffer")
+    ("b" switch-to-buffer "buffer")
     ("d" dired-sidebar-toggle-sidebar "sidebar")
     ("f" counsel-find-file "find file")
     ("g" counsel-rg "grep")
