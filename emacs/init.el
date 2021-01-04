@@ -1365,6 +1365,13 @@ Version 2019-11-04"
   (org-after-todo-statistics . org-summary-todo)
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
+  (org-mode . prettify-symbols-mode)
+  (org-mode
+   . (lambda ()
+       (setq prettify-symbols-alist
+	     '(("[ ]" . "☐")
+	       ("[X]" . "☑")
+	       ("[-]" . "◪")))))
 
   :custom
   (org-directory "~/org/")
