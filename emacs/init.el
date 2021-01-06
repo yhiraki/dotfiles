@@ -1428,8 +1428,6 @@ Version 2019-11-04"
     "Org todo next cycle"
     (interactive) (org-call-with-arg 'org-todo 'right)
     )
-
-  :mode (("\\.org\\'" . org-mode))
   )
 
 (use-package org-faces
