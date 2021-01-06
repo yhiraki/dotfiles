@@ -1487,7 +1487,6 @@ Version 2019-11-04"
   (setq org-agenda-files 
 	(directory-files-recursively org-directory "\\.\\(org\\|trello\\)$"))
 
-
   (defun my/org-agenda-todo-next ()
     "Org agenda todo next cycle"
     (interactive) (org-call-with-arg 'org-agenda-todo 'right)
@@ -1646,12 +1645,12 @@ Version 2019-11-04"
   (org-capture-templates
         '(
           ("i" "Inbox\t\t- Add entry to Inbox"
-           entry (file+headline "~/org/tasks.org" "Inbox")
+           entry (file+headline "~/org/inbox.org" "Inbox")
            "** %?\n%T")
 
           ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
           ("I" "Interrupt\t\t- Add an interrupt task"
-           entry (file+headline "~/org/tasks.org" "Tasks")
+           entry (file+headline "~/org/inbox.org" "Inbox")
            "** %?\n%T" :clock-in t :clock-resume t)
 
           ("b" "Book\t\t- Books wish list"
