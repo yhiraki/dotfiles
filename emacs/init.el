@@ -1325,8 +1325,8 @@ Version 2019-11-04"
          (kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
          (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
          (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
-         (kbd "t") 'org-todo
-         (kbd "T") '(lambda () (interactive) (org-call-with-arg 'org-todo 'right))
+         (kbd "T") 'org-todo
+         (kbd "t") 'my/org-todo-next
          (kbd "<") 'org-metaleft
          (kbd ">") 'org-metaright
          (kbd "\\i") 'org-clock-in
@@ -1380,10 +1380,10 @@ Version 2019-11-04"
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
+     (sequence "WAITING(w)" "TODO" "STARTED" "|" "DONE")
+     (sequence "SOMEDAY(S)" "TODO" "STARTED" "|" "DONE")
      (sequence "|" "CANCELLED(c)")
-     (sequence "WAITING(w)" "STARTED(s)" "|")
-     (sequence "SOMEDAY(S)" "|" "DONE(d)")
-     (sequence "AGENDA(a)" "|" "MEETING(m)")))
+     (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
   (org-hidden-keywords '(title))
 
@@ -1423,6 +1423,11 @@ Version 2019-11-04"
                       (org-todo 'done))
                   (unless (string-equal todo-state "TODO")
                     (org-todo 'todo)))))))))
+
+  (defun my/org-todo-next ()
+    "Org todo next cycle"
+    (interactive) (org-call-with-arg 'org-todo 'right)
+    )
 
   :mode (("\\.org\\'" . org-mode))
   )
@@ -1482,9 +1487,16 @@ Version 2019-11-04"
   (setq org-agenda-files 
 	(directory-files-recursively "~/org/" "\\.\\(org\\|trello\\)$"))
 
+  (defun my/org-agenda-todo-next ()
+    "Org agenda todo next cycle"
+    (interactive) (org-call-with-arg 'org-agenda-todo 'right)
+    )
+
   :bind
   (:map org-agenda-mode-map
-        ("j" . org-agenda-next-item)
+	("T" . org-agenda-todo)
+	("t" . my/org-agenda-todo-next)
+	("j" . org-agenda-next-item)
         ("k" . org-agenda-previous-item))
   )
 
