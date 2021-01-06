@@ -1485,7 +1485,8 @@ Version 2019-11-04"
 
   :config
   (setq org-agenda-files 
-	(directory-files-recursively "~/org/" "\\.\\(org\\|trello\\)$"))
+	(directory-files-recursively org-directory "\\.\\(org\\|trello\\)$"))
+
 
   (defun my/org-agenda-todo-next ()
     "Org agenda todo next cycle"
