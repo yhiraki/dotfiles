@@ -147,7 +147,7 @@ Version 2019-11-04"
 
   ;; 画面上のカーソル位置を一定にする
   ;; http://emacs.rubikitch.com/mouse-wheel/
-  (setq scroll-preserve-screen-position 'always)
+  ;; (setq scroll-preserve-screen-position 'always)
   )
 
 (use-package scroll-bar
