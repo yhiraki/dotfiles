@@ -1375,6 +1375,7 @@ Version 2019-11-04"
 
   :custom
   (org-directory "~/org/")
+  (org-archive-location "~/org/archive.org::* Archived Tasks")
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
