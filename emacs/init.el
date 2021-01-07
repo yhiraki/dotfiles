@@ -851,6 +851,9 @@ Version 2019-11-04"
   )
 
 (use-package pangu-spacing :ensure t
+  :hook
+  ((text-mode-hook twittering-edit-mode) . pangu-spacing-mode)
+
   :custom
   ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
   ;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
@@ -863,11 +866,6 @@ Version 2019-11-04"
 
   ;; 見た目ではなくて実際にスペースを入れる
   ;; (pangu-spacing-real-insert-separtor t)
-
-  ;; text-mode やその派生モード(org-mode 等)のみに使いたいならこれ
-  ;; :hook
-  ;; (text-mode-hook . pangu-spacing-mode)
-  ;; (twittering-edit-mode . pangu-spacing-mode)
   )
 
 (use-package twittering-mode :ensure t
