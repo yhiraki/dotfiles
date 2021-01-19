@@ -47,18 +47,17 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-;; for imenu support
-(setq use-package-enable-imenu-support t)
+(defvar darwin-p (eq system-type 'darwin))
+(defvar linux-p (eq system-type 'gnu/linux))
+(defvar carbon-p (eq system-type 'mac))
+(defvar meadow-p (featurep 'meadow))
+
+(setq use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
 
 (use-package quelpa-use-package :ensure t
   :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
-
-(defvar darwin-p (eq system-type 'darwin))
-(defvar linux-p (eq system-type 'gnu/linux))
-(defvar carbon-p (eq system-type 'mac))
-(defvar meadow-p (featurep 'meadow))
 
 (use-package package
   :bind
