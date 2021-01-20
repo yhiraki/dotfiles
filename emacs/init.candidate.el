@@ -22,3 +22,17 @@
   :quelpa (go-translate :fetcher github :repo "lorniu/go-translate")
   :custom
   (go-translate-token-current (cons 430675 2721866130)))
+
+(use-package shell
+  :hook
+  (evil-after-load
+   . (lambda () (evil-set-initial-state 'shell-mode 'emacs))))
+
+(use-package shell-pop :ensure t
+  :custom
+  (shell-pop-universal-key (kbd "C-t"))
+  :hook
+  (shell-pop-in-hook . evil-emacs-state)
+  :bind
+  (:map evil-normal-state-map
+	("C-t" . shell-pop)))
