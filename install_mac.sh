@@ -150,17 +150,10 @@ ln -s $DOTDIR/zsh $XDG_CONFIG_HOME
 ln -s $XDG_CONFIG_HOME/zsh/.zshenv ~/
 
 # ----------------------------------------------------------------------
-title "Install languages"
-# ----------------------------------------------------------------------
-
-brew install python3 go node
-brew cask install java
-
-# ----------------------------------------------------------------------
 title "Install alacritty"
 # ----------------------------------------------------------------------
 
-brew cask install alacritty
+brew install alacritty
 ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 
 # ----------------------------------------------------------------------
@@ -172,8 +165,8 @@ title "Install emacs"
 #   server起動時のemacsのフレーム状態に依存する
 #   GUIで起動したらemacsclientもGUIでしか起動できない
 # brew tap railwaycat/emacsmacport
-# brew cask install emacs-mac
-brew cask install emacs
+# brew install emacs-mac
+brew install emacs
 [ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
 touch ~/.emacs.d/custom.el 
 
@@ -181,36 +174,8 @@ touch ~/.emacs.d/custom.el
 title "Install karabiner-elements"
 # ----------------------------------------------------------------------
 
-brew cask install karabiner-elements
+brew install karabiner-elements
 cp $DOTDIR/karabiner/assets/complex_modifications/alt2kana.json ~/.config/karabiner/assets/complex_modifications/alt2kana.json 
-
-# ----------------------------------------------------------------------
-title "Install chrome"
-# ----------------------------------------------------------------------
-
-brew cask install google-chrome
-
-# ----------------------------------------------------------------------
-title "Install spectacle"
-# ----------------------------------------------------------------------
-
-brew cask install spectacle
-
-SPECTACLE_CONFIG=~/Library/Application\ Support/Spectacle/Shortcuts.json
-[ -L $SPECTACLE_CONFIG ] || rm $SPECTACLE_CONFIG
-ln -s $DOTDIR/Spectacle/Shortcuts.json $SPECTACLE_CONFIG
-
-# ----------------------------------------------------------------------
-title "Install Dropbox"
-# ----------------------------------------------------------------------
-
-brew cask install dropbox
-
-# ----------------------------------------------------------------------
-title "Install gogle IME"
-# ----------------------------------------------------------------------
-
-brew cask install google-japanese-ime
 
 # ----------------------------------------------------------------------
 title "done."
