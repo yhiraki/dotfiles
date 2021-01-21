@@ -1379,6 +1379,7 @@ Version 2019-11-04"
   (org-archive-location "~/org/archive.org::* Archived Tasks")
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
+  (org-src-tab-acts-natively nil)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
