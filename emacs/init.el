@@ -1488,11 +1488,13 @@ Version 2019-11-04"
      "-"
      "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
+  (org-agenda-files
+   (list
+    org-directory
+    (concat org-directory "projects")
+    (concat org-directory "notes")))
 
   :config
-  (setq org-agenda-files 
-	(directory-files-recursively org-directory "\\.\\(org\\|trello\\)$"))
-
   (defun my/org-agenda-todo-next ()
     "Org agenda todo next cycle"
     (interactive) (org-call-with-arg 'org-agenda-todo 'right)
