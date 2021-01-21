@@ -1353,7 +1353,7 @@ Version 2019-11-04"
          (kbd "M-k") 'org-metaup
          (kbd "M-h") 'org-metaleft
          (kbd "M-l") 'org-metaright
-         (kbd "RET") 'org-return-indent
+         (kbd "RET") 'org-return
          )
 
        (evil-define-key 'visual org-mode-map
