@@ -522,6 +522,14 @@ Version 2019-11-04"
     (interactive)
     (dired-subtree-remove)
     (revert-buffer))
+
+  :custom-face
+  (dired-subtree-depth-1-face ((t (:background nil))))
+  (dired-subtree-depth-2-face ((t (:background nil))))
+  (dired-subtree-depth-3-face ((t (:background nil))))
+  (dired-subtree-depth-4-face ((t (:background nil))))
+  (dired-subtree-depth-5-face ((t (:background nil))))
+  (dired-subtree-depth-6-face ((t (:background nil))))
   )
 
 (use-package dired-sidebar :ensure t
