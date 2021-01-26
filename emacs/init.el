@@ -1459,22 +1459,20 @@ Version 2019-11-04"
   (org-cycle-level-faces nil)
   (org-n-level-faces 4)
 
-  :config
-  ;; doom-theme ロード後に上書きされるので以下の設定は無効
-
+  :custom-face
   ;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-  (set-face-attribute 'org-level-3 nil :inherit 'outline-3 :height 1.1) ;\large
-  (set-face-attribute 'org-level-2 nil :inherit 'outline-2 :height 1.2) ;\Large
-  (set-face-attribute 'org-level-1 nil :inherit 'outline-1 :height 1.4) ;\LARGE
-  ;; (set-face-attribute 'org-meta-line nil :height 0.8)
-  ;; (set-face-attribute 'org-drawer nil :height 0.7 :foreground "gray30")
-  ;; (set-face-attribute 'org-block-begin-line nil :inherit 'org-meta-line)
-
+  (org-level-1 ((t (:inherit 'outline-1 :height 1.4)))) ;\LARGE
+  (org-level-2 ((t (:inherit 'outline-2 :height 1.2)))) ;\Large
+  (org-level-3 ((t (:inherit 'outline-3 :height 1.1)))) ;\large
   ;; Document Title, (\huge)
-  (set-face-attribute 'org-document-title nil
-		      :height 2.074
-		      :foreground 'unspecified
-		      :inherit 'org-level-8)
+  (org-document-title ((t (:height 2.074 :inherit 'org-level-8))))
+
+  (org-block-begin-line ((t (:height 0.8 :foreground "gray40"))))
+  (org-date ((t (:height 0.8 :foreground "gold4"))))
+  (org-drawer ((t (:height 0.7 :foreground "gray40"))))
+  (org-meta-line ((t (:height 0.8 :foreground "gray40"))))
+  (org-property-value ((t (:height 0.8))))
+  (org-special-keyword ((t (:height 0.7 :foreground "gray40"))))
   )
 
 (use-package org-agenda
@@ -1704,10 +1702,10 @@ Version 2019-11-04"
   ;; Hide away leading stars on terminal.
   (org-superstar-leading-fallback ?\s)
 
-  :config
-  (set-face-attribute 'org-superstar-item nil :height 1.2)
-  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
-  (set-face-attribute 'org-superstar-leading nil :height 1.3)
+  :custom-face
+  (org-superstar-item          ((t (:height 1.2))))
+  (org-superstar-header-bullet ((t (:height 1.2))))
+  (org-superstar-leading       ((t (:height 1.3))))
   )
 
 (use-package org-download :ensure t
@@ -2373,12 +2371,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 (use-package doom-themes :ensure t
   :config
   (load-theme 'doom-one t)
-  (set-face-attribute 'org-drawer nil :height 0.7 :foreground "gray40")
-  (set-face-attribute 'org-meta-line nil :height 0.8 :foreground "gray40")
-  (set-face-attribute 'org-block-begin-line nil :height 0.8 :foreground "gray40")
-  (set-face-attribute 'org-special-keyword nil :height 0.8 :foreground "gray40")
-  (set-face-attribute 'org-property-value nil :height 0.8)
-  (set-face-attribute 'org-date nil :height 0.8 :foreground "gold4")
   )
 
 (use-package doom-modeline :ensure t
