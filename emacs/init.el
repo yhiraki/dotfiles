@@ -271,6 +271,9 @@ Version 2019-11-04"
 (use-package faces
   :if darwin-p
 
+  :custom-face
+  (fringe ((t (:background nil))))
+
   :hook
   (window-setup . my-reload-font)
   (find-file . set-apple-color-emoji)
@@ -2423,27 +2426,13 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (whitespace-space-regexp "\\(\u3000+\\)") ; スペースは全角のみを可視化
   ;; (whitespace-action '(auto-cleanup)) ; 保存時に自動でクリーンアップ
 
-  :config
-  (set-face-attribute 'whitespace-trailing nil
-                      :background "controlBackgroundColor"
-                      :foreground "DeepPink"
-                      :inherit 'default
-                      :underline t
-                      )
-  (set-face-attribute 'whitespace-tab nil
-                      :background "controlBackgroundColor"
-                      )
-  (set-face-attribute 'whitespace-space nil
-                      :background "controlBackgroundColor"
-                      :foreground "GreenYellow"
-                      :weight 'bold
-                      )
-  (set-face-attribute 'whitespace-empty nil
-                      :background "controlBackgroundColor"
-                      :foreground "DeepPink"
-                      :underline t
-                      )
+  :custom-face
+  (whitespace-empty    ((t (:background "controlBackgroundColor" :foreground "DeepPink" :underline t))))
+  (whitespace-space    ((t (:background "controlBackgroundColor" :foreground "GreenYellow" :weight bold))))
+  (whitespace-tab      ((t (:background "controlBackgroundColor"))))
+  (whitespace-trailing ((t (:background "controlBackgroundColor" :foreground "DeepPink" :underline t :inherit 'default))))
 
+  :config
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
   )
