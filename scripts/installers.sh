@@ -12,8 +12,7 @@ install_emacs() {
   version="${version:=26.3}"
   case "${OSNAME}" in
     osx)
-      # TODO: switch versions
-      brew cask install emacs
+      brew install emacs
       ;;
     linux)
       sudo add-apt-repository -y ppa:kelleyk/emacs
