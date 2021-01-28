@@ -1219,7 +1219,19 @@ Version 2019-11-04"
   :commands markdown-toggle-markup-hiding
 
   :hook
-  ((markdown-mode gfm-mode) . outline-hide-subtree)
+  ((markdown-mode gfm-mode)
+   . (lambda ()
+       (setq indent-tabs-mode nil)
+       (add-hook
+	'evil-normal-state-entry-hook
+	'(lambda ()
+	   (markdown-toggle-markup-hiding 1)) 0 t)
+       (add-hook
+	'evil-normal-state-exit-hook
+	'(lambda ()
+	   (markdown-toggle-markup-hiding -1)) 0 t)
+       (outline-hide-subtree)
+       ))
   (evil-after-load
    . (lambda ()
        (evil-define-key 'normal markdown-mode-map
@@ -1234,12 +1246,6 @@ Version 2019-11-04"
          (kbd "TAB") 'markdown-cycle
          )
        ))
-  (evil-normal-state-entry
-   . (lambda ()
-       (markdown-toggle-markup-hiding 1)))
-  (evil-insert-state-entry
-   . (lambda ()
-       (markdown-toggle-markup-hiding -1)))
 
   :custom
   (markdown-command "pandoc -s -t html5 -c ~/.emacs.d/css/github.css")
