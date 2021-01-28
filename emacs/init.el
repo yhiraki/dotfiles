@@ -1216,6 +1216,8 @@ Version 2019-11-04"
   )
 
 (use-package markdown-mode :ensure t
+  :commands markdown-toggle-markup-hiding
+
   :hook
   ((markdown-mode gfm-mode) . outline-hide-subtree)
   (evil-after-load
@@ -1232,14 +1234,23 @@ Version 2019-11-04"
          (kbd "TAB") 'markdown-cycle
          )
        ))
+  (evil-normal-state-entry
+   . (lambda ()
+       (markdown-toggle-markup-hiding 1)))
+  (evil-insert-state-entry
+   . (lambda ()
+       (markdown-toggle-markup-hiding -1)))
 
   :custom
   (markdown-command "pandoc -s -t html5 -c ~/.emacs.d/css/github.css")
   (markdown-gfm-use-electric-backquote nil)
 
+  :custom-face
+  (markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.4 :bold t :underline t))))
+  (markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.2 :bold t :underline t))))
+  (markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.1 :bold t :underline t))))
+
   :mode
-  ("\\.markdown\\'" . markdown-mode)
-  ("\\.md\\'" . markdown-mode)
   ("README\\.md\\'" . gfm-mode)
   )
 
