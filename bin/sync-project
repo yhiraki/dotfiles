@@ -1,39 +1,47 @@
 #!/bin/bash
 set -e
 
+die() {
+  echo "$@" 1>&2
+  exit 1
+}
+
+
+################################################################################
+# Prepare
+
 SYNC_PROJECT_WORKDIR=/tmp/sync-project-tmp
 
 [ -n "$1" ] && REMOTE_WORKSPACE=$1
-if [ -z "$REMOTE_WORKSPACE" ]
-then
-  echo Set env REMOTE_WORKSPACE 1>&2
-  exit 1
-fi 
-
-if [ ! -d $SYNC_PROJECT_WORKDIR ]
-then
-  mkdir -p $SYNC_PROJECT_WORKDIR
-fi
+[ -z "$REMOTE_WORKSPACE" ] && die Set env REMOTE_WORKSPACE 1>&2
+[ -d "$SYNC_PROJECT_WORKDIR" ] || mkdir -p $SYNC_PROJECT_WORKDIR
 
 GITROOT=$(git rev-parse --show-toplevel)
-HASH=$(echo $GITROOT | md5sum | cut -d' ' -f1)
+HASH=$(echo "$GITROOT" | md5sum | cut -d' ' -f1)
+HASH_FILE="$SYNC_PROJECT_WORKDIR/$HASH"
 
-cd $GITROOT
+if [ -f "$HASH_FILE" ]; then
+  kill -s 0 $(cat "$HASH_FILE") &&
+    die Another process is running...
+  rm "$HASH_FILE"
+fi
 
-if [ -f $SYNC_PROJECT_WORKDIR/$HASH ]
-then
-  if kill -s 0 $(cat $SYNC_PROJECT_WORKDIR/$HASH)
-  then
-    echo Another process is running... 1>&2
-    exit 1
-  fi
-  rm $SYNC_PROJECT_WORKDIR/$HASH 
-fi 
+echo $$ >"$HASH_FILE"
 
-echo $$ > $SYNC_PROJECT_WORKDIR/$HASH 
 
-GITROOT_REL=$(echo $GITROOT | sed -e s:$HOME:~:)
-ssh $REMOTE_WORKSPACE mkdir -p "$GITROOT_REL"
-rsync -av $GITROOT/ $REMOTE_WORKSPACE:$GITROOT_REL --files-from=<(git ls-files)
+################################################################################
+# Main
 
-rm $SYNC_PROJECT_WORKDIR/$HASH 
+(
+  cd "$GITROOT"
+
+  root="${GITROOT//$HOME/~}"
+  ssh "$REMOTE_WORKSPACE" mkdir -p "$root" \
+    && rsync -av --delete "$GITROOT/" "$REMOTE_WORKSPACE:$root" --files-from=<(git ls-files)
+)
+
+
+################################################################################
+# Cleanup
+
+rm "$HASH_FILE"
