@@ -1716,9 +1716,9 @@ Version 2019-11-04"
 
   :custom
   ;; Set different bullets, with one getting a terminal fallback.
-  (org-superstar-headline-bullets-list '("◉" ("🞛" ?◈) "○" "▷"))
+  ;; (org-superstar-headline-bullets-list '("◉" ("🞛" ?◈) "○" "▷"))
   ;; Stop cycling bullets to emphasize hierarchy of headlines.
-  (org-superstar-cycle-headline-bullets nil)
+  ;; (org-superstar-cycle-headline-bullets nil)
   ;; Hide away leading stars on terminal.
   (org-superstar-leading-fallback ?\s)
 
