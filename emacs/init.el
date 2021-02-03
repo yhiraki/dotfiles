@@ -2389,8 +2389,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package doom-themes :ensure t
-  :config
-  (load-theme 'doom-one t)
+  :hook
+  (after-init
+   . (lambda () (load-theme 'doom-Iosvkem t)))
   )
 
 (use-package doom-modeline :ensure t
