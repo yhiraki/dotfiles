@@ -29,21 +29,24 @@ load_plugins() {
   command -v ghq >/dev/null || return
 
   plugins_repo=(
-    paulirish/git-open
-    robbyrussell/oh-my-zsh/plugins/git
-    zsh-users/zsh-autosuggestions
-    zsh-users/zsh-completions
-    zsh-users/zsh-syntax-highlighting
-    yhiraki/zsh-simple-prompt
+    github.com/paulirish/git-open
+    github.com/robbyrussell/oh-my-zsh/plugins/git
+    github.com/zsh-users/zsh-autosuggestions
+    github.com/zsh-users/zsh-completions
+    github.com/zsh-users/zsh-syntax-highlighting
+    github.com/yhiraki/zsh-simple-prompt
     # marlonrichert/zsh-autocomplete
   )
   root=$(ghq root)
   local d
   for p in "${plugins_repo[@]}"; do
-    d="$root/github.com/$p"
+    d="$root/$p"
     if [[ ! -d "$d" ]]; then
-      echo "No such file $d."
+      if command -v ghq > /dev/null; then
+	ghq get "$p"
+	else
       continue
+      fi
     fi
     source $d/*.plugin.zsh
   done
