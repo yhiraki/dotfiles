@@ -2307,6 +2307,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("\\gr" . 'git-gutter+-revert-hunks)
   )
 
+  :init
+  (setq evil-want-keybinding nil)
+
   :custom
   (evil-ex-search-vim-style-regexp t)
   (evil-want-C-i-jump t)
