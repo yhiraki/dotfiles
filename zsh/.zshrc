@@ -38,8 +38,14 @@ load_plugins() {
     # marlonrichert/zsh-autocomplete
   )
   root=$(ghq root)
+  local d
   for p in "${plugins_repo[@]}"; do
-    source $root/github.com/$p/*.plugin.zsh
+    d="$root/github.com/$p"
+    if [[ ! -d "$d" ]]; then
+      echo "No such file $d."
+      continue
+    fi
+    source $d/*.plugin.zsh
   done
 }
 load_plugins
