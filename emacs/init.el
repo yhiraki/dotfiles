@@ -2422,6 +2422,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :diminish
   )
 
+(use-package clipetty :ensure t
+  :hook (after-init . global-clipetty-mode))
+
 (use-package whitespace
   :diminish whitespace-mode
   :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
