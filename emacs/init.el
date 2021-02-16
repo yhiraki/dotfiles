@@ -389,6 +389,8 @@ Version 2019-11-04"
   :diminish highlight-indent-guides-mode
   :hook
   ((prog-mode yaml-mode) . highlight-indent-guides-mode)
+  (evil-normal-state-entry . (lambda () (highlight-indent-guides-mode +1)))
+  (evil-visual-state-entry . (lambda () (highlight-indent-guides-mode -1)))
   :custom
   (highlight-indent-guides-method 'character)
   (highlight-indent-guides-responsive t)
@@ -2398,10 +2400,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package doom-modeline :ensure t
-  :hook (after-init . doom-modeline-mode)
-  :config
-  (when (daemonp)
-    (setq doom-modeline-icon t)))
+  :hook (after-init . doom-modeline-mode))
 
 (use-package hide-mode-line :ensure t
   :hook ((dired-mode
