@@ -116,14 +116,38 @@ Version 2019-11-04"
     (shell-command "open ."))
   )
 
-(use-package yes-no :no-require
+(use-package emacs
   :config
-  (fset 'yes-or-no-p 'y-or-n-p)
-  )
 
-(use-package startup :no-require ; cannot require
-  :config
+	;; autosave
+  (setq auto-save-timeout 10)
+  (setq auto-save-interval 100)  ;; key typing count
+
+	;; startup
   (setq inhibit-startup-message t)
+
+	;; subr
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+	;; bell
+  (setq ring-bell-function 'ignore)
+
+	;; scroll
+  (setq scroll-conservatively 1)
+  (setq scroll-margin 0)
+
+	;; buffer
+  (setq-default tab-width 4)
+  (setq-default indicate-buffer-boundaries 'left) ;; バッファの終端を表示
+  (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
+
+	;; mule-cmds
+  ;; unicode の一部を1文字幅として扱う
+  ;; "┃" : git-gutter
+  ;; "│" : highlight-indent-guides
+  (set-language-environment "English")
+  ;; magitでの文字化け対策
+  (prefer-coding-system 'utf-8)
   )
 
 (use-package diminish :ensure t)
@@ -137,16 +161,6 @@ Version 2019-11-04"
              (unless
                  (server-running-p)
                (server-start))))
-  )
-
-(use-package scroll :no-require
-  :config
-  (setq scroll-conservatively 1)
-  (setq scroll-margin 0)
-
-  ;; 画面上のカーソル位置を一定にする
-  ;; http://emacs.rubikitch.com/mouse-wheel/
-  ;; (setq scroll-preserve-screen-position 'always)
   )
 
 (use-package scroll-bar
@@ -188,17 +202,6 @@ Version 2019-11-04"
   (show-paren-mode 1) ;; 対応する括弧を光らせる
   )
 
-(use-package bell :no-require
-  :config
-  (setq ring-bell-function 'ignore)
-  )
-
-(use-package buffer :no-require
-  :config
-  (setq-default indicate-buffer-boundaries 'left) ;; バッファの終端を表示
-  (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
-  )
-
 (use-package simple
   :hook
   (evil-after-load
@@ -215,12 +218,6 @@ Version 2019-11-04"
   :custom-face
   (fringe ((t (:background nil))))
  )
-
-(use-package autosave :no-require
-  :config
-  (setq auto-save-timeout 10)
-  (setq auto-save-interval 100)  ;; key typing count
-  )
 
 (use-package tempbuf
   :hook
@@ -256,7 +253,7 @@ Version 2019-11-04"
   :custom (c-basic-offset 2)
   )
 
-(use-package syntax :no-require
+(use-package syntax
   :config
   ;; http://tarao.hatenablog.com/entry/20130304/evil_config#vim-word
   (modify-syntax-entry ?_ "w" (standard-syntax-table)) ; 単語境界をvim風に
@@ -333,16 +330,6 @@ Version 2019-11-04"
   ;; |😀😀😀😀😀|
   ;; |abcdefghij|klmnopqrst|
   ;; |1234567890|1234567890|
-  )
-
-(use-package mule-cmds :no-require ; cannot require
-  :config
-  ;; unicode の一部を1文字幅として扱う
-  ;; "┃" : git-gutter
-  ;; "│" : highlight-indent-guides
-  (set-language-environment "English")
-  ;; magitでの文字化け対策
-  (prefer-coding-system 'utf-8)
   )
 
 (use-package fira-code-mode :disabled
