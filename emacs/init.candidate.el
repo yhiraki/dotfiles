@@ -28,11 +28,8 @@
   (evil-after-load
    . (lambda () (evil-set-initial-state 'shell-mode 'emacs))))
 
-(use-package shell-pop :ensure t
+(use-package vterm :ensure t)
+
+(use-package vterm-toggle :ensure t
   :custom
-  (shell-pop-universal-key (kbd "C-t"))
-  :hook
-  (shell-pop-in-hook . evil-emacs-state)
-  :bind
-  (:map evil-normal-state-map
-	("C-t" . shell-pop)))
+  (vterm-toggle-scope 'project))
