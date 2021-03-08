@@ -2301,10 +2301,11 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :custom
   (evil-ex-search-vim-style-regexp t)
-  (evil-want-C-i-jump t)
-  (evil-want-C-u-scroll t)
   (evil-toggle-key "C-M-z")
   (evil-undo-system 'undo-fu)
+  (evil-want-C-i-jump t)
+  (evil-want-C-u-scroll t)
+  (evil-want-keybinding nil)
 
   :config
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
