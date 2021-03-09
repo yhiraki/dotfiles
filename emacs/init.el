@@ -1669,12 +1669,12 @@ Version 2019-11-04"
         '(
           ("i" "Inbox\t\t- Add entry to Inbox"
            entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n%T")
+           "** %?\n%U")
 
           ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
           ("I" "Interrupt\t\t- Add an interrupt task"
            entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n%T" :clock-in t :clock-resume t)
+           "** %?\n%U" :clock-in t :clock-resume t)
 
           ("b" "Book\t\t- Books wish list"
            table-line (file+headline "~/org/books.org" "wish list")
