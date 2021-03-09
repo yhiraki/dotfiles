@@ -2104,7 +2104,8 @@ Version 2019-11-04"
     ("o" hydra-org/body "org")
     ("q" nil "quit")
     ("s" magit-status "git status")
-    ("t" hydra-twitter/body "twitter")
+    ("t" vterm-toggle-cd "terminal")
+    ("w" hydra-twitter/body "twitter")
     ("z" hydra-emacs-operation/body "emacs")
     )
 

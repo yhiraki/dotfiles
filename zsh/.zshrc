@@ -76,6 +76,15 @@ command -v zprof >/dev/null &&
 fpath=($ZDOTDIR/completion $fpath)
 autoload -Uz compinit && compinit -i
 
+# emacs vterm
+if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+    && [[ -n ${EMACS_VTERM_PATH} ]] \
+    && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
+    source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
+    # Initialize TITLE
+    print -Pn "\e]2;%m:%2~\a"
+fi
+
 # zmodload zsh/zprof && zprof
 
 # Make status code '0'

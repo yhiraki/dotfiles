@@ -28,8 +28,12 @@
   (evil-after-load
    . (lambda () (evil-set-initial-state 'shell-mode 'emacs))))
 
-(use-package vterm :ensure t)
+(use-package vterm :ensure t
+  :custom
+  (vterm-buffer-name-string "*vterm: %s*"))
 
 (use-package vterm-toggle :ensure t
   :custom
   (vterm-toggle-scope 'project))
+
+(use-package counsel-tramp :ensure t)
