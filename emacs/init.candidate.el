@@ -33,7 +33,13 @@
   (vterm-buffer-name-string "*vterm: %s*"))
 
 (use-package vterm-toggle :ensure t
+  :commands (vterm-toggle vterm-toggle-cd)
   :custom
-  (vterm-toggle-scope 'project))
+  (vterm-toggle-scope 'project)
+  :bind
+  (:map evil-normal-state-map
+		("C-t" . vterm-toggle-cd))
+  (:map evil-insert-state-map
+		("C-t" . vterm-toggle-cd)))
 
 (use-package counsel-tramp :ensure t)
