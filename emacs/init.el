@@ -2326,7 +2326,8 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config (global-evil-surround-mode))
 
 (use-package evil-collection :ensure t
-  :hook (after-init . (lambda () (evil-collection-init 'magit))))
+  :config
+  (evil-collection-init '(magit vterm)))
 
 (use-package evil-commentary :ensure t
   :diminish evil-commentary-mode
