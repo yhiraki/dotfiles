@@ -1,0 +1,2 @@
+cmd - return : open -a /Applications/iTerm.app
+cmd - e : open -a /usr/local/Cellar/emacs-plus@27/27.1/Emacs.app/
