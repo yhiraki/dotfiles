@@ -48,6 +48,9 @@ bindkey -M viins '^Xgg' widget-find-repo-file
 bindkey -M viins "^Xe" edit-command-line
 bindkey -M viins "^Xl" insert-last-word
 
+# open app
+bindkey -M viins "^X^O" widget-open-application
+
 # snippet
 bindkey -M viins '^X^k' widget-find-snippet
 

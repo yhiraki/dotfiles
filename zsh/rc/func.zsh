@@ -128,6 +128,11 @@ widget-find-file(){
 }
 zle -N widget-find-file
 
+widget-open-application () {
+  open -a "$(find /Applications -maxdepth 2 -name '*.app' | ff)"
+}
+zle -N widget-open-application
+
 widget-select-widgets(){
   # https://superuser.com/questions/681575/any-way-to-get-list-of-functions-defined-in-zsh-like-alias-command-for-aliases
   $(print -l ${(ok)functions} | grep -E '^widget-' | fzf)
