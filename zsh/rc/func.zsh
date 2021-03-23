@@ -135,7 +135,7 @@ zle -N widget-open-application
 
 widget-select-widgets(){
   # https://superuser.com/questions/681575/any-way-to-get-list-of-functions-defined-in-zsh-like-alias-command-for-aliases
-  $(print -l ${(ok)functions} | grep -E '^widget-' | fzf)
+  $(print -l ${(k)functions} | grep -E '^widget-' | fzf)
 }
 zle -N widget-select-widgets
 
