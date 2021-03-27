@@ -1,2 +1,55 @@
-cmd - return : open -a /Applications/iTerm.app
-cmd - e : open -a /usr/local/Cellar/emacs-plus@27/27.1/Emacs.app/
+# -*- mode: conf; -*-
+
+# MacOS shortcuts
+# https://support.apple.com/ja-jp/HT201236
+# alt - cmd - esc : Force Quit
+# cmd - , : Preference
+# cmd - A : Select All
+# cmd - C : Copy
+# cmd - F : Search
+# cmd - G : Next Item
+# cmd - H : Hide
+# cmd - M : Minimize
+# cmd - N : New window
+# cmd - O : Open
+# cmd - P : Print
+# cmd - Q : Quit
+# cmd - S : Save
+# cmd - V : Paste
+# cmd - W : Close
+# cmd - X : Yank
+# cmd - Z : Undo
+# cmd - T : New tab
+#>cmd - space : Spotlight
+# cmd - tab : Next App
+# ctrl - cmd - F : Full screen
+# ctrl - cmd - Q : Lock
+# ctrl - cmd - space : Emoji
+# shift - cmd - 5 : Screenshot
+# shift - cmd - N : New folder
+# space : Quick view
+
+# Chrome shortcuts
+# https://support.google.com/chrome/answer/157179
+# cmd - 1 : Select a tab
+# cmd - 2 : Select a tab
+# cmd - 3 : Select a tab
+# cmd - 4 : Select a tab
+# cmd - 5 : Select a tab
+# cmd - 6 : Select a tab
+# cmd - 7 : Select a tab
+# cmd - 8 : Select a tab
+# cmd - 9 : Select last tab
+# cmd - [ : Go History backword
+# cmd - ] : Go History forward
+# cmd - shift - N : Open new incognito window
+# cmd - shift - T : Open Recently closed tab
+# cmd - shift - W : Close window
+
+# Chat app
+# cmd - space : Post
+# cmd - K : Search
+
+cmd - space : open -a /Applications/iTerm.app
+cmd - e : echo 'tell application "Emacs" to activate window' | osascript || open -a /Applications/Emacs.app 
+cmd - b : open -a '/Applications/Google Chrome.app/'
