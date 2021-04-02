@@ -1517,11 +1517,13 @@ Version 2019-11-04"
 
   :bind
   (:map org-agenda-mode-map
-	("T" . org-agenda-todo)
-	("t" . my/org-agenda-todo-next)
-	("j" . org-agenda-next-item)
-        ("k" . org-agenda-previous-item))
-  )
+		(":" . evil-ex)
+		("K" . org-capture)
+		("T" . org-agenda-todo)
+		("j" . org-agenda-next-item)
+		("k" . org-agenda-previous-item)
+		("t" . my/org-agenda-todo-next)
+		))
 
 (use-package org-clock
   :hook
