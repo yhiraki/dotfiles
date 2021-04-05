@@ -129,7 +129,10 @@ widget-find-file(){
 zle -N widget-find-file
 
 widget-open-application () {
-  open -a "$(find /Applications -maxdepth 2 -name '*.app' | ff)"
+  open -a "$(find /Applications -maxdepth 2 -name '*.app' \
+			  | xargs -I{} basename {} \
+			  | sed s/\.app// \
+			  | ff)"
 }
 zle -N widget-open-application
 
