@@ -5,13 +5,20 @@ configure_tmux() {
     return
   fi
 
+  if [[ -z "$TMUX" ]]; then
+	if tmux list-sessions; then
+	  exec tmux a
+	else
+	  exec tmux
+	fi
+  fi
+
   function my_refresh_tmux_status() {
     if [[ -n "$TMUX" ]]; then
       tmux refresh-client -S
     fi
   }
   add-zsh-hook periodic my_refresh_tmux_status
-
 }
 configure_tmux
 unset -f configure_tmux
