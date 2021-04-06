@@ -25,7 +25,8 @@ ff() {
 }
 
 ff-select-repo() {
-  echo "$(ghq root)/$(ghq list | ff)"
+  local name="$(ghq list | ff)"
+  [ -n "${name}" ] && echo "$(ghq root)/${name}"
 }
 
 ff-branch-name() {
