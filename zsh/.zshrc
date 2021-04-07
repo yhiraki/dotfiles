@@ -1,6 +1,8 @@
 autoload -Uz add-zsh-hook
 
 configure_tmux() {
+  [[ -n "$INSIDE_EMACS" ]] && return
+
   if ! command -v tmux >/dev/null; then
     return
   fi
