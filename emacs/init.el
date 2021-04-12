@@ -351,6 +351,18 @@ Version 2019-11-04"
   (require-final-newline t)
   :config
   (setq save-silently t)
+  (let ((value 
+		 (list
+		  "~/bin"
+		  "/usr/local/bin"
+		  "/usr/sbin"
+		  "/usr/bin"
+		  "/sbin"
+		  "/bin"
+		  )))
+	(setq exec-path value)
+	(setq-default eshell-path-env value)
+	)
   )
 
 (use-package find-large-file :no-require
@@ -847,10 +859,6 @@ Version 2019-11-04"
 (use-package ivy-ghq
   :quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
   :commands (ivy-ghq-open)
-  )
-
-(use-package exec-path-from-shell :ensure t
-  :hook (after-init . exec-path-from-shell-initialize)
   )
 
 (use-package pangu-spacing :ensure t
