@@ -148,6 +148,9 @@ Version 2019-11-04"
   (set-language-environment "English")
   ;; magitでの文字化け対策
   (prefer-coding-system 'utf-8)
+
+  :bind
+  ("C-s" . Control-X-prefix)
   )
 
 (use-package diminish :ensure t)
@@ -195,6 +198,8 @@ Version 2019-11-04"
   (tool-bar-mode nil)
   :config
   (setq default-frame-alist initial-frame-alist)
+  :bind
+  ("C-s-f" . toggle-frame-fullscreen)
   )
 
 (use-package paren
@@ -209,6 +214,7 @@ Version 2019-11-04"
        (evil-set-initial-state 'process-menu-mode 'emacs)
        ))
   :bind
+  ("C-q" . universal-argument) ; C-u -> C-q
   (:map process-menu-mode-map
         ("j" . next-line)
         ("k" . previous-line)
@@ -1345,6 +1351,10 @@ Version 2019-11-04"
          (kbd "M-j") 'org-metadown
          (kbd "M-k") 'org-metaup
          (kbd "M-l") 'org-metaright
+         (kbd "M-S-h") 'org-metashiftleft
+         (kbd "M-S-j") 'org-metashiftdown
+         (kbd "M-S-k") 'org-metashiftup
+         (kbd "M-S-l") 'org-metashiftright
          (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
          (kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
          (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
@@ -2084,6 +2094,7 @@ Version 2019-11-04"
     ("b" org-switchb "buffer")
     ("c" org-capture "capture")
     ("l" org-store-link "store link")
+    ("s" org-save-all-org-buffers "save all buffers")
     ;; org clock
     ("I" org-clock-in "clock in")
     ("O" org-clock-out "clock out")
@@ -2586,15 +2597,14 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
     (emacs-lock-mode 'kill))
   )
 
+(use-package ol
+  :bind ("C-c l" . org-store-link))
+
 (use-package key-binding :no-require
   :config
   (define-key key-translation-map [?\C-h] [?\C-?])
   ;; (global-set-key (kbd "C-h") 'delete-backward-char)
-  (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
   (global-set-key (kbd "C-\\") nil)
-  (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-q") 'universal-argument)
-  (global-set-key (kbd "C-s") 'Control-X-prefix)
   )
 
 (use-package rocket-chat-post
