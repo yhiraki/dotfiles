@@ -5,7 +5,6 @@
 hide empty description
 
 skinparam {
-  monochrome true
   shadowing false
 
   ' 可視性(+-#-) を plantuml 独自のアイコンにしない
