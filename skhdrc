@@ -51,5 +51,5 @@
 # cmd - K : Search
 
 cmd - space : open -a /Applications/iTerm.app
-cmd - e : echo 'tell application "Emacs" to activate window' | osascript || open -a /Applications/Emacs.app 
+cmd - e : open -a /Applications/Emacs.app 
 cmd - b : open -a '/Applications/Google Chrome.app/'
