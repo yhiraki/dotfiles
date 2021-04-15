@@ -1611,7 +1611,7 @@ Version 2019-11-04"
 
 (use-package ob-exp
   :custom
-  (org-export-use-babel nil))
+  (org-export-use-babel t))
 
 (defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
