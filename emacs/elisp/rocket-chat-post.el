@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  yhiraki
 
 ;; Author: yhiraki <coffexpr@gmail.com>
-;; Keywords: 
+;; Keywords: rocket.chat
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,14 +20,18 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
 (defvar rocket-chat-post-executable "rocket-post")
 
+(defun rocket-chat-post-format-text (msg)
+  "Format text."
+  ())
+
 (defun rocket-chat-post (msg &optional room)
-  "Post message to rocket.chat."
+  "Post a text (MSG) to rocket.chat.  Can be specified ROOM."
   (when (executable-find rocket-chat-post-executable)
     (let ((cmd (list rocket-chat-post-executable msg)))
       (when room (nconc cmd (list "--room" room)))
@@ -43,7 +47,7 @@
   (rocket-chat-post-region (point-min) (point-max)))
 
 (defun rocket-chat-post-region (begin end)
-  "Post region to rocket.chat."
+  "Post text region from BEGIN to END to rocket.chat."
   (interactive "r")
   (rocket-chat-post
    (buffer-substring-no-properties begin end)))
