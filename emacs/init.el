@@ -1500,6 +1500,7 @@ Version 2019-11-04"
   (org-meta-line ((t (:height 0.8 :foreground "gray40"))))
   (org-property-value ((t (:height 0.8))))
   (org-special-keyword ((t (:height 0.7 :foreground "gray40"))))
+  (org-sexp-date ((t (:height 0.7 :foreground "gray40"))))
   )
 
 (use-package org-agenda
@@ -1526,6 +1527,8 @@ Version 2019-11-04"
     org-directory
     (concat org-directory "projects")
     (concat org-directory "notes")))
+  (org-agenda-span 'day)
+  (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
   :config
   (defun my/org-agenda-todo-next ()
