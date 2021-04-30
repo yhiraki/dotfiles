@@ -616,6 +616,14 @@ Version 2019-11-04"
   ;; (push 'python-pycodestyle flycheck-checkers)
   )
 
+(use-package posframe :ensure t
+  :if window-system
+  :config
+  (use-package flycheck-posframe :ensure t
+	:after flycheck
+	:hook (flycheck-mode . flycheck-posframe-mode))
+  )
+
 (use-package flyspell
   :commands flyspell-mode
   :init
