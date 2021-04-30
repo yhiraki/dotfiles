@@ -975,12 +975,11 @@ Version 2019-11-04"
   (lsp-pyls-plugins-autopep8-enabled nil)
   )
 
-(use-package lsp-python-ms :disabled  ; formatting providorが無いと言われるので様子見
-  :ensure t
-  :custom (lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp))))
+(use-package lsp-pyright :ensure t :disabled
+  :hook (python-mode
+		 . (lambda ()
+			 (require 'lsp-pyright)
+			 (lsp))))
 
 (use-package lsp-go
   :hook (go . lsp))
