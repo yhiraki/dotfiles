@@ -983,11 +983,21 @@ Version 2019-11-04"
   (lsp-pyls-plugins-autopep8-enabled nil)
   )
 
-(use-package lsp-pyright :ensure t :disabled
-  :hook (python-mode
-		 . (lambda ()
-			 (require 'lsp-pyright)
-			 (lsp))))
+(use-package lsp-pyright :ensure t
+  :custom (lsp-pyright-python-executable-cmd "python3")
+  :hook
+  (python-mode
+   . (lambda ()
+	   (require 'lsp-pyright)
+	   (lsp)))
+  (evil-after-load
+   . (lambda ()
+	   (evil-define-key 'normal python-mode-map
+         (kbd "\\f") 'python-black-buffer)
+	   (evil-define-key 'visual python-mode-map
+         (kbd "\\f") 'python-black-region)
+	   ))
+  )
 
 (use-package lsp-go
   :hook (go . lsp))
@@ -1835,6 +1845,11 @@ Version 2019-11-04"
 
 (use-package py-yapf :ensure t
   :commands (py-yapf-buffer)
+  )
+
+(use-package python-black :ensure t
+  :custom (python-black-extra-args '("--skip-string-normalization"))
+  :commands (pyhton-black-buffer pyhton-black-region)
   )
 
 (use-package py-isort :ensure t
