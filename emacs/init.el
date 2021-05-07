@@ -568,6 +568,20 @@ Version 2019-11-04"
         ("e"   . wdired-change-to-wdired-mode))
   )
 
+(use-package vterm :ensure t
+  :custom
+  (vterm-buffer-name-string "*vterm: %s*"))
+
+(use-package vterm-toggle :ensure t
+  :commands (vterm-toggle vterm-toggle-cd)
+  :custom
+  (vterm-toggle-scope 'project)
+  :bind
+  (:map evil-normal-state-map
+		("C-t" . vterm-toggle-cd))
+  (:map evil-insert-state-map
+		("C-t" . vterm-toggle-cd)))
+
 (use-package flycheck :ensure t
   :hook
   ((prog-mode yaml-mode) . flycheck-mode)
