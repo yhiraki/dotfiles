@@ -1024,7 +1024,7 @@ Version 2019-11-04"
   (lsp-ui-doc-enable nil)
   (lsp-ui-flycheck-enable t)
   (lsp-ui-flycheck-live-reporting t)
-  (lsp-ui-sideline-enable t)
+  (lsp-ui-sideline-enable nil)  ; instead of flycheck-posframe
 
   :bind
   (:map lsp-ui-mode-map
