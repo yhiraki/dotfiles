@@ -2113,6 +2113,7 @@ Version 2019-11-04"
     ("a" org-agenda "agenda")
     ("b" org-switchb "buffer")
     ("c" org-capture "capture")
+    ("d" hydra-org-download/body "download")
     ("l" org-store-link "store link")
     ("s" org-save-all-org-buffers "save all buffers")
     ;; org clock
@@ -2121,6 +2122,12 @@ Version 2019-11-04"
     ("Q" org-clock-cancel "clock cancel")
     ("j" org-clock-goto "clock goto")
     )
+
+  (defhydra hydra-org-download (:exit t)
+	("s" org-download-screenshot "screenshot")
+	("c" org-download-clipboard "clipboard")
+	("d" org-download-delete "delete")
+	)
 
   (defhydra hydra-twitter (:exit t)
     ("h" twit "home")
