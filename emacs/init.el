@@ -1435,10 +1435,10 @@ Version 2019-11-04"
   (org-src-tab-acts-natively nil)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
-     (sequence "WAITING(w)" "TODO" "STARTED" "|" "DONE")
-     (sequence "SOMEDAY(S)" "TODO" "STARTED" "|" "DONE")
-     (sequence "|" "CANCELLED(c)")
+   '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!)")
+     (sequence "WAITING(w@/!)" "STARTED")
+     (sequence "|" "SOMEDAY(S)")
+     (sequence "|" "CANCELLED(c@)")
      (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
   (org-hidden-keywords '(title))
