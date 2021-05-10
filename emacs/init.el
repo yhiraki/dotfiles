@@ -987,7 +987,7 @@ Version 2019-11-04"
   (lsp-vetur-format-default-formatter-js "eslint")
   )
 
-(use-package lsp-pyls
+(use-package lsp-pyls :disabled
   :hook (python-mode . lsp)
   :custom
   (lsp-pyls-plugins-flake8-enabled t)
@@ -1668,6 +1668,8 @@ Version 2019-11-04"
   )
 
 (use-package ob-python
+  :after auto-virtualenvwrapper
+
   :hook (org-mode
          . (lambda ()
              (use-package auto-virtualenvwrapper
