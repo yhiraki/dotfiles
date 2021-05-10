@@ -1959,15 +1959,6 @@ Version 2019-11-04"
   (plantuml-jar-args my/plantuml-jar-args)
   (plantuml-jar-path my/plantuml-jar-path)
   (plantuml-java-options my/plantuml-java-options)
-
-  :config
-  ;; (setq plantuml-output-type "svg")
-
-  :mode
-  ("\\.uml\\'" . plantuml-mode)
-  ("\\.plantuml\\'" . plantuml-mode)
-  :bind
-  ("C-c C-s" . 'plantuml-save-png)
   )
 
 (use-package flycheck-plantuml :ensure t
