@@ -11,3 +11,5 @@
    . (lambda () (evil-set-initial-state 'shell-mode 'emacs))))
 
 (use-package counsel-tramp :ensure t)
+
+(use-package annotate :ensure t)

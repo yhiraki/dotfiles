@@ -1160,6 +1160,8 @@ Version 2019-11-04"
     :override t)
   )
 
+(use-package annotate :ensure t)
+
 (use-package csharp-mode :ensure t)
 
 (use-package dockerfile-mode :ensure t)
