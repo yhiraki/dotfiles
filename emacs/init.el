@@ -1642,6 +1642,7 @@ Version 2019-11-04"
      (typescript . t)
      (C . t))
    ))
+(use-package ob-http :ensure t)
 
 (use-package ob-exp
   :custom
