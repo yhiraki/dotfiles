@@ -1625,23 +1625,38 @@ Version 2019-11-04"
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("elisp" "python" "shell" "plantuml" "uml" "shell" "dot" "js" "C" "cpp" "typescript"))))
+    (not (member lang
+	    '("http"
+	      "C"
+	      "cpp"
+	      "dot"
+	      "elisp"
+	      "js"
+	      "plantuml"
+	      "python"
+	      "sh"
+	      "shell"
+	      "ts"
+	      "typescript"
+	      "uml"
+	      ))))
 
   (push '("ts" . typescript) org-src-lang-modes)
-  (push '("console" . sh) org-src-lang-modes)
   (push '("uml" . plantuml) org-src-lang-modes)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (python . t)
-     (plantuml . t)
-     (shell . t)
+	 (http . t)
+     (C . t)
      (dot . t)
      (js . t)
+     (plantuml . t)
+     (python . t)
+     (shell . t)
      (typescript . t)
-     (C . t))
-   ))
+	 )))
+
 (use-package ob-http :ensure t)
 
 (use-package ob-exp
