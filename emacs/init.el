@@ -1110,6 +1110,11 @@ Version 2019-11-04"
   (add-to-list 'company-backends #'company-tabnine)
   )
 
+(use-package company-restclient :ensure t
+  :config
+  (add-to-list 'company-backends #'company-restclient)
+  )
+
 (use-package quickrun :ensure t
   :commands quickrun
 
@@ -1657,7 +1662,7 @@ Version 2019-11-04"
      (typescript . t)
 	 )))
 
-(use-package ob-http :ensure t)
+(use-package ob-restclient :ensure t)
 
 (use-package ob-exp
   :custom
