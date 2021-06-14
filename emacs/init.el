@@ -2455,18 +2455,21 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :hook (after-init . doom-modeline-mode))
 
 (use-package hide-mode-line :ensure t
-  :hook ((dired-mode
-          dired-sidebar-mode
-          gist-list-mode
-          git-commit-mode
-          image-mode
-          inferior-python-mode
-          magit-mode
-          org-agenda-mode
-          org-capture-mode
-          org-export-stack-mode
-          quickrun--mode)
-         . hide-mode-line-mode)
+  :hook ((
+		  dired-mode
+		  dired-sidebar-mode
+		  gist-list-mode
+		  git-commit-mode
+		  image-mode
+		  inferior-python-mode
+		  lisp-interaction-mode
+		  magit-mode
+		  org-agenda-mode
+		  org-capture-mode
+		  org-export-stack-mode
+		  quickrun--mode
+		  )
+		 . hide-mode-line-mode)
   )
 
 (use-package beacon :ensure t
