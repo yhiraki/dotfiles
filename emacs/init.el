@@ -753,17 +753,6 @@ Version 2019-11-04"
 (use-package git-gutter+ :ensure t
   :diminish
 
-  :hook
-  ((find-file
-    after-save
-    after-revert
-    evil-insert-state-entry)
-   . git-gutter+-turn-on)
-  ;; (evil-normal-state-entry
-  ;;  . git-gutter+-refresh)
-  (before-save
-   . git-gutter+-turn-off)
-
   :custom
   (git-gutter+-added-sign "┃")
   (git-gutter+-deleted-sign "▔")
@@ -2349,6 +2338,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("Y" . "y$")
         ("[g" . 'git-gutter+-previous-hunk)
         ("]g" . 'git-gutter+-next-hunk)
+        ("\\gg" . 'git-gutter+-mode)
         ("\\gs" . 'git-gutter+-stage-hunks)
         ("\\gr" . 'git-gutter+-revert-hunks)
         )
@@ -2364,8 +2354,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
         ("SPC" . 'hydra-global-leader/body)
         ("[g" . 'git-gutter+-previous-hunk)
         ("]g" . 'git-gutter+-next-hunk)
-        ("\\gs" . 'git-gutter+-stage-hunks)
+        ("\\gg" . 'git-gutter+-mode)
         ("\\gr" . 'git-gutter+-revert-hunks)
+        ("\\gs" . 'git-gutter+-stage-hunks)
   )
 
   :init
