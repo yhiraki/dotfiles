@@ -1786,10 +1786,7 @@ Version 2019-11-04"
   (sh-indent-for-case-label 0)
   (sh-indent-for-case-alt '+))
 
-(use-package shfmt
-  :quelpa (shfmt :type git :fetcher github :repo "amake/shfmt.el")
-  :if (executable-find "shfmt")
-
+(use-package shfmt :ensure t
   :hook
   (evil-after-load
    . (lambda ()
