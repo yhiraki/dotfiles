@@ -1584,10 +1584,12 @@ Version 2019-11-04"
       (org-clock-in)))
 
   (defun my:org-clock-out-if-waiting ()
-    "Clock in when the task is marked STARTED."
-    (when (and (string= org-state "WAITING")
-               (not (string= org-last-state org-state)))
-      (org-clock-out)))
+	"Clock in when the task is marked STARTED."
+	(when (and (or
+				(string= org-state "TODO")
+				(string= org-state "WAITING"))
+			   (not (string= org-last-state org-state)))
+	  (org-clock-out)))
   )
 
 (use-package japanese-holidays :ensure t
