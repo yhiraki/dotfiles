@@ -208,17 +208,9 @@ Version 2019-11-04"
   )
 
 (use-package simple
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-set-initial-state 'process-menu-mode 'emacs)
-       ))
   :bind
   ("C-q" . universal-argument) ; C-u -> C-q
-  (:map process-menu-mode-map
-        ("j" . next-line)
-        ("k" . previous-line)
-        ))
+  )
 
 (use-package fringe
   :custom-face
@@ -488,27 +480,13 @@ Version 2019-11-04"
        (setq-local line-spacing 3)))
   (evil-after-load
    . (lambda ()
-       (evil-set-initial-state 'dired-mode 'emacs)))
-
-  :bind
-  (:map dired-mode-map
-        (":"   . evil-ex)
-        ("C-b" . evil-scroll-page-up)
-        ("C-f" . evil-scroll-page-down)
-        ("C-j" . dired-next-dirline)
-        ("C-k" . dired-prev-dirline)
-        ("C-w h" . evil-window-left)
-        ("C-w j" . evil-window-down)
-        ("C-w k" . evil-window-up)
-        ("C-w l" . evil-window-right)
-        ("G"   . evil-goto-line)
-        ("SPC" . hydra-global-leader/body)
-        ("r"   . revert-buffer)
-        ("g"   . nil)
-        ("gg"  . evil-goto-first-line)
-        ("go"  . my-open-in-external-app)
-        ("j"   . dired-next-line)
-        ("k"   . dired-previous-line)))
+	   (evil-define-key '(normal visual) dired-mode-map
+		 (kbd "C-j") 'dired-next-dirline
+		 (kbd "C-k") 'dired-prev-dirline
+		 (kbd "SPC") 'hydra-global-leader/body
+		 (kbd "go") 'my-open-in-external-app
+		 )))
+  )
 
 (use-package dired-subtree :ensure t
   :after dired
@@ -572,29 +550,20 @@ Version 2019-11-04"
 
 (use-package vterm-toggle :ensure t
   :commands (vterm-toggle vterm-toggle-cd)
+  :hook
+  (evil-after-load
+   . (lambda ()
+	   (mapcar
+		#'(lambda (map)
+			(define-key map (kbd "C-t") 'vterm-toggle-cd))
+		(list evil-normal-state-map evil-visual-state-map))
+	   ))
   :custom
-  (vterm-toggle-scope 'project)
-  :bind
-  (:map evil-normal-state-map
-		("C-t" . vterm-toggle-cd))
-  (:map evil-insert-state-map
-		("C-t" . vterm-toggle-cd)))
+  (vterm-toggle-scope 'project))
 
 (use-package flycheck :ensure t
   :hook
   ((prog-mode yaml-mode) . flycheck-mode)
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal flycheck-error-list-mode-map
-         (kbd "F") 'flycheck-error-list-reset-filter
-         (kbd "RET") 'flycheck-error-list-goto-error
-         (kbd "f") 'flycheck-error-list-set-filter
-         (kbd "j") 'flycheck-error-list-next-error
-         (kbd "k") 'flycheck-error-list-previous-error
-         (kbd "n") 'flycheck-error-list-next-error
-         (kbd "p") 'flycheck-error-list-previous-error
-         (kbd "q") 'quit-window
-         )))
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
@@ -728,30 +697,21 @@ Version 2019-11-04"
   (magit-diff-refine-hunk 'all)
   )
 
-(use-package git-timemachine :ensure t
-  :hook
-    (evil-after-load
-   . (lambda ()
-       (evil-set-initial-state 'git-timemachine-mode 'emacs)
-       (evil-define-key 'normal git-timemachine-mode-map
-         ;; Navigate
-         (kbd "p") 'git-timemachine-show-previous-revision
-         (kbd "n") 'git-timemachine-show-next-revision
-         (kbd "g") 'git-timemachine-show-nth-revision
-         (kbd "t") 'git-timemachine-show-revision-fuzzy
-         ;; Kill current revision
-         (kbd "w") 'git-timemachine-kill-abbreviated-revision
-         (kbd "W") 'git-timemachine-kill-revision
-         ;; Misc
-         (kbd "b") 'git-timemachine-blame
-         (kbd "c") 'git-timemachine-show-commit
-         (kbd "?") 'git-timemachine-help
-         (kbd "q") 'git-timemachine-quit
-         )))
-    )
+(use-package git-timemachine :ensure t)
 
 (use-package git-gutter+ :ensure t
   :diminish
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+	   (evil-define-key '(normal visual) 'global
+		 (kbd "[g") 'git-gutter+-previous-hunk
+		 (kbd "]g") 'git-gutter+-next-hunk
+		 (kbd "\\gg") 'git-gutter+-mode
+		 (kbd "\\gr") 'git-gutter+-revert-hunks
+		 (kbd "\\gs") 'git-gutter+-stage-hunks
+	   )))
 
   :custom
   (git-gutter+-added-sign "┃")
@@ -1027,6 +987,11 @@ Version 2019-11-04"
   (after-init . global-company-mode)
   (after-init . company-tng-mode)
   (TeX-mode . edit-category-table-for-company-dabbrev)
+  (evil-after-load
+   . (lambda ()
+	   (evil-define-key 'insert 'global
+		 (kbd "C-k") 'company-yasnippet)
+	   ))
 
   :custom
   (company-auto-commit nil)
@@ -1105,14 +1070,6 @@ Version 2019-11-04"
 (use-package quickrun :ensure t
   :commands quickrun
 
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal quickrun--mode-map
-         (kbd "q") 'evil-window-delete
-         )
-       ))
-
   :custom
   (quickrun-timeout-seconds 30)
 
@@ -1188,13 +1145,8 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal go-mode-map
-         (kbd "\\f") 'gofmt
-         )
-       (evil-define-key 'visual go-mode-map
-         (kbd "\\f") 'gofmt
-         )
-       ))
+       (evil-define-key '(normal visual) go-mode-map
+         (kbd "\\f") 'gofmt)))
 
   :custom
   (gofmt-command "goimports")
@@ -1237,10 +1189,8 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal json-mode-map
-         (kbd "\\f") 'json-pretty-print-buffer
-         )
-       ))
+      (evil-define-key '(normal visual) json-mode-map
+         (kbd "\\f") 'json-pretty-print-buffer)))
   )
 
 (use-package markdown-mode :ensure t
@@ -1249,18 +1199,16 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal markdown-mode-map
-         (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
-         (kbd "zc") 'outline-hide-subtree
-         (kbd "TAB") 'markdown-cycle
-         (kbd "\\f") 'prettier-js
-         )
-       (evil-define-key 'normal gfm-mode-map
-         (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
-         (kbd "zc") 'outline-hide-subtree
-         (kbd "TAB") 'markdown-cycle
-         )
-       ))
+	   (mapcar
+		#'(lambda (map)
+			(evil-define-key '(normal visual) map
+			  (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
+			  (kbd "zc") 'outline-hide-subtree
+			  (kbd "TAB") 'markdown-cycle
+			  (kbd "\\f") 'prettier-js
+			  ))
+		(list markdown-mode-map gfm-mode-map))
+	   ))
 
   :custom
   (markdown-command "pandoc -s -t html5 -c ~/.emacs.d/css/github.css")
@@ -1279,7 +1227,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal prog-mode-map
+       (evil-define-key '(normal visual) prog-mode-map
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
 
@@ -1289,68 +1237,29 @@ Version 2019-11-04"
          (kbd "\\m") 'lsp-ui-imenu
          (kbd "\\qa") 'quickrun-autorun-mode
          (kbd "\\qc") 'quickrun-compile-only
-         (kbd "\\qr") 'quickrun
          (kbd "\\qs") 'quickrun-shell
-         (kbd "\\r")  'quickrun
 
          (kbd "gd") 'xref-find-definitions
          (kbd "gr") 'xref-find-references
          )
+       (evil-define-key 'normal prog-mode-map
+         (kbd "\\qr") 'quickrun
+         (kbd "\\r")  'quickrun
+         )
        (evil-define-key 'visual prog-mode-map
-         (kbd "[e") 'flycheck-previous-error
-         (kbd "]e") 'flycheck-next-error
-
-         (kbd "\\R")  'lsp-rename
-         (kbd "\\e") 'flycheck-list-errors
-         (kbd "\\f") 'lsp-format-region
-         (kbd "\\m") 'lsp-ui-imenu
-         (kbd "\\qa") 'quickrun-autorun-mode
-         (kbd "\\qc") 'quickrun-compile-only
          (kbd "\\qr") 'quickrun-region
-         (kbd "\\qs") 'quickrun-shell
          (kbd "\\r") 'quickrun-region
-
-         (kbd "gd") 'xref-find-definitions
-         (kbd "gr") 'xref-find-references
-         )))
-  )
+         )
+	   )))
 
 (use-package executable
   :hook
   (after-save . executable-make-buffer-file-executable-if-script-p)
   )
 
-(use-package xref
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
-       ))
-
-  :bind
-  (:map xref--xref-buffer-mode-map
-        ("j" . #'xref-next-line)
-        ("k" . #'xref-prev-line)
-        ))
-
-(use-package view
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal view-mode-map
-         (kbd "q") 'View-quit
-         )))
-  )
-
 (use-package edit-indirect :ensure t
   :commands edit-indirect-region
   )
-
-(use-package replace
-  :bind
-  (:map occur-mode-map
-        ("j" . next-line)
-        ("k" . previous-line)))
 
 (use-package org :ensure org-plus-contrib
   :hook
@@ -1359,14 +1268,6 @@ Version 2019-11-04"
        (evil-define-key 'normal org-mode-map
          (kbd "C-S-j") 'org-next-visible-heading
          (kbd "C-S-k") 'org-previous-visible-heading
-         (kbd "M-h") 'org-metaleft
-         (kbd "M-j") 'org-metadown
-         (kbd "M-k") 'org-metaup
-         (kbd "M-l") 'org-metaright
-         (kbd "M-S-h") 'org-metashiftleft
-         (kbd "M-S-j") 'org-metashiftdown
-         (kbd "M-S-k") 'org-metashiftup
-         (kbd "M-S-l") 'org-metashiftright
          (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
          (kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
          (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
@@ -1395,20 +1296,18 @@ Version 2019-11-04"
          (kbd "\\f") 'whitespace-cleanup
          )
 
-       (evil-define-key 'insert org-mode-map
+       (evil-define-key '(normal insert visual) org-mode-map
+         (kbd "M-S-h") 'org-metashiftleft
+         (kbd "M-S-j") 'org-metashiftdown
+         (kbd "M-S-k") 'org-metashiftup
+         (kbd "M-S-l") 'org-metashiftright
+         (kbd "M-h") 'org-metaleft
          (kbd "M-j") 'org-metadown
          (kbd "M-k") 'org-metaup
-         (kbd "M-h") 'org-metaleft
          (kbd "M-l") 'org-metaright
          (kbd "RET") 'org-return
          )
-
-       (evil-define-key 'visual org-mode-map
-         (kbd "M-j") 'org-metadown
-         (kbd "M-k") 'org-metaup
-         (kbd "M-h") 'org-metaleft
-         (kbd "M-l") 'org-metaright
-         )))
+       ))
 
   (org-after-todo-statistics . org-summary-todo)
   (org-checkbox-statistics . my/org-checkbox-todo)
@@ -1520,12 +1419,6 @@ Version 2019-11-04"
   :after org
   :commands (org-agenda org-refile)
   :demand t
-
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-set-initial-state 'org-agenda-mode 'emacs)
-       ))
 
   :custom
   (org-agenda-current-time-string "← now")
@@ -2020,7 +1913,7 @@ Version 2019-11-04"
        ))
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal vue-mode-map
+       (evil-define-key '(normal visual) vue-mode-map
          (kbd "\\f") 'eslint-fix
          )))
   (vue-mode . lsp)
@@ -2035,10 +1928,11 @@ Version 2019-11-04"
 (use-package yaml-mode :ensure t
   :hook (evil-after-load
          . (lambda ()
-             (evil-define-key 'normal yaml-mode-map
-               (kbd "\\e") 'flycheck-list-errors
+             (evil-define-key '(normal visual) yaml-mode-map
                (kbd "C-m") 'newline-and-indent
-               (kbd "\\f") 'prettier-js))))
+               (kbd "\\e") 'flycheck-list-errors
+               (kbd "\\f") 'prettier-js
+			   ))))
 
 (use-package flycheck-yamllint :ensure t
   :hook (yaml-mode . flycheck-yamllint-setup))
@@ -2046,15 +1940,6 @@ Version 2019-11-04"
 (use-package vimrc-mode :ensure t
   :mode
   ("\\.vim\\(rc\\)?\\'" . vimrc-mode)
-  )
-
-(use-package image-mode
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal image-mode-map
-         (kbd "q") 'evil-quit
-         )))
   )
 
 (use-package emmet-mode :ensure t
@@ -2091,8 +1976,14 @@ Version 2019-11-04"
   )
 
 (use-package hydra :ensure t
-  :config
+  :hook
+  (evil-after-load
+   . (lambda ()
+	   (evil-define-key 'normal 'global
+		 (kbd "<SPC>") 'hydra-global-leader/body)
+	   ))
 
+  :config
   (defhydra hydra-file-open (:exit t)
     ("b" switch-to-buffer "buffer")
     ("d" dired-sidebar-toggle-sidebar "sidebar")
@@ -2332,36 +2223,20 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 
   :bind
   (:map evil-normal-state-map
-        ("<SPC>" . 'hydra-global-leader/body)
-        ("C-h" . 'evil-backward-char)
-        ("C-j" . 'evil-forward-paragraph)
-        ("C-k" . 'evil-backward-paragraph)
-        ("C-l" . 'redraw-display)
-        ("S-C-j" . 'evil-forward-section-begin)
-        ("S-C-k" . 'evil-backward-section-begin)
-        ("Y" . "y$")
-        ("[g" . 'git-gutter+-previous-hunk)
-        ("]g" . 'git-gutter+-next-hunk)
-        ("\\gg" . 'git-gutter+-mode)
-        ("\\gs" . 'git-gutter+-stage-hunks)
-        ("\\gr" . 'git-gutter+-revert-hunks)
-        )
+		("C-h" . 'evil-backward-char)
+		("C-j" . 'evil-forward-paragraph)
+		("C-k" . 'evil-backward-paragraph)
+		("C-l" . 'redraw-display)
+		("S-C-j" . 'evil-forward-section-begin)
+		("S-C-k" . 'evil-backward-section-begin)
+		("Y" . "y$")
+		)
 
   (:map evil-insert-state-map
-        ("C-k" . 'company-yasnippet)
         ("C-u" . (lambda ()
                    (interactive)
                    (evil-delete (point-at-bol) (point))))
         )
-
-  (:map evil-visual-state-map
-        ("SPC" . 'hydra-global-leader/body)
-        ("[g" . 'git-gutter+-previous-hunk)
-        ("]g" . 'git-gutter+-next-hunk)
-        ("\\gg" . 'git-gutter+-mode)
-        ("\\gr" . 'git-gutter+-revert-hunks)
-        ("\\gs" . 'git-gutter+-stage-hunks)
-  )
 
   :init
   (setq evil-want-keybinding nil)
