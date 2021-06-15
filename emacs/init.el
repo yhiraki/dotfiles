@@ -2216,8 +2216,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package evil :ensure t
-  :after (undo-fu)
-
   :bind
   (:map evil-normal-state-map
 		("C-h" . 'evil-backward-char)
@@ -2437,7 +2435,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package google-translate :ensure t
-  :commands google-translate-translate
   :config
   ;; http://emacs.rubikitch.com/google-translate/
   (defvar google-translate-english-chars "[:ascii:]’“”–"
