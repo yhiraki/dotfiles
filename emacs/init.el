@@ -1617,21 +1617,23 @@ Version 2019-11-04"
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
   (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang
-	    '("http"
-	      "C"
-	      "cpp"
-	      "dot"
-	      "elisp"
-	      "js"
-	      "plantuml"
-	      "python"
-	      "sh"
-	      "shell"
-	      "ts"
-	      "typescript"
-	      "uml"
-	      ))))
+	(not (member lang
+				 '(
+				   "C"
+				   "cpp"
+				   "dot"
+				   "elisp"
+				   "http"
+				   "js"
+				   "plantuml"
+				   "python"
+				   "restclient"
+				   "sh"
+				   "shell"
+				   "ts"
+				   "typescript"
+				   "uml"
+				   ))))
 
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("uml" . plantuml) org-src-lang-modes)
@@ -2324,7 +2326,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package evil :ensure t
-  :after (hydra undo-fu)
+  :after (undo-fu)
 
   :bind
   (:map evil-normal-state-map
@@ -2384,8 +2386,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :config (global-evil-surround-mode))
 
 (use-package evil-collection :ensure t
+  :after evil
   :config
-  (evil-collection-init '(magit vterm)))
+  (evil-collection-init))
 
 (use-package evil-commentary :ensure t
   :diminish evil-commentary-mode
@@ -2400,8 +2403,7 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   :after evil
   :config (evil-lion-mode))
 
-(use-package evil-numbers
-  :quelpa (evil-numbers :type git :fetcher github :repo "janpath/evil-numbers")
+(use-package evil-numbers :ensure t
   :after evil
   :bind
   (:map evil-normal-state-map
