@@ -2492,7 +2492,6 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
                   (("setup.py\\'" "Python setup file") . "setup.py")
                   (("setup.cfg\\'" "Python setup config") . ["setup.cfg" my/autoinsert-yas-expand])
                   (("\\.cpp\\'" "C++ setup file") . ["template.cpp" my/autoinsert-yas-expand])
-                  (("\\.py\\'" "Python script") . ["template.py" my/autoinsert-yas-expand])
                   (("\\.vue\\'" "Vue") . ["template.vue" my/autoinsert-yas-expand])
                   ((plantuml-mode "Plantuml") . ["template.plantuml" my/autoinsert-yas-expand])
                   ((sh-mode "Shell script") . ["template.sh" my/autoinsert-yas-expand])
