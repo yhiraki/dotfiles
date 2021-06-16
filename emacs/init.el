@@ -34,6 +34,7 @@
                  ))
 
 (require 'package)
+(setq package-user-dir (locate-user-emacs-file "elpa"))
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.org/packages/")
