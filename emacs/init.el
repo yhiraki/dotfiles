@@ -486,6 +486,7 @@ Version 2019-11-04"
 		 (kbd "C-k") 'dired-prev-dirline
 		 (kbd "SPC") 'hydra-global-leader/body
 		 (kbd "go") 'my-open-in-external-app
+		 (kbd "r") 'revert-buffer
 		 )))
   )
 
