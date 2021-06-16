@@ -2490,10 +2490,9 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   )
 
 (use-package init-candidate :no-require
-  :hook
-  (after-init . (lambda () (load my/user-emacs-file-candidate t)))
   :config
   (defvar my/user-emacs-file-candidate (concat user-emacs-directory "init.candidate.el"))
+  (load my/user-emacs-file-candidate t)
   )
 
 (use-package init-local :no-require
