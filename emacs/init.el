@@ -491,12 +491,14 @@ Version 2019-11-04"
 
 (use-package dired-subtree :ensure t
   :after dired
-  :commands (dired-subtree-insert dired-subtree-remove)
 
-  :bind
-  (:map dired-mode-map
-	("l" . my-dired-subtree-insert)
-	("h" . my-dired-subtree-remove))
+  :hook
+  (evil-after-load
+   . (lambda ()
+	   (evil-define-key '(normal visual) dired-mode-map
+		 (kbd "l") 'my-dired-subtree-insert
+		 (kbd "h") 'my-dired-subtree-remove)
+	   ))
 
   :config
   ;; for all-the-icons
