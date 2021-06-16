@@ -2179,10 +2179,10 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
 		)
 
   (:map evil-insert-state-map
-        ("C-u" . (lambda ()
-                   (interactive)
-                   (evil-delete (point-at-bol) (point))))
-        )
+		("C-u" . (lambda ()
+				   (interactive)
+				   (evil-delete (point-at-bol) (point))))
+		)
 
   :init
   (setq evil-want-keybinding nil)
