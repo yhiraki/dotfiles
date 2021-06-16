@@ -1295,6 +1295,7 @@ Version 2019-11-04"
   (org-hidden-keywords '(title))
   (org-image-actual-width '(0))  ; to use #+ATTR_ORG: :width
 
+  :config
   (defun org-summary-todo (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
     (let (org-log-done org-log-states)   ; turn off logging
