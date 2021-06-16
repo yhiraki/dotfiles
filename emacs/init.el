@@ -538,13 +538,11 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-set-initial-state 'wdired-mode 'normal)))
+	   (evil-define-key '(normal visual) dired-mode-map
+		 (kbd "e") 'wdired-change-to-wdired-mode
+	   )))
 
   :custom (wdired-allow-to-change-permissions t)
-
-  :bind
-  (:map dired-mode-map
-        ("e"   . wdired-change-to-wdired-mode))
   )
 
 (use-package vterm :ensure t
