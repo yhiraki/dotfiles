@@ -793,50 +793,6 @@ Version 2019-11-04"
   (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   )
 
-(use-package ivy :ensure t
-  :diminish ivy-mode
-  :hook (after-init . ivy-mode)
-  :custom
-  (enable-recursive-minibuffers t)
-  (ivy-count-format "(%d/%d) ")
-  (ivy-use-selectable-prompt t)
-  (ivy-use-virtual-buffers t)
-  :bind (:map ivy-minibuffer-map ([escape] . 'minibuffer-keyboard-quit))
-  )
-
-(use-package all-the-icons-ivy :ensure t
-  :hook (after-init . all-the-icons-ivy-setup))
-
-(use-package ivy-hydra :ensure t
-  :after (ivy hydra))
-
-(use-package ivy-rich :ensure t
-  :hook (ivy-mode . ivy-rich-mode)
-  )
-
-(use-package counsel :ensure t
-  :after ivy
-  :custom
-  (counsel-yank-pop-separator "\n-------\n")
-  :bind
-  ("M-x" . counsel-M-x)
-  )
-
-(use-package swiper :ensure t :disabled  ; 遅いので無効化
-  :commands (swiper-isearch swiper-isearch-backward)
-  :after evil
-  :bind
-  (:map evil-normal-state-map
-        ("*" . 'swiper-isearch-thing-at-point)
-        ("/" . 'swiper-isearch)
-        ("?" . 'swiper-isearch-backward))
-  )
-
-(use-package ivy-ghq
-  :quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
-  :commands (ivy-ghq-open)
-  )
-
 (use-package pangu-spacing :ensure t
   :hook
   ((text-mode-hook twittering-edit-mode) . pangu-spacing-mode)
@@ -1337,12 +1293,6 @@ Version 2019-11-04"
   (org-log-done 'time) ; DONEの時刻を記録
   (org-hidden-keywords '(title))
   (org-image-actual-width '(0))  ; to use #+ATTR_ORG: :width
-
-  :config
-  ;; https://emacs.stackexchange.com/questions/32473/edit-org-mode-tags-using-ido-or-ivy-completion
-  ;; =C-M-m= to add/remove tag
-  ;; =C-M-j= to fix tags
-  (global-set-key [remap org-set-tags-command] #'counsel-org-tag)
 
   (defun org-summary-todo (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
