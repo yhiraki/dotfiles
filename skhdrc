@@ -50,6 +50,9 @@
 # cmd - space : Post
 # cmd - K : Search
 
-cmd - space : open -a /Applications/iTerm.app
+cmd - space : open -a Terminal.app
 cmd - e : open -a /Applications/Emacs.app 
-cmd - b : open -a '/Applications/Google Chrome.app/'
+cmd - b [
+	* : open -a '/Applications/Google Chrome.app/'
+	"Google Chrome" ~
+]
