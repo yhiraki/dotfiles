@@ -756,12 +756,11 @@ Version 2019-11-04"
 (use-package browse-at-remote :ensure t)
 
 (use-package recentf
-  :commands recentf-mode
   :custom
   (recentf-save-file "~/.cache/emacs/recentf")
   (recentf-max-saved-items 2000)
   (recentf-exclude '("/.recentf" "COMMIT_EDITMSG" "/.?TAGS" "^/sudo:" "/\\.emacs\\.d/games/*-scores" "/\\.emacs\\.d/\\.cask/"))
-  (recentf-auto-cleanup 'never)  ;; 存在しないファイルは消さない
+
   :config
   (defmacro with-suppressed-message (&rest body)
     "Suppress new messages temporarily in the echo area and the `*Messages*' buffer while BODY is evaluated."
@@ -770,6 +769,7 @@ Version 2019-11-04"
       `(with-temp-message (or (current-message) "") ,@body)))
   (run-with-idle-timer 30 t '(lambda ()
                                (with-suppressed-message (recentf-save-list))))
+  (recentf-mode 1)
   )
 
 (use-package backup :no-require
