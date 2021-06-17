@@ -484,7 +484,6 @@ Version 2019-11-04"
 	   (evil-define-key '(normal visual) dired-mode-map
 		 (kbd "C-j") 'dired-next-dirline
 		 (kbd "C-k") 'dired-prev-dirline
-		 (kbd "SPC") 'hydra-global-leader/body
 		 (kbd "go") 'my-open-in-external-app
 		 (kbd "r") 'revert-buffer
 		 )))
@@ -1250,7 +1249,6 @@ Version 2019-11-04"
          (kbd "\\xp") 'org-set-property
          (kbd "gh") 'outline-up-heading
          (kbd "gp") 'outline-previous-heading
-         (kbd "\\ \\") 'hydra-outline/body
          (kbd "\\f") 'whitespace-cleanup
          )
 
@@ -1925,249 +1923,6 @@ Version 2019-11-04"
        ))
   )
 
-(use-package hydra :ensure t
-  :hook
-  (evil-after-load
-   . (lambda ()
-	   (evil-define-key 'normal 'global
-		 (kbd "<SPC>") 'hydra-global-leader/body)
-	   ))
-
-  :config
-  (defhydra hydra-file-open (:exit t)
-    ("b" switch-to-buffer "buffer")
-    ("d" dired-sidebar-toggle-sidebar "sidebar")
-    ("f" counsel-find-file "find file")
-    ("g" counsel-rg "grep")
-    ("j" open-junk-file "junk file")
-    ("o" my-open-current-dir "open dir")
-    ("r" counsel-recentf "rencetf")
-    )
-
-  (defhydra hydra-git (:exit t)
-    ("c" magit-commit "commit")
-    ("f" counsel-git "find")
-    ("g" counsel-git-grep "grep")
-    ("lb" gist-buffer "gist buffer")
-    ("ll" gist-list "gist list")
-    ("m" git-messenger:popup-message "git messenger")
-    ("o" browse-at-remote "browse at remote")
-    ("p" ivy-ghq-open "ghq")
-    ("s" magit-stage "stage")
-    ("t" git-timemachine "timemachine")
-    ("u" magit-unstage "unstage")
-    )
-
-  (defhydra hydra-help (:exit t)
-    ("f" counsel-describe-function "function")
-    ("k" counsel-descbinds "bind")
-    ("v" counsel-describe-variable "variable")
-    )
-
-  (defhydra hydra-org (:exit t)
-    ("a" org-agenda "agenda")
-    ("b" org-switchb "buffer")
-    ("c" org-capture "capture")
-    ("d" hydra-org-download/body "download")
-    ("l" org-store-link "store link")
-    ("s" org-save-all-org-buffers "save all buffers")
-    ;; org clock
-    ("I" org-clock-in "clock in")
-    ("O" org-clock-out "clock out")
-    ("Q" org-clock-cancel "clock cancel")
-    ("j" org-clock-goto "clock goto")
-    )
-
-  (defhydra hydra-org-download (:exit t)
-	("s" org-download-screenshot "screenshot")
-	("c" org-download-clipboard "clipboard")
-	("d" org-download-delete "delete")
-	)
-
-  (defhydra hydra-twitter (:exit t)
-    ("h" twit "home")
-    ("m" twittering-mentions-timeline "mentions")
-    ("u" twittering-update-status-interactive "update")
-    ("r" rocket-chat-edit "rocket chat")
-    )
-
-  (defhydra hydra-emacs-operation (:exit t)
-    ("e" eval-buffer "eval-buffer")
-    ("k" save-buffers-kill-emacs "kill emacs")
-    ("r" restart-emacs "restart emacs")
-    )
-
-  (defhydra hydra-global-leader (:exit t)
-    ("/" counsel-imenu "imenu")
-    ("G" hydra-google/body "google")
-    ("a" org-agenda "org-agenda")
-    ("b" counsel-bookmark "bookmarks")
-    ("c" org-capture "org-cature")
-    ("f" hydra-file-open/body "find file")
-    ("g" hydra-git/body "git")
-    ("h" hydra-help/body "help")
-    ("k" (message "Disabled. use :bw") "kill buffer")
-    ("o" hydra-org/body "org")
-    ("q" nil "quit")
-    ("s" magit-status "git status")
-    ("t" hydra-twitter/body "twitter")
-    ("z" hydra-emacs-operation/body "emacs")
-    )
-
-;; Use smartrep instead
-;;   (defhydra hydra-inc-dec-number ("C-c" :hint nil)
-;;     "
-;; decrement _-_ 41←42→43 _+_ increment
-;; "
-;;     ("+" evil-numbers/inc-at-pt)
-;;     ("=" evil-numbers/inc-at-pt)
-;;     ("-" evil-numbers/dec-at-pt))
-
-  (defhydra hydra-operate-window (:hint nil)
-    "
- ^command^ |^^^^^^  size   |^^^^^^^^  move
- ^^--------|^^^^^^---------|^^^^^^^^---------
-  _s_plit  | ^ ^  _+_  ^ ^ | ^ ^  ^_j_^  ^ ^
-  _v_plist | _<_  _=_  _>_ | _h_  ^^^ ^  _l_
-  _c_lose  | ^ ^  _-_  ^ ^ | ^ ^  ^_k_^  ^ ^
-  close _o_ther windows
-"
-
-    ;; size
-    ("+" evil-window-increase-height)
-    ("-" evil-window-decrease-height)
-    ("<" evil-window-decrease-width)
-    ("=" balance-windows)
-    (">" evil-window-increase-width)
-
-    ;; move
-    ("j" (progn (evil-window-down 1) (hydra-operate-window-no-move/body)) :exit t)
-    ("k" (progn (evil-window-up 1) (hydra-operate-window-no-move/body)) :exit t)
-    ("h" (progn (evil-window-left 1) (hydra-operate-window-no-move/body)) :exit t)
-    ("l" (progn (evil-window-right 1) (hydra-operate-window-no-move/body)) :exit t)
-
-    ;; operate
-    ("c" evil-window-delete :exit t)
-    ("o" delete-other-windows :exit t)
-    ("s" evil-window-split)
-    ("v" evil-window-vsplit)
-
-    ("q" nil)
-    ("<ESC>" nil)
-    )
-
-  (defhydra hydra-operate-window-no-move (:hint nil)
-    "
- ^command^ |^^^^^^  size
- ^^--------|^^^^^^---------
-  _s_plit  | ^ ^  ^_+_
-  _v_plist | _<_  _=_  _>_
-  _c_lose  | ^ ^  ^_-_
-  close _o_ther windows
-"
-
-    ;; size
-    ("+" (progn (evil-window-increase-height 5) (hydra-operate-window/body)) :exit t)
-    ("-" (progn (evil-window-decrease-height 5) (hydra-operate-window/body)) :exit t)
-    ("<" (progn (evil-window-decrease-width 5) (hydra-operate-window/body)) :exit t)
-    ("=" (progn (balance-windows) (hydra-operate-window/body)) :exit t )
-    (">" (progn (evil-window-increase-width 5) (hydra-operate-window/body)) :exit t)
-
-    ;; operate
-    ("c" evil-window-delete :exit t)
-    ("o" delete-other-windows :exit t)
-    ("s" (progn (evil-window-split) (hydra-operate-window/body)) :exit t)
-    ("v" (progn (evil-window-vsplit) (hydra-operate-window/body)) :exit t)
-
-    ("q" nil)
-    ("<ESC>" nil)
-    )
-
-  (defhydra hydra-elscreen (:hint nil)
-    "
-^^^^    move    |   ^modify^    |  ^preferance^   |
-^^^^------------|^^-------------|^^---------------|----------------------
-jump to _0_-_9_ | _C_lone       | _r_ename        | _f_ind file
-_b_uffer    ^ ^ | _K_ill others | _T_ab hide/show | _F_ind file (RO)
-_n_ext      ^ ^ | _c_reate      | ^ ^             |
-_p_revious  ^ ^ | _d_elete      | ^ ^             |
-^ ^         ^ ^ | _s_plit       | ^ ^             | _q_uit
-"
-
-    ;; move
-    ("0" elscreen-jump)
-    ("1" elscreen-jump)
-    ("2" elscreen-jump)
-    ("3" elscreen-jump)
-    ("4" elscreen-jump)
-    ("5" elscreen-jump)
-    ("6" elscreen-jump)
-    ("7" elscreen-jump)
-    ("8" elscreen-jump)
-    ("9" elscreen-jump)
-    ("b" elscreen-find-and-goto-by-buffer)
-    ("n" elscreen-next)
-    ("p" elscreen-previous)
-
-    ;; modify
-    ("C" elscreen-clone)
-    ("K" elscreen-kill-others)
-    ("c" elscreen-create :exit t)
-    ;; ("k" elscreen-kill)
-    ("d" elscreen-kill)
-    ("s" elscreen-split :exit t)
-
-    ;; preferance
-    ("T" elscreen-toggle-display-tab)
-    ("r" elscreen-screen-nickname)
-
-    ;; other
-    ("f" elscreen-find-file)
-    ("F" elscreen-find-file-read-only)
-
-    ;; quit
-    ("q" nil)
-
-    ;; evil
-    ("i" evil-insert-state :exit t)
-    ("a" evil-append :exit t)
-    ("j" evil-next-line :exit t)
-    ("k" evil-previous-line :exit t)
-    ("l" evil-forward-char :exit t)
-    ("h" evil-backward-char :exit t)
-    )
-
-  (defhydra hydra-google (:exit t)
-    ("g" google-this)
-    ("t" google-translate-enja-or-jaen)
-    )
-
-  (defhydra hydra-outline (:hint nil)
-    "
-^^^^^^^^^^^^^^^^         move       |
-^^^^^^^^^^^^^^^^--------------------|
-  ^ ^  ^_j_^  ^ ^ | ^ ^  ^_J_^  ^ ^ | _O_ widen
-  _h_  ^^^ ^  _l_ | _H_  ^^^ ^  _L_ | _o_ narrow
-  ^ ^  ^_k_^  ^ ^ | ^ ^  ^_K_^  ^ ^ | _RET_ show
-"
-
-    ("j" outline-next-visible-heading)
-    ("k" outline-previous-visible-heading)
-    ("h" (progn (outline-up-heading 1) (outline-hide-subtree)))
-    ("l" outline-show-children)
-
-    ("J" outline-forward-same-level)
-    ("K" outline-backward-same-level)
-    ("H" outline-up-heading)
-    ("L" (progn (outline-show-children) (outline-next-visible-heading 1)))
-
-    ("o" narrow-to-defun)
-    ("O" widen)
-    ("RET" outline-show-entry)
-    )
-
-  )
-
 (use-package evil :ensure t
   :bind
   (:map evil-normal-state-map
@@ -2204,6 +1959,63 @@ _p_revious  ^ ^ | _d_elete      | ^ ^             |
   (evil-add-command-properties #'xref-find-definitions :jump t)
   (evil-add-command-properties #'xref-find-references :jump t)
   (evil-mode 1)
+  )
+
+(use-package evil-leader :ensure t
+  :after evil
+
+  :config
+  (global-evil-leader-mode)
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+	"/" 'imenu
+	"G g" 'google-this
+	"G t" 'google-translate-enja-or-jaen
+	"a" 'org-agenda
+	"b" 'bookmark-jump
+	"c" 'org-capture
+	"f b" 'switch-to-buffer
+	"f d" 'dired-sidebar-toggle-sidebar
+	"f f" 'find-file
+	"f g" 'grep-find
+	"f j" 'open-junk-file
+	"f o" 'my-open-current-dir
+	"f r" 'recentf-open-files
+	"g c" 'magit-commit
+	"g f" 'my-git-find
+	"g g" 'vc-git-grep
+	"g lb" 'gist-buffer
+	"g ll" 'gist-list
+	"g m" 'git-messenger:popup-message
+	"g o" 'browse-at-remote
+	"g p" 'my-ghq
+	"g s" 'magit-stage
+	"g t" 'git-timemachine
+	"g u" 'magit-unstage
+	"h f" 'describe-function
+	"h k" 'describe-bindings
+	"h v" 'describe-variable
+	"o I" 'org-clock-in
+	"o O" 'org-clock-out
+	"o Q" 'org-clock-cancel
+	"o a" 'org-agenda
+	"o b" 'org-switchb
+	"o c" 'org-capture
+	"o dc" 'org-download-clipboard
+	"o dd" 'org-download-delete
+	"o ds" 'org-download-screenshot
+	"o j" 'org-clock-goto
+	"o l" 'org-store-link
+	"o s" 'org-save-all-org-buffers
+	"s" 'magit-status
+	"t h" 'twit
+	"t m" 'twittering-mentions-timeline
+	"t r" 'rocket-chat-edit
+	"t u" 'twittering-update-status-interactive
+	"z e" 'eval-buffer
+	"z k" 'save-buffers-kill-emacs
+	"z r" 'restart-emacs
+	)
   )
 
 (use-package evil-surround :ensure t
