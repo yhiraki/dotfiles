@@ -105,4 +105,6 @@
 	:config
 	(defalias 'my-ghq 'ivy-ghq-open)
 	)
+
+  (use-package wgrep :ensure t)
   )
