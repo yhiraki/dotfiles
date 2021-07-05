@@ -1,0 +1,28 @@
+#!/bin/bash
+
+CACHE_DIR=$HOME/.cache/smbfind
+mkdir -p "${CACHE_DIR}"
+TARGET="$1"
+CACHE_FILE="${CACHE_DIR}/${TARGET//\//%}"
+
+cache_modified_at() {
+  [[ -f "${CACHE_FILE}" ]] &&
+    stat -c '%Y' "${CACHE_FILE}" &&
+    return
+  echo 0
+}
+
+create_cache() {
+  find "${TARGET}" 2>/dev/null >"${CACHE_FILE}%%tmp" &&
+    mv "${CACHE_FILE}%%tmp" "${CACHE_FILE}"
+}
+
+listdirs() {
+  if [[ $(cache_modified_at) -eq 0 ]]; then
+    create_cache &
+    tail -f "${CACHE_FILE}%%tmp"
+  fi
+  cat "${CACHE_FILE}"
+}
+
+listdirs
