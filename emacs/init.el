@@ -1876,11 +1876,10 @@ Version 2019-11-04"
 
 (use-package yaml-mode :ensure t
   :hook (evil-after-load
-         . (lambda ()
-             (evil-define-key '(normal visual) yaml-mode-map
-               (kbd "C-m") 'newline-and-indent
-               (kbd "\\e") 'flycheck-list-errors
-               (kbd "\\f") 'prettier-js
+		 . (lambda ()
+			 (evil-define-key '(normal visual) yaml-mode-map
+			   (kbd "C-m") 'newline-and-indent
+			   (kbd "\\e") 'flycheck-list-errors
 			   ))))
 
 (use-package flycheck-yamllint :ensure t
