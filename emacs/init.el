@@ -1250,6 +1250,7 @@ Version 2019-11-04"
          (kbd "gh") 'outline-up-heading
          (kbd "gp") 'outline-previous-heading
          (kbd "\\f") 'whitespace-cleanup
+		 (kbd "TAB") 'org-cycle
          )
 
        (evil-define-key '(normal insert visual) org-mode-map
