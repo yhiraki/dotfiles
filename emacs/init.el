@@ -2024,6 +2024,7 @@ Version 2019-11-04"
 
 (use-package evil-collection :ensure t
   :after evil
+  :diminish evil-collection-unimpaired-mode
   :config
   (evil-collection-init))
 
@@ -2074,24 +2075,27 @@ Version 2019-11-04"
 
 (use-package all-the-icons :ensure t)
 
-(use-package color-theme-sanityinc-tomorrow :ensure t :disabled
-  :hook (after-init
-         . (lambda ()
-             (load-theme 'sanityinc-tomorrow-bright t))))
+(use-package color-theme-sanityinc-tomorrow :ensure t :disabled)
 
-(use-package smart-mode-line :ensure t :disabled
+(use-package doom-themes :ensure t :disabled)
+
+(use-package doom-modeline :ensure t :disabled)
+
+(use-package mini-modeline :ensure t
+  :diminish mini-modeline-mode
   :custom
-  (sml/no-confirm-load-theme t)
-  )
+  (mini-modeline-face-attr `(:background nil))
+  :custom-face
+  (mini-modeline-mode-line
+   ((t (:background ,(face-attribute 'window-divider :foreground) :height 0.14 :box nil)))))
 
-(use-package doom-themes :ensure t
+(use-package my-theme :ensure t
   :hook
   (after-init
-   . (lambda () (load-theme 'doom-Iosvkem t)))
-  )
-
-(use-package doom-modeline :ensure t
-  :hook (after-init . doom-modeline-mode))
+   . (lambda ()
+	   (load-theme 'wombat t)
+	   (mini-modeline-mode)
+	   )))
 
 (use-package hide-mode-line :ensure t
   :hook ((
@@ -2117,6 +2121,7 @@ Version 2019-11-04"
   )
 
 (use-package clipetty :ensure t
+  :diminish clipetty-mode
   :hook (after-init . global-clipetty-mode))
 
 (use-package whitespace
