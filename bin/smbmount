@@ -62,7 +62,7 @@ def main():
     parser.add_argument('-u', action='store_true')
     args = parser.parse_args()
 
-    server_path = args.server_path
+    server_path = args.server_path.strip().split('\n')[0]
     server_path = re.sub('^smb:', '', server_path)
     if server_path.startswith('\\'):
         server_path = server_path.replace('\\', '/')
