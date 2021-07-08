@@ -547,6 +547,7 @@ Version 2019-11-04"
 
 (use-package vterm :ensure t
   :custom
+  (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*"))
 
 (use-package vterm-toggle :ensure t
