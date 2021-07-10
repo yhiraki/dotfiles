@@ -1523,8 +1523,6 @@ Version 2019-11-04"
 
 (use-package ob-shell
   :after ob
-  :config
-  (push '(:async) org-babel-default-header-args:shell)
   )
 
 (use-package ob-python
