@@ -1293,7 +1293,7 @@ Version 2019-11-04"
      (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
   (org-hidden-keywords '(title))
-  (org-image-actual-width '(0))  ; to use #+ATTR_ORG: :width
+  (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width
 
   :config
   (defun org-summary-todo (n-done n-not-done)
