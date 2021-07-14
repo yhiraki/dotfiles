@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+scutil --nc list | tail -n +2 | cut -d'"' -f2 | fzf | xargs -r -I{} networksetup -connectpppoeservice '{}'
