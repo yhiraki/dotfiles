@@ -69,6 +69,7 @@ export PATH=$(echo "$PATH" |
   awk '{print length(), $0}' |
   sort -nr |
   cut -d ' ' -f 2 |
+  uniq |
   tr '\n' :)
 
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
