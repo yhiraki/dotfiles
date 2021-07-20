@@ -161,3 +161,21 @@ SPL_PROMPT_NOTIFY_TIME_MIN=10000
 LIBRARY_PATH="$(brew --prefix libgccjit)/lib/gcc/10"
 
 # updatedb
+[ -d ~/mnt ] &&
+  NETPATHS=$(find ~/mnt -maxdepth 3 -fstype apfs -type d -print0 | xargs -0)
+PUNEPATHS=$(
+  cat <<EOF | tr '[:space:]' ' '
+$HOME/.anyenv
+$HOME/.cache
+$HOME/Library
+*/*.lnk
+*/.git
+/Applications
+/Library
+/System
+/private/tmp
+/private/var/folders
+/private/var/tmp
+EOF
+)
+LOCALUSER=$USER
