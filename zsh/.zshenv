@@ -162,20 +162,17 @@ LIBRARY_PATH="$(brew --prefix libgccjit)/lib/gcc/10"
 
 # updatedb
 [ -d ~/mnt ] &&
-  NETPATHS=$(find ~/mnt -maxdepth 3 -fstype apfs -type d -print0 | xargs -0)
-PUNEPATHS=$(
-  cat <<EOF | tr '[:space:]' ' '
-$HOME/.anyenv
+  export NETPATHS=$(find ~/mnt -maxdepth 3 -fstype apfs -type d -print0 | xargs -0)
+export PRUNEPATHS=$(
+  cat <<EOF | xargs
 $HOME/.cache
-$HOME/Library
 */*.lnk
 */.git
-/Applications
-/Library
-/System
 /private/tmp
-/private/var/folders
-/private/var/tmp
+/tmp
+/usr/tmp
+/var/tmp
+/afs
 EOF
 )
-LOCALUSER=$USER
+export LOCALUSER=$USER
