@@ -100,11 +100,6 @@ PATH="/usr/local/opt/mysql-client/bin:$PATH"
 PATH="$PATH:$HOME/.local/bin:$PATH"
 PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 
-for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}; do
-  PATH="/usr/local/opt/$i/libexec/gnubin:$PATH"
-  MANPATH="/usr/local/opt/$i/libexec/gnuman:$MANPATH"
-done
-
 if [ -d /usr/local/opt/openssl/ ]; then
   PATH="/usr/local/opt/openssl/bin:$PATH"
 fi
@@ -159,20 +154,3 @@ SPL_PROMPT_NOTIFY_TIME_MIN=10000
 
 # libgccjit
 LIBRARY_PATH="$(brew --prefix libgccjit)/lib/gcc/10"
-
-# updatedb
-[ -d ~/mnt ] &&
-  export NETPATHS=$(find ~/mnt -maxdepth 3 -fstype apfs -type d -print0 | xargs -0)
-export PRUNEPATHS=$(
-  cat <<EOF | xargs
-$HOME/.cache
-*/*.lnk
-*/.git
-/private/tmp
-/tmp
-/usr/tmp
-/var/tmp
-/afs
-EOF
-)
-export LOCALUSER=$USER

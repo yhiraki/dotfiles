@@ -8,7 +8,7 @@ alias ge=emacsclient-gui
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-alias ls="ls --color=auto -F"
+alias ls="ls -FG"
 
 alias -g F='| ff'
 alias -g O='| xargs open'
