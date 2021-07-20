@@ -81,3 +81,83 @@ XDG_CONFIG_HOME="$HOME/.config"
 XDG_CACHE_HOME="$HOME/.cache"
 
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+SHELL=/bin/zsh
+
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin"
+
+GOPATH="$HOME"
+PATH="$PATH:$GOPATH/bin"
+
+RUSTPATH="$HOME/.cargo"
+PATH="$PATH:$RUSTPATH/bin"
+
+DOTDIR="$GOPATH/src/github.com/yhiraki/dotfiles"
+PATH="$PATH:$DOTDIR/bin"
+
+PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
+PATH="$PATH:$HOME/.local/bin:$PATH"
+PATH="$PATH:/mnt/c/Windows/System32:$PATH"
+
+for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}; do
+  PATH="/usr/local/opt/$i/libexec/gnubin:$PATH"
+  MANPATH="/usr/local/opt/$i/libexec/gnuman:$MANPATH"
+done
+
+if [ -d /usr/local/opt/openssl/ ]; then
+  PATH="/usr/local/opt/openssl/bin:$PATH"
+fi
+
+if [ -d /usr/local/opt/llvm/ ]; then
+  PATH="/usr/local/opt/llvm/bin:$PATH"
+fi
+
+TERM=xterm-256color
+
+LANG=ja_JP.UTF-8
+LC_ALL=ja_JP.UTF-8
+
+EDITOR=vim
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=100000
+
+FZF_DEFAULT_OPTS="-e --ansi --select-1 --exit-0"
+ZPLUG_HOME="$HOME/.zplug"
+
+PLANTUML_LIMIT_SIZE=8192
+
+FZF_CMD='fzf-tmux'
+FZF_PREVIEW_CMD=" cat | head -500"
+
+LESS='-R'
+# LESSOPEN="| pygmentize %s"
+
+# locate
+LOCATE_PATH="$HOME/var/db/locate.database"
+
+PIPENV_VENV_IN_PROJECT=true
+
+# Fuzzy finder
+# FF_CMD='gof'
+# FF_OPTIONS='-f -i "^(\\.git|\\.hg|\\.svn|_darcs|\\.bzr|\\.pyc|\\.venv)$"'
+FF_CMD='fzf'
+FF_OPTIONS='--no-sort --bind=ctrl-k:kill-line'
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+
+PY_TMUX_PANE_OPTIONS__GIT_CWD='fg=#bfbfbf'
+PY_TMUX_PANE_OPTIONS__GIT_STATUS_ICONS='fg=red'
+PY_TMUX_PANE_ICON__PYTHON=' '
+PY_TMUX_PANE_ICON__GITHUB=' '
+PY_TMUX_PANE_ICON__BITBUCKET=' '
+PY_TMUX_PANE_ICON__BRANCH=''
+
+SPL_PROMPT_NOTIFY_TIME_MIN=10000
+
+# libgccjit
+LIBRARY_PATH="$(brew --prefix libgccjit)/lib/gcc/10"
+
+# updatedb
