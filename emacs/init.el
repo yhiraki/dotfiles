@@ -272,7 +272,7 @@ Version 2019-11-04"
 
   :hook
   (window-setup . my-reload-font)
-  (find-file . set-apple-color-emoji)
+  (window-setup . set-apple-color-emoji)
 
   :config
   (defvar yhiraki-font 'cica)
