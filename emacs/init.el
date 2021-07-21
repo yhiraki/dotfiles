@@ -883,6 +883,8 @@ Version 2019-11-04"
   (lsp-org-babel-enable "cpp")
   (lsp-org-babel-enable "js")
   (lsp-org-babel-enable "typescript")
+
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   )
 
 (use-package lsp-vetur
