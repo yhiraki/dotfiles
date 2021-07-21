@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: std::vector<std::vector<int>>
+# key: vvec
+# --
+std::vector<std::vector<${2:int}>> ${3:a}(${4:n}, std::vector<$2>(${5:m}));$0
