@@ -51,7 +51,7 @@
 # cmd - K : Search
 
 cmd - space : open -a Terminal.app
-cmd - e : open -a /Applications/Emacs.app 
+cmd - e : open -a Emacs.app
 cmd - b [
 	* : open -a '/Applications/Google Chrome.app/'
 	"Google Chrome" ~
