@@ -12,3 +12,5 @@ alias ls="ls -FG"
 
 alias -g F='| ff'
 alias -g O='| xargs open'
+alias -g C='| pbcopy'
+alias -g WP="| sed -e 's:^.*@://:' | tr '/' '\\\\'"
