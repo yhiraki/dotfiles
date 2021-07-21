@@ -350,16 +350,16 @@ Version 2019-11-04"
   (require-final-newline t)
   :config
   (setq save-silently t)
-  (let ((value 
+  (let ((value
 		 (list
-		  "~/bin"
+		  (expand-file-name "~/bin")
 		  "/usr/local/bin"
 		  "/usr/sbin"
 		  "/usr/bin"
 		  "/sbin"
 		  "/bin"
 		  )))
-	(setq exec-path value)
+	(setq-default exec-path value)
 	(setq-default eshell-path-env value)
 	)
   )
