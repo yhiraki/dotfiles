@@ -114,6 +114,8 @@
 	)
 
   (use-package wgrep :ensure t)
+
+  (use-package ivy-hydra :ensure t)
   )
 
 (use-package diff-hl :ensure t)
