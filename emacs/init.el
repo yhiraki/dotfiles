@@ -1886,12 +1886,10 @@ Version 2019-11-04"
 (use-package flycheck-yamllint :ensure t
   :hook (yaml-mode . flycheck-yamllint-setup))
 
-(use-package vimrc-mode :ensure t
-  :mode
-  ("\\.vim\\(rc\\)?\\'" . vimrc-mode)
-  )
+(use-package vimrc-mode :ensure t)
 
 (use-package emmet-mode :ensure t
+  :diminish
   :hook (sgml-mode css-mode web-mode xml-mode js-jsx-mode typescript-mode)
   :custom
   (emmet-indent-after-insert nil)
@@ -2090,7 +2088,7 @@ Version 2019-11-04"
   (mini-modeline-mode-line
    ((t (:background ,(face-attribute 'window-divider :foreground) :height 0.14 :box nil)))))
 
-(use-package my-theme :ensure t
+(use-package my-theme :no-require
   :hook
   (after-init
    . (lambda ()

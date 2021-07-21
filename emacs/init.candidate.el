@@ -110,5 +110,3 @@
   )
 
 (use-package diff-hl :ensure t)
-
-(use-package mini-modeilne :ensure t)
