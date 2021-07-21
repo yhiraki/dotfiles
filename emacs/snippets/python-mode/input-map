@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: map(int, input().split())
+# key: mapin
+# --
+map(int, input().split())

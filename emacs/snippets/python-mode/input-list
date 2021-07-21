@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: [input() for _ in range(N)]
+# key: listin
+# --
+[input() for _ in range(N)]

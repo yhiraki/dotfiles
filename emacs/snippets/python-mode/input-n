@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: N = input()
+# key: nin
+# --
+${1:N} = int(input())
