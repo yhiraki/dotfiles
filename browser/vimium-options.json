@@ -1,5 +1,5 @@
 {
-  "settingsVersion": "1.64.6",
+  "settingsVersion": "1.67",
   "exclusionRules": [
     {
       "pattern": "https?://mail.google.com/*",
@@ -19,17 +19,73 @@
     },
     {
       "pattern": "https?://drive.google.com/*",
-      "passKeys": "gphjkl/Z"
+      "passKeys": "gphjkl/Z?"
     },
     {
       "pattern": "https?://keep.google.com/*",
       "passKeys": "/?jkJKnpNPcle#fx"
+    },
+    {
+      "pattern": "https?://colab.research.google.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://localhost:8888/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://typingx0.net/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.e-typing.ne.jp/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://localhost:8889/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://ssh.cloud.google.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://jp.inoreader.com/*",
+      "passKeys": "npr"
+    },
+    {
+      "pattern": "https?://www.draw.io/*",
+      "passKeys": "*"
+    },
+    {
+      "pattern": "https?://docs.google.com/*",
+      "passKeys": "*"
+    },
+    {
+      "pattern": "docs.google.com",
+      "passKeys": "*"
+    },
+    {
+      "pattern": "docs.google.com/*",
+      "passKeys": "*"
+    },
+    {
+      "pattern": "https?://trello.com/*",
+      "passKeys": "r"
+    },
+    {
+      "pattern": "file:///*",
+      "passKeys": "s"
+    },
+    {
+      "pattern": "about:blank*",
+      "passKeys": "*"
     }
   ],
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "unmap /\nunmap <<\nunmap >>\nunmap B\nunmap H\nunmap J\nunmap K\nunmap L\nunmap O\nunmap T\nunmap X\nunmap b\nunmap d\nunmap o\nunmap t\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-]> passNextKey\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab\nmap > moveTabRight\nmap < moveTabLeft\nmap t Vomnibar.activateTabSelection",
+  "keyMappings": "unmap /\nunmap <<\nunmap >>\nunmap B\nunmap H\nunmap J\nunmap K\nunmap L\nunmap O\nunmap T\nunmap X\nunmap b\nunmap o\nunmap t\nunmap u\nunmap x\n\nmap <a-ƒ> LinkHints.activateModeWithQueue\nmap <c-]> passNextKey\nmap <c-i> goForward\nmap <c-o> goBack\nmap @ togglePinTab\nmap u restoreTab\nmap d removeTab\nmap > moveTabRight\nmap < moveTabLeft\nmap t Vomnibar.activateTabSelection\nmap b Vomnibar.activateBookmarksInNewTab\nmap / enterFindMode",
   "linkHintCharacters": "sadfjklewcmpgh",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
@@ -41,6 +97,6 @@
   "smoothScroll": false,
   "grabBackFocus": true,
   "searchEngines": "",
-  "searchUrl": "https://www.google.com/search?q=",
+  "searchUrl": "https://duckduckgo.com/?q=",
   "userDefinedLinkHintCss": "input#vomnibarInput.vimiumReset {\n\tcolor: #FFF !important;\n  background-color: #111 !important;\n}\n\ndiv > .vimiumHintMarker {\n/* linkhint boxes */\nbackground: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565756),\ncolor-stop(100%,#242524));\nborder: 1px solid #e4e5e4;\nopacity: 1.0;\ntext-shadow: none !important;\n}\n\ndiv > .vimiumHintMarker span {\n/* linkhint text */\ncolor: #f1f2f1;\nfont-weight: normal;\nfont-size: 12px;\nfont-family: Avenir;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\ncolor: #969696;\n}\n\n#vomnibar {\n   border-color: black;\n   background-color: black;\n}\n\n#vomnibar .vomnibarSearchArea {\n   background-color: #222;\n   border-bottom: #3f3f3f;\n}\n\n#vomnibar input {\n   border-color: #393939;\n}\n\n#vomnibar ul {\n    background-color: #222;\n}\n\n#vomnibar li {\n   border-bottom: #3f3f3f;\n}\n\n#vomnibar li .vomnibarUrl {\n   color: #5287e3;\n}\n\n#vomnibar li .vomnibarMatch {\n   color: white;\n}\n\n#vomnibar li.vomnibarSelected {\n    background-color: #393939;\n}\n\n#vomnibar li em .vomnibarMatch, #vomnibar li .vomnibarTitle .vomnibarMatch {\n   color: white;\n}\n\n#vomnibar li em, #vomnibar li .vomnibarTitle {\n   color: #ddd;\n}"
 }
