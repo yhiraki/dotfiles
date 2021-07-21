@@ -45,7 +45,7 @@ title "Install ghq"
 # ----------------------------------------------------------------------
 
 brew install ghq
-[ $(ghq root) == $(realpath ~/src) ] || exit 1
+[ $(ghq root) == "${HOME}/src" ] || exit 1
 
 # ----------------------------------------------------------------------
 title "Fetch repo"
@@ -142,33 +142,17 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s $DOTDIR/.tmux.conf ~/
 
 # ----------------------------------------------------------------------
-title "Install zsh"
+title "Setting zsh"
 # ----------------------------------------------------------------------
 
-brew install zsh
 ln -s $DOTDIR/zsh $XDG_CONFIG_HOME
 ln -s $XDG_CONFIG_HOME/zsh/.zshenv ~/
-
-# ----------------------------------------------------------------------
-title "Install alacritty"
-# ----------------------------------------------------------------------
-
-brew install alacritty
-ln -s $DOTDIR/alacritty $XDG_CONFIG_HOME
 
 # ----------------------------------------------------------------------
 title "Install emacs"
 # ----------------------------------------------------------------------
 
-# 日本語パッチが組み込まれたバージョン
-#   emacsclientの挙動がおかしいのでやめた…
-#   server起動時のemacsのフレーム状態に依存する
-#   GUIで起動したらemacsclientもGUIでしか起動できない
-# brew tap railwaycat/emacsmacport
-# brew install emacs-mac
-brew install emacs
-[ -e ~/.emacs.d ] || ln -s $DOTDIR/emacs ~/.emacs.d
-touch ~/.emacs.d/custom.el 
+# todo: build
 
 # ----------------------------------------------------------------------
 title "Install karabiner-elements"
