@@ -1,0 +1,13 @@
+#!/bin/bash
+
+prefix=$(grep "${1}" "${HOME}/fdb" -m 1)
+mark='->'
+M="$(grep "${1}" "${HOME}/fdb" |
+  sed -e "s:${prefix}:${mark}:g" |
+  fzf)"
+
+if grep -E "^${mark}" <<<"${M}" >/dev/null; then
+  echo -n "${prefix}"
+  M=${M//->/}
+fi
+echo ${M}
