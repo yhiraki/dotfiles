@@ -25,8 +25,8 @@ ff() {
 }
 
 ff-select-repo() {
-  local name="$(ghq list | ff)"
-  [ -n "${name}" ] && echo "$(ghq root)/${name}"
+  ghq list | ff |
+	xargs -r -I{} echo "$(ghq root)/"{}
 }
 
 ff-branch-name() {
@@ -35,18 +35,17 @@ ff-branch-name() {
 
 ff-find-file() {
   local d="${1//~/$HOME}"
-  echo "$d$(
-    find "$d" 2>/dev/null |
-      sed -e "s:^$d/\?:/:" |
-      ff
-  )"
+  find "${d}" 2>/dev/null |
+	sed -e "s:^${d}/\?:/:" |
+	ff |
+	xargs -r -I{} echo "${d}"{}
 }
 
 
 # cli
 
 gitroot() {
-  echo "$(git rev-parse --show-toplevel)"
+  git rev-parse --show-toplevel
 }
 
 cdroot() {
@@ -54,20 +53,20 @@ cdroot() {
 }
 
 fsh() {
-  ssh "$(grep ~/.ssh/config -i -e '^host' |
-    sed -e 's/host //i' \
-      -e '/*/d' |
-    ff)"
+  grep ~/.ssh/config -i -e '^host' |
+	sed -e 's/host //i' \
+		-e '/*/d' |
+	ff |
+	xargs -r ssh
 }
 
 fsql() {
-  psql "$(
-    sed -E 's/:[^:]+$//' ~/.pgpass | ff |
-      sed -e 's/^/-h /' \
-        -e 's/:/ -p /' \
-        -e 's/:/ -d /' \
-        -e 's/:/ -U /'
-  )"
+  sed -E 's/:[^:]+$//' ~/.pgpass | ff |
+	sed -e 's/^/-h /' \
+		-e 's/:/ -p /' \
+		-e 's/:/ -d /' \
+		-e 's/:/ -U /' |
+	xarg -r psql 
 }
 
 repo() {
@@ -130,15 +129,12 @@ widget-find-file(){
 zle -N widget-find-file
 
 widget-open-application () {
-  local app="$(find \
-			  /Applications /System/Applications \
-			  -maxdepth 2 -name '*.app' \
-			  | sed -e 's:/.*/::' \
-			  | sort \
-			  | ff)"
-  [ -n "${app}" ] \
-	&& open -a "${app}" \
-	&& echo "Open → ${app}"
+  find /Applications /System/Applications \
+	   -maxdepth 2 -name '*.app' |
+	sed -e 's:/.*/::' |
+	sort |
+	ff |
+	xargs -r -I{} open -a '{}'
 }
 zle -N widget-open-application
 

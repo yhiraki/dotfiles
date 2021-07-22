@@ -6,16 +6,16 @@ configure_tmux() {
   fi
 
   if [[ -n "$TMUX" ]]; then
-	function my_refresh_tmux_status() {
-	  tmux refresh-client -S
-	}
-	add-zsh-hook periodic my_refresh_tmux_status
+    function my_refresh_tmux_status() {
+      tmux refresh-client -S
+    }
+    add-zsh-hook periodic my_refresh_tmux_status
   else
-	if tmux list-sessions; then
-	  exec tmux a
-	else
-	  exec tmux
-	fi
+    if tmux list-sessions; then
+      exec tmux a
+    else
+      exec tmux
+    fi
   fi
 }
 [[ -z "$INSIDE_EMACS" ]] && configure_tmux
@@ -47,10 +47,10 @@ load_plugins() {
   for p in "${plugins_repo[@]}"; do
     d="$root/$p"
     if [[ ! -d "$d" ]]; then
-      if command -v ghq > /dev/null; then
-	ghq get "$p"
-	else
-      continue
+      if command -v ghq >/dev/null; then
+        ghq get "$p"
+      else
+        continue
       fi
     fi
     source $d/*.plugin.zsh
@@ -83,14 +83,15 @@ fpath=($ZDOTDIR/completion $fpath)
 autoload -Uz compinit && compinit -i
 
 # emacs vterm
-if [[ "$INSIDE_EMACS" = 'vterm' ]] \
-    && [[ -n ${EMACS_VTERM_PATH} ]] \
-    && [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
-    source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
-    # Initialize TITLE
-    print -Pn "\e]2;%m:%2~\a"
+if [[ "$INSIDE_EMACS" = 'vterm' &&
+  -n ${EMACS_VTERM_PATH} &&
+  -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
+  source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
+  # Initialize TITLE
+  print -Pn "\e]2;%m:%2~\a"
 fi
 
+# uncomment to profile
 # zmodload zsh/zprof && zprof
 
 # Make status code '0'
