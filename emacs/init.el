@@ -1472,7 +1472,6 @@ Version 2019-11-04"
 				   "cpp"
 				   "dot"
 				   "elisp"
-				   "http"
 				   "js"
 				   "plantuml"
 				   "python"
@@ -1490,7 +1489,6 @@ Version 2019-11-04"
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-	 (http . t)
      (C . t)
      (dot . t)
      (js . t)
