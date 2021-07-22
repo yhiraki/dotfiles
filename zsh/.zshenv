@@ -100,6 +100,15 @@ PATH="/usr/local/opt/mysql-client/bin:$PATH"
 PATH="$PATH:$HOME/.local/bin:$PATH"
 PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 
+for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}
+do
+  if [ -d /usr/local/opt/$i/libexec ]
+  then
+    export PATH="/usr/local/opt/$i/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/$i/libexec/gnuman:$MANPATH"
+  fi
+done
+
 if [ -d /usr/local/opt/openssl/ ]; then
   PATH="/usr/local/opt/openssl/bin:$PATH"
 fi
