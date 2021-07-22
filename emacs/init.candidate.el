@@ -100,10 +100,9 @@
 
   (use-package swiper :ensure t
 	:commands (swiper-isearch swiper-isearch-backward)
-	;; :bind
-	;; evil-search-next(n)が逆向き(N)になる
-	;; ([remap evil-search-forward] . #'swiper-isearch)
-	;; ([remap evil-search-backward] . #'swiper-isearch-backward)
+	:bind
+	([remap evil-search-forward] . #'swiper-isearch)
+	([remap evil-search-backward] . #'swiper-isearch-backward)
 	)
 
   (use-package ivy-ghq
