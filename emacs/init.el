@@ -2085,11 +2085,22 @@ Version 2019-11-04"
   (mini-modeline-mode-line
    ((t (:background ,(face-attribute 'window-divider :foreground) :height 0.14 :box nil)))))
 
+(use-package modus-themes :ensure t
+  :custom
+  (modus-themes-headings
+   '((1 . (overline))
+	 (2 . (rainbow overline))
+	 (t . (no-bold))))
+  (modus-themes-paren-match '(bold underline))
+  (modus-themes-region '(bg-only no-extend))
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t))
+
 (use-package my-theme :no-require
   :hook
   (after-init
    . (lambda ()
-	   (load-theme 'wombat t)
+	   (load-theme 'modus-vivendi t)
 	   (mini-modeline-mode)
 	   )))
 
