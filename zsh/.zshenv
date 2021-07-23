@@ -92,6 +92,8 @@ PATH="$PATH:$GOPATH/bin"
 RUSTPATH="$HOME/.cargo"
 PATH="$PATH:$RUSTPATH/bin"
 
+PYTHONUSERBASE="$HOME"
+
 DOTDIR="$GOPATH/src/github.com/yhiraki/dotfiles"
 PATH="$PATH:$DOTDIR/bin"
 
