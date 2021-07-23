@@ -1526,15 +1526,14 @@ Version 2019-11-04"
 
 (use-package ob-python
   :after auto-virtualenvwrapper
-
-  :hook (org-mode
-         . (lambda ()
-             (use-package auto-virtualenvwrapper
-               :config
-               (setq-local
-                org-babel-python-command
-                (find-virtualenv-executable "python3")))))
-  )
+  :hook
+  (org-mode
+   . (lambda ()
+	   (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
+		 (when path
+		   (setq-local org-babel-python-command (concat path "bin/python"))))))
+  :custom
+  (org-babel-python-command "python3"))
 
 (use-package ob-C
   :after ob
@@ -1704,17 +1703,7 @@ Version 2019-11-04"
 
 (use-package auto-virtualenvwrapper :ensure t
   :commands auto-virtualenvwrapper-find-virtualenv-path
-
-  :hook (python-mode . auto-virtualenvwrapper-activate)
-
-  :init
-  (defun find-virtualenv-executable (command)
-    (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
-      (if path
-          (concat path "bin/" command)
-        (let ((exe (executable-find command)))
-              (if exe exe command)))))
-  )
+  :hook (python-mode . auto-virtualenvwrapper-activate))
 
 (use-package py-yapf :ensure t
   :commands (py-yapf-buffer)
