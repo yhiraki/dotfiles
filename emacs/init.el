@@ -481,7 +481,7 @@ Version 2019-11-04"
        (setq-local line-spacing 3)))
   (evil-after-load
    . (lambda ()
-	   (evil-define-key '(normal visual) dired-mode-map
+	   (evil-define-key '(normal visual) 'dired-mode
 		 (kbd "C-j") 'dired-next-dirline
 		 (kbd "C-k") 'dired-prev-dirline
 		 (kbd "go") 'my-open-in-external-app
@@ -495,7 +495,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-	   (evil-define-key '(normal visual) dired-mode-map
+	   (evil-define-key '(normal visual) 'dired-mode
 		 (kbd "l") 'my-dired-subtree-insert
 		 (kbd "h") 'my-dired-subtree-remove)
 	   ))
@@ -538,7 +538,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-	   (evil-define-key '(normal visual) dired-mode-map
+	   (evil-define-key '(normal visual) 'dired-mode
 		 (kbd "e") 'wdired-change-to-wdired-mode
 	   )))
 
@@ -734,7 +734,7 @@ Version 2019-11-04"
   (evil-after-load
    . (lambda ()
        (evil-set-initial-state 'gist-list-mode 'insert)
-       (evil-define-key 'normal gist-list-menu-mode-map
+       (evil-define-key 'normal 'gist-list-menu
          (kbd "RET") 'gist-fetch-current
          (kbd "*") 'gist-star
          (kbd "+") 'gist-add-buffer
@@ -913,9 +913,9 @@ Version 2019-11-04"
 	   (lsp)))
   (evil-after-load
    . (lambda ()
-	   (evil-define-key 'normal python-mode-map
+	   (evil-define-key 'normal 'python-mode
          (kbd "\\f") 'python-black-buffer)
-	   (evil-define-key 'visual python-mode-map
+	   (evil-define-key 'visual 'python-mode
          (kbd "\\f") 'python-black-region)
 	   ))
   )
@@ -1105,7 +1105,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key '(normal visual) go-mode-map
+       (evil-define-key '(normal visual) 'go-mode
          (kbd "\\f") 'gofmt)))
 
   :custom
@@ -1149,7 +1149,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-      (evil-define-key '(normal visual) json-mode-map
+      (evil-define-key '(normal visual) 'json-mode
          (kbd "\\f") 'json-pretty-print-buffer)))
   )
 
@@ -1161,7 +1161,7 @@ Version 2019-11-04"
    . (lambda ()
 	   (mapcar
 		#'(lambda (map)
-			(evil-define-key '(normal visual) map
+			(evil-define-key '(normal visual) 'markdown-mode
 			  (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
 			  (kbd "zc") 'outline-hide-subtree
 			  (kbd "TAB") 'markdown-cycle
@@ -1187,7 +1187,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key '(normal visual) prog-mode-map
+       (evil-define-key '(normal visual) 'prog-mode
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
 
@@ -1202,11 +1202,11 @@ Version 2019-11-04"
          (kbd "gd") 'xref-find-definitions
          (kbd "gr") 'xref-find-references
          )
-       (evil-define-key 'normal prog-mode-map
+       (evil-define-key 'normal 'prog-mode
          (kbd "\\qr") 'quickrun
          (kbd "\\r")  'quickrun
          )
-       (evil-define-key 'visual prog-mode-map
+       (evil-define-key 'visual 'prog-mode
          (kbd "\\qr") 'quickrun-region
          (kbd "\\r") 'quickrun-region
          )
@@ -1225,7 +1225,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal org-mode-map
+       (evil-define-key 'normal 'org-mode
          (kbd "C-S-j") 'org-next-visible-heading
          (kbd "C-S-k") 'org-previous-visible-heading
          (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
@@ -1256,7 +1256,7 @@ Version 2019-11-04"
 		 (kbd "TAB") 'org-cycle
          )
 
-       (evil-define-key '(normal insert visual) org-mode-map
+       (evil-define-key '(normal insert visual) 'org-mode
          (kbd "M-S-h") 'org-metashiftleft
          (kbd "M-S-j") 'org-metashiftdown
          (kbd "M-S-k") 'org-metashiftup
@@ -1689,11 +1689,11 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal python-mode-map
+       (evil-define-key 'normal 'python-mode
          (kbd "\\i") 'py-isort-buffer
          ;; (kbd "\\f") 'py-yapf-buffer  ;; use lsp instead
          )
-       (evil-define-key 'visual python-mode-map
+       (evil-define-key 'visual 'python-mode
          (kbd "\\i") 'py-isort-region
          )))
 
@@ -1740,9 +1740,9 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal sh-mode-map
+       (evil-define-key 'normal 'sh-mode
          (kbd "\\f") 'shfmt-buffer)
-       (evil-define-key 'visual sh-mode-map
+       (evil-define-key 'visual 'sh-mode
          (kbd "\\f") 'shfmt-region)
        ))
 
@@ -1823,7 +1823,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal web-mode-map
+       (evil-define-key 'normal web-mode
          (kbd "\\R") 'web-mode-element-rename
          (kbd "zc") 'web-mode-fold-or-unfold
          (kbd "zo") 'web-mode-fold-or-unfold
@@ -1860,7 +1860,7 @@ Version 2019-11-04"
        ))
   (evil-after-load
    . (lambda ()
-       (evil-define-key '(normal visual) vue-mode-map
+       (evil-define-key '(normal visual) 'vue-mode
          (kbd "\\f") 'eslint-fix
          )))
   (vue-mode . lsp)
@@ -1875,7 +1875,7 @@ Version 2019-11-04"
 (use-package yaml-mode :ensure t
   :hook (evil-after-load
 		 . (lambda ()
-			 (evil-define-key '(normal visual) yaml-mode-map
+			 (evil-define-key '(normal visual) 'yaml-mode
 			   (kbd "C-m") 'newline-and-indent
 			   (kbd "\\e") 'flycheck-list-errors
 			   ))))
