@@ -481,7 +481,7 @@ Version 2019-11-04"
        (setq-local line-spacing 3)))
   (evil-after-load
    . (lambda ()
-	   (evil-define-key '(normal visual) 'dired-mode
+	   (evil-define-key '(normal visual) dired-mode-map
 		 (kbd "C-j") 'dired-next-dirline
 		 (kbd "C-k") 'dired-prev-dirline
 		 (kbd "go") 'my-open-in-external-app
@@ -495,7 +495,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-	   (evil-define-key '(normal visual) 'dired-mode
+	   (evil-define-key '(normal visual) dired-mode-map
 		 (kbd "l") 'my-dired-subtree-insert
 		 (kbd "h") 'my-dired-subtree-remove)
 	   ))
@@ -538,7 +538,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-	   (evil-define-key '(normal visual) 'dired-mode
+	   (evil-define-key '(normal visual) dired-mode-map
 		 (kbd "e") 'wdired-change-to-wdired-mode
 	   )))
 
@@ -555,10 +555,8 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-	   (mapcar
-		#'(lambda (map)
-			(define-key map (kbd "C-t") 'vterm-toggle-cd))
-		(list evil-normal-state-map evil-visual-state-map))
+	   (evil-define-key '(normal visual) 'global
+		 (kbd "C-t") 'vterm-toggle-cd)
 	   ))
   :custom
   (vterm-toggle-scope 'project))
@@ -708,11 +706,13 @@ Version 2019-11-04"
   (evil-after-load
    . (lambda ()
 	   (evil-define-key '(normal visual) 'global
+		 (kbd "<localleader>gg") 'git-gutter+-mode
+		 )
+	   (evil-define-key '(normal visual) git-gutter+-mode-map
 		 (kbd "[g") 'git-gutter+-previous-hunk
 		 (kbd "]g") 'git-gutter+-next-hunk
-		 (kbd "\\gg") 'git-gutter+-mode
-		 (kbd "\\gr") 'git-gutter+-revert-hunks
-		 (kbd "\\gs") 'git-gutter+-stage-hunks
+		 (kbd "<localleader>gr") 'git-gutter+-revert-hunks
+		 (kbd "<localleader>gs") 'git-gutter+-stage-hunks
 	   )))
 
   :custom
@@ -734,7 +734,7 @@ Version 2019-11-04"
   (evil-after-load
    . (lambda ()
        (evil-set-initial-state 'gist-list-mode 'insert)
-       (evil-define-key 'normal 'gist-list-menu
+       (evil-define-key 'normal gist-list-menu-mode-map
          (kbd "RET") 'gist-fetch-current
          (kbd "*") 'gist-star
          (kbd "+") 'gist-add-buffer
@@ -913,10 +913,10 @@ Version 2019-11-04"
 	   (lsp)))
   (evil-after-load
    . (lambda ()
-	   (evil-define-key 'normal 'python-mode
-         (kbd "\\f") 'python-black-buffer)
-	   (evil-define-key 'visual 'python-mode
-         (kbd "\\f") 'python-black-region)
+	   (evil-define-key 'normal python-mode-map
+         (kbd "<localleader>f") 'python-black-buffer)
+	   (evil-define-key 'visual python-mode-map
+         (kbd "<localleader>f") 'python-black-region)
 	   ))
   )
 
@@ -1105,8 +1105,8 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key '(normal visual) 'go-mode
-         (kbd "\\f") 'gofmt)))
+       (evil-define-key '(normal visual) go-mode-map
+         (kbd "<localleader>f") 'gofmt)))
 
   :custom
   (gofmt-command "goimports")
@@ -1149,8 +1149,8 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-      (evil-define-key '(normal visual) 'json-mode
-         (kbd "\\f") 'json-pretty-print-buffer)))
+      (evil-define-key '(normal visual) json-mode-map
+         (kbd "<localleader>f") 'json-pretty-print-buffer)))
   )
 
 (use-package markdown-mode :ensure t
@@ -1161,11 +1161,11 @@ Version 2019-11-04"
    . (lambda ()
 	   (mapcar
 		#'(lambda (map)
-			(evil-define-key '(normal visual) 'markdown-mode
+			(evil-define-key '(normal visual) markdown-mode-map
 			  (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
 			  (kbd "zc") 'outline-hide-subtree
 			  (kbd "TAB") 'markdown-cycle
-			  (kbd "\\f") 'prettier-js
+			  (kbd "<localleader>f") 'prettier-js
 			  ))
 		(list markdown-mode-map gfm-mode-map))
 	   ))
@@ -1187,28 +1187,28 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key '(normal visual) 'prog-mode
+       (evil-define-key '(normal visual) prog-mode-map
          (kbd "[e") 'flycheck-previous-error
          (kbd "]e") 'flycheck-next-error
 
-         (kbd "\\R")  'lsp-rename
-         (kbd "\\e") 'flycheck-list-errors
-         (kbd "\\f") 'lsp-format-buffer
-         (kbd "\\m") 'lsp-ui-imenu
-         (kbd "\\qa") 'quickrun-autorun-mode
-         (kbd "\\qc") 'quickrun-compile-only
-         (kbd "\\qs") 'quickrun-shell
-
          (kbd "gd") 'xref-find-definitions
          (kbd "gr") 'xref-find-references
+
+         (kbd "<localleader>R") 'lsp-rename
+         (kbd "<localleader>e") 'flycheck-list-errors
+         (kbd "<localleader>f") 'lsp-format-buffer
+         (kbd "<localleader>m") 'lsp-ui-imenu
+         (kbd "<localleader>qa") 'quickrun-autorun-mode
+         (kbd "<localleader>qc") 'quickrun-compile-only
+         (kbd "<localleader>qs") 'quickrun-shell
          )
-       (evil-define-key 'normal 'prog-mode
-         (kbd "\\qr") 'quickrun
-         (kbd "\\r")  'quickrun
+       (evil-define-key 'normal prog-mode-map
+         (kbd "<localleader>qr") 'quickrun
+         (kbd "<localleader>r") 'quickrun
          )
-       (evil-define-key 'visual 'prog-mode
-         (kbd "\\qr") 'quickrun-region
-         (kbd "\\r") 'quickrun-region
+       (evil-define-key 'visual prog-mode-map
+         (kbd "<localleader>qr") 'quickrun-region
+         (kbd "<localleader>r") 'quickrun-region
          )
 	   )))
 
@@ -1225,7 +1225,7 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal 'org-mode
+       (evil-define-key 'normal org-mode-map
          (kbd "C-S-j") 'org-next-visible-heading
          (kbd "C-S-k") 'org-previous-visible-heading
          (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
@@ -1238,21 +1238,21 @@ Version 2019-11-04"
          (kbd "t") 'my/org-todo-next
          (kbd "<") 'org-metaleft
          (kbd ">") 'org-metaright
-         (kbd "\\i") 'org-clock-in
-         (kbd "\\nb") 'org-narrow-to-block
-         (kbd "\\ne") 'org-narrow-to-element
-         (kbd "\\nf") 'narrow-to-defun
-         (kbd "\\ns") 'org-narrow-to-subtree
-         (kbd "\\nw") 'widen
-         (kbd "\\p") 'org-priority
-         (kbd "\\q") 'org-set-tags-command
-         (kbd "\\s") 'org-schedule
-         (kbd "\\t") 'org-todo
-         (kbd "\\v") 'org-toggle-inline-images
-         (kbd "\\xp") 'org-set-property
+         (kbd "<localleader>i") 'org-clock-in
+         (kbd "<localleader>nb") 'org-narrow-to-block
+         (kbd "<localleader>ne") 'org-narrow-to-element
+         (kbd "<localleader>nf") 'narrow-to-defun
+         (kbd "<localleader>ns") 'org-narrow-to-subtree
+         (kbd "<localleader>nw") 'widen
+         (kbd "<localleader>p") 'org-priority
+         (kbd "<localleader>q") 'org-set-tags-command
+         (kbd "<localleader>s") 'org-schedule
+         (kbd "<localleader>t") 'org-todo
+         (kbd "<localleader>v") 'org-toggle-inline-images
+         (kbd "<localleader>xp") 'org-set-property
          (kbd "gh") 'outline-up-heading
          (kbd "gp") 'outline-previous-heading
-         (kbd "\\f") 'whitespace-cleanup
+         (kbd "<localleader>f") 'whitespace-cleanup
 		 (kbd "TAB") 'org-cycle
          )
 
@@ -1685,17 +1685,6 @@ Version 2019-11-04"
   )
 
 (use-package python :ensure t
-  :hook
-  (evil-after-load
-   . (lambda ()
-       (evil-define-key 'normal 'python-mode
-         (kbd "\\i") 'py-isort-buffer
-         ;; (kbd "\\f") 'py-yapf-buffer  ;; use lsp instead
-         )
-       (evil-define-key 'visual 'python-mode
-         (kbd "\\i") 'py-isort-region
-         )))
-
   :custom
   (python-shell-interpreter "python3")
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
@@ -1716,6 +1705,15 @@ Version 2019-11-04"
 
 (use-package py-isort :ensure t
   :commands (py-isort-buffer py-isort-region)
+
+  :hook
+  (evil-after-load
+   . (lambda ()
+	   (evil-define-key 'normal python-mode-map
+	    (kbd "<localleader>i") 'py-isort-buffer)
+	   (evil-define-key 'visual python-mode-map
+	    (kbd "<localleader>i") 'py-isort-region)
+	   ))
   )
 
 (use-package sh-script
@@ -1729,10 +1727,10 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal 'sh-mode
-         (kbd "\\f") 'shfmt-buffer)
-       (evil-define-key 'visual 'sh-mode
-         (kbd "\\f") 'shfmt-region)
+       (evil-define-key 'normal sh-mode-map
+         (kbd "<localleader>f") 'shfmt-buffer)
+       (evil-define-key 'visual sh-mode-map
+         (kbd "<localleader>f") 'shfmt-region)
        ))
 
   :custom
@@ -1812,8 +1810,8 @@ Version 2019-11-04"
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal web-mode
-         (kbd "\\R") 'web-mode-element-rename
+       (evil-define-key 'normal web-mode-map
+         (kbd "<localleader>R") 'web-mode-element-rename
          (kbd "zc") 'web-mode-fold-or-unfold
          (kbd "zo") 'web-mode-fold-or-unfold
          )))
@@ -1849,8 +1847,8 @@ Version 2019-11-04"
        ))
   (evil-after-load
    . (lambda ()
-       (evil-define-key '(normal visual) 'vue-mode
-         (kbd "\\f") 'eslint-fix
+       (evil-define-key '(normal visual) vue-mode-map
+         (kbd "<localleader>f") 'eslint-fix
          )))
   (vue-mode . lsp)
   )
@@ -1864,9 +1862,9 @@ Version 2019-11-04"
 (use-package yaml-mode :ensure t
   :hook (evil-after-load
 		 . (lambda ()
-			 (evil-define-key '(normal visual) 'yaml-mode
+			 (evil-define-key '(normal visual) yaml-mode-map
 			   (kbd "C-m") 'newline-and-indent
-			   (kbd "\\e") 'flycheck-list-errors
+			   (kbd "<localleader>e") 'flycheck-list-errors
 			   ))))
 
 (use-package flycheck-yamllint :ensure t
@@ -1944,62 +1942,58 @@ Version 2019-11-04"
   (evil-add-command-properties #'xref-find-definitions :jump t)
   (evil-add-command-properties #'xref-find-references :jump t)
   (evil-mode 1)
-  )
 
-(use-package evil-leader :ensure t
-  :after evil
+  (evil-set-leader '(normal visual) (kbd "SPC"))
+  (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
-  :config
-  (global-evil-leader-mode)
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-	"/" 'imenu
-	"G g" 'google-this
-	"G t" 'google-translate-enja-or-jaen
-	"a" 'org-agenda
-	"b" 'bookmark-jump
-	"c" 'org-capture
-	"f b" 'switch-to-buffer
-	"f d" 'dired-sidebar-toggle-sidebar
-	"f f" 'find-file
-	"f g" 'grep-find
-	"f j" 'open-junk-file
-	"f o" 'my-open-current-dir
-	"f r" 'recentf-open-files
-	"g c" 'magit-commit
-	"g f" 'my-git-find
-	"g g" 'vc-git-grep
-	"g lb" 'gist-buffer
-	"g ll" 'gist-list
-	"g m" 'git-messenger:popup-message
-	"g o" 'browse-at-remote
-	"g p" 'my-ghq
-	"g s" 'magit-stage
-	"g t" 'git-timemachine
-	"g u" 'magit-unstage
-	"h f" 'describe-function
-	"h k" 'describe-bindings
-	"h v" 'describe-variable
-	"o I" 'org-clock-in
-	"o O" 'org-clock-out
-	"o Q" 'org-clock-cancel
-	"o a" 'org-agenda
-	"o b" 'org-switchb
-	"o c" 'org-capture
-	"o dc" 'org-download-clipboard
-	"o dd" 'org-download-delete
-	"o ds" 'org-download-screenshot
-	"o j" 'org-clock-goto
-	"o l" 'org-store-link
-	"o s" 'org-save-all-org-buffers
-	"s" 'magit-status
-	"t h" 'twit
-	"t m" 'twittering-mentions-timeline
-	"t r" 'rocket-chat-edit
-	"t u" 'twittering-update-status-interactive
-	"z e" 'eval-buffer
-	"z k" 'save-buffers-kill-emacs
-	"z r" 'restart-emacs
+  (evil-define-key '(normal visual) 'global
+	(kbd "<leader>/") 'imenu
+	(kbd "<leader>G g") 'google-this
+	(kbd "<leader>G t") 'google-translate-enja-or-jaen
+	(kbd "<leader>a") 'org-agenda
+	(kbd "<leader>b") 'bookmark-jump
+	(kbd "<leader>c") 'org-capture
+	(kbd "<leader>f b") 'switch-to-buffer
+	(kbd "<leader>f d") 'dired-sidebar-toggle-sidebar
+	(kbd "<leader>f f") 'find-file
+	(kbd "<leader>f g") 'grep-find
+	(kbd "<leader>f j") 'open-junk-file
+	(kbd "<leader>f o") 'my-open-current-dir
+	(kbd "<leader>f r") 'recentf-open-files
+	(kbd "<leader>g c") 'magit-commit
+	(kbd "<leader>g f") 'my-git-find
+	(kbd "<leader>g g") 'vc-git-grep
+	(kbd "<leader>g lb") 'gist-buffer
+	(kbd "<leader>g ll") 'gist-list
+	(kbd "<leader>g m") 'git-messenger:popup-message
+	(kbd "<leader>g o") 'browse-at-remote
+	(kbd "<leader>g p") 'my-ghq
+	(kbd "<leader>g s") 'magit-stage
+	(kbd "<leader>g t") 'git-timemachine
+	(kbd "<leader>g u") 'magit-unstage
+	(kbd "<leader>h f") 'describe-function
+	(kbd "<leader>h k") 'describe-bindings
+	(kbd "<leader>h v") 'describe-variable
+	(kbd "<leader>o I") 'org-clock-in
+	(kbd "<leader>o O") 'org-clock-out
+	(kbd "<leader>o Q") 'org-clock-cancel
+	(kbd "<leader>o a") 'org-agenda
+	(kbd "<leader>o b") 'org-switchb
+	(kbd "<leader>o c") 'org-capture
+	(kbd "<leader>o dc") 'org-download-clipboard
+	(kbd "<leader>o dd") 'org-download-delete
+	(kbd "<leader>o ds") 'org-download-screenshot
+	(kbd "<leader>o j") 'org-clock-goto
+	(kbd "<leader>o l") 'org-store-link
+	(kbd "<leader>o s") 'org-save-all-org-buffers
+	(kbd "<leader>s") 'magit-status
+	(kbd "<leader>t h") 'twit
+	(kbd "<leader>t m") 'twittering-mentions-timeline
+	(kbd "<leader>t r") 'rocket-chat-edit
+	(kbd "<leader>t u") 'twittering-update-status-interactive
+	(kbd "<leader>z e") 'eval-buffer
+	(kbd "<leader>z k") 'save-buffers-kill-emacs
+	(kbd "<leader>z r") 'restart-emacs
 	)
   )
 
