@@ -99,10 +99,12 @@
 	)
 
   (use-package swiper :ensure t
-	:commands (swiper-isearch swiper-isearch-backward)
-	:bind
-	([remap evil-search-forward] . #'swiper-isearch)
-	([remap evil-search-backward] . #'swiper-isearch-backward)
+	:hook
+	(evil-mode
+	 . (lambda ()
+		 (evil-define-key '(normal visual) 'global
+		   "g/" #'swiper-isearch
+		   )))
 	)
 
   (use-package ivy-ghq
