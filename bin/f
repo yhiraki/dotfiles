@@ -1,8 +1,22 @@
 #!/bin/bash
+set -ue
 
-prefix=$(grep "${1}" "${HOME}/fdb" -m 1)
-mark='->'
-M="$(grep "${1}" "${HOME}/fdb" |
+readonly DBFILE="${HOME}/fdb"
+
+help_exit() {
+  cat <<EOF
+Create a DBFILE first.
+find / > ${DBFILE}
+EOF
+  exit
+}
+[[ -f "${DBFILE}" ]] || help_exit
+
+readonly q="${1:-$(pwd)}"
+readonly cmd="grep ${q} ${DBFILE}"
+readonly prefix=$(${cmd} -m 1)
+readonly mark='->'
+M="$(${cmd} |
   sed -e "s:${prefix}:${mark}:" |
   fzf)"
 
