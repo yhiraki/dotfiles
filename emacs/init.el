@@ -1913,6 +1913,9 @@ Version 2019-11-04"
   )
 
 (use-package evil :ensure t
+  :hook
+  (after-init . evil-mode)
+
   :bind
   (:map evil-normal-state-map
 		("C-h" . 'evil-backward-char)
@@ -1947,7 +1950,6 @@ Version 2019-11-04"
   (evil-add-command-properties #'find-file :jump t)
   (evil-add-command-properties #'xref-find-definitions :jump t)
   (evil-add-command-properties #'xref-find-references :jump t)
-  (evil-mode 1)
 
   (evil-set-leader '(normal visual) (kbd "SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
