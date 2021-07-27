@@ -1260,7 +1260,7 @@ Version 2019-11-04"
 		 (kbd "TAB") 'org-cycle
          )
 
-       (evil-define-key '(normal insert visual) 'org-mode
+       (evil-define-key '(normal insert visual) org-mode-map
          (kbd "M-S-h") 'org-metashiftleft
          (kbd "M-S-j") 'org-metashiftdown
          (kbd "M-S-k") 'org-metashiftup
