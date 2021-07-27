@@ -711,10 +711,8 @@ Version 2019-11-04"
    . (lambda ()
 	   (evil-define-key '(normal visual) 'global
 		 (kbd "<localleader>gg") 'git-gutter+-mode
-		 )))
-  (git-gutter+-mode
-   . (lambda ()
-	   (evil-define-key '(normal visual) git-gutter+-mode-map
+		 )
+	   (evil-define-key '(normal visual) 'git-gutter+-mode
 		 (kbd "[g") 'git-gutter+-previous-hunk
 		 (kbd "]g") 'git-gutter+-next-hunk
 		 (kbd "<localleader>gr") 'git-gutter+-revert-hunks
