@@ -3,7 +3,7 @@
 prefix=$(grep "${1}" "${HOME}/fdb" -m 1)
 mark='->'
 M="$(grep "${1}" "${HOME}/fdb" |
-  sed -e "s:${prefix}:${mark}" |
+  sed -e "s:${prefix}:${mark}:" |
   fzf)"
 
 if grep -E "^${mark}" <<<"${M}" >/dev/null; then
