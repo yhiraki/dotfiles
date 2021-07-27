@@ -2068,7 +2068,7 @@ Version 2019-11-04"
 
 (use-package doom-modeline :ensure t :disabled)
 
-(use-package mini-modeline :ensure t
+(use-package mini-modeline :ensure t :disabled t
   :diminish mini-modeline-mode
   :custom
   (mini-modeline-face-attr `(:background nil))
@@ -2092,7 +2092,6 @@ Version 2019-11-04"
   (after-init
    . (lambda ()
 	   (load-theme 'modus-vivendi t)
-	   (mini-modeline-mode)
 	   )))
 
 (use-package hide-mode-line :ensure t
