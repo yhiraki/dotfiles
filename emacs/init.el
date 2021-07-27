@@ -711,13 +711,15 @@ Version 2019-11-04"
    . (lambda ()
 	   (evil-define-key '(normal visual) 'global
 		 (kbd "<localleader>gg") 'git-gutter+-mode
-		 )
+		 )))
+  (git-gutter+-mode
+   . (lambda ()
 	   (evil-define-key '(normal visual) git-gutter+-mode-map
 		 (kbd "[g") 'git-gutter+-previous-hunk
 		 (kbd "]g") 'git-gutter+-next-hunk
 		 (kbd "<localleader>gr") 'git-gutter+-revert-hunks
 		 (kbd "<localleader>gs") 'git-gutter+-stage-hunks
-	   )))
+		 )))
 
   :custom
   (git-gutter+-added-sign "┃")
