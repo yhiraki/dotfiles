@@ -142,6 +142,10 @@ Version 2019-11-04"
   (setq-default indicate-buffer-boundaries 'left) ;; バッファの終端を表示
   (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
 
+  ;; Trash can
+  (setq delete-by-moving-to-trash t)
+  ; also needs to set (trash-directory "~/.Trash") in files.el
+
 	;; mule-cmds
   ;; unicode の一部を1文字幅として扱う
   ;; "┃" : git-gutter
@@ -345,6 +349,7 @@ Version 2019-11-04"
 
 (use-package files
   :custom
+  (trash-directory "~/.Trash")
   (confirm-kill-emacs nil)
   (find-file-visit-truename t)
   (require-final-newline t)
