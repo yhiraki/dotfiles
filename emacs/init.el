@@ -588,6 +588,17 @@ Version 2019-11-04"
                                line-end))
     :modes (c-mode c++-mode))
 
+  ;; https://www.flycheck.org/en/28/_downloads/flycheck.html
+  (flycheck-define-checker sh-shellcheck
+	"A shell script syntax and style checker using Shellcheck.
+
+See URL `https://github.com/koalaman/shellcheck/'."
+	:command ("shellcheck" "-f" "checkstyle"
+			  "-s" (eval (symbol-name sh-shell))
+			  source)
+	:modes sh-mode
+	:error-parser flycheck-parse-checkstyle)
+
   (push 'c/c++-g++ flycheck-checkers)
 
   ;; (flycheck-define-checker python-pycodestyle
