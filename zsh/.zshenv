@@ -138,9 +138,6 @@ ZPLUG_HOME="$HOME/.zplug"
 
 PLANTUML_LIMIT_SIZE=8192
 
-FZF_CMD='fzf-tmux'
-FZF_PREVIEW_CMD=" cat | head -500"
-
 LESS='-R'
 # LESSOPEN="| pygmentize %s"
 
@@ -149,11 +146,22 @@ LOCATE_PATH="$HOME/var/db/locate.database"
 
 PIPENV_VENV_IN_PROJECT=true
 
+export FZF_DEFAULT_CMD='fd --type f'
+FZF_PREVIEW_CMD=' \
+cmd=""; \
+[ -f {} ] && cmd=cat; \
+[ -d {} ] && cmd=tree; \
+[ -n cmd ] && $cmd {} | head -100'
+export FZF_DEFAULT_OPTS=" \
+--no-sort \
+--bind=ctrl-k:kill-line \
+--preview='$FZF_PREVIEW_CMD'"
+
 # Fuzzy finder
 # FF_CMD='gof'
 # FF_OPTIONS='-f -i "^(\\.git|\\.hg|\\.svn|_darcs|\\.bzr|\\.pyc|\\.venv)$"'
 FF_CMD='fzf'
-FF_OPTIONS='--no-sort --bind=ctrl-k:kill-line'
+FF_OPTIONS="$FZF_DEFAULT_OPTS"
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
