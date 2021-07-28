@@ -12,16 +12,7 @@ EOF
 }
 [[ -f "${DBFILE}" ]] || help_exit
 
-readonly q="${1:-$(pwd)}"
-readonly cmd="grep ${q} ${DBFILE}"
-readonly prefix=$(${cmd} -m 1)
-readonly mark='->'
-M="$(${cmd} |
-  sed -e "s:${prefix}:${mark}:" |
-  fzf)"
-
-if grep -E "^${mark}" <<<"${M}" >/dev/null; then
-  echo -n "${prefix}"
-  M=${M//->/}
-fi
-echo ${M}
+readonly q="${1:-$PWD}"
+exec grep "${q}" "${DBFILE}" |
+  sed "s:.*${PWD}:.:" |
+  fzf
