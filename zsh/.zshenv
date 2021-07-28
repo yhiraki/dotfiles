@@ -97,27 +97,30 @@ PYTHONUSERBASE="$HOME"
 DOTDIR="$GOPATH/src/github.com/yhiraki/dotfiles"
 PATH="$PATH:$DOTDIR/bin"
 
-PATH="/usr/local/opt/mysql-client/bin:$PATH"
-
 PATH="$PATH:$HOME/.local/bin:$PATH"
 PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 
-for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}
-do
-  if [ -d /usr/local/opt/$i/libexec ]
-  then
-    export PATH="/usr/local/opt/$i/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/$i/libexec/gnuman:$MANPATH"
-  fi
-done
+# brew
+{
+  command -v brew >/dev/null || return
+  HOMEBREW_PREFIX=$(brew --prefix)
 
-if [ -d /usr/local/opt/openssl/ ]; then
-  PATH="/usr/local/opt/openssl/bin:$PATH"
-fi
+  for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}; do
+    if [ -d "$HOMEBREW_PREFIX/opt/$i/libexec" ]; then
+      PATH="$HOMEBREW_PREFIX/opt/$i/libexec/gnubin:$PATH"
+      MANPATH="$HOMEBREW_PREFIX/opt/$i/libexec/gnuman:$MANPATH"
+    fi
+  done
 
-if [ -d /usr/local/opt/llvm/ ]; then
-  PATH="/usr/local/opt/llvm/bin:$PATH"
-fi
+  for i in {opensl,llvm,openjdk,mysql-client}; do
+    if [ -d "$HOMEBREW_PREFIX/opt/$i/" ]; then
+      PATH="$HOMEBREW_PREFIX/opt/$i/bin:$PATH"
+    fi
+  done
+
+  # libgccjit
+  LIBRARY_PATH="$HOMEBREW_PREFIX/opt/libgccjit/lib/gcc/11"
+}
 
 TERM=xterm-256color
 
