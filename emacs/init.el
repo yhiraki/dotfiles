@@ -1242,6 +1242,9 @@ Version 2019-11-04"
          (kbd "t") 'my/org-todo-next
          (kbd "<") 'org-metaleft
          (kbd ">") 'org-metaright
+		 (kbd "<localleader>dc") 'org-download-clipboard
+		 (kbd "<localleader>dd") 'org-download-delete
+		 (kbd "<localleader>ds") 'org-download-screenshot
          (kbd "<localleader>i") 'org-clock-in
          (kbd "<localleader>nb") 'org-narrow-to-block
          (kbd "<localleader>ne") 'org-narrow-to-element
@@ -1986,9 +1989,6 @@ Version 2019-11-04"
 	(kbd "<leader>o a") 'org-agenda
 	(kbd "<leader>o b") 'org-switchb
 	(kbd "<leader>o c") 'org-capture
-	(kbd "<leader>o dc") 'org-download-clipboard
-	(kbd "<leader>o dd") 'org-download-delete
-	(kbd "<leader>o ds") 'org-download-screenshot
 	(kbd "<leader>o j") 'org-clock-goto
 	(kbd "<leader>o l") 'org-store-link
 	(kbd "<leader>o s") 'org-save-all-org-buffers
