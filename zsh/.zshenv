@@ -173,6 +173,3 @@ PY_TMUX_PANE_ICON__BITBUCKET=' '
 PY_TMUX_PANE_ICON__BRANCH=''
 
 SPL_PROMPT_NOTIFY_TIME_MIN=10000
-
-# libgccjit
-LIBRARY_PATH="$(brew --prefix libgccjit)/lib/gcc/10"
