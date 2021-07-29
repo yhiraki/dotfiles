@@ -89,7 +89,7 @@ ff-branch-name() {
 ff-find-file() {
   local d="${1//~/$HOME}"
   find "${d}" 2>/dev/null |
-	sed -e "s:^${d}/\?:/:" |
+	sed -e "s:^${d}/\?:./:" |
 	ff |
 	xargs -r -I{} echo "${d}"{}
 }
@@ -104,28 +104,30 @@ gitroot() {
 }
 
 cdroot() {
-  cd "$(gitroot)" || exit
+  cd "$(gitroot)" || return
 }
 
 fsh() {
-  grep ~/.ssh/config -i -e '^host' |
-	sed -e 's/host //i' \
-		-e '/*/d' |
-	ff |
-	xargs -r ssh
+  local host
+  host=$(grep ~/.ssh/config -i -e '^host' |
+		   sed -e 's/host //i' \
+			   -e '/*/d' |
+		   ff) || return
+  ssh "${host}"
 }
 
 fsql() {
-  sed -E 's/:[^:]+$//' ~/.pgpass | ff |
-	sed -e 's/^/-h /' \
-		-e 's/:/ -p /' \
-		-e 's/:/ -d /' \
-		-e 's/:/ -U /' |
-	xarg -r psql 
+  local host
+  host=$(sed -E 's/:[^:]+$//' ~/.pgpass | ff |
+		   sed -e 's/^/-h /' \
+			   -e 's/:/ -p /' \
+			   -e 's/:/ -d /' \
+			   -e 's/:/ -U /') || return
+  psql "${host}"
 }
 
 repo() {
-  cd "$(ff-select-repo)" || exit
+  cd "$(ff-select-repo)" || return
 }
 
 }
