@@ -22,8 +22,7 @@ title "Xcode command line tools"
 }
 
 title "Install brew"
-{
-  command -v brew && return
+command -v brew || {
   mkdir -p .local/homebrew
   cd .local || exit 1
   curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
@@ -37,8 +36,7 @@ title "Git settings"
 }
 
 title "Install ghq"
-{
-  command -v ghq && return
+command -v ghq || {
   brew install ghq
   [ "$(ghq root)" == "${HOME}/src" ] || exit 1
 }
@@ -68,35 +66,32 @@ title "Install essentials"
 }
 
 title "gcc g++"
-{
-  command -v gcc && exit
+command -v gcc || {
   brew install gcc
   ln -s /usr/local/bin/gcc-8 ~/bin/gcc
 }
-{
-  command -v g++ && exit
+command -v g++ || {
   brew install llvm
   ln -s /usr/local/bin/g++-8 ~/bin/g++
 }
-{
-  command -v gdb && exit
+command -v gdb || {
   brew install gdb
 }
 
 title "Install plantuml"
-{
-  command -v dot && return
+command -v dot || {
   brew install graphviz
 }
 {
   LIB_JAVA_DIR=$HOME/lib/java
   PLANTUML_JAR=$LIB_JAVA_DIR/plantuml.jar
 
-  [ ! -f "$PLANTUML_JAR" ] && return
-  mkdir -p "$LIB_JAVA_DIR"
-  wget http://downloads.sourceforge.net/project/plantuml/plantuml.jar -O "$PLANTUML_JAR"
+  if [ -f "$PLANTUML_JAR" ]; then
+    mkdir -p "$LIB_JAVA_DIR"
+    wget http://downloads.sourceforge.net/project/plantuml/plantuml.jar -O "$PLANTUML_JAR"
 
-  ln -s "$DOTDIR/plantuml/" "$XDG_CONFIG_HOME"
+    ln -s "$DOTDIR/plantuml/" "$XDG_CONFIG_HOME"
+  fi
 }
 
 title "Mac defaults"
@@ -117,7 +112,7 @@ title "Install gnu utils"
 }
 
 title "Install tmux"
-{
+command -v tmux || {
   brew install tmux
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
   ln -s "$DOTDIR/.tmux.conf" ~/
@@ -145,7 +140,7 @@ title "Install karabiner-elements"
   brew ls --versions karabiner-elements --cask && exit
   brew install karabiner-elements --cask
   cp "$DOTDIR/karabiner/assets/complex_modifications/alt2kana.json" \
-	 ~/.config/karabiner/assets/complex_modifications/alt2kana.json
+    ~/.config/karabiner/assets/complex_modifications/alt2kana.json
 }
 
 title "done."
