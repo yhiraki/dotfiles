@@ -101,8 +101,7 @@ PATH="$PATH:$HOME/.local/bin:$PATH"
 PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 
 # brew
-{
-  command -v brew >/dev/null || return
+command -v brew >/dev/null && {
   HOMEBREW_PREFIX=$(brew --prefix)
 
   for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}; do
