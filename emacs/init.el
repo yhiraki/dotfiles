@@ -1240,22 +1240,15 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :hook
   (evil-after-load
    . (lambda ()
-       (evil-define-key 'normal org-mode-map
-         (kbd "C-S-j") 'org-next-visible-heading
-         (kbd "C-S-k") 'org-previous-visible-heading
-         (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-         (kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-         (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-         (kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-         (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
-         (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
-         (kbd "T") 'org-todo
-         (kbd "t") 'my/org-todo-next
-         (kbd "<") 'org-metaleft
-         (kbd ">") 'org-metaright
+       (evil-define-key '(normal visual) org-mode-map
+		 ;; leader mapping
+		 (kbd "<leader>/") 'my-outline
+
+		 ;; localleader mapping
 		 (kbd "<localleader>dc") 'org-download-clipboard
 		 (kbd "<localleader>dd") 'org-download-delete
 		 (kbd "<localleader>ds") 'org-download-screenshot
+         (kbd "<localleader>f") 'whitespace-cleanup
          (kbd "<localleader>i") 'org-clock-in
          (kbd "<localleader>nb") 'org-narrow-to-block
          (kbd "<localleader>ne") 'org-narrow-to-element
@@ -1268,9 +1261,21 @@ See URL `https://github.com/koalaman/shellcheck/'."
          (kbd "<localleader>t") 'org-todo
          (kbd "<localleader>v") 'org-toggle-inline-images
          (kbd "<localleader>xp") 'org-set-property
+
+         (kbd "C-S-j") 'org-next-visible-heading
+         (kbd "C-S-k") 'org-previous-visible-heading
+         (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+         (kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+         (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+         (kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+         (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
+         (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
+         (kbd "T") 'org-todo
+         (kbd "t") 'my/org-todo-next
+         (kbd "<") 'org-metaleft
+         (kbd ">") 'org-metaright
          (kbd "gh") 'outline-up-heading
          (kbd "gp") 'outline-previous-heading
-         (kbd "<localleader>f") 'whitespace-cleanup
 		 (kbd "TAB") 'org-cycle
          )
 

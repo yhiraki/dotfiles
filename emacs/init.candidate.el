@@ -19,24 +19,24 @@
 
 (use-package counsel-tramp :ensure t)
 
-(defconst my-completion-method 'ivy)
+(defconst my-completion-method 'consult)
 
 (when (eq my-completion-method 'consult)
   (use-package consult :ensure t
 	:bind
-	([remap org-set-tags-command] . #'counsel-org-tag)
 	([remap find-file] . #'consult-find)
-	([remap describe-function] . #'consult-describe-function)
-	([remap describe-bindings] . #'consult-descbinds)
-	([remap describe-variable] . #'consult-describe-variable)
 	([remap imenu] . #'consult-imenu)
 	([remap bookmark-jump] . #'consult-bookmark)
 	([remap recentf-open-files] . #'consult-recent-file)
 	([remap grep-find] .#'consult-ripgrep)
 	([remap vc-git-grep] .#'consult-git-grep)
 
+	:custom
+	(consult-project-root-function #'vc-root-dir)
+
 	:config
-	;; (defalias 'my-git-find ')
+	(defalias 'my-outline #'consult-outline)
+	(defalias 'my-git-find #'consult-find-file)
 	)
 
   (use-package consult-ghq :ensure t
@@ -53,6 +53,10 @@
 
   (use-package marginalia :ensure t
 	:hook (after-init . marginalia-mode))
+
+  (use-package embark-consult :ensure t
+	:bind
+	("C-o" . 'embark-act))
   )
 
 (when (eq my-completion-method 'ivy)
@@ -95,6 +99,7 @@
 	([remap vc-git-grep] .#'counsel-git-grep)
 
 	:config
+	(defalias 'my-outline 'counsel-outline)
 	(defalias 'my-git-find 'counsel-git)
 	)
 
