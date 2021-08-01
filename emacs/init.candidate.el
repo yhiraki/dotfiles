@@ -37,6 +37,9 @@
 	:config
 	(defalias 'my-outline #'consult-outline)
 	(defalias 'my-git-find #'consult-find-file)
+
+	(evil-define-key '(normal visual) 'global
+	  (kbd "g/") 'consult-line)
 	)
 
   (use-package consult-ghq :ensure t
