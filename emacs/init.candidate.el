@@ -19,7 +19,7 @@
 
 (use-package counsel-tramp :ensure t)
 
-(defconst my-completion-method 'consult)
+(defconst my-completion-method 'ivy)
 
 (when (eq my-completion-method 'consult)
   (use-package consult :ensure t
