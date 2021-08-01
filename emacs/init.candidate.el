@@ -48,8 +48,18 @@
 	:hook (after-init . vertico-mode)
 	:custom (vertico-count 20))
 
+  (setq enable-recursive-minibuffers t)
+
+  (use-package minibuffer
+	:init
+	(setq completion-category-defaults nil)
+	:custom
+	(completion-styles '(orderless))
+	(completion-category-overrides '((file (styles partial-completion))))
+	)
+
   (use-package orderless :ensure t
-	:custom (completion-styles '(orderless)))
+	)
 
   (use-package marginalia :ensure t
 	:hook (after-init . marginalia-mode))
