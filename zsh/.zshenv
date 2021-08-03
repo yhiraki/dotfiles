@@ -77,6 +77,9 @@ setopt prompt_subst
 # autoload -U promptinit && promptinit
 autoload -U compinit && compinit -C
 
+
+set -a
+
 XDG_CONFIG_HOME="$HOME/.config"
 XDG_CACHE_HOME="$HOME/.cache"
 
@@ -145,13 +148,13 @@ LOCATE_PATH="$HOME/var/db/locate.database"
 
 PIPENV_VENV_IN_PROJECT=true
 
-export FZF_DEFAULT_CMD='fd --type f'
+FZF_DEFAULT_CMD='fd --type f'
 FZF_PREVIEW_CMD=' \
 cmd=""; \
 [ -f {} ] && cmd=cat; \
 [ -d {} ] && cmd=tree; \
 [ -n cmd ] && $cmd {} | head -100'
-export FZF_DEFAULT_OPTS=" \
+FZF_DEFAULT_OPTS=" \
 --no-sort \
 --bind=ctrl-k:kill-line \
 --preview='$FZF_PREVIEW_CMD'"
@@ -172,3 +175,5 @@ PY_TMUX_PANE_ICON__BITBUCKET=' '
 PY_TMUX_PANE_ICON__BRANCH=''
 
 SPL_PROMPT_NOTIFY_TIME_MIN=10000
+
+set +a
