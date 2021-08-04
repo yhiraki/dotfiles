@@ -487,15 +487,19 @@ Version 2019-11-04"
 
   :config
   (with-eval-after-load 'evil
-	(add-hook 'dired-mode-hook
-			  '(lambda ()
-				 (evil-define-key '(normal visual) dired-mode-map
-				   (kbd "C-j") 'dired-next-dirline
-				   (kbd "C-k") 'dired-prev-dirline
-				   (kbd "go") 'my-open-in-external-app
-				   (kbd "r") 'revert-buffer
-				   (kbd "SPC") 'nil
-				   ))))
+	(evil-set-initial-state 'dired-mode 'emacs))
+
+  :bind
+  (:map dired-mode-map
+		("j" . 'next-line)
+		("k" . 'previous-line)
+		("q" . 'kill-current-buffer)
+		("C-j" . 'dired-next-dirline)
+		("C-k" . 'dired-prev-dirline)
+		("g" . nil)
+		("go" . 'my-open-in-external-app)
+		("r" . 'revert-buffer)
+		)
   )
 
 (use-package dired-subtree :ensure t
@@ -513,10 +517,11 @@ Version 2019-11-04"
     (dired-subtree-remove)
     (revert-buffer))
 
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) dired-mode-map
-	  (kbd "l") 'my-dired-subtree-insert
-	  (kbd "h") 'my-dired-subtree-remove))
+  :bind
+  (:map dired-mode-map
+		("l" . 'my-dired-subtree-insert)
+		("h" . 'my-dired-subtree-remove)
+		)
 
   :custom-face
   (dired-subtree-depth-1-face ((t (:background nil))))
@@ -532,22 +537,17 @@ Version 2019-11-04"
   :commands (dired-sidebar-toggle-sidebar)
   )
 
-(use-package dired-filter :ensure t)
-
 (use-package all-the-icons-dired :ensure t
-  :hook (dired-mode . all-the-icons-dired-mode)
-  )
+  :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package wdired
   :commands (wdired-change-to-wdired-mode)
-
   :custom (wdired-allow-to-change-permissions t)
 
-  :config
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) dired-mode-map
-	  (kbd "e") 'wdired-change-to-wdired-mode
-	  ))
+  :bind
+  (:map  dired-mode-map
+		 ("e" . 'wdired-change-to-wdired-mode)
+		 )
   )
 
 (use-package vterm :ensure t
