@@ -553,7 +553,11 @@ Version 2019-11-04"
 (use-package vterm :ensure t
   :custom
   (vterm-always-compile-module t)
-  (vterm-buffer-name-string "*vterm: %s*"))
+  (vterm-buffer-name-string "*vterm: %s*")
+  :config
+  (with-eval-after-load 'evil
+	(evil-set-initial-state 'vterm-mode 'emacs))
+  )
 
 (use-package vterm-toggle :ensure t
   :custom
@@ -561,7 +565,6 @@ Version 2019-11-04"
 
   :config
   (with-eval-after-load 'evil
-	(evil-set-initial-state 'vterm-mode 'emacs)
 	(evil-define-key 'emacs vterm-mode-map
 	  (kbd "C-t") 'vterm-toggle-cd)
 	(evil-define-key '(normal visual) 'global
@@ -2034,8 +2037,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :config
   (evil-collection-init
    '(
-	 dired
 	 magit
+	 xref
 	 )))
 
 (use-package evil-commentary :ensure t
