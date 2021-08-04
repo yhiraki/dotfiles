@@ -1396,15 +1396,15 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (org-agenda-current-time-string "← now")
   (org-agenda-time-grid ;; Format is changed from 9.1
    '((daily today require-timed)
-     (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
-     "-"
-     "────────────────"))
+	 (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
+	 "-"
+	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
   (org-agenda-files
-   (list
-    org-directory
-    (concat org-directory "projects")
-    (concat org-directory "notes")))
+   (mapcar
+	'(lambda (dir)
+	   (concat (file-name-as-directory org-directory) dir))
+	'("" "notes" "journals" "projects")))
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
@@ -1588,34 +1588,50 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
   :custom
   (org-capture-templates
-        '(
-          ("i" "Inbox\t\t- Add entry to Inbox"
-           entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n%U")
+   `(
+	 ("i" "Inbox - Add entry to Inbox"
+	  entry (file+headline "inbox.org" "Inbox")
+	  "** %?\n%U")
+	 ("t" "Task - Add a new scheduled task"
+	  entry (file+headline "inbox.org" "Inbox")
+	  "** TODO %?\nSCHEDULED: %T")
+	 ("I" "Interrupt - Add an interrupt task"
+	  entry (file+headline "inbox.org" "Inbox")
+	  "** %?\n%U" :clock-in t :clock-resume t)
+	 ("b" "Book - Books wish list"
+	  table-line (file+headline "books.org" "wish list")
+	  "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
+	 ("j" "Journal - Add a journal today"
+	  entry (file+headline my-org-daily-journal-file "Journals")
+	  "** %?\n%T")
+	 ("n" "Note - Add a note"
+	  entry (file+headline my-org-daily-journal-file "Notes")
+	  "** %? :Note:\n%T %a\n")
+	 ("m" "Meeting - Start a meeting"
+	  entry (file+headline my-org-daily-journal-file "Meetings")
+	  "** MEETING %?\n%T" :jump-to-captured t :clock-in t :clock-keep t)
+	 ("l" "Log - Short logs like Twitter"
+	  entry (file+headline my-org-daily-journal-file "Logs")
+	  "** %T %^{Log}" :immediate-finish t)
+	 ("B" "Blog - Hugo post"
+	  plain (file+olp "blog.org" "Blog Ideas")
+	  "hugo%?")
+	 )
+   )
 
-          ;; http://grugrut.hatenablog.jp/entry/2016/03/13/085417
-          ("I" "Interrupt\t\t- Add an interrupt task"
-           entry (file+headline "~/org/inbox.org" "Inbox")
-           "** %?\n%U" :clock-in t :clock-resume t)
+  :config
+  (defun my-org-daily-journal-file ()
+	(concat
+	 (file-name-as-directory org-directory)
+	 "journals/"
+	 (format-time-string "%Y-%m-%d.org" (current-time))))
+  (defun my-open-todays-journal ()
+	(interactive)
+	(find-file (my-org-daily-journal-file)))
 
-          ("b" "Book\t\t- Books wish list"
-           table-line (file+headline "~/org/books.org" "wish list")
-           "|名前|価格|電子版|追加日|\n|%?|||%U|" :table-line-pos "II-1")
-
-          ("j" "Journal\t- Short logs like Twitter"
-           entry (file+olp+datetree "~/org/journal.org" "Journal")
-	   "* %(format-time-string \"%H:%M\") %?")
-
-          ("B" "Blog\t\t- Hugo post"
-           plain (file+olp "~/org/blog.org" "Blog Ideas")
-           "hugo%?")
-          )
-        )
-
-  :bind
-  (:map org-capture-mode-map
-        ("C-c C-k" . (lambda () (interactive) (message "Abort is disabled")))
-        )
+  (with-eval-after-load 'evil
+	(evil-define-key '(normal insert) 'global
+	  (kbd "<leader> oo") 'my-open-todays-journal))
   )
 
 (use-package org-checklist
