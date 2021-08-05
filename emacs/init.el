@@ -1411,7 +1411,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	'(lambda (dir)
 	   (concat (file-name-as-directory org-directory) dir))
 	'("" "notes" "journals" "projects")))
-  (org-agenda-span 'day)
+  (org-agenda-span 'week)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
   :config
