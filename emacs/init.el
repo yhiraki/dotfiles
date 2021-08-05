@@ -483,7 +483,10 @@ Version 2019-11-04"
   (dired-mode
    . (lambda()
 	   (dired-hide-details-mode 1)
-	   (setq-local line-spacing 3)))
+	   (setq-local line-spacing 3)
+	   (define-key dired-mode-map
+		 (kbd "SPC") (lookup-key evil-normal-state-map (kbd "<leader>")))
+	   ))
 
   :config
   (with-eval-after-load 'evil
