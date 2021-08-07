@@ -2043,6 +2043,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (evil-collection-init
    '(
 	 magit
+	 quickrun
 	 xref
 	 )))
 
