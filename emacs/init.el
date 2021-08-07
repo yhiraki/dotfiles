@@ -364,8 +364,8 @@ Version 2019-11-04"
 		  "/sbin"
 		  "/bin"
 		  )))
-	(setq-default exec-path value)
-	(setq-default eshell-path-env value)
+	(setq exec-path value)
+	(setq eshell-path-env value)
 	)
   )
 
