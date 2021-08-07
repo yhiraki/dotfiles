@@ -1419,6 +1419,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
     "Org agenda todo next cycle"
     (interactive) (org-call-with-arg 'org-agenda-todo 'right)
     )
+  (with-eval-after-load 'evil
+	(evil-set-initial-state 'org-agenda-mode 'emacs))
 
   :bind
   (:map org-agenda-mode-map
