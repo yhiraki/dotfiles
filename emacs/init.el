@@ -494,13 +494,14 @@ Version 2019-11-04"
 
   :bind
   (:map dired-mode-map
-		("j" . 'next-line)
-		("k" . 'previous-line)
-		("q" . 'kill-current-buffer)
+		(":" . 'evil-ex)
 		("C-j" . 'dired-next-dirline)
 		("C-k" . 'dired-prev-dirline)
 		("g" . nil)
 		("go" . 'my-open-in-external-app)
+		("j" . 'next-line)
+		("k" . 'previous-line)
+		("q" . 'kill-current-buffer)
 		("r" . 'revert-buffer)
 		)
   )
