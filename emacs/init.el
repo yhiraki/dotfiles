@@ -484,26 +484,14 @@ Version 2019-11-04"
    . (lambda()
 	   (dired-hide-details-mode 1)
 	   (setq-local line-spacing 3)
-	   (define-key dired-mode-map
-		 (kbd "SPC") (lookup-key evil-normal-state-map (kbd "<leader>")))
-	   ))
-
-  :config
-  (with-eval-after-load 'evil
-	(evil-set-initial-state 'dired-mode 'emacs))
-
-  :bind
-  (:map dired-mode-map
-		(":" . 'evil-ex)
-		("C-j" . 'dired-next-dirline)
-		("C-k" . 'dired-prev-dirline)
-		("g" . nil)
-		("go" . 'my-open-in-external-app)
-		("j" . 'next-line)
-		("k" . 'previous-line)
-		("q" . 'kill-current-buffer)
-		("r" . 'revert-buffer)
-		)
+	   (evil-define-key '(normal visual) dired-mode-map
+		 (kbd "C-j") 'dired-next-dirline
+		 (kbd "C-k") 'dired-prev-dirline
+		 (kbd "go") 'my-open-in-external-app
+		 (kbd "q") 'kill-current-buffer
+		 (kbd "r") 'revert-buffer
+		 (kbd "SPC") nil
+		 )))
   )
 
 (use-package dired-subtree :ensure t
@@ -521,11 +509,12 @@ Version 2019-11-04"
     (dired-subtree-remove)
     (revert-buffer))
 
-  :bind
-  (:map dired-mode-map
-		("l" . 'my-dired-subtree-insert)
-		("h" . 'my-dired-subtree-remove)
-		)
+  :config
+  (with-eval-after-load 'evil
+	(evil-define-key '(normal visual) dired-mode-map
+	  (kbd "l") 'my-dired-subtree-insert
+	  (kbd "h") 'my-dired-subtree-remove
+	  ))
 
   :custom-face
   (dired-subtree-depth-1-face ((t (:background nil))))
@@ -2043,6 +2032,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :config
   (evil-collection-init
    '(
+	 dired
 	 magit
 	 quickrun
 	 xref
