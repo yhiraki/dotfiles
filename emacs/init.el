@@ -2033,6 +2033,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (evil-collection-init
    '(
 	 dired
+	 flycheck
 	 magit
 	 quickrun
 	 xref
