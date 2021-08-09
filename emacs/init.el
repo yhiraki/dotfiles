@@ -2034,6 +2034,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
    '(
 	 dired
 	 flycheck
+	 ibuffer
 	 magit
 	 quickrun
 	 xref
