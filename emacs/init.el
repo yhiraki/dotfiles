@@ -935,7 +935,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package lsp-go
-  :hook (go . lsp))
+  :hook (go-mode . lsp))
 
 (use-package lsp-ui :ensure t
   :hook
@@ -1488,6 +1488,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 				   "cpp"
 				   "dot"
 				   "elisp"
+				   "go"
 				   "js"
 				   "plantuml"
 				   "python"
@@ -1504,9 +1505,11 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t)
+   '(
+	 (emacs-lisp . t)
      (C . t)
      (dot . t)
+     (go . t)
      (js . t)
      (plantuml . t)
      (python . t)
@@ -1577,6 +1580,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package ob-typescript :ensure t)
+
+(use-package ob-go :ensure t)
 
 (use-package org-capture
   :commands org-capture
