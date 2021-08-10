@@ -1477,45 +1477,32 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :hook
   (org-babel-after-execute . org-display-inline-images)
   :custom
-  (org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  (org-confirm-babel-evaluate nil)
   (org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
   :config
   ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
-  (defun my-org-confirm-babel-evaluate (lang body)
-	(not (member lang
-				 '(
-				   "C"
-				   "cpp"
-				   "dot"
-				   "elisp"
-				   "go"
-				   "js"
-				   "plantuml"
-				   "python"
-				   "restclient"
-				   "sh"
-				   "shell"
-				   "ts"
-				   "typescript"
-				   "uml"
-				   ))))
+  ;; (defun my-org-confirm-babel-evaluate (lang body)
+  ;; 	(not (member lang
+  ;; 				 '(
+  ;; 				   "C"
+  ;; 				   "cpp"
+  ;; 				   "dot"
+  ;; 				   "elisp"
+  ;; 				   "go"
+  ;; 				   "js"
+  ;; 				   "plantuml"
+  ;; 				   "python"
+  ;; 				   "restclient"
+  ;; 				   "sh"
+  ;; 				   "shell"
+  ;; 				   "ts"
+  ;; 				   "typescript"
+  ;; 				   "uml"
+  ;; 				   ))))
 
   (push '("ts" . typescript) org-src-lang-modes)
   (push '("uml" . plantuml) org-src-lang-modes)
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '(
-	 (emacs-lisp . t)
-     (C . t)
-     (dot . t)
-     (go . t)
-     (js . t)
-     (plantuml . t)
-     (python . t)
-     (shell . t)
-     (typescript . t)
-	 )))
+  )
 
 (use-package ob-restclient :ensure t)
 
@@ -1540,8 +1527,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package ob-shell
-  :after ob
-  )
+  :after ob)
 
 (use-package ob-python
   :after auto-virtualenvwrapper
