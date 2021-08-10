@@ -711,6 +711,9 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (magit-diff-refine-hunk 'all)
   )
 
+(use-package magit-todos :ensure t
+  :hook (magit-mode . magit-todos-mode))
+
 (use-package git-timemachine :ensure t)
 
 (use-package git-gutter+ :ensure t
@@ -2027,6 +2030,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 flycheck
 	 ibuffer
 	 magit
+	 magit-todos
 	 quickrun
 	 xref
 	 )))
