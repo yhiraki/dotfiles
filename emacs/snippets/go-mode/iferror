@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: iferror
+# name: if err != nil { return nil, err }
 # key: ife
 # --
-if err != ${nil} {
+if err != nil {
    ${return nil, err}
 }
