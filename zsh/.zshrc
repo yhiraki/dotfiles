@@ -89,9 +89,9 @@ ff-branch-name() {
 ff-find-file() {
   local d="${1//~/$HOME}"
   find "${d}" 2>/dev/null |
-	sed -e "s:^${d}/\?::" |
+	sed -e "s:^${d}/\?:./:" |
 	ff |
-	xargs -r -I{} echo "${d}"{}
+	sed -e "s:^\.:${d}:"
 }
 
 }
