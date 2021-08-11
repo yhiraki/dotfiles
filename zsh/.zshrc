@@ -16,8 +16,6 @@ configure_tmux() {
   else
     if tmux list-sessions; then
       exec tmux a
-    else
-      exec tmux
     fi
   fi
 }
