@@ -711,7 +711,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (magit-diff-refine-hunk 'all)
   )
 
-(use-package magit-todos :ensure t
+(use-package magit-todos :ensure t :disabled
   :hook (magit-mode . magit-todos-mode))
 
 (use-package git-timemachine :ensure t)
