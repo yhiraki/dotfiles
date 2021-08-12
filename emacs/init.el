@@ -1253,7 +1253,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!)")
-     (sequence "WAITING(w@/!)" "STARTED")
+     (sequence "WAITING(w@/!)" "STARTED" "|")
      (sequence "|" "SOMEDAY(S)")
      (sequence "|" "CANCELLED(c@)")
      (sequence "|" "MEETING(m)")))
