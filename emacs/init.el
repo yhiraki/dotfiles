@@ -1247,6 +1247,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
   :custom
   (org-directory "~/org/")
+  (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively nil)
