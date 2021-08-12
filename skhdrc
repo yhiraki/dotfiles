@@ -56,3 +56,6 @@ cmd - b [
 	* : open -a '/Applications/Google Chrome.app/'
 	"Google Chrome" ~
 ]
+cmd - w [
+	"Microsoft Remote Desktop": ''
+]
