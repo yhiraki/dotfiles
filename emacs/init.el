@@ -1604,7 +1604,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	  "** MEETING %?\n%T" :jump-to-captured t :clock-in t :clock-keep t)
 	 ("l" "Log - Short logs like Twitter"
 	  entry (file+headline my-org-daily-journal-file "Logs")
-	  "** %T %^{Log}" :immediate-finish t)
+	  "** %T %^{Log} :Log:" :immediate-finish t)
 	 ("B" "Blog - Hugo post"
 	  plain (file+olp "blog.org" "Blog Ideas")
 	  "hugo%?")
