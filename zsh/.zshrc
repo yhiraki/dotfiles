@@ -350,6 +350,21 @@ fi
 
 }
 
+# gcloud
+[ -d "$HOME/.local/google-cloud-sdk" ] && {
+
+source "$HOME/.local/google-cloud-sdk/path.zsh.inc"
+source "$HOME/.local/google-cloud-sdk/completion.zsh.inc"
+
+}
+
+# aws
+[ -d "$HOME/.local/aws-cli" ] && {
+
+complete -C "$HOME/.local/aws-cli/aws_completer" aws
+
+}
+
 # uncomment to profile
 # zmodload zsh/zprof && zprof
 
