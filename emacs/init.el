@@ -1083,6 +1083,15 @@ See URL `https://github.com/koalaman/shellcheck/'."
     '((:command . "python3")
       (:compile-only . "flake8 %s"))
     :override t)
+
+  (defadvice quickrun (before quickrun-before-save ())
+	"Save buffer before quickrun."
+	(save-buffer))
+  (defadvice quickrun-region (before quickrun-region-before-save ())
+	"Save buffer before quickrun-region."
+	(save-buffer))
+  (ad-activate 'quickrun)
+  (ad-activate 'quickrun-region)
   )
 
 (use-package annotate :ensure t)
