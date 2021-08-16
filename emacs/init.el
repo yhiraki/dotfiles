@@ -2041,6 +2041,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 ibuffer
 	 magit
 	 magit-todos
+	 (occur replace)
 	 quickrun
 	 xref
 	 )))
