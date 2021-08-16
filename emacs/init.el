@@ -1611,7 +1611,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	  "** %? :Note:\n%T %a\n")
 	 ("m" "Meeting - Start a meeting"
 	  entry (file+headline my-org-daily-journal-file "Meetings")
-	  "** MEETING %?\n%T" :jump-to-captured t :clock-in t :clock-keep t)
+	  "** MEETING %^{Title}\n%T" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
 	 ("l" "Log - Short logs like Twitter"
 	  entry (file+headline my-org-daily-journal-file "Logs")
 	  "** %T %^{Log} :Log:" :immediate-finish t)
