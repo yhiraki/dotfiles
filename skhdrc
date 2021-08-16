@@ -58,4 +58,6 @@ cmd - b [
 ]
 cmd - w [
 	"Microsoft Remote Desktop": ''
+
 ]
+cmd - m : ''
