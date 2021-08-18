@@ -77,7 +77,6 @@ setopt prompt_subst
 # autoload -U promptinit && promptinit
 autoload -U compinit && compinit -C
 
-
 set -a
 
 XDG_CONFIG_HOME="$HOME/.config"
@@ -148,16 +147,58 @@ LOCATE_PATH="$HOME/var/db/locate.database"
 
 PIPENV_VENV_IN_PROJECT=true
 
-FZF_DEFAULT_CMD='fd --type f'
-FZF_PREVIEW_CMD=' \
-cmd=""; \
-[ -f {} ] && cmd=cat; \
-[ -d {} ] && cmd=tree; \
-[ -n cmd ] && $cmd {} | head -100'
-FZF_DEFAULT_OPTS=" \
+# fzf
+command -v fzf >/dev/null && {
+
+  __fzf_preview_func() {
+    # is File
+    if [ -f "$1" ]; then
+      file "$1"
+      echo '-----'
+      cat "$1" | head -100
+      return
+    fi
+
+    # is Directory
+    if [ -d "$1" ]; then
+      tree "$1" | head -100
+      return
+    fi
+
+    # is Command
+    local cmd
+    cmd=$(cut -d' ' -f1 <<<"$1")
+    if type "$cmd" >/dev/null; then
+      if man "$cmd"; then
+        return
+      fi
+      type -a "$cmd"
+      return
+    fi
+
+    # is Git Project
+    local srcd readme
+    srcd="$(ghq root)/$1"
+    if [ -d "$srcd" ]; then
+      readme=$(find "$srcd" -maxdepth 1 -name 'README*' | head -1)
+      # has README
+      if [ -f "$readme" ]; then
+        cat "$readme"
+        return
+      fi
+      tree "$srcd" | head -100
+      return
+    fi
+  }
+
+  FZF_DEFAULT_CMD='fd --type f'
+  FZF_PREVIEW_CMD='__fzf_preview_func {}'
+  FZF_DEFAULT_OPTS=" \
 --no-sort \
 --bind=ctrl-k:kill-line \
 --preview='$FZF_PREVIEW_CMD'"
+
+}
 
 # Fuzzy finder
 # FF_CMD='gof'
