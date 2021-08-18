@@ -1155,6 +1155,14 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (css-indent-offset 2)
   )
 
+(use-package tree-sitter :ensure t
+  :hook
+  (after-init . global-tree-sitter-mode)
+  (tree-sitter-after-on . tree-sitter-hl-mode)
+  )
+
+(use-package tree-sitter-langs :ensure t)
+
 (use-package add-node-modules-path :ensure t
   :hook (js-mode
          typescript-mode
