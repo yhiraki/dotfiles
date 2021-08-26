@@ -1417,11 +1417,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files
-   (mapcar
-	'(lambda (dir)
-	   (concat (file-name-as-directory org-directory) dir))
-	'("" "notes" "journals" "projects")))
+  (org-agenda-files `(,org-directory))
   (org-agenda-span 'week)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
@@ -1630,7 +1626,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	  entry (file+olp+datetree "journal.org")
 	  "\
 ** TODO %^{Title}
-SCHEDULED: %^T")
+SCHEDULED: %^T
+%?")
 	 ("I" "Interrupt - Add an interrupt task"
 	  entry (file+olp+datetree "journal.org")
 	  "\
