@@ -1599,35 +1599,56 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :custom
   (org-capture-templates
    `(
-	 ("i" "Inbox - Add entry to Inbox"
-	  entry (file+headline "inbox.org" "Inbox")
-	  "** %?\n%U")
-	 ("t" "Task - Add a new scheduled task"
-	  entry (file+headline "inbox.org" "Inbox")
-	  "** TODO %?\nSCHEDULED: %T")
+	 ("j" "Journal"
+	  entry (file+olp+datetree "journal.org")
+	  "\
+** %^{Title}
+%T
+%?")
+	 ("n" "Note"
+	  entry (file+olp+datetree "journal.org")
+	  "\
+** %^{Title} :Note:
+%T %a
+%?")
+	 ("m" "Meeting"
+	  entry (file+olp+datetree "journal.org")
+	  "\
+** MEETING %^{Title}
+%T
+%^{CATEGORY}p
+%?"
+	  :jump-to-captured t
+	  :clock-in t
+	  :clock-keep t
+	  :immediate-finish t)
+	 ("l" "Log Time"
+	  entry (file+olp+datetree "journal.org")
+	  "** %U %^{Log} :Time:"
+	  :immediate-finish t)
+	 ("t" "Task"
+	  entry (file+olp+datetree "journal.org")
+	  "\
+** TODO %^{Title}
+SCHEDULED: %^T")
 	 ("I" "Interrupt - Add an interrupt task"
-	  entry (file+headline "inbox.org" "Inbox")
-	  "** %?\n%U" :clock-in t :clock-resume t)
-	 ("b" "Book - Books wish list"
+	  entry (file+olp+datetree "journal.org")
+	  "\
+** Interrupted task
+%T
+%?"
+	  :clock-in t
+	  :clock-resume t)
+	 ("b" "Book"
 	  table-line (file+headline "books.org" "wish list")
-	  "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
-	 ("j" "Journal - Add a journal today"
-	  entry (file+headline my-org-daily-journal-file "Journals")
-	  "** %?\n%T")
-	 ("n" "Note - Add a note"
-	  entry (file+headline my-org-daily-journal-file "Notes")
-	  "** %? :Note:\n%T %a\n")
-	 ("m" "Meeting - Start a meeting"
-	  entry (file+headline my-org-daily-journal-file "Meetings")
-	  "** MEETING %^{Title}\n%T" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
-	 ("l" "Log - Short logs like Twitter"
-	  entry (file+headline my-org-daily-journal-file "Logs")
-	  "** %T %^{Log} :Log:" :immediate-finish t)
-	 ("B" "Blog - Hugo post"
+	  "\
+|Name|Price|eBook?|Created|
+|%?|||%U|"
+	  :table-line-pos "II-1")
+	 ("B" "Blog"
 	  plain (file+olp "blog.org" "Blog Ideas")
 	  "hugo%?")
-	 )
-   )
+	 ))
 
   :config
   (defun my-org-daily-journal-file ()
