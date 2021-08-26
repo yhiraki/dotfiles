@@ -402,7 +402,7 @@ Version 2019-11-04"
   :hook ((emacs-lisp-mode-hook lisp-mode-hook) . eldoc-mode)
   )
 
-(use-package rainbow-delimiters :ensure t
+(use-package rainbow-delimiters :ensure t :disabled
   :hook (prog-mode . rainbow-delimiters-mode)
   )
 
