@@ -549,7 +549,10 @@ Version 2019-11-04"
   (vterm-buffer-name-string "*vterm: %s*")
   :config
   (with-eval-after-load 'evil
-	(evil-set-initial-state 'vterm-mode 'emacs))
+	(evil-set-initial-state 'vterm-mode 'emacs)
+	(evil-define-key 'emacs vterm-mode-map
+	  (kbd "C-x") 'vterm-send-C-x
+	  (kbd "C-c") 'vterm-send-C-c))
   )
 
 (use-package vterm-toggle :ensure t
@@ -559,9 +562,9 @@ Version 2019-11-04"
   :config
   (with-eval-after-load 'evil
 	(evil-define-key 'emacs vterm-mode-map
-	  (kbd "C-t") 'vterm-toggle-cd)
+	  (kbd "M-t") 'vterm-toggle-cd)
 	(evil-define-key '(normal visual) 'global
-	  (kbd "C-t") 'vterm-toggle-cd))
+	  (kbd "M-t") 'vterm-toggle-cd))
   )
 
 (use-package flycheck :ensure t
