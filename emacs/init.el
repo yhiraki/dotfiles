@@ -60,16 +60,16 @@
   :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
 
-(use-package package
-  :bind
-  (:map package-menu-mode-map
-	("j" . next-line)
-	("k" . previous-line)
-	("C-f" . evil-scroll-page-down)
-	("C-b" . evil-scroll-page-up)
-	("H" . evil-window-top)
-	("L" . evil-window-bottom)
-	))
+;; (use-package package
+;;   :bind
+;;   (:map package-menu-mode-map
+;; 	("j" . next-line)
+;; 	("k" . previous-line)
+;; 	("C-f" . evil-scroll-page-down)
+;; 	("C-b" . evil-scroll-page-up)
+;; 	("H" . evil-window-top)
+;; 	("L" . evil-window-bottom)
+;; 	))
 
 (use-package user-defined-functions :no-require
   :config
@@ -2062,12 +2062,13 @@ SCHEDULED: %^T
   :config
   (evil-collection-init
    '(
+	 (occur replace)
+	 (package-menu package)
 	 dired
 	 flycheck
 	 ibuffer
 	 magit
 	 magit-todos
-	 (occur replace)
 	 quickrun
 	 xref
 	 )))
