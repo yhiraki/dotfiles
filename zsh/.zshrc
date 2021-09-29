@@ -197,7 +197,7 @@ widget-find-file(){
 zle -N widget-find-file
 
 widget-open-application () {
-  find /Applications /System/Applications \
+  find /Applications /System/Applications "${HOME}/Applications" \
 	   -maxdepth 2 -name '*.app' |
 	sed -e 's:/.*/::' |
 	sort |
