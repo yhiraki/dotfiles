@@ -13,15 +13,24 @@ configure_tmux() {
       tmux refresh-client -S
     }
     add-zsh-hook periodic my_refresh_tmux_status
-  else
-    if tmux list-sessions; then
-      exec tmux a
-    else
-      exec tmux
-    fi
+    return
   fi
+
+  local TMUX_DEFAULT_NAME=default
+
+  if [[ -n "$INSIDE_EMACS" ]]; then
+    exec tmux new
+    return
+  fi
+
+  if tmux has -t "${TMUX_DEFAULT_NAME}"; then
+    exec tmux attach -t "${TMUX_DEFAULT_NAME}"
+    return
+  fi
+
+  exec tmux new -s "${TMUX_DEFAULT_NAME}"
 }
-[[ -z "$INSIDE_EMACS" ]] && configure_tmux
+configure_tmux
 unset -f configure_tmux
 
 }
