@@ -1539,8 +1539,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
 
-(use-package ob-plantuml
-  :after (ob plantuml-mode s)
+ (use-package ob-plantuml
+  :after (ob ob-async plantuml-mode s)
+  :hook
+  (ob-async-pre-execute-src-block
+   . (lambda ()
+       (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
   :custom
   (org-plantuml-jar-path my/plantuml-jar-path)
   (plantuml-server-url nil)
@@ -1574,12 +1578,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package ob-async :ensure t
-  :after ob
-  :hook
-  (ob-async-pre-execute-src-block
-   . (lambda ()
-       (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
-  )
+  :after ob)
 
 (use-package ob-ipython :ensure t :disabled
   :after ob)
