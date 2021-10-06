@@ -26,6 +26,7 @@ command -v brew || {
   mkdir -p .local/homebrew
   cd .local || exit 1
   curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
+  export PATH="$PATH:$HOME/.local/bin"
 }
 
 title "Git settings"
