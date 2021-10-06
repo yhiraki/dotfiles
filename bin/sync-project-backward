@@ -30,6 +30,6 @@ fi
 
 echo $$ > $SYNC_PROJECT_WORKDIR/$HASH
 
-rsync -av as-common-lin01:$TARGET_REL/ $TARGET --exclude-from=$GITROOT/.gitignore --exclude=.git
+rsync -av $REMOTE_WORKSPACE:$TARGET_REL/ $TARGET --exclude=.git
 
 rm $SYNC_PROJECT_WORKDIR/$HASH
