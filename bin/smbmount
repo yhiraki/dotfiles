@@ -5,12 +5,13 @@ import subprocess
 from argparse import ArgumentParser
 from getpass import getuser
 from pathlib import Path
+from typing import NamedTuple
 
 MOUNT_ROOT = Path('~/mnt').expanduser()
 
 
 class MountPoint:
-    def __init__(self, server_path):
+    def __init__(self, server_path, mount_root):
         """
         server_path: //user@server/path/to/dir
         """
@@ -18,14 +19,14 @@ class MountPoint:
             raise ValueError('Server path starts with: //')
 
         self.server_path = server_path
-        self.mount_root = MOUNT_ROOT
+        self.mount_root = mount_root
 
         server_dirs = server_path[2:].split('/')
         if not '@' in server_dirs[0]:
             server_dirs[0] = f'{getuser()}@{server_dirs[0]}'
         self.server_point = Path('//') / '/'.join(server_dirs[:2])
-        self.mount_point = MOUNT_ROOT / '/'.join(server_dirs[:2])
-        self.local_path = MOUNT_ROOT / '/'.join(server_dirs)
+        self.mount_point = mount_root / '/'.join(server_dirs[:2])
+        self.local_path = mount_root / '/'.join(server_dirs)
 
     def is_mounted(self):
         cmd = ['mount']
@@ -34,16 +35,18 @@ class MountPoint:
         m = str(self.mount_point)
         return any(m in i for i in mounts)
 
-    def mount(self):
+    def mount(self, readonly):
         if self.is_mounted():
             return
+        options = []
+        if readonly:
+            options = ['-o', 'rdonly']
         self.mount_point.mkdir(parents=True, exist_ok=True)
         cmd = [
             'mount',
             '-t',
             'smbfs',
-            '-o',
-            'rdonly',
+            *options,
             str(self.server_point),
             str(self.mount_point),
         ]
@@ -60,6 +63,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument('server_path', metavar='server path')
     parser.add_argument('-u', action='store_true')
+    parser.add_argument('-rw', action='store_true')
     args = parser.parse_args()
 
     server_path = args.server_path.strip().split('\n')[0]
@@ -67,13 +71,15 @@ def main():
     if server_path.startswith('\\'):
         server_path = server_path.replace('\\', '/')
     umount = args.u
-    mp = MountPoint(server_path)
+    readonly = not args.rw
+
+    mp = MountPoint(server_path, Path('~/mnt').expanduser())
 
     if umount:
         mp.umount()
         return
 
-    mp.mount()
+    mp.mount(readonly=readonly)
     print(mp.local_path)
 
 
