@@ -365,6 +365,13 @@ Version 2019-11-04"
 	)
   )
 
+(use-package osx-trash :ensure t
+  :when darwin-p
+  :config
+  (setq delete-by-moving-to-trash t)
+  ; also needs to set (trash-directory "~/.Trash") in files.el
+  (osx-trash-setup))
+
 (use-package find-large-file :no-require
   ;; 巨大なファイルを開いたときに fundamental mode にする
   :hook (find-file . conditional-disable-modes)
