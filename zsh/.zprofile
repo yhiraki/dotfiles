@@ -19,7 +19,4 @@ echo -e "\033]6;1;bg;red;brightness;34\a"
 echo -e "\033]6;1;bg;green;brightness;34\a"
 echo -e "\033]6;1;bg;blue;brightness;34\a"
 
-[ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
-[ -d "${HOME}/.local/homebrew" ] && eval "$(${HOME}/.local/homebrew/bin/brew shellenv)"
-
 echo '.zprofile loaded'

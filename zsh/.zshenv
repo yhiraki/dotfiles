@@ -103,6 +103,9 @@ PATH="$PATH:$HOME/.local/bin:$PATH"
 PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 
 # brew
+[ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -d "${HOME}/.local/homebrew" ] && eval "$(${HOME}/.local/homebrew/bin/brew shellenv)"
+
 command -v brew >/dev/null && {
   HOMEBREW_PREFIX=$(brew --prefix)
 
