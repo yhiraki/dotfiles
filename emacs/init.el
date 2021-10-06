@@ -1857,6 +1857,7 @@ SCHEDULED: %^T
   (plantuml-jar-args my/plantuml-jar-args)
   (plantuml-jar-path my/plantuml-jar-path)
   (plantuml-java-options my/plantuml-java-options)
+  (plantuml-output-type 'svg)
   )
 
 (use-package flycheck-plantuml :ensure t
