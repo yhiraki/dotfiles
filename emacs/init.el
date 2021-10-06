@@ -1218,6 +1218,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 (list markdown-mode-map gfm-mode-map)))
   )
 
+(use-package terraform-mode :ensure t)
+
 (use-package prog-mode
   :config
   (with-eval-after-load 'evil
