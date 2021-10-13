@@ -353,12 +353,14 @@ Version 2019-11-04"
   (setq save-silently t)
   (let ((value
 		 (list
-		  (expand-file-name "~/bin")
+		  "/bin"
+		  "/opt/homebrew/bin"
+		  "/sbin"
+		  "/usr/bin"
 		  "/usr/local/bin"
 		  "/usr/sbin"
-		  "/usr/bin"
-		  "/sbin"
-		  "/bin"
+		  (expand-file-name "~/.local/bin")
+		  (expand-file-name "~/bin")
 		  )))
 	(setq exec-path value)
 	(setq eshell-path-env value)
@@ -1605,15 +1607,15 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 ("j" "Journal"
 	  entry (file+olp+datetree "journal.org")
 	  "\
-** %^{Title}
+** %?
 %T
-%?")
+")
 	 ("n" "Note"
 	  entry (file+olp+datetree "journal.org")
 	  "\
-** %^{Title} :Note:
+** %? :Note:
 %T %a
-%?")
+")
 	 ("m" "Meeting"
 	  entry (file+olp+datetree "journal.org")
 	  "\
@@ -1632,9 +1634,9 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 ("t" "Task"
 	  entry (file+olp+datetree "journal.org")
 	  "\
-** TODO %^{Title}
+** TODO %?
 SCHEDULED: %^T
-%?")
+")
 	 ("I" "Interrupt - Add an interrupt task"
 	  entry (file+olp+datetree "journal.org")
 	  "\
