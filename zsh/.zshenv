@@ -135,7 +135,6 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=100000
 
-FZF_DEFAULT_OPTS="-e --ansi --select-1 --exit-0"
 ZPLUG_HOME="$HOME/.zplug"
 
 PLANTUML_LIMIT_SIZE=8192
@@ -194,8 +193,9 @@ command -v fzf >/dev/null && {
 
   FZF_DEFAULT_CMD='fd --type f'
   FZF_PREVIEW_CMD='__fzf_preview_func {}'
-  FZF_DEFAULT_OPTS=" \
+  FZF_DEFAULT_OPTS="\
 --no-sort \
+-e --ansi --select-1 --exit-0 \
 --bind=ctrl-k:kill-line \
 --preview='$FZF_PREVIEW_CMD'"
 
