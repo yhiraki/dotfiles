@@ -37,7 +37,7 @@ echo $$ >"$HASH_FILE"
 
   root="${GITROOT//$HOME/~}"
   ssh "$REMOTE_WORKSPACE" mkdir -p "$root" \
-    && rsync -av --delete "$GITROOT/" "$REMOTE_WORKSPACE:$root"
+    && rsync -av "$GITROOT/" "$REMOTE_WORKSPACE:$root" --exclude 'node_modules' --exclude '.venv'
 )
 
 
