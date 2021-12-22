@@ -1774,8 +1774,6 @@ SCHEDULED: %^T
   )
 
 (use-package py-isort :ensure t
-  :commands (py-isort-buffer py-isort-region)
-
   :config
   (with-eval-after-load 'evil
 	(evil-define-key 'normal python-mode-map
