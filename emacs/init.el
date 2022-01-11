@@ -499,6 +499,8 @@ Version 2019-11-04"
 		 )))
   )
 
+(use-package dired-filter :ensure t)
+
 (use-package dired-subtree :ensure t
   :after dired
 
