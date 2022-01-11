@@ -37,6 +37,7 @@
 (setq package-user-dir (locate-user-emacs-file "elpa"))
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
+		("nongnu" . "https://elpa.nongnu.org/nongnu/")
         ("melpa" . "http://melpa.org/packages/")
         ("emacswiki" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/emacswiki/")
         ))
@@ -1258,7 +1259,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :commands edit-indirect-region
   )
 
-(use-package org :ensure org-plus-contrib
+(use-package org :ensure org-contrib
   :hook
   (org-after-todo-statistics . org-summary-todo)
   (org-checkbox-statistics . my/org-checkbox-todo)
