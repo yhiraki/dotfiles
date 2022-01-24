@@ -1622,9 +1622,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	  entry (file+olp+datetree "journal.org")
 	  "\
 ** MEETING %^{Title}
-%T
-%^{CATEGORY}p
-%?"
+%T%^{CATEGORY}p%?"
 	  :jump-to-captured t
 	  :clock-in t
 	  :clock-keep t
@@ -1637,8 +1635,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	  entry (file+olp+datetree "journal.org")
 	  "\
 ** TODO %?
-SCHEDULED: %^T
-")
+SCHEDULED: %^T")
 	 ("I" "Interrupt - Add an interrupt task"
 	  entry (file+olp+datetree "journal.org")
 	  "\
