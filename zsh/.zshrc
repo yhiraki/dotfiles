@@ -141,6 +141,21 @@ repo() {
 
 }
 
+# Zsh overrides
+{
+
+zshaddhistory() {
+  local line=${1%%$'\n'}
+  local cmd=${line%% *}
+
+  [[
+	${cmd} != ls &&
+	  ${cmd} != cd
+  ]]
+}
+
+}
+
 # Widgets
 {
 
