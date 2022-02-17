@@ -1559,6 +1559,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (push '(:cache . "yes") org-babel-default-header-args:plantuml)
   )
 
+(use-package ob-mermaid :ensure t
+  :if darwin-p
+  :after ob
+  :custom
+  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc"))
+
 (use-package ob-shell
   :after ob)
 
@@ -1856,6 +1862,8 @@ SCHEDULED: %^T")
   (typescript-indent-level 2)
   :mode
   ("\\.tsx?\\'"))
+
+(use-package mermaid-mode :ensure t)
 
 (use-package plantuml-mode :ensure t
   :custom
