@@ -1696,6 +1696,10 @@ SCHEDULED: %^T")
   (org-superstar-header-bullet ((t (:height 1.2))))
   (org-superstar-leading       ((t (:height 1.3))))
   )
+;; (use-package org-modern :ensure t
+;;   :quelpa (org-modern :fetcher github :repo "minad/org-modern")
+;;   :hook (org-mode . org-modern-mode)
+;;   )
 
 (use-package org-download :ensure t
   :custom
