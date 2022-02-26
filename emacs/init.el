@@ -1505,6 +1505,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package ob
+  :after org
   :hook
   (org-babel-after-execute . org-display-inline-images)
   :custom
