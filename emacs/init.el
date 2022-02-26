@@ -724,6 +724,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (use-package magit-todos :ensure t :disabled
   :hook (magit-mode . magit-todos-mode))
 
+(use-package git-modes :ensure t)
+
 (use-package git-timemachine :ensure t)
 
 (use-package git-gutter+ :ensure t
@@ -1959,11 +1961,6 @@ SCHEDULED: %^T")
 (use-package text-mode
   :mode
   ("\\.qrinput\\'" . text-mode)
-  )
-
-(use-package gitignore-mode :ensure t
-  :mode
-  ("\\(\\.git\\|docker\\)ignore\\'" . gitignore-mode)
   )
 
 (use-package smartrep :ensure t
