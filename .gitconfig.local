@@ -6,4 +6,6 @@
 [rebase]
 	autostash = true
 [push]
-  default = current
+	default = current
+[pull]
+	ff = only
