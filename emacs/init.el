@@ -1545,8 +1545,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
 
- (use-package ob-plantuml
-  :after (ob ob-async plantuml-mode s)
+(use-package ob-plantuml
+  :after ob
   :hook
   (ob-async-pre-execute-src-block
    . (lambda ()
@@ -1557,7 +1557,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :config
   (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
   (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
-  (push '(:async) org-babel-default-header-args:plantuml)
+  ;; (push '(:async) org-babel-default-header-args:plantuml)
   (push '(:cache . "yes") org-babel-default-header-args:plantuml)
   )
 
