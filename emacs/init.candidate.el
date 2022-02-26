@@ -7,11 +7,6 @@
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
   )
 
-(use-package go-translate
-  :quelpa (go-translate :fetcher github :repo "lorniu/go-translate")
-  :custom
-  (go-translate-token-current (cons 430675 2721866130)))
-
 (use-package shell
   :hook
   (evil-after-load
