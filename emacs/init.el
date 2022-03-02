@@ -60,17 +60,6 @@
   :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
 
-;; (use-package package
-;;   :bind
-;;   (:map package-menu-mode-map
-;; 	("j" . next-line)
-;; 	("k" . previous-line)
-;; 	("C-f" . evil-scroll-page-down)
-;; 	("C-b" . evil-scroll-page-up)
-;; 	("H" . evil-window-top)
-;; 	("L" . evil-window-bottom)
-;; 	))
-
 (use-package user-defined-functions :no-require
   :config
   (defun my-open-in-external-app (&optional @fname)
