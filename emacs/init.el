@@ -149,11 +149,10 @@ Version 2019-11-04"
   :diminish)
 
 (use-package server
-  :hook (after-init
-         . (lambda ()
-             (unless
-                 (server-running-p)
-               (server-start))))
+  :config
+  (unless
+	  (server-running-p)
+	(server-start))
   )
 
 (use-package scroll-bar
@@ -162,9 +161,9 @@ Version 2019-11-04"
   )
 
 (use-package smooth-scrolling :ensure t
-  :hook (after-init . smooth-scrolling-mode)
   :custom
   (smooth-scroll-margin 1)
+  :config (smooth-scrolling-mode)
   )
 
 (use-package mwheel
@@ -229,7 +228,7 @@ Version 2019-11-04"
   )
 
 (use-package autorevert
-  :hook (after-init . global-auto-revert-mode)
+  :config (global-auto-revert-mode)
   )
 
 (use-package executable
@@ -402,15 +401,14 @@ Version 2019-11-04"
 
 (use-package which-key :ensure t
   :diminish which-key-mode
-  :hook (after-init . which-key-mode)
   :custom
   (which-key-use-C-h-commands nil)
   (which-key-allow-evil-operators t)
+  :config (which-key-mode)
   )
 
 (use-package smartparens :ensure t
   :diminish smartparens-mode
-  :hook (after-init . smartparens-global-mode)
 
   :config
   ;; (sp-pair "\{ " " \}")
@@ -451,26 +449,17 @@ Version 2019-11-04"
   ;; (sp-with-modes '(prog-mode vue-mode)
   ;;   (sp-local-pair  "{" nil :post-handlers '((my-open-block-c-mode "RET")))
   ;;   )
+
+  (smartparens-global-mode)
   )
 
 (use-package restart-emacs :ensure t
   :commands restart-emacs
   )
 
-(use-package elscreen :ensure t :disabled
-  :hook (after-init . elscreen-start)
-  :custom
-  (elscreen-tab-display-kill-screen nil) ; タブ全消しをしない
-  (elscreen-tab-display-control nil)
-  )
-
 (use-package s :ensure t)
 
 (use-package f :ensure t)
-
-(use-package emojify :ensure t :disabled
-  :hook (after-init . global-emojify-mode)
-  )
 
 (use-package dired
   :hook
@@ -805,7 +794,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package undo-fu-session :ensure t
   :after undo-fu
-  :hook (after-init . global-undo-fu-session-mode)
+  :config (global-undo-fu-session-mode)
   :custom
   (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   )
@@ -962,8 +951,6 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (use-package company :ensure t
   :diminish company-mode
   :hook
-  (after-init . global-company-mode)
-  (after-init . company-tng-mode)
   (TeX-mode . edit-category-table-for-company-dabbrev)
 
   :custom
@@ -999,6 +986,9 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (with-eval-after-load 'evil
 	(evil-define-key 'insert 'global
 	  (kbd "C-k") 'company-yasnippet))
+
+  (global-company-mode)
+  (company-tng-mode)
 
   :bind
   (:map company-active-map
@@ -1158,8 +1148,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package tree-sitter :ensure t
   :hook
-  (after-init . global-tree-sitter-mode)
   (tree-sitter-after-on . tree-sitter-hl-mode)
+  :config (global-tree-sitter-mode)
   )
 
 (use-package tree-sitter-langs :ensure t)
@@ -1969,8 +1959,6 @@ SCHEDULED: %^T")
   )
 
 (use-package evil :ensure t
-  :hook
-  (after-init . evil-mode)
 
   :bind
   (:map evil-normal-state-map
@@ -2056,6 +2044,8 @@ SCHEDULED: %^T")
 	(kbd "<leader>z k") 'save-buffers-kill-emacs
 	(kbd "<leader>z r") 'restart-emacs
 	)
+
+  (evil-mode)
   )
 
 (use-package evil-surround :ensure t
@@ -2116,12 +2106,12 @@ SCHEDULED: %^T")
   (evil-goggles-mode))
 
 (use-package popwin :ensure t
-  :hook (after-init . popwin-mode)
   :config
   (push '("*Error*") popwin:special-display-config)
   (push '("*Org-Babel Error Output*") popwin:special-display-config)
   (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
   (push '("*xref*" :position bottom ) popwin:special-display-config)
+  (popwin-mode)
   )
 
 (use-package all-the-icons :ensure t)
@@ -2152,11 +2142,8 @@ SCHEDULED: %^T")
   (modus-themes-bold-constructs t))
 
 (use-package my-theme :no-require
-  :hook
-  (after-init
-   . (lambda ()
-	   (load-theme 'modus-vivendi t)
-	   )))
+  :config
+  (load-theme 'modus-vivendi t))
 
 (use-package hide-mode-line :ensure t
   :hook ((
@@ -2177,13 +2164,13 @@ SCHEDULED: %^T")
   )
 
 (use-package beacon :ensure t
-  :hook (after-init . beacon-mode)
+  :config (beacon-mode)
   :diminish
   )
 
 (use-package clipetty :ensure t
   :diminish clipetty-mode
-  :hook (after-init . global-clipetty-mode))
+  :config (global-clipetty-mode))
 
 (use-package whitespace
   :diminish whitespace-mode
@@ -2223,7 +2210,6 @@ SCHEDULED: %^T")
 (use-package yasnippet :ensure t
   :diminish yas-minor-mode
   :hook
-  (after-init . yas-global-mode)
   (yas-minor-mode
    . (lambda ()
        (setq-local yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
@@ -2234,6 +2220,7 @@ SCHEDULED: %^T")
   (yas-indent-line 'fixed)
 
   :config
+  (yas-global-mode)
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
 
   ;; YASnippet のスニペットを候補に表示するための設定
@@ -2360,10 +2347,10 @@ SCHEDULED: %^T")
 
 (use-package cus-edit
   :hook
-  (after-init . (lambda () (load custom-file t)))
   (kill-emacs . (lambda () (delete-file custom-file)))
   :custom
   (custom-file (concat user-emacs-directory "custom.el"))
+  :config (load custom-file t)
   )
 
 (use-package init-candidate :no-require
@@ -2373,10 +2360,9 @@ SCHEDULED: %^T")
   )
 
 (use-package init-local :no-require
-  :hook
-  (after-init . (lambda () (load my/user-emacs-file-local t)))
   :config
   (defvar my/user-emacs-file-local (concat user-emacs-directory "init.local.el"))
+  (load my/user-emacs-file-local t)
   )
 
 
