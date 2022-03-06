@@ -1,0 +1,26 @@
+- name: Install git
+  apt:
+    pkg:
+      - git
+
+- name: Run a shell command and register its output as a variable
+  shell: git rev-parse --show-toplevel
+  register: gitroot
+  ignore_errors: true
+
+- name: Create .gitconfig
+  file:
+    path: ~/.gitconfig
+    state: touch
+
+- shell: git config --global include.path "$HOME/.gitconfig.local"
+
+- file:
+    src: "{{ gitroot.stdout }}/{{ item }}"
+    path: "~/{{ item }}"
+    state: link
+  with_items:
+    - .gitconfig.local
+    - .gitexclude
+
+- shell: git config --global include.path "$HOME/.gitconfig.local"
