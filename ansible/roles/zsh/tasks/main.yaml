@@ -1,0 +1,24 @@
+- name: install zsh
+  apt:
+    pkg:
+      - zsh
+
+- file:
+    path: "~/.config/zsh"
+    state: directory
+
+- file:
+    src: "{{ gitroot.stdout }}/zsh/{{ item }}"
+    path: "~/.config/zsh/{{ item }}"
+    state: link
+  with_items:
+    - .zprofile
+    - .zshenv
+    - .zshrc
+
+- file:
+    src: "{{ gitroot.stdout }}/zsh/{{ item }}"
+    path: "~/{{ item }}"
+    state: link
+  with_items:
+    - .zshenv
