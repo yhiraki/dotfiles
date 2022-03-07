@@ -1,4 +1,5 @@
-- name: install ghq
+- name: Install ghq
   shell: go install github.com/x-motemen/ghq@latest
   args:
     executable: /usr/bin/zsh
+    creates: ~/bin/ghq
