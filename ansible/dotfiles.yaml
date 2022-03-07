@@ -3,4 +3,6 @@
   hosts: localhost
   connection: local
   roles:
-    - git
+    - ghq
+    - zsh-tools
+    - tmux

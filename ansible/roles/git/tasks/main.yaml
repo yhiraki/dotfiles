@@ -13,7 +13,10 @@
     path: ~/.gitconfig
     state: touch
 
-- shell: git config --global include.path "$HOME/.gitconfig.local"
+- shell: >
+    git config
+    --global include.path
+    "$HOME/.gitconfig.local"
 
 - file:
     src: "{{ gitroot.stdout }}/{{ item }}"
