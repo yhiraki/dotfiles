@@ -4,4 +4,5 @@
     tar -C /usr/local -xzf -
   args:
     creates: /usr/local/go
+  become: yes
 
