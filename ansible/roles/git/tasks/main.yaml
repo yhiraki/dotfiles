@@ -3,27 +3,24 @@
     pkg:
       - git
 
-- name: Run a shell command and register its output as a variable
+- name: Get git root directory
   shell: git rev-parse --show-toplevel
   register: gitroot
   ignore_errors: true
 
-- name: Create .gitconfig
-  file:
-    path: ~/.gitconfig
-    state: touch
-
-- shell: >
+- name: Create .gitconfig and set .gitconfig.local
+  shell: >
     git config
     --global include.path
-    "$HOME/.gitconfig.local"
+    ~/.gitconfig.local
+  args:
+    creates: ~/.gitconfig
 
-- file:
+- name: Link git setting files
+  file:
     src: "{{ gitroot.stdout }}/{{ item }}"
     path: "~/{{ item }}"
     state: link
   with_items:
     - .gitconfig.local
     - .gitexclude
-
-- shell: git config --global include.path "$HOME/.gitconfig.local"

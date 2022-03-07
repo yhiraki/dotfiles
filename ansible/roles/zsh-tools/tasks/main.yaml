@@ -1,5 +1,6 @@
 - name: install fzf
   shell: go install github.com/junegunn/fzf@0.29.0
   args:
-    executable:
-      /usr/bin/zsh
+    executable: /usr/bin/zsh
+    creates: ~/bin/fzf
+
