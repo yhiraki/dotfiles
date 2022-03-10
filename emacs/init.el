@@ -1594,53 +1594,15 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :custom
   (org-capture-templates
    `(
-	 ("j" "Journal"
-	  entry (file+olp+datetree "journal.org")
-	  "\
-** %?
-%T
-")
-	 ("n" "Note"
-	  entry (file+olp+datetree "journal.org")
-	  "\
-** %? :Note:
-%T %a
-")
-	 ("m" "Meeting"
-	  entry (file+olp+datetree "journal.org")
-	  "\
-** MEETING %^{Title}
-%T%^{CATEGORY}p%?"
-	  :jump-to-captured t
-	  :clock-in t
-	  :clock-keep t
-	  :immediate-finish t)
-	 ("l" "Log Time"
-	  entry (file+olp+datetree "journal.org")
-	  "** %U %^{Log} :Time:"
-	  :immediate-finish t)
-	 ("t" "Task"
-	  entry (file+olp+datetree "journal.org")
-	  "\
-** TODO %?
-SCHEDULED: %^T")
-	 ("I" "Interrupt - Add an interrupt task"
-	  entry (file+olp+datetree "journal.org")
-	  "\
-** Interrupted task
-%T
-%?"
-	  :clock-in t
-	  :clock-resume t)
-	 ("b" "Book"
-	  table-line (file+headline "books.org" "wish list")
-	  "\
-|Name|Price|eBook?|Created|
-|%?|||%U|"
-	  :table-line-pos "II-1")
-	 ("B" "Blog"
-	  plain (file+olp "blog.org" "Blog Ideas")
-	  "hugo%?")
+	 ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
+	 ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T\n%?" :clock-in t :clock-resume t)
+	 ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
+	 ("j" "Journal" entry (file+olp+datetree "journal.org") "** %?\n%T")
+	 ("l" "Log Time" entry (file+olp+datetree "journal.org") "** %U %^{Log} :Time:" :immediate-finish t)
+	 ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
+	 ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
+	 ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
+	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** STARTED %(org-mac-chrome-get-frontmost-url)\n%T\n%?" :clock-in t :clock-resume t)
 	 ))
 
   :config
