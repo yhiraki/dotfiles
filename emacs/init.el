@@ -1459,7 +1459,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (defun my:org-clock-out-if-waiting ()
 	"Clock in when the task is marked STARTED."
 	(when (and (or
-				(string= org-state "TODO")
+				;; (string= org-state "TODO")
 				(string= org-state "WAITING"))
 			   (not (string= org-last-state org-state)))
 	  (org-clock-out)))
