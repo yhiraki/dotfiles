@@ -462,25 +462,22 @@ Version 2019-11-04"
 (use-package f :ensure t)
 
 (use-package dired
-  :hook
-  (dired-mode
-   . (lambda()
-	   (dired-hide-details-mode 1)
-	   (setq-local line-spacing 3)
-	   (evil-define-key '(normal visual) dired-mode-map
-		 (kbd "C-j") 'dired-next-dirline
-		 (kbd "C-k") 'dired-prev-dirline
-		 (kbd "C-c C-o") 'my-open-in-external-app
-		 (kbd "q") 'kill-current-buffer
-		 (kbd "r") 'revert-buffer
-		 (kbd "SPC") nil
-		 )))
+  :after evil
+  :hook (dired-mode . dired-hide-details-mode)
+  :config
+  (evil-define-key '(normal visual) dired-mode-map
+	(kbd "C-j") 'dired-next-dirline
+	(kbd "C-k") 'dired-prev-dirline
+	(kbd "C-c C-o") 'my-open-in-external-app
+	(kbd "q") 'kill-current-buffer
+	(kbd "r") 'revert-buffer
+	(kbd "SPC") nil)
   )
 
 (use-package dired-filter :ensure t)
 
 (use-package dired-subtree :ensure t
-  :after dired
+  :after (dired evil)
 
   :config
   ;; for all-the-icons
@@ -495,11 +492,9 @@ Version 2019-11-04"
     (revert-buffer))
 
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) dired-mode-map
-	  (kbd "l") 'my-dired-subtree-insert
-	  (kbd "h") 'my-dired-subtree-remove
-	  ))
+  (evil-define-key '(normal visual) dired-mode-map
+	(kbd "l") 'my-dired-subtree-insert
+	(kbd "h") 'my-dired-subtree-remove)
 
   :custom-face
   (dired-subtree-depth-1-face ((t (:background nil))))
@@ -532,24 +527,24 @@ Version 2019-11-04"
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-set-initial-state 'vterm-mode 'emacs)
-	(evil-define-key 'emacs vterm-mode-map
-	  (kbd "C-x") 'vterm-send-C-x
-	  (kbd "C-c") 'vterm-send-C-c))
+  (evil-set-initial-state 'vterm-mode 'emacs)
+  (evil-define-key 'emacs vterm-mode-map
+	(kbd "C-x") 'vterm-send-C-x
+	(kbd "C-c") 'vterm-send-C-c)
   )
 
 (use-package vterm-toggle :ensure t
   :custom
   (vterm-toggle-scope 'project)
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key 'emacs vterm-mode-map
-	  (kbd "M-t") 'vterm-toggle-cd)
-	(evil-define-key '(normal visual) 'global
-	  (kbd "M-t") 'vterm-toggle-cd))
+  (evil-define-key 'emacs vterm-mode-map
+	(kbd "M-t") 'vterm-toggle-cd)
+  (evil-define-key '(normal visual) 'global
+	(kbd "M-t") 'vterm-toggle-cd)
   )
 
 (use-package flycheck :ensure t
@@ -719,44 +714,42 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (git-gutter+-deleted ((t (:italic nil :underline nil :foreground "red"))))
   (git-gutter+-added ((t (:italic nil :underline nil :foreground "green"))))
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) 'global
-	  (kbd "<localleader>gg") 'git-gutter+-mode
-	  )
-	(evil-define-key '(normal visual) 'git-gutter+-mode
-	  (kbd "[g") 'git-gutter+-previous-hunk
-	  (kbd "]g") 'git-gutter+-next-hunk
-	  (kbd "<localleader>gr") 'git-gutter+-revert-hunks
-	  (kbd "<localleader>gs") 'git-gutter+-stage-hunks
-	  ))
+  (evil-define-key '(normal visual) 'global
+	(kbd "<localleader>gg") 'git-gutter+-mode)
+  (evil-define-key '(normal visual) 'git-gutter+-mode
+	(kbd "[g") 'git-gutter+-previous-hunk
+	(kbd "]g") 'git-gutter+-next-hunk
+	(kbd "<localleader>gr") 'git-gutter+-revert-hunks
+	(kbd "<localleader>gs") 'git-gutter+-stage-hunks)
   )
 
 (use-package git-messenger :ensure t
   :commands git-messenger:popup-message)
 
 (use-package gist :ensure
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-set-initial-state 'gist-list-mode 'insert)
-	(evil-define-key 'normal gist-list-menu-mode-map
-	  (kbd "RET") 'gist-fetch-current
-	  (kbd "*") 'gist-star
-	  (kbd "+") 'gist-add-buffer
-	  (kbd "-") 'gist-remove-file
-	  (kbd "^") 'gist-unstar
-	  (kbd "b") 'gist-browse-current-url
-	  (kbd "e") 'gist-edit-current-description
-	  (kbd "f") 'gist-fork
-	  (kbd "r") 'gist-list-reload
-	  (kbd "K") 'gist-kill-current
-	  (kbd "y") 'gist-print-current-url
-	  (kbd "<tab>") 'gist-fetch-current-noselect
-	  (kbd "q") 'quit-window
-	  ;; ("/p" gist-list-push-visibility-limit)
-	  ;; ("/t" gist-list-push-tag-limit)
-	  ;; ("/w" gist-list-pop-limit)
-	  ))
+  (evil-set-initial-state 'gist-list-mode 'insert)
+  (evil-define-key 'normal gist-list-menu-mode-map
+	(kbd "RET") 'gist-fetch-current
+	(kbd "*") 'gist-star
+	(kbd "+") 'gist-add-buffer
+	(kbd "-") 'gist-remove-file
+	(kbd "^") 'gist-unstar
+	(kbd "b") 'gist-browse-current-url
+	(kbd "e") 'gist-edit-current-description
+	(kbd "f") 'gist-fork
+	(kbd "r") 'gist-list-reload
+	(kbd "K") 'gist-kill-current
+	(kbd "y") 'gist-print-current-url
+	(kbd "<tab>") 'gist-fetch-current-noselect
+	(kbd "q") 'quit-window
+	;; ("/p" gist-list-push-visibility-limit)
+	;; ("/t" gist-list-push-tag-limit)
+	;; ("/w" gist-list-pop-limit)
+	)
   )
 
 (use-package browse-at-remote :ensure t)
@@ -919,12 +912,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	   (require 'lsp-pyright)
 	   (lsp)))
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key 'normal python-mode-map
-	  (kbd "<localleader>f") 'python-black-buffer)
-	(evil-define-key 'visual python-mode-map
-	  (kbd "<localleader>f") 'python-black-region))
+  (evil-define-key 'normal python-mode-map
+	(kbd "<localleader>f") 'python-black-buffer)
+  (evil-define-key 'visual python-mode-map
+	(kbd "<localleader>f") 'python-black-region)
   )
 
 (use-package lsp-go
@@ -969,6 +962,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (company-tooltip-limit 10)
   (completion-ignore-case t)
 
+  :after evil
   :config
   ;; company-dabbrevで日本語を補完しない
   ;; https://qiita.com/wktkshn/items/3ac46671d1c242a59f7e
@@ -983,12 +977,11 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (edit-category-table-for-company-dabbrev)
   ;; (add-to-list 'company-frontends 'company-tng-frontend)
 
-  (with-eval-after-load 'evil
-	(evil-define-key 'insert 'global
-	  (kbd "C-k") 'company-yasnippet))
-
   (global-company-mode)
   (company-tng-mode)
+
+  (evil-define-key 'insert 'global
+	(kbd "C-k") 'company-yasnippet)
 
   :bind
   (:map company-active-map
@@ -1121,10 +1114,10 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :custom
   (gofmt-command "goimports")
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-       (evil-define-key '(normal visual) go-mode-map
-         (kbd "<localleader>f") 'gofmt))
+  (evil-define-key '(normal visual) go-mode-map
+	(kbd "<localleader>f") 'gofmt)
   )
 
 (use-package go-eldoc :ensure t
@@ -1169,10 +1162,10 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :commands prettier-js)
 
 (use-package json-mode :ensure t
+  :after evil
   :config
-  (with-eval-after-load 'evil
-      (evil-define-key '(normal visual) json-mode-map
-         (kbd "<localleader>f") 'json-pretty-print-buffer))
+  (evil-define-key '(normal visual) json-mode-map
+	(kbd "<localleader>f") 'json-pretty-print-buffer)
   )
 
 (use-package markdown-mode :ensure t
@@ -1190,48 +1183,45 @@ See URL `https://github.com/koalaman/shellcheck/'."
   :mode
   ("README\\.md\\'" . gfm-mode)
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(mapcar
-	 #'(lambda (map)
-		 (evil-define-key '(normal visual) markdown-mode-map
-		   (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
-		   (kbd "zc") 'outline-hide-subtree
-		   (kbd "TAB") 'markdown-cycle
-		   (kbd "<localleader>f") 'prettier-js
-		   ))
-	 (list markdown-mode-map gfm-mode-map)))
+  (mapcar
+   #'(lambda (map)
+	   (evil-define-key '(normal visual) markdown-mode-map
+		 (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
+		 (kbd "zc") 'outline-hide-subtree
+		 (kbd "TAB") 'markdown-cycle
+		 (kbd "<localleader>f") 'prettier-js
+		 ))
+   (list markdown-mode-map gfm-mode-map))
   )
 
 (use-package terraform-mode :ensure t)
 
 (use-package prog-mode
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) prog-mode-map
-	  (kbd "[e") 'flycheck-previous-error
-	  (kbd "]e") 'flycheck-next-error
+  (evil-define-key '(normal visual) prog-mode-map
+	(kbd "[e") 'flycheck-previous-error
+	(kbd "]e") 'flycheck-next-error
 
-	  (kbd "gd") 'xref-find-definitions
-	  (kbd "gr") 'xref-find-references
+	(kbd "gd") 'xref-find-definitions
+	(kbd "gr") 'xref-find-references
 
-	  (kbd "<localleader>R") 'lsp-rename
-	  (kbd "<localleader>e") 'flycheck-list-errors
-	  (kbd "<localleader>f") 'lsp-format-buffer
-	  (kbd "<localleader>m") 'lsp-ui-imenu
-	  (kbd "<localleader>qa") 'quickrun-autorun-mode
-	  (kbd "<localleader>qc") 'quickrun-compile-only
-	  (kbd "<localleader>qs") 'quickrun-shell
-	  )
-	(evil-define-key 'normal prog-mode-map
-	  (kbd "<localleader>qr") 'quickrun
-	  (kbd "<localleader>r") 'quickrun
-	  )
-	(evil-define-key 'visual prog-mode-map
-	  (kbd "<localleader>qr") 'quickrun-region
-	  (kbd "<localleader>r") 'quickrun-region
-	  )
-	))
+	(kbd "<localleader>R") 'lsp-rename
+	(kbd "<localleader>e") 'flycheck-list-errors
+	(kbd "<localleader>f") 'lsp-format-buffer
+	(kbd "<localleader>m") 'lsp-ui-imenu
+	(kbd "<localleader>qa") 'quickrun-autorun-mode
+	(kbd "<localleader>qc") 'quickrun-compile-only
+	(kbd "<localleader>qs") 'quickrun-shell)
+  (evil-define-key 'normal prog-mode-map
+	(kbd "<localleader>qr") 'quickrun
+	(kbd "<localleader>r") 'quickrun)
+  (evil-define-key 'visual prog-mode-map
+	(kbd "<localleader>qr") 'quickrun-region
+	(kbd "<localleader>r") 'quickrun-region)
+  )
 
 (use-package executable
   :hook
@@ -1272,6 +1262,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (org-hidden-keywords '(title))
   (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width
 
+  :after evil
   :config
   (defun org-summary-todo (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -1309,57 +1300,56 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	(interactive) (org-call-with-arg 'org-todo 'right)
 	)
 
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) org-mode-map
-	  ;; leader mapping
-	  (kbd "<leader>/") 'my-outline
+  (evil-define-key '(normal visual) org-mode-map
+	;; leader mapping
+	(kbd "<leader>/") 'my-outline
 
-	  ;; localleader mapping
-	  (kbd "<localleader>dc") 'org-download-clipboard
-	  (kbd "<localleader>dd") 'org-download-delete
-	  (kbd "<localleader>ds") 'org-download-screenshot
-	  (kbd "<localleader>f") 'whitespace-cleanup
-	  (kbd "<localleader>i") 'org-clock-in
-	  (kbd "<localleader>nb") 'org-narrow-to-block
-	  (kbd "<localleader>ne") 'org-narrow-to-element
-	  (kbd "<localleader>nf") 'narrow-to-defun
-	  (kbd "<localleader>ns") 'org-narrow-to-subtree
-	  (kbd "<localleader>nw") 'widen
-	  (kbd "<localleader>p") 'org-priority
-	  (kbd "<localleader>q") 'org-set-tags-command
-	  (kbd "<localleader>s") 'org-schedule
-	  (kbd "<localleader>t") 'org-todo
-	  (kbd "<localleader>v") 'org-toggle-inline-images
-	  (kbd "<localleader>xp") 'org-set-property
+	;; localleader mapping
+	(kbd "<localleader>dc") 'org-download-clipboard
+	(kbd "<localleader>dd") 'org-download-delete
+	(kbd "<localleader>ds") 'org-download-screenshot
+	(kbd "<localleader>f") 'whitespace-cleanup
+	(kbd "<localleader>i") 'org-clock-in
+	(kbd "<localleader>nb") 'org-narrow-to-block
+	(kbd "<localleader>ne") 'org-narrow-to-element
+	(kbd "<localleader>nf") 'narrow-to-defun
+	(kbd "<localleader>ns") 'org-narrow-to-subtree
+	(kbd "<localleader>nw") 'widen
+	(kbd "<localleader>p") 'org-priority
+	(kbd "<localleader>q") 'org-set-tags-command
+	(kbd "<localleader>s") 'org-schedule
+	(kbd "<localleader>t") 'org-todo
+	(kbd "<localleader>v") 'org-toggle-inline-images
+	(kbd "<localleader>xp") 'org-set-property
 
-	  (kbd "C-S-j") 'org-next-visible-heading
-	  (kbd "C-S-k") 'org-previous-visible-heading
-	  (kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-	  (kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-	  (kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-	  (kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-	  (kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
-	  (kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
-	  (kbd "T") 'org-todo
-	  (kbd "t") 'my/org-todo-next
-	  (kbd "<") 'org-metaleft
-	  (kbd ">") 'org-metaright
-	  (kbd "gh") 'outline-up-heading
-	  (kbd "gp") 'outline-previous-heading
-	  (kbd "TAB") 'org-cycle
-	  )
+	(kbd "C-S-j") 'org-next-visible-heading
+	(kbd "C-S-k") 'org-previous-visible-heading
+	(kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+	(kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+	(kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+	(kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+	(kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
+	(kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
+	(kbd "T") 'org-todo
+	(kbd "t") 'my/org-todo-next
+	(kbd "<") 'org-metaleft
+	(kbd ">") 'org-metaright
+	(kbd "gh") 'outline-up-heading
+	(kbd "gp") 'outline-previous-heading
+	(kbd "TAB") 'org-cycle
+	)
 
-	(evil-define-key '(normal insert visual) org-mode-map
-	  (kbd "M-S-h") 'org-metashiftleft
-	  (kbd "M-S-j") 'org-metashiftdown
-	  (kbd "M-S-k") 'org-metashiftup
-	  (kbd "M-S-l") 'org-metashiftright
-	  (kbd "M-h") 'org-metaleft
-	  (kbd "M-j") 'org-metadown
-	  (kbd "M-k") 'org-metaup
-	  (kbd "M-l") 'org-metaright
-	  (kbd "RET") 'org-return
-	  ))
+  (evil-define-key '(normal insert visual) org-mode-map
+	(kbd "M-S-h") 'org-metashiftleft
+	(kbd "M-S-j") 'org-metashiftdown
+	(kbd "M-S-k") 'org-metashiftup
+	(kbd "M-S-l") 'org-metashiftright
+	(kbd "M-h") 'org-metaleft
+	(kbd "M-j") 'org-metadown
+	(kbd "M-k") 'org-metaup
+	(kbd "M-l") 'org-metaright
+	(kbd "RET") 'org-return
+	)
   )
 
 (use-package org-faces
@@ -1398,7 +1388,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package org-agenda
-  :after org
+  :after (evil org)
   :commands (org-agenda org-refile)
   :demand t
 
@@ -1419,8 +1409,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
     "Org agenda todo next cycle"
     (interactive) (org-call-with-arg 'org-agenda-todo 'right)
     )
-  (with-eval-after-load 'evil
-	(evil-set-initial-state 'org-agenda-mode 'emacs))
+  (evil-set-initial-state 'org-agenda-mode 'emacs)
 
   :bind
   (:map org-agenda-mode-map
@@ -1605,6 +1594,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** STARTED %(org-mac-chrome-get-frontmost-url)\n%T\n%?" :clock-in t :clock-resume t)
 	 ))
 
+  :after evil
   :config
   (defun my-org-daily-journal-file ()
 	(concat
@@ -1615,9 +1605,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	(interactive)
 	(find-file (my-org-daily-journal-file)))
 
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal insert) 'global
-	  (kbd "<leader> oo") 'my-open-todays-journal))
+  (evil-define-key '(normal insert) 'global
+	(kbd "<leader> oo") 'my-open-todays-journal)
   )
 
 (use-package org-checklist
@@ -1728,12 +1717,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package py-isort :ensure t
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key 'normal python-mode-map
-	  (kbd "<localleader>i") 'py-isort-buffer)
-	(evil-define-key 'visual python-mode-map
-	  (kbd "<localleader>i") 'py-isort-region))
+  (evil-define-key 'normal python-mode-map
+	(kbd "<localleader>i") 'py-isort-buffer)
+  (evil-define-key 'visual python-mode-map
+	(kbd "<localleader>i") 'py-isort-region)
   )
 
 (use-package sh-script
@@ -1744,12 +1733,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (sh-indent-for-case-alt '+))
 
 (use-package shfmt :ensure t
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key 'normal sh-mode-map
-	  (kbd "<localleader>f") 'shfmt-buffer)
-	(evil-define-key 'visual sh-mode-map
-	  (kbd "<localleader>f") 'shfmt-region))
+  (evil-define-key 'normal sh-mode-map
+	(kbd "<localleader>f") 'shfmt-buffer)
+  (evil-define-key 'visual sh-mode-map
+	(kbd "<localleader>f") 'shfmt-region)
 
   :custom
   (shfmt-arguments '("-i" "2" "-ci"))
@@ -1849,13 +1838,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
   ("\\.tpl\\.php\\'" . web-mode)
   ;; ("\\.vue\\'" . web-mode)
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key 'normal web-mode-map
-	  (kbd "<localleader>R") 'web-mode-element-rename
-	  (kbd "zc") 'web-mode-fold-or-unfold
-	  (kbd "zo") 'web-mode-fold-or-unfold
-	  ))
+  (evil-define-key 'normal web-mode-map
+	(kbd "<localleader>R") 'web-mode-element-rename
+	(kbd "zc") 'web-mode-fold-or-unfold
+	(kbd "zo") 'web-mode-fold-or-unfold)
   )
 
 (use-package vue-mode :ensure t
@@ -1867,11 +1855,10 @@ See URL `https://github.com/koalaman/shellcheck/'."
        ))
   (vue-mode . lsp)
 
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	  (evil-define-key '(normal visual) vue-mode-map
-		(kbd "<localleader>f") 'eslint-fix
-		))
+  (evil-define-key '(normal visual) vue-mode-map
+	(kbd "<localleader>f") 'eslint-fix)
   )
 
 (use-package mmm-mode
@@ -1881,12 +1868,12 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package yaml-mode :ensure t
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-define-key '(normal visual) yaml-mode-map
-	  (kbd "C-m") 'newline-and-indent
-	  (kbd "<localleader>e") 'flycheck-list-errors
-	  )))
+  (evil-define-key '(normal visual) yaml-mode-map
+	(kbd "C-m") 'newline-and-indent
+	(kbd "<localleader>e") 'flycheck-list-errors)
+  )
 
 (use-package flycheck-yamllint :ensure t
   :hook (yaml-mode . flycheck-yamllint-setup))
@@ -1906,18 +1893,18 @@ See URL `https://github.com/koalaman/shellcheck/'."
   )
 
 (use-package smartrep :ensure t
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(smartrep-define-key evil-normal-state-map
-		"C-c" '(("+" . 'evil-numbers/inc-at-pt)
-				("=" . 'evil-numbers/inc-at-pt)
-				("-" . 'evil-numbers/dec-at-pt)))
-	(smartrep-define-key evil-normal-state-map
-		"C-w" '(("+" . 'evil-window-increase-height)
-				("-" . 'evil-window-decrease-height)
-				("=" . 'balance-windows)
-				("<" . 'evil-window-decrease-width)
-				(">" . 'evil-window-increase-width))))
+  (smartrep-define-key evil-normal-state-map
+	  "C-c" '(("+" . 'evil-numbers/inc-at-pt)
+			  ("=" . 'evil-numbers/inc-at-pt)
+			  ("-" . 'evil-numbers/dec-at-pt)))
+  (smartrep-define-key evil-normal-state-map
+	  "C-w" '(("+" . 'evil-window-increase-height)
+			  ("-" . 'evil-window-decrease-height)
+			  ("=" . 'balance-windows)
+			  ("<" . 'evil-window-decrease-width)
+			  (">" . 'evil-window-increase-width)))
   )
 
 (use-package evil :ensure t
@@ -2181,6 +2168,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (require-final-newline nil)
   (yas-indent-line 'fixed)
 
+  :after evil
   :config
   (yas-global-mode)
   (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
@@ -2199,8 +2187,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
     )
   (add-hook 'company-mode-hook 'set-yas-as-company-backend)
 
-  (with-eval-after-load 'evil
-	(evil-set-initial-state 'snippet-mode 'insert))
+  (evil-set-initial-state 'snippet-mode 'insert)
 
   :bind
   (:map yas-keymap
@@ -2302,9 +2289,9 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package rocket-chat-post
   :commands rocket-chat-edit
+  :after evil
   :config
-  (with-eval-after-load 'evil
-	(evil-set-initial-state 'rocket-chat-edit-mode 'insert))
+  (evil-set-initial-state 'rocket-chat-edit-mode 'insert)
   )
 
 (use-package cus-edit

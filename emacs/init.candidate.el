@@ -8,9 +8,9 @@
   )
 
 (use-package shell
-  :hook
-  (evil-after-load
-   . (lambda () (evil-set-initial-state 'shell-mode 'emacs))))
+  :after evil
+  :config
+  (evil-set-initial-state 'shell-mode 'emacs))
 
 (use-package counsel-tramp :ensure t)
 
@@ -33,9 +33,10 @@
 	(defalias 'my-outline #'consult-outline)
 	(defalias 'my-git-find #'consult-find-file)
 
-	(with-eval-after-load 'evil
-	  (evil-define-key '(normal visual) 'global
-		(kbd "g/") 'consult-line))
+	:after evil
+	:config
+	(evil-define-key '(normal visual) 'global
+	  (kbd "g/") 'consult-line)
 	)
 
   (use-package consult-ghq :ensure t
@@ -113,12 +114,10 @@
 	)
 
   (use-package swiper :ensure t
-	:hook
-	(evil-mode
-	 . (lambda ()
-		 (evil-define-key '(normal visual) 'global
-		   "g/" #'swiper-isearch
-		   )))
+	:after evil
+	:config
+	(evil-define-key '(normal visual) 'global
+	  "g/" #'swiper-isearch)
 	)
 
   (use-package ivy-ghq
