@@ -1637,7 +1637,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (use-package org-download :ensure t
   :custom
   (org-download-screenshot-method "screencapture -i %s")
-  (org-download-image-dir (concat org-directory "images"))
+  (org-download-image-dir (concat (file-name-as-directory org-directory) "images"))
   (org-download-heading-lvl nil)
   )
 
