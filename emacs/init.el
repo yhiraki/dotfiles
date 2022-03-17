@@ -463,15 +463,19 @@ Version 2019-11-04"
 
 (use-package dired
   :after evil
-  :hook (dired-mode . dired-hide-details-mode)
+  :hook
+  (dired-mode . dired-hide-details-mode)
+  (dired-mode . my-set-evil-dired-mode-map)  ; dired-mode keybind is buffer-local
   :config
-  (evil-define-key '(normal visual) dired-mode-map
-	(kbd "C-j") 'dired-next-dirline
-	(kbd "C-k") 'dired-prev-dirline
-	(kbd "C-c C-o") 'my-open-in-external-app
-	(kbd "q") 'kill-current-buffer
-	(kbd "r") 'revert-buffer
-	(kbd "SPC") nil)
+  (defun my-set-evil-dired-mode-map ()
+	(evil-define-key '(normal visual) dired-mode-map
+	  (kbd "C-j") 'dired-next-dirline
+	  (kbd "C-k") 'dired-prev-dirline
+	  (kbd "C-c C-o") 'my-open-in-external-app
+	  (kbd "q") 'kill-current-buffer
+	  (kbd "r") 'revert-buffer
+	  (kbd "SPC") nil)
+	)
   )
 
 (use-package dired-filter :ensure t)
