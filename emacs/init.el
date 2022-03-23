@@ -1581,21 +1581,18 @@ See URL `https://github.com/koalaman/shellcheck/'."
 (use-package org-capture
   :commands org-capture
 
-  :hook
-  (org-capture-mode . evil-insert-state)
-
   :custom
   (org-capture-templates
    `(
 	 ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
-	 ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T\n%?" :clock-in t :clock-resume t)
+	 ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T%?" :clock-in t :clock-resume t)
 	 ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
 	 ("j" "Journal" entry (file+olp+datetree "journal.org") "** %?\n%T")
 	 ("l" "Log Time" entry (file+olp+datetree "journal.org") "** %U %^{Log} :Time:" :immediate-finish t)
 	 ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
 	 ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
 	 ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
-	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** STARTED %(org-mac-chrome-get-frontmost-url)\n%T\n%?" :clock-in t :clock-resume t)
+	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** STARTED %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
 	 ))
 
   :after evil
