@@ -161,7 +161,7 @@ command -v fzf >/dev/null && {
 
     # is Directory
     if [ -d "$1" ]; then
-      tree "$1" | head -100
+	  { cd $1 && find . -maxdepth 1 } | cut -d / -f 2-;
       return
     fi
 
