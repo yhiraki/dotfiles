@@ -176,6 +176,8 @@ command -v fzf >/dev/null && {
       return
     fi
 
+	command -v ghq > /dev/null || return
+
     # is Git Project
     local srcd readme
     srcd="$(ghq root)/$1"
