@@ -1592,7 +1592,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
 	 ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
 	 ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
-	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** STARTED %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
+	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
 	 ))
 
   :after evil
