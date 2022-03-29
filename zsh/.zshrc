@@ -307,31 +307,25 @@ bindkey -M viins '^X^X' widget-select-widgets
 {
 
 load_plugins() {
-  command -v ghq >/dev/null || return
+  command -v git >/dev/null || return
 
   plugins_repo=(
     github.com/paulirish/git-open
-    github.com/robbyrussell/oh-my-zsh/plugins/git
     github.com/zsh-users/zsh-autosuggestions
     github.com/zsh-users/zsh-completions
     github.com/zsh-users/zsh-syntax-highlighting
     github.com/yhiraki/zsh-simple-prompt
-    # marlonrichert/zsh-autocomplete
   )
-  root=$(ghq root)
+
+  root="$ZDOTDIR/plugin/repos"
   local d
   for p in "${plugins_repo[@]}"; do
     d="$root/$p"
-    if [[ ! -d "$d" ]]; then
-      if command -v ghq >/dev/null; then
-        ghq get "$p"
-      else
-        continue
-      fi
-    fi
+    [[ ! -d "$d" ]] && git clone "https://$p" "$d"
     source $d/*.plugin.zsh
   done
 }
+
 load_plugins
 unset -f load_plugins
 
