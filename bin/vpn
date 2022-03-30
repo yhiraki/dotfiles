@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+OPTIONS=-connectpppoeservice
+[ "$1" = 'd' ] && OPTIONS=-disconnectpppoeservice
+
 scutil --nc list |
   tail -n +2 |
   cut -d'"' -f2 |
   fzf |
-  xargs -r -I{} networksetup -connectpppoeservice '{}'
+  xargs -r -I{} networksetup $OPTIONS '{}'
