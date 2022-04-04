@@ -1,0 +1,4 @@
+---
+
+- src: https://github.com/yhiraki/ansible-role-python
+  name: yhiraki.python
