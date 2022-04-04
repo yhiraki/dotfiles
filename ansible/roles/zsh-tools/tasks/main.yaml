@@ -4,3 +4,7 @@
     executable: /usr/bin/zsh
     creates: ~/bin/fzf
 
+- name: install rigprep
+  apt:
+    pkg:
+      - ripgrep
