@@ -313,7 +313,7 @@ load_plugins() {
     github.com/paulirish/git-open
     github.com/zsh-users/zsh-autosuggestions
     github.com/zsh-users/zsh-completions
-    github.com/zsh-users/zsh-syntax-highlighting
+	github.com/zdharma-continuum/fast-syntax-highlighting
     github.com/yhiraki/zsh-simple-prompt
   )
 
