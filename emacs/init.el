@@ -2082,7 +2082,10 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package nano-modeline :ensure t :disabled)
 
-(use-package modus-themes :ensure t
+(when (< emacs-major-version 28)
+  (package-install 'modus-themes))
+
+(use-package modus-themes
   :custom
   (modus-themes-headings
    '((1 . (overline))
