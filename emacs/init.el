@@ -2080,6 +2080,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
   (mini-modeline-mode-line
    ((t (:background ,(face-attribute 'window-divider :foreground) :height 0.14 :box nil)))))
 
+(use-package nano-modeline :ensure t :disabled)
+
 (use-package modus-themes :ensure t
   :custom
   (modus-themes-headings
