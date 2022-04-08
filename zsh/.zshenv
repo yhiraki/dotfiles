@@ -161,7 +161,7 @@ command -v fzf >/dev/null && {
 
     # is Directory
     if [ -d "$1" ]; then
-	  { cd $1 && find . -maxdepth 1 } | cut -d / -f 2-;
+      (cd $1 && find . -maxdepth 1) | cut -d / -f 2-
       return
     fi
 
@@ -176,7 +176,7 @@ command -v fzf >/dev/null && {
       return
     fi
 
-	command -v ghq > /dev/null || return
+    command -v ghq >/dev/null || return
 
     # is Git Project
     local srcd readme
