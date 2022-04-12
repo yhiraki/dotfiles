@@ -4,5 +4,10 @@
   connection: local
   roles:
     - ghq
-    - zsh-tools
+    - git
+    - go
+    - os
+    - python
     - tmux
+    - zsh
+    - zsh-tools
