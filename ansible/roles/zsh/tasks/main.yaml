@@ -22,3 +22,13 @@
     state: link
   with_items:
     - .zshenv
+
+- file:
+    path: "~/bin"
+    state: directory
+
+- file:
+    src: "{{ item }}"
+    path: "~/bin/{{ item | basename }}"
+    state: link
+  with_fileglob: "{{ gitroot.stdout }}/bin/*"
