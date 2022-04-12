@@ -3,7 +3,6 @@
   hosts: localhost
   connection: local
   roles:
-    - ghq
     - git
     - go
     - os

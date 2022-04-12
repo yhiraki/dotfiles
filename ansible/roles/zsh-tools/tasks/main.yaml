@@ -1,8 +1,10 @@
-- name: install fzf
-  shell: go install github.com/junegunn/fzf@0.29.0
+- name: install golang tools
+  shell: go install {{ item }}
+  with_items:
+    - github.com/junegunn/fzf@latest
+    - github.com/x-motemen/ghq@latest
   args:
     executable: /usr/bin/zsh
-    creates: ~/bin/fzf
 
 - name: install rigprep
   apt:
