@@ -1404,7 +1404,7 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files `(,org-directory))
+  (org-agenda-files (list org-directory "~/org/roam/daily"))
   (org-agenda-span 'week)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
@@ -1456,6 +1456,32 @@ See URL `https://github.com/koalaman/shellcheck/'."
 				(string= org-state "WAITING"))
 			   (not (string= org-last-state org-state)))
 	  (org-clock-out)))
+  )
+
+(use-package org-roam :ensure t
+  :after (org evil)
+  :hook
+  ;; org-roam-mode を after-init-hook で起動すると scrach buffer が readonly になる
+  ;; (after-init . org-roam-mode)
+  (org-roam-mode . org-roam-db-autosync-mode)
+  (evil-mode
+   . (lambda ()
+	   "org-roamを起動する前にキーバインドを設定する"
+	   (evil-define-key '(normal insert) 'global
+		 (kbd "<leader> nc") 'org-roam-capture
+		 (kbd "<leader> nf") 'org-roam-node-find
+		 (kbd "<leader> ng") 'org-roam-graph
+		 (kbd "<leader> nj") 'org-roam-dailies-capture-today
+		 (kbd "<leader> nt") 'org-roam-dailies-goto-today
+		 (kbd "<leader> nl") 'org-roam-buffer-toggle
+		 (kbd "C-c ni") 'org-roam-node-insert
+		 )
+	   ))
+  :custom
+  (org-roam-directory
+	(concat
+	 (file-name-as-directory org-directory)
+	 "roam"))
   )
 
 (use-package japanese-holidays :ensure t
