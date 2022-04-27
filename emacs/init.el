@@ -1263,7 +1263,6 @@ See URL `https://github.com/koalaman/shellcheck/'."
      (sequence "|" "CANCELLED(c@)")
      (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
-  (org-hidden-keywords '(title))
   (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width
 
   :after evil
