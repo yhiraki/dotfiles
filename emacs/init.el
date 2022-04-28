@@ -1605,6 +1605,8 @@ See URL `https://github.com/koalaman/shellcheck/'."
 
 (use-package org-capture
   :commands org-capture
+  :hook
+  (org-capture-mode . (lambda () (evil-insert 0)))
 
   :custom
   (org-capture-templates
