@@ -1,3 +1,4 @@
+# TODO: move to galaxy -> yhiraki.golang
 - name: install golang
   shell: >
     curl -L https://go.dev/dl/go1.17.8.linux-amd64.tar.gz |
