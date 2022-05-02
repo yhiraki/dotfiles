@@ -7,7 +7,7 @@
       url: github.com/x-motemen/ghq@latest
   args:
     executable: /usr/bin/zsh
-    creates: $GOPATH/bin/{{ item.name }}
+    creates: /bin/{{ item.name }}
 
 - name: install rigprep
   apt:
