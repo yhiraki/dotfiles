@@ -34,8 +34,10 @@
     state: directory
 
 - file:
-    src: "{{ item }}"
-    path: "~/.emacs.d/{{ item | basename }}"
+    src: "{{ gitroot.stdout }}/emacs/{{ item }}"
+    path: "~/.emacs.d/{{ item }}"
     state: link
-  with_fileglob:
-    - "{{ gitroot.stdout }}/emacs/*"
+  loop: |
+    {{ query('filetree', gitroot.stdout + '/emacs')
+    | rejectattr('path', 'contains', '/')
+    | map(attribute='path') }}
