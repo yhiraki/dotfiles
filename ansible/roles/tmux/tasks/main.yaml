@@ -4,7 +4,7 @@
       tmux
 
 - file:
-    src: "{{ gitroot.stdout }}/{{ item }}"
+    src: "{{ dotfiles_dir }}/{{ item }}"
     path: "~/{{ item }}"
     state: link
   with_items:
