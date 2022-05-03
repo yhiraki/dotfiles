@@ -6,7 +6,7 @@
     - git
     - go
     - os
-    - python
+    - yhiraki.python
     - tmux
     - zsh
     - zsh-tools
