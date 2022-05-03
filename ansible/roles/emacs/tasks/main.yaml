@@ -27,4 +27,15 @@
   become: yes
   args:
     chdir: "{{ work_dir }}/emacs-{{ emacs_version }}"
-    creates: "{{ install_prefix }}bin/emacs"
+    creates: "{{ install_prefix }}/bin/emacs"
+
+- file:
+    path: "~/.emacs.d"
+    state: directory
+
+- file:
+    src: "{{ item }}"
+    path: "~/.emacs.d/{{ item | basename }}"
+    state: link
+  with_fileglob:
+    - "{{ gitroot.stdout }}/emacs/*"
