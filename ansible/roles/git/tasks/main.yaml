@@ -7,6 +7,7 @@
   shell: git rev-parse --show-toplevel
   register: gitroot
   ignore_errors: true
+  changed_when: false
 
 - name: Create .gitconfig and set .gitconfig.local
   shell: >
