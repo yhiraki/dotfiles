@@ -8,7 +8,7 @@
     state: directory
 
 - file:
-    src: "{{ gitroot.stdout }}/zsh/{{ item }}"
+    src: "{{ dotfiles_dir }}/zsh/{{ item }}"
     path: "~/.config/zsh/{{ item }}"
     state: link
   with_items:
@@ -17,7 +17,7 @@
     - .zshrc
 
 - file:
-    src: "{{ gitroot.stdout }}/zsh/{{ item }}"
+    src: "{{ dotfiles_dir }}/zsh/{{ item }}"
     path: "~/{{ item }}"
     state: link
   with_items:
@@ -31,4 +31,4 @@
     src: "{{ item }}"
     path: "~/bin/{{ item | basename }}"
     state: link
-  with_fileglob: "{{ gitroot.stdout }}/bin/*"
+  with_fileglob: "{{ dotfiles_dir }}/bin/*"
