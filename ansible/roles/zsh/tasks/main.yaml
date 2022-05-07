@@ -1,0 +1,34 @@
+- name: install zsh
+  apt:
+    pkg:
+      - zsh
+
+- file:
+    path: "~/.config/zsh"
+    state: directory
+
+- file:
+    src: "{{ dotfiles_dir }}/zsh/{{ item }}"
+    path: "~/.config/zsh/{{ item }}"
+    state: link
+  with_items:
+    - .zprofile
+    - .zshenv
+    - .zshrc
+
+- file:
+    src: "{{ dotfiles_dir }}/zsh/{{ item }}"
+    path: "~/{{ item }}"
+    state: link
+  with_items:
+    - .zshenv
+
+- file:
+    path: "~/bin"
+    state: directory
+
+- file:
+    src: "{{ item }}"
+    path: "~/bin/{{ item | basename }}"
+    state: link
+  with_fileglob: "{{ dotfiles_dir }}/bin/*"

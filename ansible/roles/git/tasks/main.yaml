@@ -1,0 +1,30 @@
+- name: Install git
+  apt:
+    pkg:
+      - git
+
+- name: Get git root directory
+  shell: git rev-parse --show-toplevel
+  register: gitroot_shell
+  ignore_errors: true
+  changed_when: false
+
+- set_fact:
+    dotfiles_dir: "{{ gitroot_shell.stdout }}"
+
+- name: Create .gitconfig and set .gitconfig.local
+  shell: >
+    git config
+    --global include.path
+    ~/.gitconfig.local
+  args:
+    creates: ~/.gitconfig
+
+- name: Link git setting files
+  file:
+    src: "{{ dotfiles_dir }}/{{ item }}"
+    path: "~/{{ item }}"
+    state: link
+  with_items:
+    - .gitconfig.local
+    - .gitexclude
