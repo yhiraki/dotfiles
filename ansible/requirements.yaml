@@ -2,3 +2,5 @@
 
 - src: https://github.com/yhiraki/ansible-role-python
   name: yhiraki.python
+- src: https://github.com/yhiraki/ansible-role-emacs
+  name: yhiraki.emacs
