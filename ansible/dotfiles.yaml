@@ -3,10 +3,11 @@
   hosts: localhost
   connection: local
   roles:
+    - emacs
     - git
     - go
     - os
-    - yhiraki.python
     - tmux
+    - yhiraki.python
     - zsh
     - zsh-tools
