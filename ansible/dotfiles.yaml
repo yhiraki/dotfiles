@@ -1,0 +1,13 @@
+---
+- name: Dotfiles
+  hosts: localhost
+  connection: local
+  roles:
+    - emacs
+    - git
+    - go
+    - os
+    - tmux
+    - yhiraki.python
+    - zsh
+    - zsh-tools

@@ -1,0 +1,12 @@
+- file:
+    path: "~/.emacs.d"
+    state: directory
+
+- file:
+    src: "{{ dotfiles_dir }}/emacs/{{ item }}"
+    path: "~/.emacs.d/{{ item }}"
+    state: link
+  loop: |
+    {{ query('filetree', dotfiles_dir + '/emacs')
+    | rejectattr('path', 'contains', '/')
+    | map(attribute='path') }}
