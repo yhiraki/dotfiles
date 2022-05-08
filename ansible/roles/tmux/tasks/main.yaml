@@ -2,6 +2,13 @@
   apt:
     pkg:
       tmux
+  tags: debian
+
+- name: install tmux
+  homebrew:
+    name: tmux
+    state: present
+  tags: darwin
 
 - file:
     src: "{{ dotfiles_dir }}/{{ item }}"

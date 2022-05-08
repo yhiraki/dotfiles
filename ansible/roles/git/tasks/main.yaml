@@ -2,6 +2,13 @@
   apt:
     pkg:
       - git
+  tags: debian
+
+- name: Install git
+  homebrew:
+    name: git
+    state: present
+  tags: darwin
 
 - name: Get git root directory
   shell: git rev-parse --show-toplevel
