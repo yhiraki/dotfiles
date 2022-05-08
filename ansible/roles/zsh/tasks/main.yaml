@@ -2,6 +2,13 @@
   apt:
     pkg:
       - zsh
+  tags: debian
+
+- name: install zsh
+  homebrew:
+    name: zsh
+    state: present
+  tags: darwin
 
 - file:
     path: "~/.config/zsh"
@@ -26,9 +33,3 @@
 - file:
     path: "~/bin"
     state: directory
-
-- file:
-    src: "{{ item }}"
-    path: "~/bin/{{ item | basename }}"
-    state: link
-  with_fileglob: "{{ dotfiles_dir }}/bin/*"

@@ -6,4 +6,11 @@
   args:
     creates: /usr/local/go
   become: yes
+  tags: debian
+
+- name: install golang
+  homebrew:
+    name: golang
+    state: present
+  tags: darwin
 

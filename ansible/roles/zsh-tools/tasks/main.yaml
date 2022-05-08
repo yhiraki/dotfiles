@@ -6,10 +6,17 @@
     - name: ghq
       url: github.com/x-motemen/ghq@latest
   args:
-    executable: /usr/bin/zsh
+    executable: zsh
     creates: $GOPATH/bin/{{ item.name }}
 
 - name: install rigprep
   apt:
     pkg:
       - ripgrep
+  tags: debian
+
+- name: install rigprep
+  homebrew:
+    name: ripgrep
+    state: present
+  tags: darwin
