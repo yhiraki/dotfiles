@@ -1,0 +1,15 @@
+- name: install golang tools
+  shell: go install {{ item.url }}
+  with_items:
+    - name: fzf
+      url: github.com/junegunn/fzf@latest
+    - name: ghq
+      url: github.com/x-motemen/ghq@latest
+  args:
+    executable: /usr/bin/zsh
+    creates: $GOPATH/bin/{{ item.name }}
+
+- name: install rigprep
+  apt:
+    pkg:
+      - ripgrep

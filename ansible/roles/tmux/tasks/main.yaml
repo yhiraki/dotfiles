@@ -1,0 +1,11 @@
+- name: install tmux
+  apt:
+    pkg:
+      tmux
+
+- file:
+    src: "{{ dotfiles_dir }}/{{ item }}"
+    path: "~/{{ item }}"
+    state: link
+  with_items:
+    - .tmux.conf

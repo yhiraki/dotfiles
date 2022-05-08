@@ -1,0 +1,14 @@
+- name: Set a variable
+  set_fact:
+    os_debian: ansible_facts["os_family"] is "Debian"
+    os_redhat: ansible_facts["os_family"] is "RedHat"
+
+- name: Print a variable
+  debug:
+    msg: hello debian
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Print a variable
+  debug:
+    msg: hello redhat
+  when: ansible_facts["os_family"] == "RedHat"
