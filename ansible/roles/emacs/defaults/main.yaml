@@ -1,0 +1,4 @@
+---
+emacs_version: 28.1
+install_prefix: /usr/local
+work_dir: /tmp
