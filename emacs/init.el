@@ -552,6 +552,7 @@ Version 2019-11-04"
   )
 
 (use-package flycheck :ensure t
+  :after evil
   :hook
   ((
 	markdown-mode
@@ -603,6 +604,9 @@ See URL `https://github.com/koalaman/shellcheck/'."
   ;;   :modes python-mode)
 
   ;; (push 'python-pycodestyle flycheck-checkers)
+
+  (evil-define-key '(normal visual) flycheck-mode-map
+	(kbd "<localleader>e") 'flycheck-list-errors)
   )
 
 (use-package posframe :ensure t
@@ -1135,7 +1139,6 @@ See URL `https://github.com/koalaman/shellcheck/'."
 	(kbd "gr") 'xref-find-references
 
 	(kbd "<localleader>R") 'lsp-rename
-	(kbd "<localleader>e") 'flycheck-list-errors
 	(kbd "<localleader>f") 'lsp-format-buffer
 	(kbd "<localleader>m") 'lsp-ui-imenu
 	(kbd "<localleader>qa") 'quickrun-autorun-mode
