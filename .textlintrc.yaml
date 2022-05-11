@@ -1,0 +1,8 @@
+plugins:
+  "@textlint/text":
+    extensions:
+       - .org
+rules:
+  # https://github.com/textlint-ja/textlint-rule-preset-japanese
+  preset-japanese:
+    sentence-length: false
