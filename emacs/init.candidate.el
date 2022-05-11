@@ -14,7 +14,7 @@
 
 (use-package counsel-tramp :ensure t)
 
-(defconst my-completion-method 'ivy)
+(defconst my-completion-method 'consult)
 
 (when (eq my-completion-method 'consult)
   (use-package consult :ensure t
@@ -31,7 +31,6 @@
 
 	:config
 	(defalias 'my-outline #'consult-outline)
-	(defalias 'my-git-find #'consult-find-file)
 
 	:after evil
 	:config
@@ -43,6 +42,11 @@
 	:commands (my-ghq consult-ghq-find consult-ghq-grep)
 	:config
 	(defalias 'my-ghq 'consult-ghq-find))
+
+  (use-package consult-ls-git :ensure t
+	:config
+	(defalias 'my-git-find #'consult-ls-git)
+	)
 
   (use-package vertico :ensure t
 	:hook (after-init . vertico-mode)
