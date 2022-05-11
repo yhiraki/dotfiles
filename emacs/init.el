@@ -555,6 +555,7 @@ Version 2019-11-04"
   :hook
   ((
 	markdown-mode
+	org-mode
 	prog-mode
 	yaml-mode
 	) . flycheck-mode)
@@ -564,6 +565,8 @@ Version 2019-11-04"
   (flycheck-python-pylint-executable "python3")
   (flycheck-deferred-syntax-check t)
   :config
+  (flycheck-add-mode 'textlint 'org-mode)
+  (flycheck-add-next-checker 'markdown-markdownlint-cli 'textlint)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
 
