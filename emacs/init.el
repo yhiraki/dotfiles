@@ -571,40 +571,6 @@ Version 2019-11-04"
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
 
-  (flycheck-define-checker c/c++-g++
-    "A C/C++ checker using g++."
-    :command ("g++" "-Wall" "-Wextra" "-std=c++14" source)
-    :error-patterns  ((error line-start
-                             (file-name) ":" line ":" column ":" " error: " (message)
-                             line-end)
-                      (warning line-start
-                               (file-name) ":" line ":" column ":" " warning: " (message)
-                               line-end))
-    :modes (c-mode c++-mode))
-
-  ;; https://www.flycheck.org/en/28/_downloads/flycheck.html
-  (flycheck-define-checker sh-shellcheck
-	"A shell script syntax and style checker using Shellcheck.
-
-See URL `https://github.com/koalaman/shellcheck/'."
-	:command ("shellcheck" "-f" "checkstyle"
-			  "-s" (eval (symbol-name sh-shell))
-			  source)
-	:modes sh-mode
-	:error-parser flycheck-parse-checkstyle)
-
-  (push 'c/c++-g++ flycheck-checkers)
-
-  ;; (flycheck-define-checker python-pycodestyle
-  ;;   "A Python syntax and style checker using pycodestyle (former pep8)."
-
-  ;;   :command ("pycodestyle" source-inplace)
-  ;;   :error-patterns
-  ;;   ((error line-start (file-name) ":" line ":" column ":" (message) line-end))
-  ;;   :modes python-mode)
-
-  ;; (push 'python-pycodestyle flycheck-checkers)
-
   (evil-define-key '(normal visual) flycheck-mode-map
 	(kbd "<localleader>e") 'flycheck-list-errors)
   )
