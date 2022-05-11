@@ -553,7 +553,11 @@ Version 2019-11-04"
 
 (use-package flycheck :ensure t
   :hook
-  ((prog-mode yaml-mode) . flycheck-mode)
+  ((
+	markdown-mode
+	prog-mode
+	yaml-mode
+	) . flycheck-mode)
   :custom
   (flycheck-python-flake8-executable "python3")
   (flycheck-python-pycompile-executable "python3")
