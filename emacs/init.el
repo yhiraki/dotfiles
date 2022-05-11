@@ -590,7 +590,7 @@ Version 2019-11-04"
   (magit-diff-refine-hunk 'all)
   )
 
-(use-package magit-todos :ensure t :disabled
+(use-package magit-todos :ensure t
   :hook (magit-mode . magit-todos-mode))
 
 (use-package git-modes :ensure t)
