@@ -2189,13 +2189,13 @@ Version 2019-11-04"
 
 (use-package init-candidate :no-require
   :config
-  (defvar my/user-emacs-file-candidate (concat user-emacs-directory "init.candidate.el"))
+  (defvar my/user-emacs-file-candidate (locate-user-emacs-file "init.candidate.el"))
   (load my/user-emacs-file-candidate t)
   )
 
 (use-package init-local :no-require
   :config
-  (defvar my/user-emacs-file-local (concat user-emacs-directory "init.local.el"))
+  (defvar my/user-emacs-file-local (locate-user-emacs-file "init.local.el"))
   (load my/user-emacs-file-local t)
   )
 
