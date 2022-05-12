@@ -1350,28 +1350,25 @@ Version 2019-11-04"
 
 (use-package org-roam :ensure t
   :after (org evil)
-  :hook
-  ;; org-roam-mode を after-init-hook で起動すると scrach buffer が readonly になる
-  ;; (after-init . org-roam-mode)
-  (org-roam-mode . org-roam-db-autosync-mode)
-  (evil-mode
-   . (lambda ()
-	   "org-roamを起動する前にキーバインドを設定する"
-	   (evil-define-key '(normal insert) 'global
-		 (kbd "<leader> nc") 'org-roam-capture
-		 (kbd "<leader> nf") 'org-roam-node-find
-		 (kbd "<leader> ng") 'org-roam-graph
-		 (kbd "<leader> nj") 'org-roam-dailies-capture-today
-		 (kbd "<leader> nt") 'org-roam-dailies-goto-today
-		 (kbd "<leader> nl") 'org-roam-buffer-toggle
-		 (kbd "C-c ni") 'org-roam-node-insert
-		 )
-	   ))
+  :demand t
   :custom
+  (org-roam-completion-everywhere t)
   (org-roam-directory
 	(concat
 	 (file-name-as-directory org-directory)
 	 "roam"))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map)
+  :bind
+  ("C-c n i" . org-roam-node-insert)
+  ("C-c n f" . org-roam-node-find)
+  (:map org-mode-map
+		("C-M-i" . completion-at-point))
+  :config
+  (require 'org-roam-dailies)
+  (evil-define-key '(normal insert) 'global
+	(kbd "<leader> n") 'org-roam-dailies-map)
+  (org-roam-db-autosync-mode)
   )
 
 (use-package japanese-holidays :ensure t
