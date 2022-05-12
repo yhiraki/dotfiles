@@ -2167,7 +2167,7 @@ Version 2019-11-04"
 (use-package key-binding :no-require
   :config
   (define-key key-translation-map [?\C-h] [?\C-?])
-  (define-key key-translation-map [?\C-\[] [?\C-?])
+  ;; (define-key key-translation-map [?\C-\[] [?\C-?])
   ;; (global-set-key (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "C-\\") nil)
   )
