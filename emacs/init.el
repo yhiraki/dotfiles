@@ -1999,7 +1999,7 @@ Version 2019-11-04"
 (when (< emacs-major-version 28)
   (package-install 'modus-themes))
 
-(use-package modus-themes
+(use-package my-theme :no-require
   :custom
   (modus-themes-headings
    '((1 . (overline))
@@ -2008,9 +2008,7 @@ Version 2019-11-04"
   (modus-themes-paren-match '(bold underline))
   (modus-themes-region '(bg-only no-extend))
   (modus-themes-italic-constructs t)
-  (modus-themes-bold-constructs t))
-
-(use-package my-theme :no-require
+  (modus-themes-bold-constructs t)
   :config
   (load-theme 'modus-vivendi t))
 
