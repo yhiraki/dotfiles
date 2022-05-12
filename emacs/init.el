@@ -1869,7 +1869,6 @@ Version 2019-11-04"
   (evil-define-key '(normal visual) 'global
 	(kbd "<leader>/") 'imenu
 	(kbd "<leader>G g") 'google-this
-	(kbd "<leader>G t") 'google-translate-enja-or-jaen
 	(kbd "<leader>a") 'org-agenda
 	(kbd "<leader>b") 'bookmark-jump
 	(kbd "<leader>c") 'org-capture
@@ -2121,39 +2120,6 @@ Version 2019-11-04"
 
 (use-package google-this :ensure t
   :commands google-this
-  )
-
-(use-package google-translate :ensure t
-  :config
-  ;; http://emacs.rubikitch.com/google-translate/
-  (defvar google-translate-english-chars "[:ascii:]’“”–"
-    "これらの文字が含まれているときは英語とみなす")
-
-  (defun google-translate-enja-or-jaen (&optional string)
-    "regionか、現在のセンテンスを言語自動判別でGoogle翻訳する。"
-    (interactive)
-    (setq string
-          (cond ((stringp string) string)
-                (current-prefix-arg
-                 (read-string "Google Translate: "))
-                ((use-region-p)
-                 (buffer-substring (region-beginning) (region-end)))
-                (t
-                 (save-excursion
-                   (let (s)
-                     (forward-char 1)
-                     (backward-sentence)
-                     (setq s (point))
-                     (forward-sentence)
-                     (buffer-substring s (point)))))))
-    (let* ((asciip (string-match
-                    (format "\\`[%s]+\\'" google-translate-english-chars)
-                    string)))
-      (run-at-time 0.1 nil 'deactivate-mark)
-      (google-translate-translate
-       (if asciip "en" "ja")
-       (if asciip "ja" "en")
-       string)))
   )
 
 (use-package yasnippet-snippets :ensure t :disabled)
