@@ -139,8 +139,8 @@ Version 2019-11-04"
   ;; magitでの文字化け対策
   (prefer-coding-system 'utf-8)
 
-  :bind
-  ("C-s" . Control-X-prefix)
+  :bind-keymap
+  ("C-s" . ctl-x-map)
   )
 
 (use-package diminish :ensure t)
