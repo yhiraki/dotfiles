@@ -8,7 +8,7 @@
   homebrew:
     name: git
     state: present
-  tags: darwin
+  tags: Darwin
 
 - name: Get git root directory
   shell: git rev-parse --show-toplevel

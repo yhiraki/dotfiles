@@ -8,7 +8,7 @@
   homebrew:
     name: zsh
     state: present
-  tags: darwin
+  tags: Darwin
 
 - file:
     path: "~/.config/zsh"

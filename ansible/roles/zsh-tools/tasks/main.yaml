@@ -19,4 +19,4 @@
   homebrew:
     name: ripgrep
     state: present
-  tags: darwin
+  tags: Darwin
