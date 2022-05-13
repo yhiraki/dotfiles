@@ -8,7 +8,7 @@
   homebrew:
     name: tmux
     state: present
-  tags: darwin
+  tags: Darwin
 
 - file:
     src: "{{ dotfiles_dir }}/{{ item }}"

@@ -12,5 +12,5 @@
   homebrew:
     name: golang
     state: present
-  tags: darwin
+  tags: Darwin
 
