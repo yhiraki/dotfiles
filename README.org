@@ -1,5 +1,5 @@
 * Dotfiles
 ** Installation
    #+begin_src bash
-   curl yhiraki.github.io/dotfiles/install | bash
+   cd ansible; make
    #+end_src
