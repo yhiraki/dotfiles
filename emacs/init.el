@@ -1003,6 +1003,9 @@ Version 2019-11-04"
 
 (use-package docker-compose-mode :ensure t)
 
+(use-package ansible :ensure t
+  :mode "\\/roles/[^/]+/[^/]+/[^/]+\\.yaml\\'")
+
 (use-package hideshow
   :diminish hs-minor-mode
   :hook
