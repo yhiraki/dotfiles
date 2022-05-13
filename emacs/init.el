@@ -1393,7 +1393,8 @@ Version 2019-11-04"
   :config
   (require 'org-roam-dailies)
   (evil-define-key '(normal insert) 'global
-	(kbd "<leader> n") 'org-roam-dailies-map)
+	(kbd "<leader> n") 'org-roam-dailies-map
+	(kbd "<leader> n /") 'org-roam-node-find)
   )
 
 (use-package japanese-holidays :ensure t
