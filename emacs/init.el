@@ -1373,6 +1373,10 @@ Version 2019-11-04"
 (use-package org-roam :ensure t
   :after (org evil)
   :demand t
+  :hook
+  (org-mode
+   . (lambda ()
+	   (add-hook 'after-save-hook 'org-roam-db-sync nil t)))
   :custom
   (org-roam-completion-everywhere t)
   (org-roam-directory
@@ -1390,7 +1394,6 @@ Version 2019-11-04"
   (require 'org-roam-dailies)
   (evil-define-key '(normal insert) 'global
 	(kbd "<leader> n") 'org-roam-dailies-map)
-  (org-roam-db-autosync-mode)
   )
 
 (use-package japanese-holidays :ensure t
