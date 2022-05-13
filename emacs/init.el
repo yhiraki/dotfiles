@@ -1951,6 +1951,7 @@ Version 2019-11-04"
 	 magit
 	 magit-todos
 	 quickrun
+	 wgrep
 	 xref
 	 )))
 
@@ -2184,6 +2185,11 @@ Version 2019-11-04"
 
 (use-package ol
   :bind ("C-c l" . org-store-link))
+
+(use-package grep
+  :config
+  (with-eval-after-load 'evil
+	(evil-set-initial-state 'grep-mode 'normal)))
 
 (use-package wgrep :ensure t)
 
