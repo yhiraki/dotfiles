@@ -1215,7 +1215,7 @@ Version 2019-11-04"
 	(interactive) (org-call-with-arg 'org-todo 'right)
 	)
 
-  (evil-define-key 'insert org-mode-map
+  (evil-define-key '(normal insert) org-mode-map
 	(kbd "C-c d") org-download-map)
 
   (evil-define-key '(normal visual) org-mode-map
