@@ -1215,14 +1215,15 @@ Version 2019-11-04"
 	(interactive) (org-call-with-arg 'org-todo 'right)
 	)
 
+  (evil-define-key 'insert org-mode-map
+	(kbd "C-c d") org-download-map)
+
   (evil-define-key '(normal visual) org-mode-map
 	;; leader mapping
 	(kbd "<leader>/") 'my-outline
 
 	;; localleader mapping
-	(kbd "<localleader>dc") 'org-download-clipboard
-	(kbd "<localleader>dd") 'org-download-delete
-	(kbd "<localleader>ds") 'org-download-screenshot
+	(kbd "<localleader>d") org-download-map
 	(kbd "<localleader>f") 'whitespace-cleanup
 	(kbd "<localleader>i") 'org-clock-in
 	(kbd "<localleader>nb") 'org-narrow-to-block
@@ -1566,16 +1567,26 @@ Version 2019-11-04"
   (org-superstar-header-bullet ((t (:height 1.2))))
   (org-superstar-leading       ((t (:height 1.3))))
   )
+
 ;; (use-package org-modern :ensure t
 ;;   :quelpa (org-modern :fetcher github :repo "minad/org-modern")
 ;;   :hook (org-mode . org-modern-mode)
 ;;   )
 
 (use-package org-download :ensure t
+  :after org
   :custom
-  (org-download-screenshot-method "screencapture -i %s")
-  (org-download-image-dir (concat (file-name-as-directory org-directory) "images"))
   (org-download-heading-lvl nil)
+  (org-download-image-dir (concat (file-name-as-directory org-directory) "images"))
+  (org-download-screenshot-method "screencapture -i %s")
+
+  :config
+  (defvar org-download-map
+	(let ((map (make-sparse-keymap)))
+	  (define-key map "c" #'org-download-clipboard)
+	  (define-key map "d" #'org-download-delete)
+	  (define-key map "s" #'org-download-screenshot)
+	map))
   )
 
 (use-package org-mac-link
