@@ -1255,7 +1255,7 @@ Version 2019-11-04"
 	(kbd ">") 'org-metaright
 	(kbd "gh") 'outline-up-heading
 	(kbd "gp") 'outline-previous-heading
-	(kbd "TAB") 'org-cycle
+	[tab] 'org-cycle
 	)
 
   (evil-define-key '(normal insert visual) org-mode-map
