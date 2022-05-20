@@ -1375,27 +1375,33 @@ Version 2019-11-04"
 
 (use-package org-roam :ensure t
   :after (org evil)
-  :demand t
+  :demand t  ; completion-at-point on plain org-mode
   :hook
   (org-mode
    . (lambda ()
+	   (org-roam--register-completion-functions-h)
+	   (org-roam--replace-roam-links-on-save-h)
 	   (add-hook 'after-save-hook 'org-roam-db-sync nil t)))
   :custom
   (org-roam-completion-everywhere t)
   (org-roam-directory
-	(concat
-	 (file-name-as-directory org-directory)
-	 "roam"))
+   (concat
+	(file-name-as-directory org-directory)
+	"roam"))
   :bind-keymap
   ("C-c n d" . org-roam-dailies-map)
   :bind
-  ("C-c n i" . org-roam-node-insert)
   ("C-c n f" . org-roam-node-find)
   (:map org-mode-map
+		("C-c n a" . org-roam-alias-add)
+		("C-c n b" . org-roam-buffer-display-dedicated)
+		("C-c n i" . org-roam-node-insert)
+		("C-c n l" . org-roam-buffer-toggle)
+		("C-c n o" . org-id-get-create)
 		("C-M-i" . completion-at-point))
   :config
   (require 'org-roam-dailies)
-  (evil-define-key '(normal insert) 'global
+  (evil-define-key 'normal 'global
 	(kbd "<leader> n") 'org-roam-dailies-map
 	(kbd "<leader> n /") 'org-roam-node-find)
   )
