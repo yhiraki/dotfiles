@@ -1,0 +1,9 @@
+- apt:
+    pkg:
+      - coreutils
+      - direnv
+      - findutils
+      - gcc
+      - gnupg
+      - wget
+  become: yes
