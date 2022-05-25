@@ -107,6 +107,13 @@ Version 2019-11-04"
   )
 
 (use-package emacs
+  :hook
+  ((ansible
+	yaml-mode)
+   . (lambda ()
+	   (setq indent-tabs-mode nil)
+	   ))
+
   :config
 
 	;; autosave
