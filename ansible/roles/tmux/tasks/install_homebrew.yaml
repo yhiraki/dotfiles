@@ -1,0 +1,4 @@
+- name: install tmux
+  homebrew:
+    name:
+      - tmux
