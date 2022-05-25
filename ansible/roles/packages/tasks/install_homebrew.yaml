@@ -1,0 +1,19 @@
+- name: Install homebrew apps
+  homebrew:
+    name:
+      - coreutils
+      - direnv
+      - findutils
+      - gcc
+      - gibo
+      - gnu-sed
+      - gnu-tar
+      - gnupg
+      - grep
+      - terminal-notifier
+      - wget
+
+- name: Install casks
+  homebrew_cask:
+    name:
+      - karabiner-elements
