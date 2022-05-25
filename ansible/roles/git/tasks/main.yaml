@@ -1,14 +1,5 @@
 - name: Install git
-  apt:
-    pkg:
-      - git
-  tags: debian
-
-- name: Install git
-  homebrew:
-    name: git
-    state: present
-  tags: Darwin
+  include_tasks: "install_{{ ansible_pkg_mgr }}.yaml"
 
 - name: Get git root directory
   shell: git rev-parse --show-toplevel
