@@ -5,5 +5,6 @@
       - findutils
       - gcc
       - gnupg
+      - ripgrep
       - wget
   become: yes
