@@ -1,14 +1,4 @@
-- name: install zsh
-  apt:
-    pkg:
-      - zsh
-  tags: debian
-
-- name: install zsh
-  homebrew:
-    name: zsh
-    state: present
-  tags: Darwin
+- include_tasks: "install_{{ ansible_pkg_mgr }}.yaml"
 
 - file:
     path: "~/.config/zsh"
