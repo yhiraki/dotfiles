@@ -1,14 +1,4 @@
-- name: install tmux
-  apt:
-    pkg:
-      tmux
-  tags: debian
-
-- name: install tmux
-  homebrew:
-    name: tmux
-    state: present
-  tags: Darwin
+- include_tasks: "install_{{ ansible_pkg_mgr }}.yaml"
 
 - file:
     src: "{{ dotfiles_dir }}/{{ item }}"
