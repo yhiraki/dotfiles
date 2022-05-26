@@ -11,6 +11,7 @@
       - gnupg
       - grep
       - ripgrep
+      - skhd
       - terminal-notifier
       - wget
 
