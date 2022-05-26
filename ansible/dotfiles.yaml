@@ -3,15 +3,22 @@
   hosts: localhost
   connection: local
   roles:
-    - role: emacs
+    - role: yhiraki.emacs
       emacs_version: 28.1
       install_prefix: /usr/local
-    - git
-    - go
-    - os
-    - tmux
+      build_options: |
+        --with-gif=ifavailable
+        --with-jpeg=ifavailable
+        --with-tiff=ifavailable
+        --with-x-toolkit=no
+        --with-xpm=ifavailable
     - role: yhiraki.python
       python_version: 3.10.2
       install_prefix: /usr/local
-    - zsh
-    - zsh-tools
+    - role: emacs
+    - role: git
+    - role: go
+    - role: os
+    - role: tmux
+    - role: zsh
+    - role: zsh-tools
