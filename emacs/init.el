@@ -544,6 +544,7 @@ Version 2019-11-04"
   )
 
 (use-package vterm :ensure t
+  :if window-system
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
