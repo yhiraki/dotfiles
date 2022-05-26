@@ -554,19 +554,17 @@ Version 2019-11-04"
   (evil-define-key 'emacs vterm-mode-map
 	(kbd "C-x") 'vterm-send-C-x
 	(kbd "C-c") 'vterm-send-C-c)
-  )
 
-(use-package vterm-toggle :ensure t
-  :custom
-  (vterm-toggle-scope 'project)
-
-  :after evil
-  :config
-  (evil-define-key 'emacs vterm-mode-map
-	(kbd "M-t") 'vterm-toggle-cd)
-  (evil-define-key '(normal visual) 'global
-	(kbd "M-t") 'vterm-toggle-cd)
-  )
+  (use-package vterm-toggle :ensure t
+	:custom
+	(vterm-toggle-scope 'project)
+	:after evil
+	:config
+	(evil-define-key 'emacs vterm-mode-map
+	  (kbd "M-t") 'vterm-toggle-cd)
+	(evil-define-key '(normal visual) 'global
+	  (kbd "M-t") 'vterm-toggle-cd)
+	))
 
 (use-package flycheck :ensure t
   :after evil
