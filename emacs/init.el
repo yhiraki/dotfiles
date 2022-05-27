@@ -1184,7 +1184,7 @@ Version 2019-11-04"
      (sequence "|" "CANCELLED(c@)")
      (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
-  (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width
+  (org-image-actual-width '(500))  ; to use #+ATTR_ORG: :width or fixed width
 
   :after evil
   :config
