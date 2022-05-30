@@ -1387,8 +1387,9 @@ Version 2019-11-04"
    . (lambda ()
 	   (org-roam--register-completion-functions-h)
 	   (org-roam--replace-roam-links-on-save-h)
-	   (add-hook 'after-save-hook 'org-roam-db-sync nil t)))
+	   ))
   :custom
+  (org-roam-db-update-on-save t)
   (org-roam-completion-everywhere t)
   (org-roam-directory
    (concat
