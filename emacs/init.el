@@ -355,21 +355,9 @@ Version 2019-11-04"
   (require-final-newline t)
   :config
   (setq save-silently t)
-  (let ((value
-		 (list
-		  "/bin"
-		  "/opt/homebrew/bin"
-		  "/sbin"
-		  "/usr/bin"
-		  "/usr/local/bin"
-		  "/usr/sbin"
-		  (expand-file-name "~/.local/bin")
-		  (expand-file-name "~/bin")
-		  )))
-	(setq exec-path value)
-	(setq eshell-path-env value)
-	)
   )
+
+(use-package exec-path-from-shell :ensure t)
 
 ;; (use-package osx-trash :ensure t
 ;;   :when darwin-p
