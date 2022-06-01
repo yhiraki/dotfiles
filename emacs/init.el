@@ -2344,6 +2344,7 @@ Version 2019-11-04"
   ;; (define-key key-translation-map [?\C-\[] [?\C-?])
   ;; (global-set-key (kbd "C-h") 'delete-backward-char)
   (global-set-key (kbd "C-\\") nil)
+  (global-set-key (kbd "s-t") nil)
   )
 
 (use-package rocket-chat-post
