@@ -794,6 +794,11 @@ Version 2019-11-04"
   (lsp-org-babel-enable "typescript")
 
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
+
+  (evil-define-key 'normal lsp-mode-map
+	(kbd "<localleader>f") 'lsp-format-buffer)
+  (evil-define-key 'visual lsp-mode-map
+	(kbd "<localleader>f") 'lsp-format-region)
   )
 
 (use-package lsp-vetur
