@@ -743,6 +743,7 @@ Version 2019-11-04"
   (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
+  ;; (lsp-completion-provider :none)  ; for corfu
 
   :config
   ;; https://github.com/seagle0128/.emacs.d/blob/50d9de85ba4ff2aa5daa2603d366cde2f3e89242/lisp/init-lsp.el#L426-L458
@@ -850,6 +851,32 @@ Version 2019-11-04"
   (:map lsp-ui-peek-mode-map
         ("j" . lsp-ui-peek--select-next)
         ("k" . lsp-ui-peek--select-prev)))
+
+(use-package corfu :ensure t :disabled
+  :after evil
+  :custom
+  (corfu-cycle t)
+  ;; (corfu-separator ?\s)
+  (corfu-preselect-first nil)
+  :bind
+  (:map corfu-map
+		("C-n" . corfu-next)
+		("C-p" . corfu-previous)
+		("C-SPC" . corfu-insert-separator)
+		)
+  :init
+  (global-corfu-mode)
+  :config
+  (evil-make-overriding-map corfu-map)
+  (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
+  (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
+  )
+
+(use-package cape :ensure t :disabled
+  :config
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  )
 
 (use-package company :ensure t
   :diminish company-mode
