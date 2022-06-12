@@ -694,14 +694,8 @@ Version 2019-11-04"
       (concat dirname (file-name-nondirectory FILE))))
   )
 
-(use-package undo-fu :ensure t)
-
-(use-package undo-fu-session :ensure t
-  :after undo-fu
-  :config (global-undo-fu-session-mode)
-  :custom
-  (undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
-  )
+(use-package undohist :ensure t
+  :config (undohist-initialize))
 
 (use-package pangu-spacing :ensure t
   :hook
@@ -1898,7 +1892,8 @@ Version 2019-11-04"
   :custom
   (evil-ex-search-vim-style-regexp t)
   (evil-toggle-key "C-M-z")
-  (evil-undo-system 'undo-fu)
+  (evil-undo-system 'undo-redo)
+  (evil-want-fine-undo t)
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
   (evil-want-keybinding nil)
