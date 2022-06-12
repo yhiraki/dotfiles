@@ -1967,7 +1967,7 @@ Version 2019-11-04"
   :config
   (evil-collection-init
    '(
-	 (occur replace)
+	 replace
 	 (package-menu package)
 	 dired
 	 flycheck
