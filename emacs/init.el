@@ -1629,9 +1629,11 @@ Version 2019-11-04"
   )
 
 (use-package org-mac-link
+  :if darwin-p
+  :quelpa (org-mac-link :fetcher gitlab :repo "aimebertrand/org-mac-link")
   :bind
   (:map org-mode-map
-        ("C-c g" . org-mac-grab-link)
+        ("C-c g" . org-mac-link-get-link)
         ))
 
 (use-package ox-confluence
