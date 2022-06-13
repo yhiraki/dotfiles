@@ -18,7 +18,6 @@
     - role: emacs
     - role: git
     - role: go
-    - role: os
     - role: tmux
     - role: zsh
     - role: zsh-tools
