@@ -695,6 +695,8 @@ Version 2019-11-04"
   )
 
 (use-package undohist :ensure t
+  :custom
+  (undohist-ignored-files '("\\.git/COMMIT_EDITMSG$"))
   :config (undohist-initialize))
 
 (use-package pangu-spacing :ensure t
