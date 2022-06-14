@@ -60,6 +60,8 @@
   :custom (quelpa-update-melpa-p nil)
   :config (quelpa-use-package-activate-advice))
 
+(use-package general :ensure t)
+
 (use-package user-defined-functions :no-require
   :config
   (defun my-open-in-external-app (&optional @fname)
@@ -466,20 +468,18 @@ Version 2019-11-04"
 (use-package f :ensure t)
 
 (use-package dired
-  :after evil
   :hook
   (dired-mode . dired-hide-details-mode)
-  (dired-mode . my-set-evil-dired-mode-map)  ; dired-mode keybind is buffer-local
-  :config
-  (defun my-set-evil-dired-mode-map ()
-	(evil-define-key '(normal visual) dired-mode-map
-	  (kbd "C-j") 'dired-next-dirline
-	  (kbd "C-k") 'dired-prev-dirline
-	  (kbd "C-c C-o") 'my-open-in-external-app
-	  (kbd "q") 'kill-current-buffer
-	  (kbd "r") 'revert-buffer
-	  (kbd "SPC") nil)
-	)
+  :general
+  (:keymaps
+   'dired-mode-map
+   :states '(normal visual)
+   "C-j" #'dired-next-dirline
+   "C-k" #'dired-prev-dirline
+   "C-c C-o" #'my-open-in-external-app
+   "q" #'kill-current-buffer
+   "r" #'revert-buffer
+   "SPC" nil)
   )
 
 (use-package dired-filter :ensure t)
