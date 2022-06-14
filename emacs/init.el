@@ -1922,6 +1922,8 @@ Version 2019-11-04"
 		)
 
   (:map evil-insert-state-map
+		("C-n" . 'completion-at-point)
+		("C-p" . 'completion-at-point)
 		("C-u" . (lambda ()
 				   (interactive)
 				   (evil-delete (point-at-bol) (point))))
