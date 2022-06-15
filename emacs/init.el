@@ -1351,7 +1351,7 @@ Version 2019-11-04"
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files (list org-directory "~/org/roam/" "~/org/roam/daily"))
+  (org-agenda-files (list org-directory "~/org/roam/daily"))
   (org-agenda-span 'week)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
