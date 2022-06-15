@@ -361,13 +361,6 @@ Version 2019-11-04"
 
 (use-package exec-path-from-shell :ensure t)
 
-;; (use-package osx-trash :ensure t
-;;   :when darwin-p
-;;   :config
-;;   (setq delete-by-moving-to-trash t)
-;;   ; also needs to set (trash-directory "~/.Trash") in files.el
-;;   (osx-trash-setup))
-
 (use-package find-large-file :no-require
   ;; 巨大なファイルを開いたときに fundamental mode にする
   :hook (find-file . conditional-disable-modes)
@@ -399,10 +392,6 @@ Version 2019-11-04"
 (use-package eldoc
   :diminish eldoc-mode
   :hook ((emacs-lisp-mode-hook lisp-mode-hook) . eldoc-mode)
-  )
-
-(use-package rainbow-delimiters :ensure t :disabled
-  :hook (prog-mode . rainbow-delimiters-mode)
   )
 
 (use-package which-key :ensure t
@@ -600,30 +589,6 @@ Version 2019-11-04"
 
 (use-package git-timemachine :ensure t)
 
-(use-package git-gutter+ :ensure t :disabled
-  :diminish
-
-  :custom
-  (git-gutter+-added-sign "┃")
-  (git-gutter+-deleted-sign "▔")
-  (git-gutter+-modified-sign "┃")
-
-  :custom-face
-  (git-gutter+-modified ((t (:italic nil :underline nil :foreground "orange"))))
-  (git-gutter+-deleted ((t (:italic nil :underline nil :foreground "red"))))
-  (git-gutter+-added ((t (:italic nil :underline nil :foreground "green"))))
-
-  :after evil
-  :config
-  (evil-define-key '(normal visual) 'global
-	(kbd "<localleader>gg") 'git-gutter+-mode)
-  (evil-define-key '(normal visual) 'git-gutter+-mode
-	(kbd "[g") 'git-gutter+-previous-hunk
-	(kbd "]g") 'git-gutter+-next-hunk
-	(kbd "<localleader>gr") 'git-gutter+-revert-hunks
-	(kbd "<localleader>gs") 'git-gutter+-stage-hunks)
-  )
-
 (use-package diff-hl :ensure t
   :after evil
   :config
@@ -804,16 +769,6 @@ Version 2019-11-04"
   (lsp-vetur-format-default-formatter-js "eslint")
   )
 
-(use-package lsp-pyls :disabled
-  :hook (python-mode . lsp)
-  :custom
-  (lsp-pyls-plugins-flake8-enabled t)
-  (lsp-pyls-plugins-jedi-completion-include-params nil)
-  (lsp-pyls-plugins-pylint-enabled nil)
-  (lsp-pyls-plugins-yapf-enabled t)
-  (lsp-pyls-plugins-autopep8-enabled nil)
-  )
-
 (use-package lsp-pyright :ensure t
   :custom
   (lsp-pyright-python-executable-cmd "python3")
@@ -953,22 +908,11 @@ Version 2019-11-04"
         )
   )
 
-(use-package company-box :ensure t :disabled
-  :hook (company-mode . company-box-mode)
-  :custom
-  (company-box-icons-alist 'company-box-icons-all-the-icons)
-  )
-
 (use-package company-statistics :ensure t
   :hook (company-mode . company-statistics-mode)
   :custom
   (company-statistics-file "~/.cache/emacs/company-statistics-cache.el")
   (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
-  )
-
-(use-package company-tabnine :ensure t :disabled  ; リソースを食うので停止
-  :config
-  (add-to-list 'company-backends #'company-tabnine)
   )
 
 (use-package company-restclient :ensure t
@@ -1050,11 +994,6 @@ Version 2019-11-04"
     (hs-minor-mode)
     (when (> (count-lines (point-min) (point-max)) (frame-height))
       (hs-hide-all)))
-  )
-
-(use-package elisp-mode
-  :mode
-  ("\\.el\\'" . emacs-lisp-mode)
   )
 
 (use-package clang-format :ensure t
@@ -1551,9 +1490,6 @@ Version 2019-11-04"
 (use-package ob-async :ensure t
   :after ob)
 
-(use-package ob-ipython :ensure t :disabled
-  :after ob)
-
 (use-package ob-js
   :config
   (setq org-babel-js-function-wrapper
@@ -1582,20 +1518,6 @@ Version 2019-11-04"
 	 ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
 	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
 	 ))
-
-  :after evil
-  :config
-  (defun my-org-daily-journal-file ()
-	(concat
-	 (file-name-as-directory org-directory)
-	 "journals/"
-	 (format-time-string "%Y-%m-%d.org" (current-time))))
-  (defun my-open-todays-journal ()
-	(interactive)
-	(find-file (my-org-daily-journal-file)))
-
-  (evil-define-key '(normal insert) 'global
-	(kbd "<leader> oo") 'my-open-todays-journal)
   )
 
 (use-package org-checklist
@@ -1618,11 +1540,6 @@ Version 2019-11-04"
   (org-superstar-header-bullet ((t (:height 1.2))))
   (org-superstar-leading       ((t (:height 1.3))))
   )
-
-;; (use-package org-modern :ensure t
-;;   :quelpa (org-modern :fetcher github :repo "minad/org-modern")
-;;   :hook (org-mode . org-modern-mode)
-;;   )
 
 (use-package org-download :ensure t
   :after org
@@ -1817,36 +1734,6 @@ Version 2019-11-04"
   :hook (plantuml-mode . flycheck-plantuml-setup)
   )
 
-(use-package web-mode :ensure t
-  :custom
-  (web-mode-attr-indent-offset nil)
-  (web-mode-code-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-enable-current-column-highlight t)
-  (web-mode-enable-current-element-highlight t)
-  (web-mode-markup-indent-offset 2)
-  (web-mode-sql-indent-offset 2)
-  (web-mode-style-padding 0)
-  (web-mode-script-padding 0)
-
-  :mode
-  ("\\.[agj]sp\\'" . web-mode)
-  ("\\.as[cp]x\\'" . web-mode)
-  ("\\.djhtml\\'" . web-mode)
-  ("\\.erb\\'" . web-mode)
-  ("\\.html?\\'" . web-mode)
-  ("\\.mustache\\'" . web-mode)
-  ("\\.tpl\\.php\\'" . web-mode)
-  ;; ("\\.vue\\'" . web-mode)
-
-  :after evil
-  :config
-  (evil-define-key 'normal web-mode-map
-	(kbd "<localleader>R") 'web-mode-element-rename
-	(kbd "zc") 'web-mode-fold-or-unfold
-	(kbd "zo") 'web-mode-fold-or-unfold)
-  )
-
 (use-package vue-mode :ensure t
   :hook
   (vue-mode
@@ -1876,9 +1763,6 @@ Version 2019-11-04"
 	(kbd "<localleader>e") 'flycheck-list-errors)
   )
 
-(use-package flycheck-yamllint :ensure t
-  :hook (yaml-mode . flycheck-yamllint-setup))
-
 (use-package vimrc-mode :ensure t)
 
 (use-package emmet-mode :ensure t
@@ -1887,11 +1771,6 @@ Version 2019-11-04"
   :custom
   (emmet-indent-after-insert nil)
 )
-
-(use-package text-mode
-  :mode
-  ("\\.qrinput\\'" . text-mode)
-  )
 
 (use-package smartrep :ensure t
   :after evil
