@@ -701,6 +701,7 @@ Version 2019-11-04"
   (lsp-auto-guess-root t)
   (lsp-clients-go-server "gopls")
   (lsp-clients-javascript-typescript-server "typescript-language-server")
+  (lsp-enable-file-watchers nil)  ;; file watcher is too slow
   (lsp-enable-snippet nil)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 1)
