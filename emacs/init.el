@@ -56,9 +56,21 @@
 (setq use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
 
-(use-package quelpa-use-package :ensure t
-  :custom (quelpa-update-melpa-p nil)
-  :config (quelpa-use-package-activate-advice))
+(use-package straight :no-require
+  :config
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+		 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+		(bootstrap-version 5))
+	(unless (file-exists-p bootstrap-file)
+	  (with-current-buffer
+		  (url-retrieve-synchronously
+		   "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+		   'silent 'inhibit-cookies)
+		(goto-char (point-max))
+		(eval-print-last-sexp)))
+	(load bootstrap-file nil 'nomessage))
+  )
 
 (use-package general :ensure t)
 
@@ -1532,7 +1544,7 @@ Version 2019-11-04"
 
 (use-package org-mac-link
   :if darwin-p
-  :quelpa (org-mac-link :fetcher gitlab :repo "aimebertrand/org-mac-link")
+  :straight (org-mac-link :host gitlab :repo "aimebertrand/org-mac-link")
   :bind
   (:map org-mode-map
         ("C-c g" . org-mac-link-get-link)
@@ -2210,7 +2222,7 @@ Version 2019-11-04"
 	)
 
   (use-package ivy-ghq
-	:quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
+	:straight (ivy-ghq :host github :repo "analyticd/ivy-ghq")
 	:commands (ivy-ghq-open my-ghq)
 	:config
 	(defalias 'my-ghq 'ivy-ghq-open)
