@@ -460,21 +460,20 @@ Version 2019-11-04"
   :hook
   (dired-mode . dired-hide-details-mode)
   :general
-  (:keymaps
-   'dired-mode-map
-   :states '(normal visual)
-   "C-j" #'dired-next-dirline
-   "C-k" #'dired-prev-dirline
-   "C-c C-o" #'my-open-in-external-app
-   "q" #'kill-current-buffer
-   "r" #'revert-buffer
-   "SPC" nil)
+  (:keymaps 'dired-mode-map
+			:states '(normal visual)
+			"C-j" #'dired-next-dirline
+			"C-k" #'dired-prev-dirline
+			"C-c C-o" #'my-open-in-external-app
+			"q" #'kill-current-buffer
+			"r" #'revert-buffer
+			"SPC" nil)
   )
 
 (use-package dired-filter :ensure t)
 
 (use-package dired-subtree :ensure t
-  :after (dired evil)
+  :after dired
 
   :config
   ;; for all-the-icons
@@ -488,11 +487,6 @@ Version 2019-11-04"
     (dired-subtree-remove)
     (revert-buffer))
 
-  :config
-  (evil-define-key '(normal visual) dired-mode-map
-	(kbd "l") 'my-dired-subtree-insert
-	(kbd "h") 'my-dired-subtree-remove)
-
   :custom-face
   (dired-subtree-depth-1-face ((t (:background nil))))
   (dired-subtree-depth-2-face ((t (:background nil))))
@@ -500,10 +494,15 @@ Version 2019-11-04"
   (dired-subtree-depth-4-face ((t (:background nil))))
   (dired-subtree-depth-5-face ((t (:background nil))))
   (dired-subtree-depth-6-face ((t (:background nil))))
+
+  :general
+  (:keymaps 'dired-mode-map
+			:states '(normal visual)
+			"l" #'my-dired-subtree-insert
+			"h" #'my-dired-subtree-remove)
   )
 
 (use-package dired-sidebar :ensure t
-  :after dired-subtree
   :commands (dired-sidebar-toggle-sidebar)
   )
 
@@ -513,38 +512,33 @@ Version 2019-11-04"
 (use-package wdired
   :commands (wdired-change-to-wdired-mode)
   :custom (wdired-allow-to-change-permissions t)
-
-  :bind
-  (:map  dired-mode-map
-		 ("e" . 'wdired-change-to-wdired-mode)
-		 )
   )
 
 (use-package vterm :ensure t
-  :if window-system
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
-  :after evil
+  :general
+  (:keymaps 'vterm-mode-map
+			:states 'emacs
+			"C-x" #'vterm-send-C-x
+			"C-c" #'vterm-send-C-c)
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
-  (evil-define-key 'emacs vterm-mode-map
-	(kbd "C-x") 'vterm-send-C-x
-	(kbd "C-c") 'vterm-send-C-c)
+  )
 
-  (use-package vterm-toggle :ensure t
-	:custom
-	(vterm-toggle-scope 'project)
-	:after evil
-	:config
-	(evil-define-key 'emacs vterm-mode-map
-	  (kbd "M-t") 'vterm-toggle-cd)
-	(evil-define-key '(normal visual) 'global
-	  (kbd "M-t") 'vterm-toggle-cd)
-	))
+(use-package vterm-toggle :ensure t
+  :custom
+  (vterm-toggle-scope 'project)
+  :general
+  (:states '(normal visual)
+		   "M-t" #'vterm-toggle-cd)
+  (:keymaps 'vterm-mode-map
+			:states 'emacs
+			"M-t" #'vterm-toggle-cd)
+  )
 
 (use-package flycheck :ensure t
-  :after evil
   :hook
   ((
 	markdown-mode
@@ -562,16 +556,19 @@ Version 2019-11-04"
   (flycheck-add-next-checker 'markdown-markdownlint-cli 'textlint)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-mode 'javascript-eslint 'css-mode)
-
-  (evil-define-key '(normal visual) flycheck-mode-map
-	(kbd "<localleader>e") 'flycheck-list-errors)
+  :general
+  (:keymaps 'flycheck-mode-map
+		   :states '(normal visual)
+		   "<localleader>e" #'flycheck-list-errors
+		   "[e" #'flycheck-previous-error
+		   "]e" #'flycheck-next-error
+		   )
   )
 
 (use-package posframe :ensure t
   :if window-system
   :config
   (use-package flycheck-posframe :ensure t
-	:after flycheck
 	:hook (flycheck-mode . flycheck-posframe-mode))
   )
 
@@ -590,42 +587,39 @@ Version 2019-11-04"
 (use-package git-timemachine :ensure t)
 
 (use-package diff-hl :ensure t
-  :after evil
-  :config
-  (evil-define-key '(normal visual) 'global
-	(kbd "<localleader>gg") 'diff-hl-mode)
-  (evil-define-key '(normal visual) 'diff-hl-mode-map
-	(kbd "[g") 'diff-hl-previous-hunk
-	(kbd "]g") 'diff-hl-next-hunk
-	(kbd "<localleader>gr") 'diff-hl-revert-hunk
-	(kbd "<localleader>gs") 'diff-hl-stage-current-hunk)
+  :general
+  (:states '(normal visual)
+		   "<localleader>gg" #'diff-hl-mode
+		   "<localleader>gr" #'diff-hl-revert-hunk
+		   "<localleader>gs" #'diff-hl-stage-current-hunk)
+  (:keymaps 'diff-hl-mode-map
+			:states '(normal visual)
+			"[g" #'diff-hl-previous-hunk
+			"]g" #'diff-hl-next-hunk)
   )
 
 (use-package git-messenger :ensure t
   :commands git-messenger:popup-message)
 
-(use-package gist :ensure
-  :after evil
+(use-package gist :ensure t
   :config
   (evil-set-initial-state 'gist-list-mode 'insert)
-  (evil-define-key 'normal gist-list-menu-mode-map
-	(kbd "RET") 'gist-fetch-current
-	(kbd "*") 'gist-star
-	(kbd "+") 'gist-add-buffer
-	(kbd "-") 'gist-remove-file
-	(kbd "^") 'gist-unstar
-	(kbd "b") 'gist-browse-current-url
-	(kbd "e") 'gist-edit-current-description
-	(kbd "f") 'gist-fork
-	(kbd "r") 'gist-list-reload
-	(kbd "K") 'gist-kill-current
-	(kbd "y") 'gist-print-current-url
-	(kbd "<tab>") 'gist-fetch-current-noselect
-	(kbd "q") 'quit-window
-	;; ("/p" gist-list-push-visibility-limit)
-	;; ("/t" gist-list-push-tag-limit)
-	;; ("/w" gist-list-pop-limit)
-	)
+  :general
+  (:keymaps 'gist-list-menu-mode-map
+		   :states '(normal visual)
+		   "RET" #'gist-fetch-current
+		   "*" #'gist-star
+		   "+" #'gist-add-buffer
+		   "-" #'gist-remove-file
+		   "^" #'gist-unstar
+		   "b" #'gist-browse-current-url
+		   "e" #'gist-edit-current-description
+		   "f" #'gist-fork
+		   "r" #'gist-list-reload
+		   "K" #'gist-kill-current
+		   "y" #'gist-print-current-url
+		   "<tab>" #'gist-fetch-current-noselect
+		   "q" #'quit-window)
   )
 
 (use-package browse-at-remote :ensure t)
@@ -756,10 +750,16 @@ Version 2019-11-04"
 
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
 
-  (evil-define-key 'normal lsp-mode-map
-	(kbd "<localleader>f") 'lsp-format-buffer)
-  (evil-define-key 'visual lsp-mode-map
-	(kbd "<localleader>f") 'lsp-format-region)
+  :general
+  (:keymaps 'lsp-mode-map
+			:states '(normal visual)
+			"<localleader>R" #'lsp-rename)
+  (:keymaps 'lsp-mode-map
+			:states 'normal
+			"<localleader>f" #'lsp-format-buffer)
+  (:keymaps 'lsp-mode-map
+			:states 'visual
+			"<localleader>f" #'lsp-format-region)
   )
 
 (use-package lsp-vetur
@@ -779,12 +779,13 @@ Version 2019-11-04"
 	   (require 'lsp-pyright)
 	   (lsp)))
 
-  :after evil
-  :config
-  (evil-define-key 'normal python-mode-map
-	(kbd "<localleader>f") 'python-black-buffer)
-  (evil-define-key 'visual python-mode-map
-	(kbd "<localleader>f") 'python-black-region)
+  :general
+  (:keymaps 'python-mode-map
+			:states 'normal
+			"<localleader>f" #'python-black-buffer)
+  (:keymaps 'python-mode-map
+			:states 'visual
+			"<localleader>f" #'python-black-region)
   )
 
 (use-package lsp-go
@@ -803,7 +804,8 @@ Version 2019-11-04"
   :bind
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . #'lsp-ui-peek-find-definitions)
-        ([remap xref-find-references] . #'lsp-ui-peek-find-references))
+		([remap xref-find-references] . #'lsp-ui-peek-find-references)
+		("<localleader>m" . #'lsp-ui-imenu))
   (:map lsp-ui-peek-mode-map
         ("j" . lsp-ui-peek--select-next)
         ("k" . lsp-ui-peek--select-prev)))
@@ -969,6 +971,14 @@ Version 2019-11-04"
 	(save-buffer))
   (ad-activate 'quickrun)
   (ad-activate 'quickrun-region)
+
+  :general
+  (:keymaps 'prog-mode-map
+			:states 'normal
+			"<localleader>r" #'quickrun)
+  (:keymaps 'prog-mode-map
+			:states 'visual
+			(kbd "<localleader>r") #'quickrun-region)
   )
 
 (use-package annotate :ensure t)
@@ -999,17 +1009,7 @@ Version 2019-11-04"
 (use-package clang-format :ensure t
   :commands clang-format-buffer)
 
-(use-package go-mode :ensure t
-  :mode ("\\.go\\'" . go-mode)
-
-  :custom
-  (gofmt-command "goimports")
-
-  :after evil
-  :config
-  (evil-define-key '(normal visual) go-mode-map
-	(kbd "<localleader>f") 'gofmt)
-  )
+(use-package go-mode :ensure t)
 
 (use-package go-eldoc :ensure t
   :hook (go-mode . go-eldoc-setup)
@@ -1018,11 +1018,7 @@ Version 2019-11-04"
 (use-package protobuf-mode :ensure t)
 
 (use-package js
-  :custom
-  (js-indent-level 2)
-  :mode
-  ("\\.js\\'" . js-mode)
-  ("\\.jsx\\'" . js-jsx-mode)
+  :custom (js-indent-level 2)
   )
 
 (use-package css-mode
@@ -1052,12 +1048,7 @@ Version 2019-11-04"
 (use-package prettier-js :ensure t
   :commands prettier-js)
 
-(use-package json-mode :ensure t
-  :after evil
-  :config
-  (evil-define-key '(normal visual) json-mode-map
-	(kbd "<localleader>f") 'json-pretty-print-buffer)
-  )
+(use-package json-mode :ensure t)
 
 (use-package markdown-mode :ensure t
   :commands markdown-toggle-markup-hiding
@@ -1074,43 +1065,23 @@ Version 2019-11-04"
   :mode
   ("README\\.md\\'" . gfm-mode)
 
-  :after evil
-  :config
-  (mapcar
-   #'(lambda (map)
-	   (evil-define-key '(normal visual) markdown-mode-map
-		 (kbd "zo") '(lambda () (interactive) (outline-show-children) (outline-show-entry))
-		 (kbd "zc") 'outline-hide-subtree
-		 (kbd "TAB") 'markdown-cycle
-		 (kbd "<localleader>f") 'prettier-js
-		 ))
-   (list markdown-mode-map gfm-mode-map))
+  :general
+  (:keymaps '(markdown-mode-map gfm-mode-map)
+			:states '(normal visual)
+			"zo" #'(lambda () (interactive) (outline-show-children) (outline-show-entry))
+			"zc" #'outline-hide-subtree
+			"TAB" #'markdown-cycle
+			"<localleader>f" #'prettier-js)
   )
 
 (use-package terraform-mode :ensure t)
 
 (use-package prog-mode
-  :after evil
-  :config
-  (evil-define-key '(normal visual) prog-mode-map
-	(kbd "[e") 'flycheck-previous-error
-	(kbd "]e") 'flycheck-next-error
-
-	(kbd "gd") 'xref-find-definitions
-	(kbd "gr") 'xref-find-references
-
-	(kbd "<localleader>R") 'lsp-rename
-	(kbd "<localleader>f") 'lsp-format-buffer
-	(kbd "<localleader>m") 'lsp-ui-imenu
-	(kbd "<localleader>qa") 'quickrun-autorun-mode
-	(kbd "<localleader>qc") 'quickrun-compile-only
-	(kbd "<localleader>qs") 'quickrun-shell)
-  (evil-define-key 'normal prog-mode-map
-	(kbd "<localleader>qr") 'quickrun
-	(kbd "<localleader>r") 'quickrun)
-  (evil-define-key 'visual prog-mode-map
-	(kbd "<localleader>qr") 'quickrun-region
-	(kbd "<localleader>r") 'quickrun-region)
+  :general
+  (:keymaps 'prog-mode-map
+			:states '(normal visual)
+			"gd" #'xref-find-definitions
+			"gr" #'xref-find-references)
   )
 
 (use-package executable
@@ -1345,7 +1316,7 @@ Version 2019-11-04"
   )
 
 (use-package org-roam :ensure t
-  :after (org evil)
+  :after evil
   :demand t  ; completion-at-point on plain org-mode
   :hook
   (org-mode
@@ -1376,11 +1347,12 @@ Version 2019-11-04"
 		("C-c n l" . org-roam-buffer-toggle)
 		("C-c n o" . org-id-get-create)
 		("C-M-i" . completion-at-point))
+  :general
+  (:states '(normal visual)
+		   "<leader> n" #'org-roam-dailies-map
+		   "<leader> n /" #'org-roam-node-find)
   :config
   (require 'org-roam-dailies)
-  (evil-define-key 'normal 'global
-	(kbd "<leader> n") 'org-roam-dailies-map
-	(kbd "<leader> n /") 'org-roam-node-find)
   )
 
 (use-package japanese-holidays :ensure t
@@ -1635,12 +1607,13 @@ Version 2019-11-04"
   )
 
 (use-package py-isort :ensure t
-  :after evil
-  :config
-  (evil-define-key 'normal python-mode-map
-	(kbd "<localleader>i") 'py-isort-buffer)
-  (evil-define-key 'visual python-mode-map
-	(kbd "<localleader>i") 'py-isort-region)
+  :general
+  (:keymaps 'python-mode-map
+			:states 'normal
+			"<localleader>i" #'py-isort-buffer)
+  (:keymaps 'python-mode-map
+			:states 'visual
+			"<localleader>i" #'py-isort-region)
   )
 
 (use-package sh-script
@@ -1651,12 +1624,13 @@ Version 2019-11-04"
   (sh-indent-for-case-alt '+))
 
 (use-package shfmt :ensure t
-  :after evil
-  :config
-  (evil-define-key 'normal sh-mode-map
-	(kbd "<localleader>f") 'shfmt-buffer)
-  (evil-define-key 'visual sh-mode-map
-	(kbd "<localleader>f") 'shfmt-region)
+  :general
+  (:keymaps 'sh-mode-map
+			:states 'normal
+			"<localleader>f" #'shfmt-buffer)
+  (:keymaps 'sh-mode-map
+			:states 'visual
+			"<localleader>f" #'shfmt-region)
 
   :custom
   (shfmt-arguments '("-i" "2" "-ci"))
@@ -1743,10 +1717,10 @@ Version 2019-11-04"
        ))
   (vue-mode . lsp)
 
-  :after evil
   :config
-  (evil-define-key '(normal visual) vue-mode-map
-	(kbd "<localleader>f") 'eslint-fix)
+  (:keymaps 'vue-mode-map
+			:states '(normal visual)
+			"<localleader>f" #'eslint-fix)
   )
 
 (use-package mmm-mode
@@ -1755,13 +1729,7 @@ Version 2019-11-04"
   (mmm-submode-decoration-level 0)
   )
 
-(use-package yaml-mode :ensure t
-  :after evil
-  :config
-  (evil-define-key '(normal visual) yaml-mode-map
-	(kbd "C-m") 'newline-and-indent
-	(kbd "<localleader>e") 'flycheck-list-errors)
-  )
+(use-package yaml-mode :ensure t)
 
 (use-package vimrc-mode :ensure t)
 
@@ -1775,10 +1743,6 @@ Version 2019-11-04"
 (use-package smartrep :ensure t
   :after evil
   :config
-  (smartrep-define-key evil-normal-state-map
-	  "C-c" '(("+" . 'evil-numbers/inc-at-pt)
-			  ("=" . 'evil-numbers/inc-at-pt)
-			  ("-" . 'evil-numbers/dec-at-pt)))
   (smartrep-define-key evil-normal-state-map
 	  "C-w" '(("+" . 'evil-window-increase-height)
 			  ("-" . 'evil-window-decrease-height)
@@ -1915,18 +1879,13 @@ Version 2019-11-04"
   :config (evil-lion-mode))
 
 (use-package evil-numbers :ensure t
-  :after evil
-  :bind
-  (:map evil-normal-state-map
-        ("C-a" . evil-numbers/inc-at-pt)
-        ("C-x" . evil-numbers/dec-at-pt)
-        )
-  (:map evil-visual-state-map
-        ("C-a" . 'evil-numbers/inc-at-pt)
-        ("C-x" . 'evil-numbers/dec-at-pt)
-        ("g C-a" . 'evil-numbers/inc-at-pt-incremental)
-        ("g C-x" . 'evil-numbers/dec-at-pt-incremental)
-        ))
+  :general
+  (:states '(normal visual)
+		   "C-a" #'evil-numbers/inc-at-pt
+		   "C-x" #'evil-numbers/dec-at-pt
+		   "g C-a" #'evil-numbers/inc-at-pt-incremental
+		   "g C-x" #'evil-numbers/dec-at-pt-incremental)
+  )
 
 (use-package evil-goggles :ensure t
   :after evil
@@ -2187,8 +2146,7 @@ Version 2019-11-04"
 	(completion-category-overrides '((file (styles partial-completion))))
 	)
 
-  (use-package orderless :ensure t
-	)
+  (use-package orderless :ensure t)
 
   (use-package marginalia :ensure t
 	:hook (after-init . marginalia-mode))
