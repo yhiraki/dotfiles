@@ -181,10 +181,8 @@ Version 2019-11-04"
   (scroll-bar-mode -1)
   )
 
-(use-package smooth-scrolling :ensure t
-  :custom
-  (smooth-scroll-margin 1)
-  :config (smooth-scrolling-mode)
+(use-package pixel-scroll
+  :hook (mouse-wheel-mode . pixel-scroll-mode)
   )
 
 (use-package mwheel
