@@ -25,13 +25,22 @@
 ;;; Code:
 
 
+(defvar my-profiler-enabled nil)
+(when my-profiler-enabled
+  (require 'profiler)
+  (profiler-start 'cpu)
+  (add-hook 'after-init-hook
+			#'(lambda ()
+				(profiler-report)
+				(profiler-stop)))
+  )
+
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
 (setq load-path (cons
                  (locate-user-emacs-file "elisp")
-                 load-path
-                 ))
+                 load-path))
 
 (require 'package)
 (setq package-user-dir (locate-user-emacs-file "elpa"))
@@ -170,10 +179,7 @@ Version 2019-11-04"
   :diminish)
 
 (use-package server
-  :config
-  (unless
-	  (server-running-p)
-	(server-start))
+  :hook (after-init . server-start)
   )
 
 (use-package scroll-bar
@@ -222,7 +228,8 @@ Version 2019-11-04"
   (tempbuf-kill-message nil)
   )
 
-(use-package midnight)
+(use-package midnight
+  :hook (find-file . midnight-mode))
 
 (use-package vc-hooks
   :custom
@@ -436,10 +443,6 @@ Version 2019-11-04"
   :commands restart-emacs
   )
 
-(use-package s :ensure t)
-
-(use-package f :ensure t)
-
 (use-package dired
   :hook
   (dired-mode . dired-hide-details-mode)
@@ -452,50 +455,51 @@ Version 2019-11-04"
 			"q" #'kill-current-buffer
 			"r" #'revert-buffer
 			"SPC" nil)
-  )
-
-(use-package dired-filter :ensure t)
-
-(use-package dired-subtree :ensure t
-  :after dired
 
   :config
-  ;; for all-the-icons
-  ;; https://github.com/Fuco1/dired-hacks/issues/155
-  (defun my-dired-subtree-insert ()
-    (interactive)
-    (dired-subtree-insert)
-    (revert-buffer))
-  (defun my-dired-subtree-remove ()
-    (interactive)
-    (dired-subtree-remove)
-    (revert-buffer))
+  (use-package dired-filter :ensure t)
 
-  :custom-face
-  (dired-subtree-depth-1-face ((t (:background nil))))
-  (dired-subtree-depth-2-face ((t (:background nil))))
-  (dired-subtree-depth-3-face ((t (:background nil))))
-  (dired-subtree-depth-4-face ((t (:background nil))))
-  (dired-subtree-depth-5-face ((t (:background nil))))
-  (dired-subtree-depth-6-face ((t (:background nil))))
+  (use-package dired-subtree :ensure t
+	:after dired
 
-  :general
-  (:keymaps 'dired-mode-map
-			:states '(normal visual)
-			"l" #'my-dired-subtree-insert
-			"h" #'my-dired-subtree-remove)
-  )
+	:config
+	;; for all-the-icons
+	;; https://github.com/Fuco1/dired-hacks/issues/155
+	(defun my-dired-subtree-insert ()
+	  (interactive)
+	  (dired-subtree-insert)
+	  (revert-buffer))
+	(defun my-dired-subtree-remove ()
+	  (interactive)
+	  (dired-subtree-remove)
+	  (revert-buffer))
 
-(use-package dired-sidebar :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  )
+	:custom-face
+	(dired-subtree-depth-1-face ((t (:background nil))))
+	(dired-subtree-depth-2-face ((t (:background nil))))
+	(dired-subtree-depth-3-face ((t (:background nil))))
+	(dired-subtree-depth-4-face ((t (:background nil))))
+	(dired-subtree-depth-5-face ((t (:background nil))))
+	(dired-subtree-depth-6-face ((t (:background nil))))
 
-(use-package all-the-icons-dired :ensure t
-  :hook (dired-mode . all-the-icons-dired-mode))
+	:general
+	(:keymaps 'dired-mode-map
+			  :states '(normal visual)
+			  "l" #'my-dired-subtree-insert
+			  "h" #'my-dired-subtree-remove)
+	)
 
-(use-package wdired
-  :commands (wdired-change-to-wdired-mode)
-  :custom (wdired-allow-to-change-permissions t)
+  (use-package dired-sidebar :ensure t
+	:commands (dired-sidebar-toggle-sidebar)
+	)
+
+  (use-package all-the-icons-dired :ensure t
+	:hook (dired-mode . all-the-icons-dired-mode))
+
+  (use-package wdired
+	:commands (wdired-change-to-wdired-mode)
+	:custom (wdired-allow-to-change-permissions t)
+	)
   )
 
 (use-package vterm :ensure t
@@ -509,17 +513,17 @@ Version 2019-11-04"
 			"C-c" #'vterm-send-C-c)
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
-  )
 
-(use-package vterm-toggle :ensure t
-  :custom
-  (vterm-toggle-scope 'project)
-  :general
-  (:states '(normal visual)
-		   "M-t" #'vterm-toggle-cd)
-  (:keymaps 'vterm-mode-map
-			:states 'emacs
-			"M-t" #'vterm-toggle-cd)
+  (use-package vterm-toggle :ensure t
+	:custom
+	(vterm-toggle-scope 'project)
+	:general
+	(:states '(normal visual)
+			 "M-t" #'vterm-toggle-cd)
+	(:keymaps 'vterm-mode-map
+			  :states 'emacs
+			  "M-t" #'vterm-toggle-cd)
+	)
   )
 
 (use-package flycheck :ensure t
@@ -561,29 +565,19 @@ Version 2019-11-04"
   :custom
   (magit-save-repository-buffers nil)
   (magit-diff-refine-hunk 'all)
+
+  :config
+  (use-package magit-todos :ensure t
+	:hook (magit-mode . magit-todos-mode))
+
+  (use-package git-modes :ensure t)
+
+  (use-package git-timemachine :ensure t)
+
+  (use-package git-messenger :ensure t
+	:commands git-messenger:popup-message)
+
   )
-
-(use-package magit-todos :ensure t
-  :hook (magit-mode . magit-todos-mode))
-
-(use-package git-modes :ensure t)
-
-(use-package git-timemachine :ensure t)
-
-(use-package diff-hl :ensure t
-  :general
-  (:states '(normal visual)
-		   "<localleader>gg" #'diff-hl-mode
-		   "<localleader>gr" #'diff-hl-revert-hunk
-		   "<localleader>gs" #'diff-hl-stage-current-hunk)
-  (:keymaps 'diff-hl-mode-map
-			:states '(normal visual)
-			"[g" #'diff-hl-previous-hunk
-			"]g" #'diff-hl-next-hunk)
-  )
-
-(use-package git-messenger :ensure t
-  :commands git-messenger:popup-message)
 
 (use-package gist :ensure t
   :config
@@ -606,9 +600,22 @@ Version 2019-11-04"
 		   "q" #'quit-window)
   )
 
+(use-package diff-hl :ensure t
+  :general
+  (:states '(normal visual)
+		   "<localleader>gg" #'diff-hl-mode
+		   "<localleader>gr" #'diff-hl-revert-hunk
+		   "<localleader>gs" #'diff-hl-stage-current-hunk)
+  (:keymaps 'diff-hl-mode-map
+			:states '(normal visual)
+			"[g" #'diff-hl-previous-hunk
+			"]g" #'diff-hl-next-hunk)
+  )
+
 (use-package browse-at-remote :ensure t)
 
 (use-package recentf
+  :hook (find-file . recentf-mode)
   :custom
   (recentf-save-file "~/.cache/emacs/recentf")
   (recentf-max-saved-items 2000)
@@ -620,9 +627,8 @@ Version 2019-11-04"
     (declare (indent 0))
     (let ((message-log-max nil))
       `(with-temp-message (or (current-message) "") ,@body)))
-  (run-with-idle-timer 30 t '(lambda ()
+  (run-with-idle-timer 30 t #'(lambda ()
                                (with-suppressed-message (recentf-save-list))))
-  (recentf-mode 1)
   )
 
 (use-package backup :no-require
@@ -1017,7 +1023,8 @@ Version 2019-11-04"
   :config (global-tree-sitter-mode)
   )
 
-(use-package tree-sitter-langs :ensure t)
+(use-package tree-sitter-langs :ensure t
+  :after tree-sitter)
 
 (use-package add-node-modules-path :ensure t
   :hook (js-mode
@@ -1078,6 +1085,10 @@ Version 2019-11-04"
   :commands edit-indirect-region
   )
 
+(defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
+(defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
+(defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
+
 (use-package org :ensure org-contrib
   :hook
   (org-after-todo-statistics . org-summary-todo)
@@ -1086,10 +1097,10 @@ Version 2019-11-04"
   (org-mode . prettify-symbols-mode)
   (org-mode
    . (lambda ()
-       (setq prettify-symbols-alist
-	     '(("[ ]" . "☐")
-	       ("[X]" . "☑")
-	       ("[-]" . "◪")))))
+	   (setq prettify-symbols-alist
+			 '(("[ ]" . "☐")
+			   ("[X]" . "☑")
+			   ("[-]" . "◪")))))
 
   :custom
   (org-directory "~/org/")
@@ -1100,45 +1111,45 @@ Version 2019-11-04"
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!)")
-     (sequence "WAITING(w@/!)" "STARTED" "|")
-     (sequence "|" "SOMEDAY(S)")
-     (sequence "|" "CANCELLED(c@)")
-     (sequence "|" "MEETING(m)")))
+	 (sequence "WAITING(w@/!)" "STARTED" "|")
+	 (sequence "|" "SOMEDAY(S)")
+	 (sequence "|" "CANCELLED(c@)")
+	 (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
-  (org-image-actual-width '(500))  ; to use #+ATTR_ORG: :width or fixed width
+  (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width or fixed width
 
   :after evil
   :config
   (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
-      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+	"Switch entry to DONE when all subentries are done, to TODO otherwise."
+	(let (org-log-done org-log-states)   ; turn off logging
+	  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
   ;; https://emacs.stackexchange.com/questions/19843/how-to-automatically-adjust-an-org-task-state-with-its-children-checkboxes
   (defun my/org-checkbox-todo ()
-    "Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
-    (let ((todo-state (org-get-todo-state)) beg end)
-      (unless (not todo-state)
-        (save-excursion
-          (org-back-to-heading t)
-          (setq beg (point))
-          (end-of-line)
-          (setq end (point))
-          (goto-char beg)
-          (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-                                 end t)
-              (if (match-end 1)
-                  (if (equal (match-string 1) "100%")
-                      (unless (string-equal todo-state "DONE")
-                        (org-todo 'done))
-                    (when (string-equal todo-state "DONE")
-                      (org-todo 'todo)))
-                (if (and (> (match-end 2) (match-beginning 2))
-                         (equal (match-string 2) (match-string 3)))
-                    (unless (string-equal todo-state "DONE")
-                      (org-todo 'done))
-                  (when (string-equal todo-state "DONE")
-                    (org-todo 'todo)))))))))
+	"Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
+	(let ((todo-state (org-get-todo-state)) beg end)
+	  (unless (not todo-state)
+		(save-excursion
+		  (org-back-to-heading t)
+		  (setq beg (point))
+		  (end-of-line)
+		  (setq end (point))
+		  (goto-char beg)
+		  (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+								 end t)
+			  (if (match-end 1)
+				  (if (equal (match-string 1) "100%")
+					  (unless (string-equal todo-state "DONE")
+						(org-todo 'done))
+					(when (string-equal todo-state "DONE")
+					  (org-todo 'todo)))
+				(if (and (> (match-end 2) (match-beginning 2))
+						 (equal (match-string 2) (match-string 3)))
+					(unless (string-equal todo-state "DONE")
+					  (org-todo 'done))
+				  (when (string-equal todo-state "DONE")
+					(org-todo 'todo)))))))))
 
   (defun my/org-todo-next ()
 	"Org todo next cycle"
@@ -1196,374 +1207,371 @@ Version 2019-11-04"
 	(kbd "M-l") 'org-metaright
 	(kbd "RET") 'org-return
 	)
-  )
 
-(use-package org-tempo
-  :after org)
+  (use-package org-tempo
+	:after org)
 
-(use-package org-faces
-  :after org
+  (use-package org-faces
+	:after org
 
-  :custom
-  (org-todo-keyword-faces
-   '(("TODO" :foreground "red" :weight bold)
-     ("STARTED" :foreground "orange" :weight bold)
-     ("DOING" :foreground "orange" :weight bold)
-     ("WAITING" :foreground "light pink" :weight bold)
-     ("SOMEDAY" :foreground "dark gray")
-     ("DONE" :foreground "forest green" :weight bold)
-     ("CANCELLED" :foreground "forest green" :weight bold)
-     ("AGENDA" :foreground "sky blue" :weight bold)
-     ("MEETING" :foreground "sky blue" :weight bold)))
-  ;; Only use the first 4 styles and do not cycle.
-  (org-cycle-level-faces nil)
-  (org-n-level-faces 4)
+	:custom
+	(org-todo-keyword-faces
+	 '(("TODO" :foreground "red" :weight bold)
+	   ("STARTED" :foreground "orange" :weight bold)
+	   ("DOING" :foreground "orange" :weight bold)
+	   ("WAITING" :foreground "light pink" :weight bold)
+	   ("SOMEDAY" :foreground "dark gray")
+	   ("DONE" :foreground "forest green" :weight bold)
+	   ("CANCELLED" :foreground "forest green" :weight bold)
+	   ("AGENDA" :foreground "sky blue" :weight bold)
+	   ("MEETING" :foreground "sky blue" :weight bold)))
+	;; Only use the first 4 styles and do not cycle.
+	(org-cycle-level-faces nil)
+	(org-n-level-faces 4)
 
-  :custom-face
-  ;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-  (org-level-1 ((t (:inherit 'outline-1 :height 1.4)))) ;\LARGE
-  (org-level-2 ((t (:inherit 'outline-2 :height 1.2)))) ;\Large
-  (org-level-3 ((t (:inherit 'outline-3 :height 1.1)))) ;\large
-  ;; Document Title, (\huge)
-  (org-document-title ((t (:height 2.074 :inherit 'org-level-8))))
+	:custom-face
+	;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
+	(org-level-1 ((t (:inherit 'outline-1 :height 1.4)))) ;\LARGE
+	(org-level-2 ((t (:inherit 'outline-2 :height 1.2)))) ;\Large
+	(org-level-3 ((t (:inherit 'outline-3 :height 1.1)))) ;\large
+	;; Document Title, (\huge)
+	(org-document-title ((t (:height 2.074 :inherit 'org-level-8))))
 
-  (org-block-begin-line ((t (:height 0.8 :foreground "gray40"))))
-  (org-date ((t (:height 0.7 :foreground "gold4"))))
-  (org-drawer ((t (:height 0.55 :foreground "gray40"))))
-  (org-meta-line ((t (:height 0.8 :foreground "gray40"))))
-  (org-property-value ((t (:height 0.8))))
-  (org-special-keyword ((t (:height 0.7 :foreground "gray40"))))
-  (org-sexp-date ((t (:height 0.7 :foreground "gray40"))))
-  )
+	(org-block-begin-line ((t (:height 0.8 :foreground "gray40"))))
+	(org-date ((t (:height 0.7 :foreground "gold4"))))
+	(org-drawer ((t (:height 0.55 :foreground "gray40"))))
+	(org-meta-line ((t (:height 0.8 :foreground "gray40"))))
+	(org-property-value ((t (:height 0.8))))
+	(org-special-keyword ((t (:height 0.7 :foreground "gray40"))))
+	(org-sexp-date ((t (:height 0.7 :foreground "gray40"))))
+	)
 
-(use-package org-agenda
-  :after (evil org)
-  :commands (org-agenda org-refile)
-  :demand t
+  (use-package org-agenda
+	:after (evil org)
+	:commands (org-agenda org-refile)
+	:demand t
 
-  :custom
-  (org-agenda-current-time-string "← now")
-  (org-agenda-time-grid ;; Format is changed from 9.1
-   '((daily today require-timed)
-	 (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
-	 "-"
-	 "────────────────"))
-  (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files (list org-directory "~/org/roam/daily"))
-  (org-agenda-span 'week)
-  (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
+	:custom
+	(org-agenda-current-time-string "← now")
+	(org-agenda-time-grid ;; Format is changed from 9.1
+	 '((daily today require-timed)
+	   (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
+	   "-"
+	   "────────────────"))
+	(org-refile-targets '((org-agenda-files :maxlevel . 2)))
+	(org-agenda-files (list org-directory "~/org/roam/daily"))
+	(org-agenda-span 'week)
+	(org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
-  :config
-  (defun my/org-agenda-todo-next ()
-    "Org agenda todo next cycle"
-    (interactive) (org-call-with-arg 'org-agenda-todo 'right)
-    )
-  (evil-set-initial-state 'org-agenda-mode 'emacs)
+	:config
+	(defun my/org-agenda-todo-next ()
+	  "Org agenda todo next cycle"
+	  (interactive) (org-call-with-arg 'org-agenda-todo 'right)
+	  )
+	(evil-set-initial-state 'org-agenda-mode 'emacs)
 
-  :bind
-  (:map org-agenda-mode-map
-		(":" . evil-ex)
-		("K" . org-capture)
-		("T" . org-agenda-todo)
-		("j" . org-agenda-next-item)
-		("k" . org-agenda-previous-item)
-		("t" . my/org-agenda-todo-next)
-		))
+	:bind
+	(:map org-agenda-mode-map
+		  (":" . evil-ex)
+		  ("K" . org-capture)
+		  ("T" . org-agenda-todo)
+		  ("j" . org-agenda-next-item)
+		  ("k" . org-agenda-previous-item)
+		  ("t" . my/org-agenda-todo-next)
+		  ))
 
-(use-package org-clock
-  :hook
-  (kill-emacs . my:org-clock-out-and-save-when-exit)
-  (org-after-todo-state-change . my:org-clock-in-if-starting)
-  (org-after-todo-state-change . my:org-clock-out-if-waiting)
+  (use-package org-clock
+	:hook
+	(kill-emacs . my:org-clock-out-and-save-when-exit)
+	(org-after-todo-state-change . my:org-clock-in-if-starting)
+	(org-after-todo-state-change . my:org-clock-out-if-waiting)
 
-  :custom
-  (org-clock-out-remove-zero-time-clocks t)
+	:custom
+	(org-clock-out-remove-zero-time-clocks t)
 
-  :config
-  ;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
-  (defun my:org-clock-out-and-save-when-exit ()
-    "Save buffers and stop clocking when kill emacs."
-    (when (org-clocking-p)
-      (org-clock-out)
-      (save-some-buffers t)))
+	:config
+	;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
+	(defun my:org-clock-out-and-save-when-exit ()
+	  "Save buffers and stop clocking when kill emacs."
+	  (when (org-clocking-p)
+		(org-clock-out)
+		(save-some-buffers t)))
 
-  ;; https://passingloop.tumblr.com/post/10150860851/org-clock-in-if-starting
-  (defun my:org-clock-in-if-starting ()
-    "Clock in when the task is marked STARTED."
-    (when (and (string= org-state "STARTED")
-               (not (string= org-last-state org-state)))
-      (org-clock-in)))
+	;; https://passingloop.tumblr.com/post/10150860851/org-clock-in-if-starting
+	(defun my:org-clock-in-if-starting ()
+	  "Clock in when the task is marked STARTED."
+	  (when (and (string= org-state "STARTED")
+				 (not (string= org-last-state org-state)))
+		(org-clock-in)))
 
-  (defun my:org-clock-out-if-waiting ()
-	"Clock in when the task is marked STARTED."
-	(when (and (or
-				;; (string= org-state "TODO")
-				(string= org-state "WAITING"))
-			   (not (string= org-last-state org-state)))
-	  (org-clock-out)))
-  )
+	(defun my:org-clock-out-if-waiting ()
+	  "Clock in when the task is marked STARTED."
+	  (when (and (or
+				  ;; (string= org-state "TODO")
+				  (string= org-state "WAITING"))
+				 (not (string= org-last-state org-state)))
+		(org-clock-out)))
+	)
 
-(use-package org-roam :ensure t
-  :after evil
-  :demand t  ; completion-at-point on plain org-mode
-  :hook
-  (org-mode
-   . (lambda ()
-	   (org-roam--register-completion-functions-h)
-	   (org-roam--replace-roam-links-on-save-h)
+  (use-package org-roam :ensure t
+	:after evil
+	:demand t  ; completion-at-point on plain org-mode
+	:hook
+	(org-mode
+	 . (lambda ()
+		 (org-roam--register-completion-functions-h)
+		 (org-roam--replace-roam-links-on-save-h)
+		 ))
+	:custom
+	(org-roam-db-update-on-save t)
+	(org-roam-completion-everywhere t)
+	(org-roam-directory
+	 (concat
+	  (file-name-as-directory org-directory)
+	  "roam"))
+	(org-roam-dailies-capture-templates
+	 `(("d" "default" entry
+		"* %?"
+		:target (file+head "%<%Y-%m-%d>.org"
+						   "#+title: %<%Y-%m-%d>\n#+OPTIONS: toc:nil ^:{} H:5\n"))))
+	:bind-keymap
+	("C-c n d" . org-roam-dailies-map)
+	:bind
+	("C-c n f" . org-roam-node-find)
+	(:map org-mode-map
+		  ("C-c n a" . org-roam-alias-add)
+		  ("C-c n b" . org-roam-buffer-display-dedicated)
+		  ("C-c n i" . org-roam-node-insert)
+		  ("C-c n l" . org-roam-buffer-toggle)
+		  ("C-c n o" . org-id-get-create)
+		  ("C-M-i" . completion-at-point))
+	:general
+	(:states '(normal visual)
+			 "<leader> n" #'org-roam-dailies-map
+			 "<leader> n /" #'org-roam-node-find)
+	:config
+	(require 'org-roam-dailies)
+	)
+
+  (use-package org-capture
+	:commands org-capture
+	:hook
+	(org-capture-mode . (lambda () (evil-insert 0)))
+
+	:custom
+	(org-capture-templates
+	 `(
+	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
+	   ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T%?" :clock-in t :clock-resume t)
+	   ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
+	   ("j" "Journal" entry (file+olp+datetree "journal.org") "** %?\n%T")
+	   ("l" "Log Time" entry (file+olp+datetree "journal.org") "** %U %^{Log} :Time:" :immediate-finish t)
+	   ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
+	   ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
+	   ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
+	   ("s" "Start Task" entry (file+olp+datetree "journal.org") "** %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
 	   ))
-  :custom
-  (org-roam-db-update-on-save t)
-  (org-roam-completion-everywhere t)
-  (org-roam-directory
-   (concat
-	(file-name-as-directory org-directory)
-	"roam"))
-  (org-roam-dailies-capture-templates
-   `(("d" "default" entry
-	  "* %?"
-	  :target (file+head "%<%Y-%m-%d>.org"
-						 "#+title: %<%Y-%m-%d>\n#+OPTIONS: toc:nil ^:{} H:5\n"))))
-  :bind-keymap
-  ("C-c n d" . org-roam-dailies-map)
-  :bind
-  ("C-c n f" . org-roam-node-find)
-  (:map org-mode-map
-		("C-c n a" . org-roam-alias-add)
-		("C-c n b" . org-roam-buffer-display-dedicated)
-		("C-c n i" . org-roam-node-insert)
-		("C-c n l" . org-roam-buffer-toggle)
-		("C-c n o" . org-id-get-create)
-		("C-M-i" . completion-at-point))
-  :general
-  (:states '(normal visual)
-		   "<leader> n" #'org-roam-dailies-map
-		   "<leader> n /" #'org-roam-node-find)
-  :config
-  (require 'org-roam-dailies)
+	)
+
+  (use-package org-checklist
+	:after org
+	)
+
+  (use-package org-superstar :ensure t
+	:hook (org-mode . org-superstar-mode)
+
+	:custom
+	;; Set different bullets, with one getting a terminal fallback.
+	;; (org-superstar-headline-bullets-list '("◉" ("🞛" ?◈) "○" "▷"))
+	;; Stop cycling bullets to emphasize hierarchy of headlines.
+	;; (org-superstar-cycle-headline-bullets nil)
+	;; Hide away leading stars on terminal.
+	(org-superstar-leading-fallback ?\s)
+
+	:custom-face
+	(org-superstar-item          ((t (:height 1.2))))
+	(org-superstar-header-bullet ((t (:height 1.2))))
+	(org-superstar-leading       ((t (:height 1.3))))
+	)
+
+  (use-package org-download :ensure t
+	:commands
+	(org-download-clipboard
+	 org-download-delete
+	 org-download-screenshot)
+
+	:custom
+	(org-download-heading-lvl nil)
+	(org-download-image-dir (concat (file-name-as-directory org-directory) "images"))
+	(org-download-screenshot-method "screencapture -i %s")
+
+	:init
+	(defvar org-download-map
+	  (let ((map (make-sparse-keymap)))
+		(define-key map "c" #'org-download-clipboard)
+		(define-key map "d" #'org-download-delete)
+		(define-key map "s" #'org-download-screenshot)
+		map))
+	)
+
+  (use-package org-mac-link
+	:if darwin-p
+	:straight (org-mac-link :host gitlab :repo "aimebertrand/org-mac-link")
+	:commands org-mac-link-get-link
+	:bind
+	(:map org-mode-map
+		  ("C-c g" . org-mac-link-get-link)
+		  ))
+
+  (use-package japanese-holidays :ensure t
+	:hook
+	(calendar-today-visible . japanese-holiday-mark-weekend)
+	(calendar-today-invisible . japanese-holiday-mark-weekend)
+	)
+
+  (use-package holidays
+	:after japanese-holidays
+	:custom
+	(calendar-holidays
+	 (append japanese-holidays holiday-local-holidays holiday-other-holidays))
+	)
+
+  (use-package calendar
+	:custom
+	(calendar-mark-holidays-flag t)
+	)
+
+  (use-package ob
+	:after org
+	:hook
+	(org-babel-after-execute . org-display-inline-images)
+	:custom
+	(org-confirm-babel-evaluate nil)
+	(org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
+	:config
+	;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
+	;; (defun my-org-confirm-babel-evaluate (lang body)
+	;; 	(not (member lang
+	;; 				 '(
+	;; 				   "C"
+	;; 				   "cpp"
+	;; 				   "dot"
+	;; 				   "elisp"
+	;; 				   "go"
+	;; 				   "js"
+	;; 				   "plantuml"
+	;; 				   "python"
+	;; 				   "restclient"
+	;; 				   "sh"
+	;; 				   "shell"
+	;; 				   "ts"
+	;; 				   "typescript"
+	;; 				   "uml"
+	;; 				   ))))
+
+	(push '("ts" . typescript) org-src-lang-modes)
+	(push '("uml" . plantuml) org-src-lang-modes)
+
+	:config
+
+	(use-package ob-restclient :ensure t)
+
+	(use-package ob-exp
+	  :custom
+	  (org-export-use-babel t))
+
+	(use-package ob-plantuml
+	  :after ob
+	  :hook
+	  (ob-async-pre-execute-src-block
+	   . (lambda ()
+		   (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
+	  :custom
+	  (org-plantuml-jar-path my/plantuml-jar-path)
+	  (plantuml-server-url nil)
+	  :config
+	  (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
+	  (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
+	  ;; (push '(:async) org-babel-default-header-args:plantuml)
+	  (push '(:cache . "yes") org-babel-default-header-args:plantuml)
+	  )
+
+	(use-package ob-mermaid :ensure t
+	  :if darwin-p
+	  :after ob
+	  :custom
+	  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc"))
+
+	(use-package ob-shell
+	  :after ob)
+
+	(use-package ob-python
+	  :after auto-virtualenvwrapper
+	  :hook
+	  (org-mode
+	   . (lambda ()
+		   (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
+			 (when path
+			   (setq-local org-babel-python-command (concat path "bin/python"))))))
+	  :custom
+	  (org-babel-python-command "python3"))
+
+	(use-package ob-C
+	  :after ob
+	  :custom
+	  (org-babel-default-header-args:C '((:async) (:cache . "yes")))
+	  (org-babel-default-header-args:C++
+	   (append org-babel-default-header-args:C '((:includes . "<iostream>"))))
+	  )
+
+	(use-package ob-async :ensure t
+	  :after ob)
+
+	(use-package ob-js
+	  :config
+	  (setq org-babel-js-function-wrapper
+			"require('util').inspect(function(){\n%s\n}());")
+	  )
+
+	(use-package ob-typescript :ensure t)
+
+	(use-package ob-go :ensure t)
+	)
+
+  (use-package ox
+	:commands org-export-dispatch
+
+	:config
+	(use-package ox-gfm :ensure t)
+
+	(use-package ox-hugo :ensure t)
+
+	(use-package ox-html
+	  :custom
+	  (org-html-validation-link nil)
+	  (org-html-mathjax-options
+	   '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+		 (scale "100")
+		 (align "center")
+		 (font "TeX")
+		 (linebreaks "false")
+		 (autonumber "AMS")
+		 (indent "0em")
+		 (multlinewidth "85%")
+		 (tagindent ".8em")
+		 (tagside "right"))
+	   ))
+
+	(use-package ox-reveal :ensure t
+	  :custom
+	  (org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+	  )
+
+	(use-package ox-rst :ensure t)
+
+	(use-package htmlize :ensure t)
+	)
   )
-
-(use-package japanese-holidays :ensure t
-  :hook
-  (calendar-today-visible . japanese-holiday-mark-weekend)
-  (calendar-today-invisible . japanese-holiday-mark-weekend)
-)
-
-(use-package holidays
-  :after japanese-holidays
-  :custom
-  (calendar-holidays
-        (append japanese-holidays holiday-local-holidays holiday-other-holidays))
-  )
-
-(use-package calendar
-  :custom
-  (calendar-mark-holidays-flag t)
-  )
-
-(use-package ob
-  :after org
-  :hook
-  (org-babel-after-execute . org-display-inline-images)
-  :custom
-  (org-confirm-babel-evaluate nil)
-  (org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
-  :config
-  ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
-  ;; (defun my-org-confirm-babel-evaluate (lang body)
-  ;; 	(not (member lang
-  ;; 				 '(
-  ;; 				   "C"
-  ;; 				   "cpp"
-  ;; 				   "dot"
-  ;; 				   "elisp"
-  ;; 				   "go"
-  ;; 				   "js"
-  ;; 				   "plantuml"
-  ;; 				   "python"
-  ;; 				   "restclient"
-  ;; 				   "sh"
-  ;; 				   "shell"
-  ;; 				   "ts"
-  ;; 				   "typescript"
-  ;; 				   "uml"
-  ;; 				   ))))
-
-  (push '("ts" . typescript) org-src-lang-modes)
-  (push '("uml" . plantuml) org-src-lang-modes)
-  )
-
-(use-package ob-restclient :ensure t)
-
-(use-package ob-exp
-  :custom
-  (org-export-use-babel t))
-
-(defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
-(defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
-(defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
-
-(use-package ob-plantuml
-  :after ob
-  :hook
-  (ob-async-pre-execute-src-block
-   . (lambda ()
-       (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
-  :custom
-  (org-plantuml-jar-path my/plantuml-jar-path)
-  (plantuml-server-url nil)
-  :config
-  (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
-  (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
-  ;; (push '(:async) org-babel-default-header-args:plantuml)
-  (push '(:cache . "yes") org-babel-default-header-args:plantuml)
-  )
-
-(use-package ob-mermaid :ensure t
-  :if darwin-p
-  :after ob
-  :custom
-  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc"))
-
-(use-package ob-shell
-  :after ob)
-
-(use-package ob-python
-  :after auto-virtualenvwrapper
-  :hook
-  (org-mode
-   . (lambda ()
-	   (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
-		 (when path
-		   (setq-local org-babel-python-command (concat path "bin/python"))))))
-  :custom
-  (org-babel-python-command "python3"))
-
-(use-package ob-C
-  :after ob
-  :custom
-  (org-babel-default-header-args:C '((:async) (:cache . "yes")))
-  (org-babel-default-header-args:C++
-   (append org-babel-default-header-args:C '((:includes . "<iostream>"))))
-  )
-
-(use-package ob-async :ensure t
-  :after ob)
-
-(use-package ob-js
-  :config
-  (setq org-babel-js-function-wrapper
-        "require('util').inspect(function(){\n%s\n}());")
-  )
-
-(use-package ob-typescript :ensure t)
-
-(use-package ob-go :ensure t)
-
-(use-package org-capture
-  :commands org-capture
-  :hook
-  (org-capture-mode . (lambda () (evil-insert 0)))
-
-  :custom
-  (org-capture-templates
-   `(
-	 ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
-	 ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T%?" :clock-in t :clock-resume t)
-	 ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
-	 ("j" "Journal" entry (file+olp+datetree "journal.org") "** %?\n%T")
-	 ("l" "Log Time" entry (file+olp+datetree "journal.org") "** %U %^{Log} :Time:" :immediate-finish t)
-	 ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
-	 ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
-	 ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
-	 ("s" "Start Task" entry (file+olp+datetree "journal.org") "** %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
-	 ))
-  )
-
-(use-package org-checklist
-  :after org
-  )
-
-(use-package org-superstar :ensure t
-  :hook (org-mode . org-superstar-mode)
-
-  :custom
-  ;; Set different bullets, with one getting a terminal fallback.
-  ;; (org-superstar-headline-bullets-list '("◉" ("🞛" ?◈) "○" "▷"))
-  ;; Stop cycling bullets to emphasize hierarchy of headlines.
-  ;; (org-superstar-cycle-headline-bullets nil)
-  ;; Hide away leading stars on terminal.
-  (org-superstar-leading-fallback ?\s)
-
-  :custom-face
-  (org-superstar-item          ((t (:height 1.2))))
-  (org-superstar-header-bullet ((t (:height 1.2))))
-  (org-superstar-leading       ((t (:height 1.3))))
-  )
-
-(use-package org-download :ensure t
-  :after org
-  :custom
-  (org-download-heading-lvl nil)
-  (org-download-image-dir (concat (file-name-as-directory org-directory) "images"))
-  (org-download-screenshot-method "screencapture -i %s")
-
-  :config
-  (defvar org-download-map
-	(let ((map (make-sparse-keymap)))
-	  (define-key map "c" #'org-download-clipboard)
-	  (define-key map "d" #'org-download-delete)
-	  (define-key map "s" #'org-download-screenshot)
-	map))
-  )
-
-(use-package org-mac-link
-  :if darwin-p
-  :straight (org-mac-link :host gitlab :repo "aimebertrand/org-mac-link")
-  :bind
-  (:map org-mode-map
-        ("C-c g" . org-mac-link-get-link)
-        ))
-
-(use-package ox-confluence
-  :after ox
-  )
-
-(use-package ox-gfm :ensure t
-  :after ox
-  )
-
-(use-package ox-hugo :ensure t
-  :after ox
-  )
-
-(use-package ox-html
-  :custom
-  (org-html-validation-link nil)
-  (org-html-mathjax-options
-   '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-     (scale "100")
-     (align "center")
-     (font "TeX")
-     (linebreaks "false")
-     (autonumber "AMS")
-     (indent "0em")
-     (multlinewidth "85%")
-     (tagindent ".8em")
-     (tagside "right"))
-   ))
-
-(use-package ox-reveal :ensure t
-  :after ox
-  :custom
-  (org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
-  )
-
-(use-package ox-rst :ensure t
-  :after ox
-  )
-
-(use-package htmlize :ensure t)
 
 (use-package electric
   :hook (python-mode . electric-indent-mode)
@@ -1576,32 +1584,35 @@ Version 2019-11-04"
   )
 
 (use-package python :ensure t
+  :defer t
+
   :custom
   (python-shell-interpreter "python3")
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
-  )
 
-(use-package auto-virtualenvwrapper :ensure t
-  :commands auto-virtualenvwrapper-find-virtualenv-path
-  :hook (python-mode . auto-virtualenvwrapper-activate))
+  :config
+  (use-package auto-virtualenvwrapper :ensure t
+	:commands auto-virtualenvwrapper-find-virtualenv-path
+	:hook (python-mode . auto-virtualenvwrapper-activate))
 
-(use-package py-yapf :ensure t
-  :commands (py-yapf-buffer)
-  )
+  (use-package py-yapf :ensure t
+	:commands (py-yapf-buffer)
+	)
 
-(use-package python-black :ensure t
-  :custom (python-black-extra-args '("--skip-string-normalization"))
-  :commands (pyhton-black-buffer pyhton-black-region)
-  )
+  (use-package python-black :ensure t
+	:custom (python-black-extra-args '("--skip-string-normalization"))
+	:commands (pyhton-black-buffer pyhton-black-region)
+	)
 
-(use-package py-isort :ensure t
-  :general
-  (:keymaps 'python-mode-map
-			:states 'normal
-			"<localleader>i" #'py-isort-buffer)
-  (:keymaps 'python-mode-map
-			:states 'visual
-			"<localleader>i" #'py-isort-region)
+  (use-package py-isort :ensure t
+	:general
+	(:keymaps 'python-mode-map
+			  :states 'normal
+			  "<localleader>i" #'py-isort-buffer)
+	(:keymaps 'python-mode-map
+			  :states 'visual
+			  "<localleader>i" #'py-isort-region)
+	)
   )
 
 (use-package sh-script
@@ -1609,19 +1620,20 @@ Version 2019-11-04"
   (sh-basic-offset 2)
   (sh-indentation 2)
   (sh-indent-for-case-label 0)
-  (sh-indent-for-case-alt '+))
+  (sh-indent-for-case-alt '+)
 
-(use-package shfmt :ensure t
-  :general
-  (:keymaps 'sh-mode-map
-			:states 'normal
-			"<localleader>f" #'shfmt-buffer)
-  (:keymaps 'sh-mode-map
-			:states 'visual
-			"<localleader>f" #'shfmt-region)
-
-  :custom
-  (shfmt-arguments '("-i" "2" "-ci"))
+  :config
+  (use-package shfmt :ensure t
+	:general
+	(:keymaps 'sh-mode-map
+			  :states 'normal
+			  "<localleader>f" #'shfmt-buffer)
+	(:keymaps 'sh-mode-map
+			  :states 'visual
+			  "<localleader>f" #'shfmt-region)
+	:custom
+	(shfmt-arguments '("-i" "2" "-ci"))
+	)
   )
 
 (use-package sql
@@ -1705,7 +1717,7 @@ Version 2019-11-04"
        ))
   (vue-mode . lsp)
 
-  :config
+  :general
   (:keymaps 'vue-mode-map
 			:states '(normal visual)
 			"<localleader>f" #'eslint-fix)
@@ -1715,11 +1727,14 @@ Version 2019-11-04"
   :diminish
   :custom
   (mmm-submode-decoration-level 0)
+  :commands mmm-mode
   )
 
-(use-package yaml-mode :ensure t)
+(use-package yaml-mode :ensure t
+  :commands yaml-mode)
 
-(use-package vimrc-mode :ensure t)
+(use-package vimrc-mode :ensure t
+  :commands vimrc-mode)
 
 (use-package emmet-mode :ensure t
   :diminish
@@ -1806,9 +1821,7 @@ Version 2019-11-04"
 	(kbd "<leader>g s") 'magit-stage
 	(kbd "<leader>g t") 'git-timemachine
 	(kbd "<leader>g u") 'magit-unstage
-	(kbd "<leader>h f") 'describe-function
-	(kbd "<leader>h k") 'describe-bindings
-	(kbd "<leader>h v") 'describe-variable
+	(kbd "<leader>h") 'help
 	(kbd "<leader>o I") 'org-clock-in
 	(kbd "<leader>o O") 'org-clock-out
 	(kbd "<leader>o Q") 'org-clock-cancel
@@ -1829,60 +1842,61 @@ Version 2019-11-04"
 	)
 
   (evil-mode)
+
+  (use-package evil-surround :ensure t
+	:after evil
+	:config (global-evil-surround-mode))
+
+  (use-package evil-collection :ensure t
+	:after evil
+	:diminish evil-collection-unimpaired-mode
+	:config
+	(evil-collection-init
+	 '(
+	   replace
+	   (package-menu package)
+	   dired
+	   flycheck
+	   ibuffer
+	   magit
+	   magit-todos
+	   profiler
+	   quickrun
+	   wgrep
+	   xref
+	   )))
+
+  (use-package evil-commentary :ensure t
+	:diminish evil-commentary-mode
+	:after evil
+	:config (evil-commentary-mode))
+
+  (use-package evil-matchit :ensure t
+	:after evil
+	:config (global-evil-matchit-mode))
+
+  (use-package evil-lion :ensure t
+	:after evil
+	:config (evil-lion-mode))
+
+  (use-package evil-numbers :ensure t
+	:general
+	(:states '(normal visual)
+			 "C-a" #'evil-numbers/inc-at-pt
+			 "C-x" #'evil-numbers/dec-at-pt
+			 "g C-a" #'evil-numbers/inc-at-pt-incremental
+			 "g C-x" #'evil-numbers/dec-at-pt-incremental)
+	)
+
+  (use-package evil-goggles :ensure t
+	:after evil
+	:diminish
+	:custom
+	(evil-goggles-duration 0.050)
+	:config
+	(evil-goggles-use-diff-faces)
+	(evil-goggles-mode))
   )
-
-(use-package evil-surround :ensure t
-  :after evil
-  :config (global-evil-surround-mode))
-
-(use-package evil-collection :ensure t
-  :after evil
-  :diminish evil-collection-unimpaired-mode
-  :config
-  (evil-collection-init
-   '(
-	 replace
-	 (package-menu package)
-	 dired
-	 flycheck
-	 ibuffer
-	 magit
-	 magit-todos
-	 quickrun
-	 wgrep
-	 xref
-	 )))
-
-(use-package evil-commentary :ensure t
-  :diminish evil-commentary-mode
-  :after evil
-  :config (evil-commentary-mode))
-
-(use-package evil-matchit :ensure t
-  :after evil
-  :config (global-evil-matchit-mode))
-
-(use-package evil-lion :ensure t
-  :after evil
-  :config (evil-lion-mode))
-
-(use-package evil-numbers :ensure t
-  :general
-  (:states '(normal visual)
-		   "C-a" #'evil-numbers/inc-at-pt
-		   "C-x" #'evil-numbers/dec-at-pt
-		   "g C-a" #'evil-numbers/inc-at-pt-incremental
-		   "g C-x" #'evil-numbers/dec-at-pt-incremental)
-  )
-
-(use-package evil-goggles :ensure t
-  :after evil
-  :diminish
-  :custom
-  (evil-goggles-duration 0.050)
-  :config
-  (evil-goggles-use-diff-faces)
-  (evil-goggles-mode))
 
 (use-package popwin :ensure t
   :config
@@ -2104,10 +2118,9 @@ Version 2019-11-04"
 	:config
 	(defalias 'my-outline #'consult-outline)
 
-	:after evil
-	:config
-	(evil-define-key '(normal visual) 'global
-	  (kbd "g/") 'consult-line)
+	:general
+	(:states '(normal visual)
+			 "g/" 'consult-line)
 	)
 
   (use-package consult-ghq :ensure t
@@ -2116,6 +2129,7 @@ Version 2019-11-04"
 	(defalias 'my-ghq 'consult-ghq-find))
 
   (use-package consult-ls-git :ensure t
+	:commands consult-ls-git
 	:config
 	(defalias 'my-git-find #'consult-ls-git)
 	)
@@ -2208,9 +2222,7 @@ Version 2019-11-04"
 
 (use-package key-binding :no-require
   :config
-  (define-key key-translation-map [?\C-h] [?\C-?])
-  ;; (define-key key-translation-map [?\C-\[] [?\C-?])
-  ;; (global-set-key (kbd "C-h") 'delete-backward-char)
+  (keyboard-translate ?\C-h ?\C-?)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "s-t") nil)
   )
