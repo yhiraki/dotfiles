@@ -234,7 +234,7 @@ Version 2019-11-04"
   (fringe ((t (:background nil))))
  )
 
-(use-package tempbuf
+(use-package tempbuf :straight t
   :hook
   ((dired-mode magit-mode) . turn-on-tempbuf-mode)
   (find-file
