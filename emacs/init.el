@@ -1224,6 +1224,9 @@ Version 2019-11-04"
 	)
   )
 
+(use-package org-tempo
+  :after org)
+
 (use-package org-faces
   :after org
 
