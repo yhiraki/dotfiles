@@ -201,24 +201,6 @@ Version 2019-11-04"
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
   )
 
-(use-package frame
-  :custom
-  (initial-frame-alist
-        (append
-         '((ns-transparent-titlebar . t) ;; タイトルバーを透過
-           (vertical-scroll-bars . nil) ;; スクロールバーを消す
-           (ns-appearance . dark) ;; 26.1 {light, dark}
-           (internal-border-width . 0) ;; 余白を消す
-           ))
-        )
-  (menu-bar-mode nil)
-  (tool-bar-mode nil)
-  :config
-  (setq default-frame-alist initial-frame-alist)
-  :bind
-  ("C-s-f" . toggle-frame-fullscreen)
-  )
-
 (use-package paren
   :config
   (show-paren-mode 1) ;; 対応する括弧を光らせる
@@ -228,11 +210,6 @@ Version 2019-11-04"
   :bind
   ("C-q" . universal-argument) ; C-u -> C-q
   )
-
-(use-package fringe
-  :custom-face
-  (fringe ((t (:background nil))))
- )
 
 (use-package tempbuf :straight t
   :hook
@@ -282,9 +259,6 @@ Version 2019-11-04"
 
 (use-package faces
   :if darwin-p
-
-  :custom-face
-  (fringe ((t (:background nil))))
 
   :hook
   (window-setup . my-reload-font)
