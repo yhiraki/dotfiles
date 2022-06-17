@@ -1165,7 +1165,7 @@ Version 2019-11-04"
 
   (evil-define-key '(normal visual) org-mode-map
 	;; leader mapping
-	(kbd "<leader>/") 'my-outline
+	(kbd "<leader>/") 'consult-outline
 
 	;; localleader mapping
 	(kbd "<localleader>f") 'whitespace-cleanup
@@ -1819,13 +1819,13 @@ Version 2019-11-04"
 	(kbd "<leader>f o") 'my-open-current-dir
 	(kbd "<leader>f r") 'recentf-open-files
 	(kbd "<leader>g c") 'magit-commit
-	(kbd "<leader>g f") 'my-git-find
+	(kbd "<leader>g f") 'consult-ls-git
 	(kbd "<leader>g g") 'vc-git-grep
 	(kbd "<leader>g lb") 'gist-buffer
 	(kbd "<leader>g ll") 'gist-list
 	(kbd "<leader>g m") 'git-messenger:popup-message
 	(kbd "<leader>g o") 'browse-at-remote
-	(kbd "<leader>g p") 'my-ghq
+	(kbd "<leader>g p") 'consult-ghq-find
 	(kbd "<leader>g s") 'magit-stage
 	(kbd "<leader>g t") 'git-timemachine
 	(kbd "<leader>g u") 'magit-unstage
@@ -2108,125 +2108,53 @@ Version 2019-11-04"
 
 (use-package wgrep :ensure t)
 
-(defconst my-completion-method 'consult)
+(use-package consult :ensure t
+  :bind
+  ([remap find-file] . #'consult-find)
+  ([remap imenu] . #'consult-imenu)
+  ([remap bookmark-jump] . #'consult-bookmark)
+  ([remap recentf-open-files] . #'consult-recent-file)
+  ([remap grep-find] .#'consult-ripgrep)
+  ([remap vc-git-grep] .#'consult-git-grep)
 
-(when (eq my-completion-method 'consult)
-  (use-package consult :ensure t
-	:bind
-	([remap find-file] . #'consult-find)
-	([remap imenu] . #'consult-imenu)
-	([remap bookmark-jump] . #'consult-bookmark)
-	([remap recentf-open-files] . #'consult-recent-file)
-	([remap grep-find] .#'consult-ripgrep)
-	([remap vc-git-grep] .#'consult-git-grep)
+  :custom
+  (consult-project-root-function #'vc-root-dir)
 
-	:custom
-	(consult-project-root-function #'vc-root-dir)
-
-	:config
-	(defalias 'my-outline #'consult-outline)
-
-	:general
-	(:states '(normal visual)
-			 "g/" 'consult-line)
-	)
-
-  (use-package consult-ghq :ensure t
-	:commands (my-ghq consult-ghq-find consult-ghq-grep)
-	:config
-	(defalias 'my-ghq 'consult-ghq-find))
-
-  (use-package consult-ls-git :ensure t
-	:commands consult-ls-git
-	:config
-	(defalias 'my-git-find #'consult-ls-git)
-	)
-
-  (use-package vertico :ensure t
-	:hook (after-init . vertico-mode)
-	:custom (vertico-count 20))
-
-  (setq enable-recursive-minibuffers t)
-
-  (use-package minibuffer
-	:init
-	(setq completion-category-defaults nil)
-	:custom
-	(completion-styles '(orderless))
-	(completion-category-overrides '((file (styles partial-completion))))
-	)
-
-  (use-package orderless :ensure t)
-
-  (use-package marginalia :ensure t
-	:hook (after-init . marginalia-mode))
-
-  (use-package embark-consult :ensure t
-	:bind
-	("C-o" . 'embark-act))
+  :general
+  (:states '(normal visual)
+		   "g/" 'consult-line)
   )
 
-(when (eq my-completion-method 'ivy)
-  (use-package ivy :ensure t
-	:diminish ivy-mode
-	:hook (after-init . ivy-mode)
-
-	:custom
-	(enable-recursive-minibuffers t)
-	(ivy-count-format "(%d/%d) ")
-	(ivy-use-selectable-prompt t)
-	(ivy-use-virtual-buffers t)
-
-	:bind
-	(:map ivy-minibuffer-map ([escape] . 'minibuffer-keyboard-quit))
-	)
-
-  (use-package all-the-icons-ivy :ensure t
-	:hook (after-init . all-the-icons-ivy-setup))
-
-  (use-package ivy-rich :ensure t
-	:hook (ivy-mode . ivy-rich-mode)
-	)
-
-  (use-package counsel :ensure t
-	:after ivy
-	:custom
-	(counsel-yank-pop-separator "\n-------\n")
-	:bind
-	("M-x" . counsel-M-x)
-	([remap org-set-tags-command] . #'counsel-org-tag)
-	([remap find-file] . #'counsel-find-file)
-	([remap describe-function] . #'counsel-describe-function)
-	([remap describe-bindings] . #'counsel-descbinds)
-	([remap describe-variable] . #'counsel-describe-variable)
-	([remap imenu] . #'counsel-imenu)
-	([remap bookmark-jump] . #'counsel-bookmark)
-	([remap recentf-open-files] . #'counsel-recentf)
-	([remap grep-find] .#'counsel-rg)
-	([remap vc-git-grep] .#'counsel-git-grep)
-
-	:config
-	(defalias 'my-outline 'counsel-outline)
-	(defalias 'my-git-find 'counsel-git)
-	(use-package counsel-tramp :ensure t)
-	)
-
-  (use-package swiper :ensure t
-	:after evil
-	:config
-	(evil-define-key '(normal visual) 'global
-	  "g/" #'swiper-isearch)
-	)
-
-  (use-package ivy-ghq
-	:straight (ivy-ghq :host github :repo "analyticd/ivy-ghq")
-	:commands (ivy-ghq-open my-ghq)
-	:config
-	(defalias 'my-ghq 'ivy-ghq-open)
-	)
-
-  (use-package ivy-hydra :ensure t)
+(use-package consult-ghq :ensure t
+  :commands (consult-ghq-find consult-ghq-grep)
   )
+
+(use-package consult-ls-git :ensure t
+  :commands consult-ls-git
+  )
+
+(use-package vertico :ensure t
+  :hook (after-init . vertico-mode)
+  :custom (vertico-count 20))
+
+(setq enable-recursive-minibuffers t)
+
+(use-package minibuffer
+  :init
+  (setq completion-category-defaults nil)
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-overrides '((file (styles partial-completion))))
+  )
+
+(use-package orderless :ensure t)
+
+(use-package marginalia :ensure t
+  :hook (after-init . marginalia-mode))
+
+(use-package embark-consult :ensure t
+  :bind
+  ("C-o" . 'embark-act))
 
 (use-package key-binding :no-require
   :config
