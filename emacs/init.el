@@ -615,7 +615,14 @@ Version 2019-11-04"
 (use-package browse-at-remote :ensure t)
 
 (use-package recentf
-  :hook (find-file . recentf-mode)
+  :commands recentf-mode
+
+  :init
+  (defun start-recentf-mode-function()
+	(recentf-mode)
+	(remove-function after-focus-change-function 'start-recentf-mode-function))
+  (add-function :after after-focus-change-function #'start-recentf-mode-function)
+
   :custom
   (recentf-save-file "~/.cache/emacs/recentf")
   (recentf-max-saved-items 2000)
