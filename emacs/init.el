@@ -1156,15 +1156,11 @@ Version 2019-11-04"
 	(interactive) (org-call-with-arg 'org-todo 'right)
 	)
 
-  (evil-define-key '(normal insert) org-mode-map
-	(kbd "C-c d") org-download-map)
-
   (evil-define-key '(normal visual) org-mode-map
 	;; leader mapping
 	(kbd "<leader>/") 'my-outline
 
 	;; localleader mapping
-	(kbd "<localleader>d") org-download-map
 	(kbd "<localleader>f") 'whitespace-cleanup
 	(kbd "<localleader>i") 'org-clock-in
 	(kbd "<localleader>nb") 'org-narrow-to-block
@@ -1412,6 +1408,13 @@ Version 2019-11-04"
 		(define-key map "d" #'org-download-delete)
 		(define-key map "s" #'org-download-screenshot)
 		map))
+
+	:general
+	(:keymaps 'org-mode-map
+			  :states '(normal insert)
+			  "C-c d" org-download-map)
+	(:states 'normal
+			 "<localleader>d" org-download-map)
 	)
 
   (use-package org-mac-link
