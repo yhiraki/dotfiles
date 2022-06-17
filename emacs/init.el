@@ -513,17 +513,17 @@ Version 2019-11-04"
 			"C-c" #'vterm-send-C-c)
   :config
   (evil-set-initial-state 'vterm-mode 'emacs)
+  )
 
-  (use-package vterm-toggle :ensure t
-	:custom
-	(vterm-toggle-scope 'project)
-	:general
-	(:states '(normal visual)
-			 "M-t" #'vterm-toggle-cd)
-	(:keymaps 'vterm-mode-map
-			  :states 'emacs
-			  "M-t" #'vterm-toggle-cd)
-	)
+(use-package vterm-toggle :ensure t
+  :custom
+  (vterm-toggle-scope 'project)
+  :general
+  (:states '(normal visual)
+		   "M-t" #'vterm-toggle-cd)
+  (:keymaps 'vterm-mode-map
+			:states 'emacs
+			"M-t" #'vterm-toggle-cd)
   )
 
 (use-package flycheck :ensure t
