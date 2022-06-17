@@ -1249,40 +1249,6 @@ Version 2019-11-04"
 	(org-sexp-date ((t (:height 0.7 :foreground "gray40"))))
 	)
 
-  (use-package org-agenda
-	:after (evil org)
-	:commands (org-agenda org-refile)
-	:demand t
-
-	:custom
-	(org-agenda-current-time-string "← now")
-	(org-agenda-time-grid ;; Format is changed from 9.1
-	 '((daily today require-timed)
-	   (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
-	   "-"
-	   "────────────────"))
-	(org-refile-targets '((org-agenda-files :maxlevel . 2)))
-	(org-agenda-files (list org-directory "~/org/roam/daily"))
-	(org-agenda-span 'week)
-	(org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
-
-	:config
-	(defun my/org-agenda-todo-next ()
-	  "Org agenda todo next cycle"
-	  (interactive) (org-call-with-arg 'org-agenda-todo 'right)
-	  )
-	(evil-set-initial-state 'org-agenda-mode 'emacs)
-
-	:bind
-	(:map org-agenda-mode-map
-		  (":" . evil-ex)
-		  ("K" . org-capture)
-		  ("T" . org-agenda-todo)
-		  ("j" . org-agenda-next-item)
-		  ("k" . org-agenda-previous-item)
-		  ("t" . my/org-agenda-todo-next)
-		  ))
-
   (use-package org-clock
 	:hook
 	(kill-emacs . my:org-clock-out-and-save-when-exit)
@@ -1582,6 +1548,38 @@ Version 2019-11-04"
 	(use-package htmlize :ensure t)
 	)
   )
+
+(use-package org-agenda
+  :commands (org-agenda org-refile)
+  :demand t
+
+  :custom
+  (org-agenda-current-time-string "← now")
+  (org-agenda-time-grid ;; Format is changed from 9.1
+   '((daily today require-timed)
+	 (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
+	 "-"
+	 "────────────────"))
+  (org-refile-targets '((org-agenda-files :maxlevel . 2)))
+  (org-agenda-files (list org-directory "~/org/roam/daily"))
+  (org-agenda-span 'week)
+  (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
+
+  :config
+  (defun my/org-agenda-todo-next ()
+	"Org agenda todo next cycle"
+	(interactive) (org-call-with-arg 'org-agenda-todo 'right)
+	)
+
+  :bind
+  (:map org-agenda-mode-map
+		(":" . evil-ex)
+		("K" . org-capture)
+		("T" . org-agenda-todo)
+		("j" . org-agenda-next-item)
+		("k" . org-agenda-previous-item)
+		("t" . my/org-agenda-todo-next)
+		))
 
 (use-package electric
   :hook (python-mode . electric-indent-mode)
