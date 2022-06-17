@@ -1196,7 +1196,7 @@ Version 2019-11-04"
 	(kbd ">") 'org-metaright
 	(kbd "gh") 'outline-up-heading
 	(kbd "gp") 'outline-previous-heading
-	[tab] 'org-cycle
+	(kbd "<tab>") 'org-cycle
 	)
 
   (evil-define-key '(normal insert visual) org-mode-map
@@ -1351,6 +1351,7 @@ Version 2019-11-04"
 	:general
 	(:states '(normal visual)
 			 "<leader> n" #'org-roam-dailies-map
+			 "<leader> nS" #'org-roam-db-sync
 			 "<leader> n /" #'org-roam-node-find)
 	:config
 	(require 'org-roam-dailies)
@@ -1409,19 +1410,18 @@ Version 2019-11-04"
 	(org-download-screenshot-method "screencapture -i %s")
 
 	:init
-	(defvar org-download-map
-	  (let ((map (make-sparse-keymap)))
-		(define-key map "c" #'org-download-clipboard)
-		(define-key map "d" #'org-download-delete)
-		(define-key map "s" #'org-download-screenshot)
-		map))
+	(defvar org-download-map (make-sparse-keymap))
+	(define-prefix-command 'org-download-map)
+	(define-key org-download-map "c" #'org-download-clipboard)
+	(define-key org-download-map "d" #'org-download-delete)
+	(define-key org-download-map "s" #'org-download-screenshot)
 
 	:general
 	(:keymaps 'org-mode-map
 			  :states '(normal insert)
-			  "C-c d" org-download-map)
+			  "C-c d" #'org-download-map)
 	(:states 'normal
-			 "<localleader>d" org-download-map)
+			 "<localleader>d" #'org-download-map)
 	)
 
   (use-package org-mac-link
