@@ -506,6 +506,7 @@ Version 2019-11-04"
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
+  (vterm-environment '("INSIDE_EMACS=1"))
   :general
   (:keymaps 'vterm-mode-map
 			:states 'emacs

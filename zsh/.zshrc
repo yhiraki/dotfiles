@@ -2,8 +2,11 @@ autoload -Uz add-zsh-hook
 
 # Tmux
 {
-
   configure_tmux() {
+    if [[ -n "$INSIDE_EMACS" ]]; then
+	  return
+	fi
+
     if ! command -v tmux >/dev/null; then
       return
     fi
@@ -30,9 +33,10 @@ autoload -Uz add-zsh-hook
 
     exec tmux new -s "${TMUX_DEFAULT_NAME}"
   }
-  configure_tmux
+  case $(tty) in
+    /dev/tty*) configure_tmux ;;
+  esac
   unset -f configure_tmux
-
 }
 
 # Aliases
