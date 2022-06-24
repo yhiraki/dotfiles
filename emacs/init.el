@@ -1871,15 +1871,16 @@ Version 2019-11-04"
 	:config
 	(evil-collection-init
 	 '(
-	   replace
 	   (package-menu package)
 	   dired
+	   ediff
 	   flycheck
 	   ibuffer
 	   magit
 	   magit-todos
 	   profiler
 	   quickrun
+	   replace
 	   wgrep
 	   xref
 	   )))
