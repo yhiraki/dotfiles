@@ -509,11 +509,20 @@ Version 2019-11-04"
   (vterm-environment '("INSIDE_EMACS=1"))
   :general
   (:keymaps 'vterm-mode-map
-			:states 'emacs
+			:states 'insert
+			"C-a" #'vterm-send-C-a
+			"C-c" #'vterm-send-C-c
+			"C-d" #'vterm-send-C-d
+			"C-e" #'vterm-send-C-e
+			"C-h" #'vterm-send-C-h
+			"C-k" #'vterm-send-C-k
+			"C-n" #'vterm-send-C-n
+			"C-p" #'vterm-send-C-p
+			"C-r" #'vterm-send-C-r
 			"C-x" #'vterm-send-C-x
-			"C-c" #'vterm-send-C-c)
+			)
   :config
-  (evil-set-initial-state 'vterm-mode 'emacs)
+  (evil-set-initial-state 'vterm-mode 'insert)
   )
 
 (use-package vterm-toggle :ensure t
