@@ -389,4 +389,4 @@ autoload -Uz compinit && compinit -i
 # zmodload zsh/zprof && zprof
 
 # Make status code '0'
-echo .zshrc loaded
+echo .zshrc loaded 1>&2
