@@ -189,11 +189,15 @@ Version 2019-11-04"
 
 (use-package pixel-scroll
   :hook (mouse-wheel-mode . pixel-scroll-mode)
+  :custom
+  ;; https://www.reddit.com/r/emacs/comments/8sw3r0/finally_scrolling_over_large_images_with_pixel/
+  (pixel-dead-time 0)
+  (pixel-resolution-fine-flag t)
   )
 
 (use-package mwheel
   :custom
-  (mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
+  (mouse-wheel-scroll-amount '(1)) ; one line at a time
   (mouse-wheel-progressive-speed nil) ; don't accelerate scrolling
   (mouse-wheel-follow-mouse 't) ; scroll window under mouse
   )
