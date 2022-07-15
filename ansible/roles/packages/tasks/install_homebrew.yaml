@@ -10,6 +10,7 @@
       - gnu-tar
       - gnupg
       - grep
+      - libpq
       - ripgrep
       - skhd
       - terminal-notifier
