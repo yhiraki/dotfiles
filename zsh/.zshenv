@@ -114,7 +114,7 @@ command -v brew >/dev/null && {
     fi
   done
 
-  for i in {openssl,llvm,openjdk,mysql-client}; do
+  for i in {openssl,llvm,openjdk,mysql-client,libpq}; do
     if [ -d "$HOMEBREW_PREFIX/opt/$i/" ]; then
       PATH="$HOMEBREW_PREFIX/opt/$i/bin:$PATH"
     fi
