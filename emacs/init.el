@@ -584,7 +584,9 @@ Version 2019-11-04"
 
   :config
   (use-package magit-todos :ensure t
-	:hook (magit-mode . magit-todos-mode))
+	:hook (magit-mode . magit-todos-mode)
+	:custom
+	(magit-todos-exclude-globs '(".git/" "*.js.map")))
 
   (use-package git-modes :ensure t)
 
