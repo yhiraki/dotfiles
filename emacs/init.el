@@ -354,7 +354,9 @@ Version 2019-11-04"
   (setq save-silently t)
   )
 
-(use-package exec-path-from-shell :ensure t)
+(use-package exec-path-from-shell :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package find-large-file :no-require
   ;; 巨大なファイルを開いたときに fundamental mode にする
