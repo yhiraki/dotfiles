@@ -1332,6 +1332,7 @@ Version 2019-11-04"
 	(:states '(normal visual)
 			 "<leader> n" #'org-roam-dailies-map
 			 "<leader> nS" #'org-roam-db-sync
+			 "<leader> nb" #'org-roam-buffer
 			 "<leader> n /" #'org-roam-node-find)
 	:config
 	(require 'org-roam-dailies)
