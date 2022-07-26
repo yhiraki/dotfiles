@@ -1070,6 +1070,13 @@ Version 2019-11-04"
 (use-package markdown-mode :ensure t
   :commands markdown-toggle-markup-hiding
 
+  :hook
+  ((markdown-mode gfm-mode)
+   . (lambda () ()
+	   (setq-local indent-tabs-mode nil)
+	   (setq-local tab-width 4)
+	   ))
+
   :custom
   (markdown-command "pandoc -s -t html5 -c ~/.emacs.d/css/github.css")
   (markdown-gfm-use-electric-backquote nil)
