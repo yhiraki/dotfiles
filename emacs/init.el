@@ -452,15 +452,6 @@ Version 2019-11-04"
 (use-package dired
   :hook
   (dired-mode . dired-hide-details-mode)
-  :general
-  (:keymaps 'dired-mode-map
-			:states '(normal visual)
-			"C-j" #'dired-next-dirline
-			"C-k" #'dired-prev-dirline
-			"C-c C-o" #'my-open-in-external-app
-			"q" #'kill-current-buffer
-			"r" #'revert-buffer
-			"SPC" nil)
 
   :config
   (use-package dired-filter :ensure t)
@@ -1899,7 +1890,13 @@ Version 2019-11-04"
 	   replace
 	   wgrep
 	   xref
-	   )))
+	   ))
+
+	:general
+	(:keymaps 'dired-mode-map
+			  :states '(normal visual)
+			  "C-c C-o" #'my-open-in-external-app)
+	)
 
   (use-package evil-commentary :ensure t
 	:diminish evil-commentary-mode
