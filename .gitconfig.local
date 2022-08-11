@@ -5,6 +5,8 @@
 	excludesfile = ~/.gitexclude
 [rebase]
 	autostash = true
+[rerere]
+	enabled = true
 [push]
 	default = current
 [pull]
