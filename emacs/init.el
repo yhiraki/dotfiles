@@ -453,6 +453,10 @@ Version 2019-11-04"
   :hook
   (dired-mode . dired-hide-details-mode)
 
+  :bind
+  (:map dired-mode-map
+		("C-c C-o" . #'my-open-in-external-app))
+
   :config
   (use-package dired-filter :ensure t)
 
@@ -1891,11 +1895,6 @@ Version 2019-11-04"
 	   wgrep
 	   xref
 	   ))
-
-	:general
-	(:keymaps 'dired-mode-map
-			  :states '(normal visual)
-			  "C-c C-o" #'my-open-in-external-app)
 	)
 
   (use-package evil-commentary :ensure t
