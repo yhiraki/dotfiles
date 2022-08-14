@@ -463,18 +463,6 @@ Version 2019-11-04"
   (use-package dired-subtree :ensure t
 	:after dired
 
-	:config
-	;; for all-the-icons
-	;; https://github.com/Fuco1/dired-hacks/issues/155
-	(defun my-dired-subtree-insert ()
-	  (interactive)
-	  (dired-subtree-insert)
-	  (revert-buffer))
-	(defun my-dired-subtree-remove ()
-	  (interactive)
-	  (dired-subtree-remove)
-	  (revert-buffer))
-
 	:custom-face
 	(dired-subtree-depth-1-face ((t (:background nil))))
 	(dired-subtree-depth-2-face ((t (:background nil))))
