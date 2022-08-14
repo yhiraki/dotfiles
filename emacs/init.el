@@ -455,7 +455,19 @@ Version 2019-11-04"
 
   :bind
   (:map dired-mode-map
-		("C-c C-o" . #'my-open-in-external-app))
+		(":" . #'evil-ex)
+		("C-c C-o" . #'my-open-in-external-app)
+		("C-j" . #'dired-next-dirline)
+		("C-k" . #'dired-prev-dirline)
+		("C-k" . #'dired-prev-dirline)
+		("C-w" . evil-window-map)
+		("SPC" . #'evil-send-leader)
+		("e" . #'wdired-change-to-wdired-mode)
+		("h" . #'dired-subtree-remove)
+		("j" . #'dired-next-line)
+		("k" . #'dired-previous-line)
+		("l" . #'dired-subtree-insert)
+		)
 
   :config
   (use-package dired-filter :ensure t)
@@ -470,12 +482,6 @@ Version 2019-11-04"
 	(dired-subtree-depth-4-face ((t (:background nil))))
 	(dired-subtree-depth-5-face ((t (:background nil))))
 	(dired-subtree-depth-6-face ((t (:background nil))))
-
-	:general
-	(:keymaps 'dired-mode-map
-			  :states '(normal visual)
-			  "l" #'my-dired-subtree-insert
-			  "h" #'my-dired-subtree-remove)
 	)
 
   (use-package dired-sidebar :ensure t
@@ -1812,9 +1818,10 @@ Version 2019-11-04"
   (evil-add-command-properties #'xref-find-references :jump t)
 
   (evil-set-leader '(normal visual) (kbd "SPC"))
+  (evil-set-leader '(normal visual emacs) (kbd "C-c SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
-  (evil-define-key '(normal visual) 'global
+  (evil-define-key '(normal visual emacs) 'global
 	(kbd "<leader>/") 'imenu
 	(kbd "<leader>G g") 'google-this
 	(kbd "<leader>a") 'org-agenda
@@ -1860,6 +1867,8 @@ Version 2019-11-04"
 
   (evil-mode)
 
+  (evil-set-initial-state 'dired-mode 'emacs)
+
   (use-package evil-surround :ensure t
 	:after evil
 	:config (global-evil-surround-mode))
@@ -1871,7 +1880,6 @@ Version 2019-11-04"
 	(evil-collection-init
 	 '(
 	   (package-menu package)
-	   dired
 	   ediff
 	   flycheck
 	   ibuffer
