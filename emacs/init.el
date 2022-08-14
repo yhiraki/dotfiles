@@ -1895,9 +1895,6 @@ Version 2019-11-04"
 	   wgrep
 	   xref
 	   ))
-	:bind
-	(:map dired-mode-map
-		  ((kbd "<leader>") . nil))  ; using evil-leader with dired
 	)
 
   (use-package evil-commentary :ensure t
