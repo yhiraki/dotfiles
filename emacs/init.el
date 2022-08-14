@@ -782,15 +782,9 @@ Version 2019-11-04"
   (python-mode
    . (lambda ()
 	   (require 'lsp-pyright)
+	   (evil-local-set-key 'normal (kbd "<localleader>f") #'python-black-buffer)
+	   (evil-local-set-key 'visual (kbd "<localleader>f") #'python-black-region)
 	   (lsp)))
-
-  :general
-  (:keymaps 'python-mode-map
-			:states 'normal
-			"<localleader>f" #'python-black-buffer)
-  (:keymaps 'python-mode-map
-			:states 'visual
-			"<localleader>f" #'python-black-region)
   )
 
 (use-package lsp-go
