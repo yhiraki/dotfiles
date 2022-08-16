@@ -467,6 +467,7 @@ Version 2019-11-04"
 		("j" . #'dired-next-line)
 		("k" . #'dired-previous-line)
 		("l" . #'dired-subtree-insert)
+		("r" . #'revert-buffer)
 		)
 
   :config
