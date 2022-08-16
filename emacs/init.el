@@ -1427,6 +1427,25 @@ Version 2019-11-04"
 	(calendar-mark-holidays-flag t)
 	)
 
+  (use-package org-appear :ensure t
+	:hook
+	(org-mode . org-appear-mode)
+	(org-mode
+	 . (lambda ()
+		 (add-hook 'evil-insert-state-entry-hook
+				   #'org-appear-manual-start
+				   nil
+				   t)
+		 (add-hook 'evil-insert-state-exit-hook
+				   #'org-appear-manual-stop
+				   nil
+				   t)))
+	:custom
+	(org-appear-autolinks t)
+	(org-appear-trigger 'manual)
+	(org-hide-emphasis-markers t)
+	)
+
   (use-package ob
 	:after org
 	:hook
