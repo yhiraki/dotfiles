@@ -789,7 +789,9 @@ Version 2019-11-04"
   )
 
 (use-package lsp-go
-  :hook (go-mode . lsp))
+  :hook (go-mode . lsp)
+  :custom (lsp-go-use-gofumpt t)
+  )
 
 (use-package lsp-ui :ensure t
   :hook
