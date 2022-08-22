@@ -5,4 +5,5 @@ plugins:
 rules:
   # https://github.com/textlint-ja/textlint-rule-preset-japanese
   preset-japanese:
+    sentence-length: false
     no-dropping-the-ra: false
