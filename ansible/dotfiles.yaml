@@ -7,11 +7,20 @@
       emacs_version: 28.1
       install_prefix: /usr/local
       build_options: |
+        --build=aarch64-apple-darwin
+        --disable-largefile
         --with-gif=ifavailable
+        --with-imagemagick
         --with-jpeg=ifavailable
+        --with-native-compilation
+        --with-ns
+        --with-rsvg
         --with-tiff=ifavailable
         --with-x-toolkit=no
         --with-xpm=ifavailable
+        --without-scroll-bars
+        --without-sound
+        --without-x
     - role: yhiraki.python
       python_version: 3.10.2
       install_prefix: /usr/local
