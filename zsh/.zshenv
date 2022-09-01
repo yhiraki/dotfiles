@@ -122,6 +122,9 @@ command -v brew >/dev/null && {
 
   # libgccjit
   LIBRARY_PATH="$HOMEBREW_PREFIX/opt/libgccjit/lib/gcc/11"
+
+  # option
+  HOMEBREW_NO_AUTO_UPDATE=1
 }
 
 TERM=xterm-256color
