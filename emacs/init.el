@@ -502,13 +502,12 @@ Version 2019-11-04"
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
-  (vterm-environment '("INSIDE_EMACS=1"))
   :general
   (:keymaps 'vterm-mode-map
-			:states 'insert
+			:states '(insert emacs)
 			"C-a" #'vterm-send-C-a
 			"C-c" #'vterm-send-C-c
-			"C-d" #'vterm-send-C-d
+			"C-d" #'vterm-toggle-cd
 			"C-e" #'vterm-send-C-e
 			"C-h" #'vterm-send-C-h
 			"C-k" #'vterm-send-C-k
@@ -516,20 +515,15 @@ Version 2019-11-04"
 			"C-p" #'vterm-send-C-p
 			"C-r" #'vterm-send-C-r
 			"C-x" #'vterm-send-C-x
+			"M-t" #'vterm-toggle-cd
 			)
-  :config
-  (evil-set-initial-state 'vterm-mode 'insert)
   )
 
 (use-package vterm-toggle :ensure t
   :custom
   (vterm-toggle-scope 'project)
-  :general
-  (:states '(normal visual)
-		   "M-t" #'vterm-toggle-cd)
-  (:keymaps 'vterm-mode-map
-			:states 'emacs
-			"M-t" #'vterm-toggle-cd)
+  :bind
+  ("M-t" . #'vterm-toggle-cd)
   )
 
 (use-package flycheck :ensure t
@@ -1884,6 +1878,7 @@ Version 2019-11-04"
   (evil-mode)
 
   (evil-set-initial-state 'dired-mode 'emacs)
+  (evil-set-initial-state 'vterm-mode 'emacs)
 
   (use-package evil-surround :ensure t
 	:after evil
