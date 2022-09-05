@@ -1102,6 +1102,8 @@ Version 2019-11-04"
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
 
 (use-package org :ensure org-contrib
+  :diminish org-indent-mode
+
   :hook
   (org-after-todo-statistics . org-summary-todo)
   (org-checkbox-statistics . my/org-checkbox-todo)
