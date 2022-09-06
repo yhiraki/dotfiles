@@ -2009,8 +2009,8 @@ Version 2019-11-04"
   :config (global-clipetty-mode))
 
 (use-package whitespace
-  :diminish whitespace-mode
-  :hook ((emacs-lisp-mode org-mode gfm-mode markdown-mode) . whitespace-mode)
+  :diminish (whitespace-mode global-whitespace-mode)
+  :hook (after-init . global-whitespace-mode)
 
   :custom
   ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
@@ -2022,7 +2022,7 @@ Version 2019-11-04"
                       space-mark     ; 表示のマッピング
                       tab-mark))
   (whitespace-display-mappings
-   '((space-mark ?\u3000 [?\u25a1])
+   '((space-mark ?\u3000 [?\□])
      ;; WARNING: the mapping below has a problem.
      ;; When a TAB occupies exactly one column, it will display the
      ;; character ?\xBB at that column followed by a TAB which goes to
@@ -2031,6 +2031,14 @@ Version 2019-11-04"
      (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
   (whitespace-space-regexp "\\(\u3000+\\)") ; スペースは全角のみを可視化
   ;; (whitespace-action '(auto-cleanup)) ; 保存時に自動でクリーンアップ
+  (whitespace-global-modes
+   '(not eww-mode
+		 term-mode
+		 vterm-mode
+		 eshell-mode
+		 org-agenda-mode
+		 magit-mode
+		 calendar-mode))
 
   :custom-face
   (whitespace-empty    ((t (:background "controlBackgroundColor" :foreground "DeepPink" :underline t))))
@@ -2041,6 +2049,37 @@ Version 2019-11-04"
   :config
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
+
+  (defun my-whitespace-zenkaku-to-hankaku-buffer ()
+	"Japanese zenkaku space to hankaku"
+	(interactive)
+	(my-whitespace-zenkaku-to-hankaku-region (point-min) (point-max)))
+
+  (defun my-whitespace-zenkaku-to-hankaku-region (begin end)
+	"Japanese zenkaku space to hankaku"
+	(interactive "r")
+	(save-excursion
+	  (replace-string "\u3000" " " nil begin end)))
+
+  (defun my-whitespace-cleanup ()
+	"Whitespace cleanup inclues zenkaku space"
+	(interactive)
+	(my-whitespace-zenkaku-to-hankaku-buffer)
+	(whitespace-cleanup)
+	)
+
+  (defun my-whitespace-cleanup-region (begin end)
+	"Whitespace cleanup inclues zenkaku space"
+	(interactive "r")
+	(my-whitespace-zenkaku-to-hankaku-region begin end)
+	(whitespace-cleanup-region)
+	)
+
+  :general
+  (:states 'normal
+		   "<localleader>w" #'my-whitespace-cleanup)
+  (:states 'visual
+		   "<localleader>w" #'my-whitespace-cleanup-region)
   )
 
 (use-package yasnippet :ensure t
