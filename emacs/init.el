@@ -1326,9 +1326,36 @@ Version 2019-11-04"
 			 "<leader> n" #'org-roam-dailies-map
 			 "<leader> nS" #'org-roam-db-sync
 			 "<leader> nb" #'org-roam-buffer
-			 "<leader> n /" #'org-roam-node-find)
+			 "<leader> n/" #'org-roam-node-find
+			 "<leader> nF" #'my-org-roam-fix-exported-markdown)
 	:config
 	(require 'org-roam-dailies)
+
+	(defun my-unlink-all-markdown-file-links-region (begin end)
+	  "MarkdownFile link to normal text from BEGIN to END"
+	  (interactive "r")
+	  (save-excursion
+		(replace-regexp "\\[\\(.*\\)\\](.*.md)" "\\1" nil begin end)))
+
+	(defun my-unlink-all-markdown-file-links ()
+	  "MarkdownFile link to normal text"
+	  (interactive)
+	  (my-unlink-all-markdown-file-links-region (point-min) (point-max)))
+
+	(defun my-remove-all-backslashes ()
+	  (interactive)
+	  (my-remove-all-backslashes-region (point-min) (point-max)))
+
+	(defun my-remove-all-backslashes-region (begin end)
+	  "Remove all backslashes from BEGIN to END"
+	  (interactive "r")
+	  (save-excursion
+		(replace-regexp "\\\\" "" nil begin end)))
+
+	(defun my-org-roam-fix-exported-markdown ()
+	  (interactive)
+	  (my-unlink-all-markdown-file-links)
+	  (my-remove-all-backslashes))
 	)
 
   (use-package org-capture
