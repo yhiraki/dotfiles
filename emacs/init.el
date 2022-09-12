@@ -2217,14 +2217,21 @@ Version 2019-11-04"
 
   :custom
   (consult-project-root-function #'vc-root-dir)
+  (consult-find-args "find . -not ( -name .venv -prune -o name node_modules -prune -o .git -prune)")
 
   :general
   (:states '(normal visual)
 		   "g/" 'consult-line)
   )
 
+(use-package affe :ensure t
+  :custom
+  (affe-find-command "rg --color=never --files --hidden")
+  )
+
 (use-package consult-ghq :ensure t
   :commands (consult-ghq-find consult-ghq-grep)
+  :custom
   )
 
 (use-package consult-ls-git :ensure t
