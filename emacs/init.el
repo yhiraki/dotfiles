@@ -2231,7 +2231,6 @@ Version 2019-11-04"
 
 (use-package consult-ghq :ensure t
   :commands (consult-ghq-find consult-ghq-grep)
-  :custom
   )
 
 (use-package consult-ls-git :ensure t
