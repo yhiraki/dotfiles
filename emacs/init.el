@@ -1076,6 +1076,15 @@ Version 2019-11-04"
 			"zc" #'outline-hide-subtree
 			"TAB" #'markdown-cycle
 			"<localleader>f" #'prettier-js)
+
+  :config
+  (defun my-img-embed-convert-for-backlog-style-region (begin end)
+	(interactive "r")
+	(save-excursion
+	  (replace-regexp "![img](.*/+\\(.*\\))" "![img][\\1]" nil begin end)))
+  (defun my-img-embed-convert-for-backlog-style ()
+	(interactive)
+	(my-img-embed-convert-for-backlog-style-region (point-min) (point-max)))
   )
 
 (use-package terraform-mode :ensure t)
