@@ -1860,7 +1860,7 @@ Version 2019-11-04"
   (evil-set-leader '(normal visual emacs) (kbd "C-c SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
-  (evil-define-key '(normal visual emacs) 'global
+  (evil-define-key '(normal visual) 'global
 	(kbd "<leader>/") 'imenu
 	(kbd "<leader>G g") 'google-this
 	(kbd "<leader>a") 'org-agenda
@@ -1886,6 +1886,7 @@ Version 2019-11-04"
 	(kbd "<leader>g u") 'magit-unstage
 	(kbd "<leader>h") 'help
 	(kbd "<leader>o I") 'org-clock-in
+	(kbd "<leader>o L") 'org-clock-in-last
 	(kbd "<leader>o O") 'org-clock-out
 	(kbd "<leader>o Q") 'org-clock-cancel
 	(kbd "<leader>o a") 'org-agenda
