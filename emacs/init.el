@@ -2233,7 +2233,7 @@ Version 2019-11-04"
 
   :custom
   (consult-project-root-function #'vc-root-dir)
-  (consult-find-args "find . -not ( -name .venv -prune -o name node_modules -prune -o .git -prune)")
+  (consult-find-args "find . -not ( -name .venv -prune -o -name node_modules -prune -o -name .git -prune )")
 
   :general
   (:states '(normal visual)
@@ -2242,7 +2242,7 @@ Version 2019-11-04"
 
 (use-package affe :ensure t
   :custom
-  (affe-find-command "rg --color=never --files --hidden")
+  (affe-find-command "rg --color=never --files --hidden -g !.git")
   )
 
 (use-package consult-ghq :ensure t
