@@ -614,7 +614,7 @@ Version 2019-11-04"
 (use-package browse-at-remote :ensure t)
 
 (use-package recentf
-  :commands recentf-mode
+  :commands (recentf-mode recentf-open-files)
 
   :init
   (defun start-recentf-mode-function()
