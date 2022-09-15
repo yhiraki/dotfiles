@@ -1377,7 +1377,7 @@ Version 2019-11-04"
 	 `(
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
 	   ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T%?" :clock-in t :clock-resume t)
-	   ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%U|" :table-line-pos "II-1")
+	   ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%(format-time-string \"%Y-%m-%d\")|" :table-line-pos "II-1")
 	   ("j" "Journal" entry (file+olp+datetree "journal.org") "** %?\n%T")
 	   ("l" "Log Time" entry (file+olp+datetree "journal.org") "** %U %^{Log} :Time:" :immediate-finish t)
 	   ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
