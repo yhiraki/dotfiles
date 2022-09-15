@@ -7,3 +7,4 @@ rules:
   preset-japanese:
     sentence-length: false
     no-dropping-the-ra: false
+    no-doubled-joshi: false
