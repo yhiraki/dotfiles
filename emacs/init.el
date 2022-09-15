@@ -284,27 +284,24 @@ Version 2019-11-04"
 
     ;; Osaka + Menlo
     (when (eq yhiraki-font 'osaka)
-      (set-face-attribute 'default nil
-                          :family "Menlo"
-                          :height 120)
+	  (set-face-attribute 'default   nil :family "Menlo" :height 120)
+	  (set-face-attribute 'org-table nil :family "Menlo" :height 120)
       (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
       (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
       )
 
     ;; Cica
     (when (eq yhiraki-font 'cica)
-      (set-face-attribute 'default nil
-                          :family "Cica"
-                          :height 160)
+	  (set-face-attribute 'default   nil :family "Cica" :height 160)
+	  (set-face-attribute 'org-table nil :family "Cica" :height 140)
       ;; apple color emoji
       (push '("Apple color emoji" . 0.8) face-font-rescale-alist) ; 4文字幅に揃える
       )
 
     ;; Jetbrains mono
     (when (eq yhiraki-font 'jetbrains-mono)
-      (set-face-attribute 'default nil
-                          :family "Jetbrains Mono"
-                          :height 140)
+	  (set-face-attribute 'default   nil :family "Jetbrains Mono" :height 140)
+	  (set-face-attribute 'org-table nil :family "Jetbrains Mono" :height 140)
       ;; 日本語
       (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
       (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
