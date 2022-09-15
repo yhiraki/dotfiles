@@ -1,0 +1,7 @@
+#!/bin/bash
+
+WORKDIR=${1:-"."}
+
+git -C "$WORKDIR" add . &&
+  git -C "$WORKDIR" commit -mupdate &&
+  git -C "$WORKDIR" push

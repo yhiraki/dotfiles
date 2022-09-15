@@ -1,0 +1,4 @@
+PATH=
+
+0 */3 * * * archive-old-files $HOME/Downloads $HOME/Downloads/archived 7 2>> /tmp/cron1.log
+0 */3 * * * < .auto-push-repos | xargs -I{} git-acp {} >> /tmp/cron2.log
