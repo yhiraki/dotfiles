@@ -285,23 +285,23 @@ Version 2019-11-04"
     ;; Osaka + Menlo
     (when (eq yhiraki-font 'osaka)
 	  (set-face-attribute 'default   nil :family "Menlo" :height 120)
-	  (set-face-attribute 'org-table nil :family "Menlo" :height 120)
+	  (set-face-attribute 'fixed-pitch nil :family "Menlo" :height 120)
       (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
       (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
       )
 
     ;; Cica
     (when (eq yhiraki-font 'cica)
-	  (set-face-attribute 'default   nil :family "Cica" :height 160)
-	  (set-face-attribute 'org-table nil :family "Cica" :height 140)
+	  (set-face-attribute 'default     nil :family "Cica" :height 160)
+	  (set-face-attribute 'fixed-pitch nil :family "Cica" :height 160)
       ;; apple color emoji
       (push '("Apple color emoji" . 0.8) face-font-rescale-alist) ; 4文字幅に揃える
       )
 
     ;; Jetbrains mono
     (when (eq yhiraki-font 'jetbrains-mono)
-	  (set-face-attribute 'default   nil :family "Jetbrains Mono" :height 140)
-	  (set-face-attribute 'org-table nil :family "Jetbrains Mono" :height 140)
+	  (set-face-attribute 'default     nil :family "Jetbrains Mono" :height 140)
+	  (set-face-attribute 'fixed-pitch nil :family "Jetbrains Mono" :height 140)
       ;; 日本語
       (set-fontset-font nil '(#x80 . #x10ffff) (font-spec :family "Osaka"))
       (push '("Osaka" . 1.2) face-font-rescale-alist) ; 全角文字を2文字幅に揃える
@@ -1253,13 +1253,16 @@ Version 2019-11-04"
 	;; Document Title, (\huge)
 	(org-document-title ((t (:height 2.074 :inherit 'org-level-8))))
 
-	(org-block-begin-line ((t (:height 0.8 :foreground "gray40"))))
-	(org-date ((t (:height 0.7 :foreground "gold4"))))
-	(org-drawer ((t (:height 0.55 :foreground "gray40"))))
-	(org-meta-line ((t (:height 0.8 :foreground "gray40"))))
-	(org-property-value ((t (:height 0.8))))
-	(org-special-keyword ((t (:height 0.7 :foreground "gray40"))))
-	(org-sexp-date ((t (:height 0.7 :foreground "gray40"))))
+	(org-block            ((t (:height 0.8))))
+	(org-code             ((t (:height 0.8))))
+	(org-block-begin-line ((t (:height 0.7  :foreground "gray40"))))
+	(org-date             ((t (:height 0.7  :foreground "gold4"))))
+	(org-drawer           ((t (:height 0.55 :foreground "gray40"))))
+	(org-meta-line        ((t (:height 0.7  :foreground "gray40"))))
+	(org-property-value   ((t (:height 0.8))))
+	(org-sexp-date        ((t (:height 0.7  :foreground "gray40"))))
+	(org-special-keyword  ((t (:height 0.7  :foreground "gray40"))))
+	(org-table            ((t (:height 0.9  :inherit    'fixed-pitch))))
 	)
 
   (use-package org-clock
@@ -1545,7 +1548,10 @@ Version 2019-11-04"
 	  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc"))
 
 	(use-package ob-shell
-	  :after ob)
+	  :after ob
+	  :custom
+	  (org-babel-default-header-args:sh '((:async) (:cache . "yes")))
+	  )
 
 	(use-package ob-python
 	  :after auto-virtualenvwrapper
@@ -1556,7 +1562,9 @@ Version 2019-11-04"
 			 (when path
 			   (setq-local org-babel-python-command (concat path "bin/python"))))))
 	  :custom
-	  (org-babel-python-command "python3"))
+	  (org-babel-python-command "python3")
+	  (org-babel-default-header-args:python '((:async) (:cache . "yes") (:results . "output")))
+	  )
 
 	(use-package ob-C
 	  :after ob
