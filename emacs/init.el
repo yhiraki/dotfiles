@@ -1078,7 +1078,7 @@ Version 2019-11-04"
   (defun my-img-embed-convert-for-backlog-style-region (begin end)
 	(interactive "r")
 	(save-excursion
-	  (replace-regexp "![img](.*/+\\(.*\\))" "![img][\\1]" nil begin end)))
+	  (replace-regexp "!\\[img\\](.*/+\\(.*\\))" "![img][\\1]" nil begin end)))
   (defun my-img-embed-convert-for-backlog-style ()
 	(interactive)
 	(my-img-embed-convert-for-backlog-style-region (point-min) (point-max)))
