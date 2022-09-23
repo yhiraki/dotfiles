@@ -1551,7 +1551,7 @@ Version 2019-11-04"
 	(use-package ob-shell
 	  :after ob
 	  :custom
-	  (org-babel-default-header-args:sh '((:async) (:cache . "yes")))
+	  (org-babel-default-header-args:sh '((:async) (:cache . "yes") (:results . "output")))
 	  )
 
 	(use-package ob-python
