@@ -1247,13 +1247,13 @@ Version 2019-11-04"
 
 	:custom-face
 	;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-	(org-level-1 ((t (:inherit 'outline-1 :height 1.4)))) ;\LARGE
-	(org-level-2 ((t (:inherit 'outline-2 :height 1.2)))) ;\Large
-	(org-level-3 ((t (:inherit 'outline-3 :height 1.1)))) ;\large
+	(org-level-1 ((t (:inherit 'outline-1 :height 1.2)))) ;\LARGE
+	(org-level-2 ((t (:inherit 'outline-2 :height 1.1)))) ;\Large
+	(org-level-3 ((t (:inherit 'outline-3 :height 1.05)))) ;\large
 	;; Document Title, (\huge)
 	(org-document-title ((t (:height 2.074 :inherit 'org-level-8))))
 
-	(org-block            ((t (:height 0.8    :background "gray5"))))
+	(org-block            ((t (:height 0.9    :background "gray5"))))
 	(org-code             ((t (:height 0.8    :background "gray8"))))
 	(org-block-begin-line ((t (:height 0.7    :foreground "gray40" :background nil :underline "gray20"))))
 	(org-block-end-line   ((t (:underline nil :overline "gray20"))))
