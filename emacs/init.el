@@ -449,23 +449,21 @@ Version 2019-11-04"
 (use-package dired
   :hook
   (dired-mode . dired-hide-details-mode)
+  (dired-mode
+   . (lambda ()
+	   "prevent keymap SPC always override by dired"
+	   (evil-define-key '(normal visual) dired-mode-map
+		 (kbd "SPC") #'evil-send-leader)))
 
-  :bind
-  (:map dired-mode-map
-		(":" . #'evil-ex)
-		("C-c C-o" . #'my-open-in-external-app)
-		("C-j" . #'dired-next-dirline)
-		("C-k" . #'dired-prev-dirline)
-		("C-k" . #'dired-prev-dirline)
-		("C-w" . evil-window-map)
-		("SPC" . #'evil-send-leader)
-		("e" . #'wdired-change-to-wdired-mode)
-		("h" . #'dired-subtree-remove)
-		("j" . #'dired-next-line)
-		("k" . #'dired-previous-line)
-		("l" . #'dired-subtree-insert)
-		("r" . #'revert-buffer)
-		)
+  :general
+  (:keymaps 'dired-mode-map
+		   :states '(normal visual)
+		   "C-c C-o" #'my-open-in-external-app
+		   "C-j" #'dired-next-dirline
+		   "C-k" #'dired-prev-dirline
+		   "h" #'dired-subtree-remove
+		   "l" #'dired-subtree-insert
+		   )
 
   :config
   (use-package dired-filter :ensure t)
@@ -1928,7 +1926,6 @@ Version 2019-11-04"
 
   (evil-mode)
 
-  (evil-set-initial-state 'dired-mode 'emacs)
   (evil-set-initial-state 'vterm-mode 'emacs)
 
   (use-package evil-surround :ensure t
@@ -1942,6 +1939,7 @@ Version 2019-11-04"
 	(evil-collection-init
 	 '(
 	   (package-menu package)
+	   dired
 	   ediff
 	   flycheck
 	   ibuffer
