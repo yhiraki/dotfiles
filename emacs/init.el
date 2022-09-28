@@ -1271,6 +1271,9 @@ Version 2019-11-04"
 	(org-after-todo-state-change . my:org-clock-out-if-waiting)
 
 	:custom
+	(org-clock-clocked-in-display 'frame-title)
+	(org-clock-continuously t)  ; automatically clock in last clocked
+	(org-clock-idle-time 5)
 	(org-clock-out-remove-zero-time-clocks t)
 
 	:config
