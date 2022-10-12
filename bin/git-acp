@@ -2,6 +2,11 @@
 
 WORKDIR=${1:-"."}
 
+if [ "$(git -C "$WORKDIR" diff --name-only | wc -l)" -eq 0 ]; then
+  echo 'nothing to do' 2>&1
+  exit 0
+fi
+
 git -C "$WORKDIR" add . &&
   git -C "$WORKDIR" commit -mupdate &&
   git -C "$WORKDIR" push
