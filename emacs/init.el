@@ -2284,9 +2284,10 @@ Version 2019-11-04"
 
 (use-package key-binding :no-require
   :config
-  (keyboard-translate ?\C-h ?\C-?)
   (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "s-t") nil)
+  ;; (keyboard-translate ?\C-h ?\C-?)
+  (global-set-key (kbd "C-h") 'delete-backward-char) ; use this for using terminal
   )
 
 (use-package rocket-chat-post
