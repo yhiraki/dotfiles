@@ -92,10 +92,6 @@ mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
 
 key_bindings:
-  # Reference for hex codes
-  # https://www.physics.udel.edu/~watson/scen103/ascii.html
-  - { key: Delete, chars: "\x04" }
-
   # meta
   - { key: A,         mods: Alt,       chars: "\x1ba"                    }
   - { key: B,         mods: Alt,       chars: "\x1bb"                    }
