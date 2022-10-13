@@ -1,6 +1,6 @@
 # -*- mode: conf; -*-
 
-cmd + ctrl - l : open -a Terminal.app
+cmd + ctrl - l : open -a Alacritty.app
 cmd + ctrl - e : open -a Emacs.app
 cmd + ctrl - b : open -a 'Google Chrome.app'
 cmd + ctrl - s : open -a Slack.app
