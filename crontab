@@ -1,4 +1,2 @@
-PATH=/bin:/usr/bin:/usr/local/bin:$HOME/bin:/opt/homebrew/bin
-
-0 */3 * * * archive-old-files $HOME/Downloads $HOME/Downloads/archived-`date "+\%Y-\%m-\%d"` 7 2>> /tmp/cron1-`date "+\%s"`.log
-0 */3 * * * < $HOME/.auto-push-repos | xargs -I{} git-acp {} >> /tmp/cron2-`date "+\%s"`.log
+0 */3 * * * $HOME/bin/archive-old-files $HOME/Downloads $HOME/Downloads/archived-`date "+\%Y-\%m-\%d"` 7 2>> /tmp/cron1-`date "+\%s"`.log
+0 */3 * * * cat $HOME/.auto-push-repos | xargs -I{} $HOME/bin/git-acp {} >> /tmp/cron2-`date "+\%s"`.log
