@@ -92,8 +92,9 @@ mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
 
 key_bindings:
-  # from Terminal.app keyboard settings
-  - { key: Delete, chars: "\x033[3~" }
+  # Reference for hex codes
+  # https://www.physics.udel.edu/~watson/scen103/ascii.html
+  - { key: Delete, chars: "\x04" }
 
   # meta
   - { key: A,         mods: Alt,       chars: "\x1ba"                    }
