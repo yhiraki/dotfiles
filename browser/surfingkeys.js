@@ -4,15 +4,23 @@ settings.blacklistPattern =
 // Prevent automatic next/previous page loads
 settings.smartPageBoundary = false;
 
+// map and unmap after
 api.map("d", "x");
-api.unmap("x");
 api.map("u", "X");
-api.unmap("X");
-api.map("<Ctrl-o>", "S");
-api.unmap("S");
-api.map("<Ctrl-i>", "D");
+
 api.unmap("D");
+api.unmap("S");
+api.unmap("X");
+api.unmap("ob");
+api.unmap("oe");
+api.unmap("os");
+api.unmap("ow");
+api.unmap("oy");
+api.unmap("x");
+
 api.map("P", "sg");
+api.map("<Ctrl-i>", "D");
+api.map("<Ctrl-o>", "S");
 
 const copyTitleAndUrl = (format) => {
   const text = format
@@ -31,15 +39,22 @@ api.mapkey("yfo", "copy orgmode sytle link", () => {
   copytitleandurl("[[{url}][{title}]]");
 });
 
-api.mapkey("yfO", "copy list of pull requests orgmode", () => {
-  const links = Array.from(
-    document.querySelectorAll("[data-hovercard-type=pull_request]")
-  ).map((v) => {
-    const prNo = v.href.split("/").pop();
-    return `[[${v.href}][#${prNo}]] ${v.textContent}`;
-  });
-  api.Clipboard.write(links.join("\n"));
-}, /github.com\/pulls/);
+api.mapkey(
+  "yfO",
+  "copy list of pull requests orgmode",
+  () => {
+    const links = Array.from(
+      document.querySelectorAll("[data-hovercard-type=pull_request]")
+    ).map((v) => {
+      const l = v.href.split("/");
+      const prNo = l.slice(-1);
+      const repoName = l.slice(-4, -2).join("/");
+      return `${repoName} [[${v.href}][#${prNo}]] ${v.textContent}`;
+    });
+    api.Clipboard.write(links.join("\n"));
+  },
+  /github.com\/pulls/
+);
 
 // click `save` button to make above settings to take effect.
 // set theme
@@ -70,4 +85,7 @@ settings.smoothScroll = false;
 // Always use omnibar to select tabs
 settings.tabsThreshold = 0;
 
-api.unmapAllExcept(["E", "R", "T", "b", "f", "r", "t"], /mail.google.com/);
+api.unmapAllExcept(
+  ["E", "R", "T", "b", "cf", "f", "r", "t"],
+  /mail.google.com/
+);
