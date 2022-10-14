@@ -1319,7 +1319,7 @@ Version 2019-11-04"
 	 `(("d" "default" entry
 		"* %?"
 		:target (file+head "%<%Y-%m-%d>.org"
-						   "#+title: %<%Y-%m-%d>\n#+OPTIONS: toc:nil ^:{} H:5\n"))))
+						   "#+title: %<%Y-%m-%d>\n#+OPTIONS: ^:{} H:5\n"))))
 	:bind-keymap
 	("C-c n d" . org-roam-dailies-map)
 	:bind
