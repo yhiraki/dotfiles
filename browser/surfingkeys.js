@@ -4,10 +4,17 @@ settings.blacklistPattern =
 // Prevent automatic next/previous page loads
 settings.smartPageBoundary = false;
 
-// map and unmap after
 api.map("d", "x");
 api.map("u", "X");
+api.map("P", "sg");
+api.map("<Ctrl-i>", "D");
+api.map("<Ctrl-o>", "S");
 
+api.iunmap(":");
+api.iunmap("<ctrl-a>");
+api.iunmap("<ctrl-e>");
+api.iunmap("<ctrl-b>");
+api.iunmap("<ctrl-f>");
 api.unmap("D");
 api.unmap("S");
 api.unmap("X");
@@ -17,10 +24,7 @@ api.unmap("os");
 api.unmap("ow");
 api.unmap("oy");
 api.unmap("x");
-
-api.map("P", "sg");
-api.map("<Ctrl-i>", "D");
-api.map("<Ctrl-o>", "S");
+api.unmap("yf");
 
 const copyTitleAndUrl = (format) => {
   const text = format
@@ -28,8 +32,6 @@ const copyTitleAndUrl = (format) => {
     .replace("{TITLE}", document.title);
   api.Clipboard.write(text);
 };
-
-api.unmap("yf");
 
 api.mapkey("yfm", "copy markdown style link", () => {
   copyTitleAndUrl("[{TITLE}]({URL})");
