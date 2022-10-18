@@ -32,11 +32,11 @@ const copyTitleAndUrl = (format) => {
 api.unmap("yf");
 
 api.mapkey("yfm", "copy markdown style link", () => {
-  copytitleandurl("[{title}]({url})");
+  copyTitleAndUrl("[{TITLE}]({URL})");
 });
 
 api.mapkey("yfo", "copy orgmode sytle link", () => {
-  copytitleandurl("[[{url}][{title}]]");
+  copyTitleAndUrl("[[{URL}][{TITLE}]]");
 });
 
 api.mapkey(
