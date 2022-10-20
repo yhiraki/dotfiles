@@ -26,19 +26,40 @@ api.unmap("oy");
 api.unmap("x");
 api.unmap("yf");
 
-const copyTitleAndUrl = (format) => {
-  const text = format
-    .replace("{URL}", location.href)
-    .replace("{TITLE}", document.title);
-  api.Clipboard.write(text);
+const getPageMetaCurent = () => {
+  return {
+    url: location.href,
+    title: document.title,
+  };
+};
+
+const getPageMetaGithub = () => {
+  const url = new URL(location.href);
+  const d = {};
+  if (url.pathname.split("/").length >= 3)
+    d.repoName = url.pathname.split("/").slice(1, 3).join("/");
+  if (url.pathname.includes("/pull/")) d.prNo = url.pathname.split("/").pop();
+  d.issueTitle = document.getElementById("issue_title")?.value;
+  return d;
 };
 
 api.mapkey("yfm", "copy markdown style link", () => {
-  copyTitleAndUrl("[{TITLE}]({URL})");
+  const { url, title } = getPageMetaCurent();
+  api.Clipboard.write(`[${title}](${url})`);
 });
 
 api.mapkey("yfo", "copy orgmode sytle link", () => {
-  copyTitleAndUrl("[[{URL}][{TITLE}]]");
+  const { url, title } = getPageMetaCurent();
+  const u = new URL(url);
+  if (u.host == "github.com") {
+    if (u.pathname.includes("pull")) {
+      const { prNo, repoName, issueTitle } = getPageMetaGithub();
+      api.Clipboard.write(`${repoName} [[${url}][#${prNo}]] ${issueTitle}`);
+      return;
+    }
+    // pass through
+  }
+  api.Clipboard.write(`[[${url}][${title}]]`);
 });
 
 api.mapkey(
