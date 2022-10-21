@@ -1387,8 +1387,8 @@ Version 2019-11-04"
 	   ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
 	   ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
 	   ("s" "Start Task" entry (file+olp+datetree "journal.org") "** %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
-	   ("c" "Item to Current Clocked Task" item (clock) "%U %?")
-	   ("C" "Entry to Current Clocked Task" entry (clock) "* %?" :clock-in t :clock-resume t)
+	   ("c" "Item (Clocking)" item (clock) "%U %?")
+	   ("C" "Entry (Clocking)" entry (clock) "* %?" :clock-in t :clock-keep t)
 	   ))
 	)
 
