@@ -74,9 +74,19 @@ const parsePageCurent = () => {
   };
 };
 
+api.mapkey("yfm", "copy markdown style link", () => {
+  const { url, title } = parsePageCurent();
+  api.Clipboard.write(`[${title}](${url})`);
+});
+
+api.mapkey("yfo", "copy orgmode sytle link", () => {
+  const { url, title } = parsePageCurent();
+  api.Clipboard.write(`[[${url}][${title}]]`);
+});
+
 const parsePageGithub = () => {
   return {
-    issueTitle: document.querySelector(".markdown_title")?.value,
+    issueTitle: document.querySelector(".markdown_title")?.textContent,
   };
 };
 
@@ -87,16 +97,6 @@ const parseURLGithub = (rawUrl = location.href) => {
     issueNo: Number(url.pathname.split("/").pop()),
   };
 };
-
-api.mapkey("yfm", "copy markdown style link", () => {
-  const { url, title } = parsePageCurent();
-  api.Clipboard.write(`[${title}](${url})`);
-});
-
-api.mapkey("yfo", "copy orgmode sytle link", () => {
-  const { url, title } = parsePageCurent();
-  api.Clipboard.write(`[[${url}][${title}]]`);
-});
 
 api.mapkey(
   "yfo",
@@ -112,21 +112,56 @@ api.mapkey(
 
 api.mapkey(
   "yfO",
-  "copy list of PR/Issues orgmode",
+  "[GitHub PR/Issues] copy links orgmode",
   () => {
     const links = Array.from(document.querySelectorAll("a"))
       .filter((v) => /\/(pull|issues)\/\d+$/.test(v.href))
       .sort((a, b) => Number(a.href > b.href))
       .filter((v, i, arr) => i > 0 && v.href !== arr[i - 1].href)
       .map((v) => {
-        const l = v.href.split("/");
-        const no = l.slice(-1);
-        const repoName = l.slice(-4, -2).join("/");
-        return `${repoName} [[${v.href}][#${no}]] ${v.textContent}`;
+        const { issueNo, repoName } = parseURLGithub(v.href);
+        return `${repoName} [[${v.href}][#${issueNo}]] ${v.textContent}`;
       });
     api.Clipboard.write(links.join("\n"));
   },
   { domain: /github\.com\/(pulls|issues)$/ }
+);
+
+const parsePageBacklogTicket = () => {
+  const d = {
+    ticketKey: document.querySelector(".ticket__key-number")?.textContent,
+    summaryMarkdown: document.querySelector(".ticket__collapsed-summary")
+      ?.textContent,
+  };
+  return d;
+};
+
+api.mapkey(
+  "ybm",
+  "[Backlog] copy body markdown",
+  () => {
+    const { summaryMarkdown } = parsePageBacklogTicket();
+    api.Clipboard.write(summaryMarkdown);
+  },
+  { domain: /backlog\.jp\/view/ }
+);
+
+const parsePageBacklogWiki = () => {
+  const d = {
+    WikiId: document.querySelector(".ticket__key-number")?.textContent,
+    bodyHTML: document.querySelector(".markdown-body")?.outerHTML,
+  };
+  return d;
+};
+
+api.mapkey(
+  "ybh",
+  "[Backlog] copy body markdown",
+  () => {
+    const { bodyHTML } = parsePageBacklogWiki();
+    api.Clipboard.write(bodyHTML);
+  },
+  { domain: /backlog\.jp\/wiki/ }
 );
 
 api.unmapAllExcept(
