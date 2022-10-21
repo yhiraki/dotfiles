@@ -128,13 +128,24 @@ api.mapkey(
 );
 
 const parsePageBacklogTicket = () => {
-  const d = {
+  return {
     ticketKey: document.querySelector(".ticket__key-number")?.textContent,
+    ticketTitle: document.querySelector(".ticket__title")?.textContent,
     summaryMarkdown: document.querySelector(".ticket__collapsed-summary")
       ?.textContent,
   };
-  return d;
 };
+
+api.mapkey(
+  "yfo",
+  "[Backlog] copy orgmode sytle link",
+  () => {
+    const { url } = parsePageCurent();
+    const { ticketKey, ticketTitle } = parsePageBacklogTicket();
+    api.Clipboard.write(`[[${url}][${ticketKey}]] ${ticketTitle}`);
+  },
+  { domain: /backlog\.jp\/view/ }
+);
 
 api.mapkey(
   "ybm",
