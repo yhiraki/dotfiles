@@ -117,7 +117,7 @@ api.mapkey(
     const links = Array.from(document.querySelectorAll("a"))
       .filter((v) => /\/(pull|issues)\/\d+$/.test(v.href))
       .sort((a, b) => Number(a.href > b.href))
-      .filter((v, i, arr) => i > 0 && v.href !== arr[i - 1].href)
+      .filter((v, i, arr) => i > 0 && v.href !== arr[i - 1].href) // unique
       .map((v) => {
         const { issueNo, repoName } = parseURLGithub(v.href);
         return `${repoName} [[${v.href}][#${issueNo}]] ${v.textContent}`;
@@ -156,7 +156,7 @@ const parsePageBacklogWiki = () => {
 
 api.mapkey(
   "ybh",
-  "[Backlog] copy body markdown",
+  "[Backlog] copy body HTML",
   () => {
     const { bodyHTML } = parsePageBacklogWiki();
     api.Clipboard.write(bodyHTML);
