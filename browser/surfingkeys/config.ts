@@ -86,7 +86,7 @@ api.mapkey("yfo", "copy orgmode sytle link", () => {
 
 const parsePageGithub = () => {
   return {
-    issueTitle: document.querySelector(".markdown_title")?.textContent,
+    issueTitle: document.querySelector(".markdown-title")?.textContent,
   };
 };
 
@@ -94,7 +94,7 @@ const parseURLGithub = (rawUrl = location.href) => {
   const url = new URL(rawUrl);
   return {
     repoName: url.pathname.split("/").slice(1, 3).join("/"),
-    issueNo: Number(url.pathname.split("/").pop()),
+    issueNo: Number(url.pathname.split("/")[4]),
   };
 };
 
