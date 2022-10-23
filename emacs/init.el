@@ -2018,6 +2018,10 @@ Version 2019-11-04"
 
 (use-package nano-modeline :ensure t :disabled)
 
+(use-package mood-line :ensure t
+  :config
+  (mood-line-mode))
+
 (when (< emacs-major-version 28)
   (package-install 'modus-themes))
 
@@ -2031,6 +2035,7 @@ Version 2019-11-04"
   (modus-themes-region '(bg-only no-extend))
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
+  (modus-themes-mode-line '(borderless))
   :config
   (load-theme 'modus-vivendi t))
 
