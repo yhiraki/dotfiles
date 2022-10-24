@@ -39,7 +39,6 @@ settings.tabsThreshold = 0;
 
 api.map("d", "x");
 api.map("u", "X");
-api.map("P", "sg");
 api.map("<Ctrl-i>", "D");
 api.map("<Ctrl-o>", "S");
 
@@ -67,9 +66,38 @@ api.unmap("oy");
 api.unmap("x");
 api.unmap("yf");
 
+const getURLAmazonShorten = () => {
+  const asin = document.querySelector("#ASIN")?.value;
+  if (asin == undefined) {
+    return location.href;
+  }
+  return `${location.origin}/dp/${asin}`;
+};
+
+const getURLCurrent = () => {
+  const url = location.href;
+  if (/amazon\.co\.jp/.test(url)) return getURLAmazonShorten();
+  return url;
+};
+
+api.mapkey("yy", "Copy current page's URL", () => {
+  api.Clipboard.write(getURLCurrent());
+});
+
+api.mapkey("P", "paste a link or search", () => {
+  api.Clipboard.read(function (res) {
+    const text = res.data;
+    if (text.startsWith("http://") || text.startsWith("https://")) {
+      location.href = text;
+      return;
+    }
+    location.href = `https://www.google.com/search?q=${text}`;
+  });
+});
+
 const parsePageCurent = () => {
   return {
-    url: location.href,
+    url: getURLCurrent(),
     title: document.title,
   };
 };
