@@ -2008,6 +2008,23 @@ Version 2019-11-04"
 
 (use-package doom-modeline :ensure t :disabled)
 
+(use-package modus-themes :ensure t
+  :hook
+  (after-init
+   . (lambda ()
+	   (load-theme 'modus-vivendi t)))
+  :custom
+  (modus-themes-headings
+   '((1 . (overline))
+	 (2 . (rainbow overline))
+	 (t . (no-bold))))
+  (modus-themes-paren-match '(bold underline))
+  (modus-themes-region '(bg-only no-extend))
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t)
+  (modus-themes-mode-line '(borderless))
+  )
+
 (use-package mini-modeline :ensure t :disabled t
   :diminish mini-modeline-mode
   :custom
@@ -2021,23 +2038,6 @@ Version 2019-11-04"
 (use-package mood-line :ensure t
   :config
   (mood-line-mode))
-
-(when (< emacs-major-version 28)
-  (package-install 'modus-themes))
-
-(use-package my-theme :no-require
-  :custom
-  (modus-themes-headings
-   '((1 . (overline))
-	 (2 . (rainbow overline))
-	 (t . (no-bold))))
-  (modus-themes-paren-match '(bold underline))
-  (modus-themes-region '(bg-only no-extend))
-  (modus-themes-italic-constructs t)
-  (modus-themes-bold-constructs t)
-  (modus-themes-mode-line '(borderless))
-  :config
-  (load-theme 'modus-vivendi t))
 
 (use-package hide-mode-line :ensure t
   :hook ((
