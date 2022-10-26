@@ -78,15 +78,6 @@ const getURLCurrent = () => {
     }
   }
 
-  if (/atlassian\.net/.test(url)) {
-    const shorten = document.querySelector(
-      'input[value^="https://"][value*="/cp/"]'
-    )?.value;
-    if (shorten !== undefined) {
-      return shorten;
-    }
-  }
-
   return url;
 };
 
