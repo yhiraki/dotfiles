@@ -55,6 +55,8 @@ api.iunmap("<Ctrl-f>");
 api.iunmap("<Ctrl-u>");
 api.iunmap("<Esc>");
 
+api.unmap("e");
+api.unmap("U");
 api.unmap("D");
 api.unmap("S");
 api.unmap("X");
@@ -66,17 +68,25 @@ api.unmap("oy");
 api.unmap("x");
 api.unmap("yf");
 
-const getURLAmazonShorten = () => {
-  const asin = document.querySelector("#ASIN")?.value;
-  if (asin == undefined) {
-    return location.href;
-  }
-  return `${location.origin}/dp/${asin}`;
-};
-
 const getURLCurrent = () => {
   const url = location.href;
-  if (/amazon\.co\.jp/.test(url)) return getURLAmazonShorten();
+
+  if (/amazon\.co\.jp/.test(url)) {
+    const asin = document.querySelector("#ASIN")?.value;
+    if (asin !== undefined) {
+      return `${location.origin}/dp/${asin}`;
+    }
+  }
+
+  if (/atlassian\.net/.test(url)) {
+    const shorten = document.querySelector(
+      'input[value^="https://"][value*="/cp/"]'
+    )?.value;
+    if (shorten !== undefined) {
+      return shorten;
+    }
+  }
+
   return url;
 };
 
@@ -84,14 +94,26 @@ api.mapkey("yy", "Copy current page's URL", () => {
   api.Clipboard.write(getURLCurrent());
 });
 
-api.mapkey("P", "paste a link or search", () => {
+const readClipboardAndGo = (cb) => {
   api.Clipboard.read(function (res) {
     const text = res.data;
     if (text.startsWith("http://") || text.startsWith("https://")) {
-      location.href = text;
+      cb(text);
       return;
     }
-    location.href = `https://www.google.com/search?q=${text}`;
+    cb(`https://www.google.com/search?q=${text}`);
+  });
+};
+
+api.mapkey("p", "Paste a link or search", () => {
+  readClipboardAndGo((text) => {
+    location.href = text;
+  });
+});
+
+api.mapkey("P", "Paste a link or search (NewTab)", () => {
+  readClipboardAndGo((text) => {
+    open(text);
   });
 });
 
@@ -102,14 +124,14 @@ const parsePageCurent = () => {
   };
 };
 
-api.mapkey("yfm", "copy markdown style link", () => {
+api.mapkey("yf", "Copy link: [o]rg, [m]arkdown", (key) => {
   const { url, title } = parsePageCurent();
-  api.Clipboard.write(`[${title}](${url})`);
-});
-
-api.mapkey("yfo", "copy orgmode sytle link", () => {
-  const { url, title } = parsePageCurent();
-  api.Clipboard.write(`[[${url}][${title}]]`);
+  switch (key) {
+    case "m":
+      api.Clipboard.write(`[${title}](${url})`);
+    case "o":
+      api.Clipboard.write(`[[${url}][${title}]]`);
+  }
 });
 
 const parsePageGithub = () => {
@@ -127,28 +149,40 @@ const parseURLGithub = (rawUrl = location.href) => {
 };
 
 api.mapkey(
-  "yfo",
-  "[GitHub PR/Issues] copy orgmode sytle link",
-  () => {
+  "yf",
+  "[GitHub PR/Issues] copy link: [o]rg, [m]arkdown",
+  (key) => {
     const { url } = parsePageCurent();
     const { issueTitle } = parsePageGithub();
     const { issueNo, repoName } = parseURLGithub();
-    api.Clipboard.write(`${repoName} [[${url}][#${issueNo}]] ${issueTitle}`);
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
+      case "o":
+        api.Clipboard.write(
+          `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`
+        );
+    }
   },
   { domain: /github\.com\/.*\/(pull|issues)\/\d+/ }
 );
 
 api.mapkey(
-  "yfO",
-  "[GitHub PR/Issues] copy links orgmode",
-  () => {
+  "yF",
+  "[GitHub PR/Issues] copy links [o]rg, [m]arkdown",
+  (key) => {
     const links = Array.from(document.querySelectorAll("a"))
       .filter((v) => /\/(pull|issues)\/\d+$/.test(v.href))
       .sort((a, b) => Number(a.href > b.href))
       .filter((v, i, arr) => i > 0 && v.href !== arr[i - 1].href) // unique
       .map((v) => {
         const { issueNo, repoName } = parseURLGithub(v.href);
-        return `${repoName} [[${v.href}][#${issueNo}]] ${v.textContent}`;
+        switch (key) {
+          case "m":
+            return `${repoName} [#${issueNo}](${v.href}) ${v.textContent}`;
+          case "o":
+            return `${repoName} [[${v.href}][#${issueNo}]] ${v.textContent}`;
+        }
       });
     api.Clipboard.write(links.join("\n"));
   },
@@ -165,40 +199,51 @@ const parsePageBacklogTicket = () => {
 };
 
 api.mapkey(
-  "yfo",
-  "[Backlog] copy orgmode sytle link",
-  () => {
+  "yf",
+  "[Backlog] copy link [o]rg, [m]arkdown",
+  (key) => {
     const { url } = parsePageCurent();
     const { ticketKey, ticketTitle } = parsePageBacklogTicket();
-    api.Clipboard.write(`[[${url}][${ticketKey}]] ${ticketTitle}`);
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`[${ticketKey}](${url}) ${ticketTitle}`);
+      case "o":
+        api.Clipboard.write(`[[${url}][${ticketKey}]] ${ticketTitle}`);
+    }
   },
   { domain: /backlog\.jp\/view/ }
 );
 
 api.mapkey(
-  "ybm",
-  "[Backlog] copy body markdown",
-  () => {
-    const { summaryMarkdown } = parsePageBacklogTicket();
-    api.Clipboard.write(summaryMarkdown);
+  "yb",
+  "[Backlog] Copy body [m]arkdown",
+  (key) => {
+    switch (key) {
+      case "m":
+        const { summaryMarkdown } = parsePageBacklogTicket();
+        api.Clipboard.write(summaryMarkdown);
+    }
   },
   { domain: /backlog\.jp\/view/ }
 );
 
-const parsePageBacklogWiki = () => {
+function parsePageBacklogWiki() {
   const d = {
     WikiId: document.querySelector(".ticket__key-number")?.textContent,
     bodyHTML: document.querySelector(".markdown-body")?.outerHTML,
   };
   return d;
-};
+}
 
 api.mapkey(
-  "ybh",
-  "[Backlog] copy body HTML",
-  () => {
-    const { bodyHTML } = parsePageBacklogWiki();
-    api.Clipboard.write(bodyHTML);
+  "yb",
+  "[Backlog] Copy body [h]TML",
+  (key) => {
+    switch (key) {
+      case "h":
+        const { bodyHTML } = parsePageBacklogWiki();
+        api.Clipboard.write(bodyHTML);
+    }
   },
   { domain: /backlog\.jp\/wiki/ }
 );
