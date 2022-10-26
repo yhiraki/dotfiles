@@ -125,6 +125,40 @@ api.mapkey("yf", "Copy link: [o]rg, [m]arkdown", (key) => {
   }
 });
 
+const parsePageBitbucket = () => {
+  return {
+    issueTitle: document.querySelector("#pull-request-details form span")
+      ?.textContent,
+  };
+};
+
+const parseURLBitbucket = (rawUrl = location.href) => {
+  const url = new URL(rawUrl);
+  return {
+    repoName: url.pathname.split("/").slice(1, 3).join("/"),
+    issueNo: Number(url.pathname.split("/")[4]),
+  };
+};
+
+api.mapkey(
+  "yf",
+  "[Bitbuket PR] copy link: [o]rg, [m]arkdown",
+  (key) => {
+    const { url } = parsePageCurent();
+    const { issueTitle } = parsePageBitbucket();
+    const { issueNo, repoName } = parseURLBitbucket();
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
+      case "o":
+        api.Clipboard.write(
+          `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`
+        );
+    }
+  },
+  { domain: /bitbucket\.org\/.*\/pull-requests\/\d+/ }
+);
+
 const parsePageGithub = () => {
   return {
     issueTitle: document.querySelector(".markdown-title")?.textContent,
