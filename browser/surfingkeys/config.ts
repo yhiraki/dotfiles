@@ -104,7 +104,7 @@ api.mapkey("p", "Paste a link or search", () => {
 
 api.mapkey("P", "Paste a link or search (NewTab)", () => {
   readClipboardAndGo((text) => {
-    open(text);
+    api.tabOpenLink(text);
   });
 });
 
