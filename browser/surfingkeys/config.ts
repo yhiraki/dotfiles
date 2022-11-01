@@ -120,8 +120,10 @@ api.mapkey("yf", "Copy link: [o]rg, [m]arkdown", (key) => {
   switch (key) {
     case "m":
       api.Clipboard.write(`[${title}](${url})`);
+      break;
     case "o":
       api.Clipboard.write(`[[${url}][${title}]]`);
+      break;
   }
 });
 
@@ -150,10 +152,12 @@ api.mapkey(
     switch (key) {
       case "m":
         api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
+        break;
       case "o":
         api.Clipboard.write(
           `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`
         );
+        break;
     }
   },
   { domain: /bitbucket\.org\/.*\/pull-requests\/\d+/ }
@@ -183,10 +187,12 @@ api.mapkey(
     switch (key) {
       case "m":
         api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
+        break;
       case "o":
         api.Clipboard.write(
           `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`
         );
+        break;
     }
   },
   { domain: /github\.com\/.*\/(pull|issues)\/\d+/ }
@@ -232,8 +238,10 @@ api.mapkey(
     switch (key) {
       case "m":
         api.Clipboard.write(`[${ticketKey}](${url}) ${ticketTitle}`);
+        break;
       case "o":
         api.Clipboard.write(`[[${url}][${ticketKey}]] ${ticketTitle}`);
+        break;
     }
   },
   { domain: /backlog\.jp\/view/ }
@@ -247,6 +255,7 @@ api.mapkey(
       case "m":
         const { summaryMarkdown } = parsePageBacklogTicket();
         api.Clipboard.write(summaryMarkdown);
+        break;
     }
   },
   { domain: /backlog\.jp\/view/ }
@@ -268,6 +277,7 @@ api.mapkey(
       case "h":
         const { bodyHTML } = parsePageBacklogWiki();
         api.Clipboard.write(bodyHTML);
+        break;
     }
   },
   { domain: /backlog\.jp\/wiki/ }
