@@ -121,7 +121,7 @@ command -v brew >/dev/null && {
   done
 
   # libgccjit
-  LIBRARY_PATH="$HOMEBREW_PREFIX/opt/libgccjit/lib/gcc/11"
+  LIBRARY_PATH="$HOMEBREW_PREFIX/opt/libgccjit/lib/gcc/12:${LIBRARY_PATH:-}"
 
   # option
   HOMEBREW_NO_AUTO_UPDATE=1
