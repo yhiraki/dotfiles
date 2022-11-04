@@ -215,11 +215,15 @@ autoload -Uz add-zsh-hook
   zle -N widget-find-file
 
   widget-open-application() {
-    find /Applications /System/Applications "${HOME}/Applications" \
-      -maxdepth 2 -name '*.app' |
+    local app apps
+    apps=$(find \
+      /Applications /System/Applications "${HOME}/Applications" \
+      -maxdepth 2 -name '*.app')
+    app=$(<<<$apps |
       sed -e 's:/.*/::' |
       sort |
-      ff |
+      ff)
+    <<<$apps | grep $app |
       xargs -r -I{} open -a '{}'
   }
   zle -N widget-open-application
