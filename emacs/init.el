@@ -62,7 +62,7 @@
 (defvar carbon-p (eq system-type 'mac))
 (defvar meadow-p (featurep 'meadow))
 
-(setq use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
+(defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
 
 (use-package straight :no-require
@@ -536,6 +536,7 @@ Version 2019-11-04"
   (flycheck-python-pycompile-executable "python3")
   (flycheck-python-pylint-executable "python3")
   (flycheck-deferred-syntax-check t)
+  (flycheck-emacs-lisp-load-path 'inherit)
   :config
   (flycheck-add-mode 'textlint 'org-mode)
   (flycheck-add-next-checker 'markdown-markdownlint-cli 'textlint)
