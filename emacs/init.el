@@ -1885,8 +1885,13 @@ Version 2019-11-04"
   (evil-set-leader '(normal visual emacs) (kbd "C-c SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
+  (defun find-user-emacs-init-file ()
+	(interactive)
+	(find-file (locate-user-emacs-file "init.el")))
+
   (evil-define-key '(normal visual) 'global
 	(kbd "<leader>/") 'imenu
+	(kbd "<leader>.") 'find-user-emacs-init-file
 	(kbd "<leader>G g") 'google-this
 	(kbd "<leader>a") 'org-agenda
 	(kbd "<leader>b") 'bookmark-jump
