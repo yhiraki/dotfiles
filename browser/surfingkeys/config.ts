@@ -37,10 +37,11 @@ settings.smoothScroll = false;
 // Always use omnibar to select tabs
 settings.tabsThreshold = 0;
 
-api.map("d", "x");
-api.map("u", "X");
 api.map("<Ctrl-i>", "D");
 api.map("<Ctrl-o>", "S");
+api.map("d", "x");
+api.map("t", "T");
+api.map("u", "X");
 
 api.iunmap(":");
 api.iunmap("<Alt-b>");
@@ -55,11 +56,12 @@ api.iunmap("<Ctrl-f>");
 api.iunmap("<Ctrl-u>");
 api.iunmap("<Esc>");
 
-api.unmap("e");
-api.unmap("U");
 api.unmap("D");
 api.unmap("S");
+api.unmap("T");
+api.unmap("U");
 api.unmap("X");
+api.unmap("e");
 api.unmap("ob");
 api.unmap("oe");
 api.unmap("os");
