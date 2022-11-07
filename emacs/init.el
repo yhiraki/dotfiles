@@ -1012,6 +1012,11 @@ Version 2019-11-04"
 (use-package protobuf-mode :ensure t)
 
 (use-package js
+  :hook
+  (js-mode
+   . (lambda ()
+	   (evil-define-key '(normal visual) 'local
+		 (kbd "<localleader>f") #'prettier-js)))
   :custom (js-indent-level 2)
   )
 
@@ -1775,6 +1780,11 @@ Version 2019-11-04"
 (use-package toml-mode :ensure t)
 
 (use-package typescript-mode :ensure t
+  :hook
+  (typescript-mode
+   . (lambda ()
+	   (evil-define-key '(normal visual) 'local
+		 (kbd "<localleader>f") #'prettier-js)))
   :custom
   (typescript-indent-level 2)
   :mode
