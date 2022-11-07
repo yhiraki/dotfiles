@@ -143,6 +143,7 @@ const parseURLBitbucket = (rawUrl = location.href) => {
   };
 };
 
+// yf | [Bitbuket PR] copy link
 api.mapkey(
   "yf",
   "[Bitbuket PR] copy link: [o]rg, [m]arkdown",
@@ -176,9 +177,10 @@ const parseURLGithub = (rawUrl = location.href) => {
   };
 };
 
+// yf | [GitHub PR/Issues] Copy link
 api.mapkey(
   "yf",
-  "[GitHub PR/Issues] copy link: [o]rg, [m]arkdown",
+  "[GitHub PR/Issues] Copy link: [o]rg, [m]arkdown",
   (key) => {
     const { url } = parsePageCurent();
     const { issueTitle } = parsePageGithub();
@@ -195,9 +197,10 @@ api.mapkey(
   { domain: /github\.com\/.*\/(pull|issues)\/\d+/ }
 );
 
+// yF | [GitHub PR/Issues] Copy links
 api.mapkey(
   "yF",
-  "[GitHub PR/Issues] copy links [o]rg, [m]arkdown",
+  "[GitHub PR/Issues] Copy links: [o]rg, [m]arkdown",
   (key) => {
     const links = Array.from(document.querySelectorAll("a"))
       .filter((v) => /\/(pull|issues)\/\d+$/.test(v.href))
@@ -225,9 +228,10 @@ const parsePageBacklogTicket = () => {
   };
 };
 
+// yf | [Backlog] Copy link
 api.mapkey(
   "yf",
-  "[Backlog] copy link [o]rg, [m]arkdown",
+  "[Backlog] Copy link: [o]rg, [m]arkdown",
   (key) => {
     const { url } = parsePageCurent();
     const { ticketKey, ticketTitle } = parsePageBacklogTicket();
@@ -243,9 +247,10 @@ api.mapkey(
   { domain: /backlog\.jp\/view/ }
 );
 
+// yb | [Backlog] Copy body
 api.mapkey(
   "yb",
-  "[Backlog] Copy body [m]arkdown",
+  "[Backlog] Copy body: [m]arkdown",
   (key) => {
     switch (key) {
       case "m":
@@ -265,9 +270,10 @@ function parsePageBacklogWiki() {
   return d;
 }
 
+// yb | [Backlog] Copy body
 api.mapkey(
   "yb",
-  "[Backlog] Copy body [h]TML",
+  "[Backlog] Copy body: [h]TML",
   (key) => {
     switch (key) {
       case "h":
