@@ -131,8 +131,7 @@ api.mapkey("yf", "Copy link: [o]rg, [m]arkdown", (key) => {
 
 const parsePageBitbucket = () => {
   return {
-    issueTitle: document.querySelector("#pull-request-details form span")
-      ?.textContent,
+    issueTitle: document.querySelector("#pull-request-details form span")?.textContent,
   };
 };
 
@@ -156,9 +155,7 @@ api.mapkey(
         api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
         break;
       case "o":
-        api.Clipboard.write(
-          `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`
-        );
+        api.Clipboard.write(`${repoName} [[${url}][#${issueNo}]] ${issueTitle}`);
         break;
     }
   },
@@ -191,9 +188,7 @@ api.mapkey(
         api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
         break;
       case "o":
-        api.Clipboard.write(
-          `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`
-        );
+        api.Clipboard.write(`${repoName} [[${url}][#${issueNo}]] ${issueTitle}`);
         break;
     }
   },
@@ -226,8 +221,7 @@ const parsePageBacklogTicket = () => {
   return {
     ticketKey: document.querySelector(".ticket__key-number")?.textContent,
     ticketTitle: document.querySelector(".ticket__title")?.textContent,
-    summaryMarkdown: document.querySelector(".ticket__collapsed-summary")
-      ?.textContent,
+    summaryMarkdown: document.querySelector(".ticket__collapsed-summary")?.textContent,
   };
 };
 
@@ -285,7 +279,4 @@ api.mapkey(
   { domain: /backlog\.jp\/wiki/ }
 );
 
-api.unmapAllExcept(
-  ["E", "R", "T", "b", "cf", "f", "r", "t"],
-  /mail.google.com/
-);
+api.unmapAllExcept(["E", "R", "T", "b", "cf", "f", "r", "t"], /mail.google.com/);
