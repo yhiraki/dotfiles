@@ -247,6 +247,30 @@ api.mapkey(
   { domain: /backlog\.jp\/view/ }
 );
 
+// yF | [Backlog] copy links
+api.mapkey(
+  "yF",
+  "[Backlog] Copy links: [o]rg, [m]arkdown",
+  (key) => {
+    const links = Array.from(document.querySelectorAll("#issues-table tr"))
+      .slice(1)
+      .map((v) => {
+        const a = v.querySelector("a");
+        const status = v.querySelector(".cell-status").textContent;
+        const ticketKey = v.querySelector(".cell-key").textContent;
+        const ticketTitle = v.querySelector(".cell-summary").textContent;
+        switch (key) {
+          case "m":
+            return `${status} [${ticketKey}](${a.href}) ${ticketTitle}`;
+          case "o":
+            return `${status} [[${a.href}][${ticketKey}]] ${ticketTitle}`;
+        }
+      });
+    api.Clipboard.write(links.join("\n"));
+  },
+  { domain: /backlog\.jp\/find/ }
+);
+
 // yb | [Backlog] Copy body
 api.mapkey(
   "yb",
