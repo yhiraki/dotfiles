@@ -948,10 +948,6 @@ Version 2019-11-04"
     )
   (quickrun-set-default "c++" "c++17/g++")
 
-  (quickrun-add-command "typescript"
-    '((:exec . ("%c --target es6 --module commonjs %o %s %a" "node %n.js")))
-    :override t)
-
   (quickrun-add-command "python"
     '((:command . "python3")
       (:compile-only . "flake8 %s"))
