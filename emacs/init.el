@@ -1370,6 +1370,22 @@ Version 2019-11-04"
 	  (interactive)
 	  (my-unlink-all-markdown-file-links)
 	  (my-remove-all-backslashes))
+
+	;; add org-daily files to org-agenda-files
+	(mapcar
+	 #'(lambda (i)
+		 (let
+			 ((filename
+			   (concat
+				(file-name-as-directory org-roam-directory)
+				(file-name-as-directory "daily")
+				(format-time-string
+				 "%Y-%m-%d.org"
+				 (time-add (current-time) (* -1 i 60 60 24))))))
+		   (when (file-readable-p filename)
+			 (add-to-list 'org-agenda-files filename))))
+	 (number-sequence 0 13)  ; two weeks
+	 )
 	)
 
   (use-package org-capture
@@ -1642,7 +1658,7 @@ Version 2019-11-04"
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files (list org-directory "~/org/roam/daily"))
+  (org-agenda-files (list org-directory))
   (org-agenda-span 'week)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
