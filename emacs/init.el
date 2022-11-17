@@ -1648,6 +1648,7 @@ Version 2019-11-04"
 
 (use-package org-agenda
   :commands (org-agenda org-refile)
+  :hook (find-file . my/add-org-agenda-file)
   :demand t
 
   :custom
@@ -1667,6 +1668,13 @@ Version 2019-11-04"
 	"Org agenda todo next cycle"
 	(interactive) (org-call-with-arg 'org-agenda-todo 'right)
 	)
+
+  (defun my/add-org-agenda-file ()
+	(let ((orgdir (file-truename (expand-file-name org-directory))))
+	  ;; ~org/ 直下のファイル以外。直下のファイルはすでに追加されているため無視する
+	  (when
+		  (string-match (concat orgdir ".*/.*\\.org$") buffer-file-name)
+		(add-to-list 'org-agenda-files (string-replace orgdir org-directory buffer-file-name)))))
 
   :bind
   (:map org-agenda-mode-map
