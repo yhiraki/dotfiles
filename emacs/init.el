@@ -1397,14 +1397,9 @@ Version 2019-11-04"
 	(org-capture-templates
 	 `(
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
-	   ("I" "Interrupt - Add an interrupt task" entry (file+olp+datetree "journal.org") "** Interrupted task\n%T%?" :clock-in t :clock-resume t)
 	   ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%(format-time-string \"%Y-%m-%d\")|" :table-line-pos "II-1")
-	   ("j" "Journal" entry (file+olp+datetree "journal.org") "** %?\n%T")
-	   ("l" "Log Time" entry (file+olp+datetree "journal.org") "** %U %^{Log} :Time:" :immediate-finish t)
-	   ("m" "Meeting" entry (file+olp+datetree "journal.org") "** %^{Title} :MEETING:\n%T%^{CATEGORY}p%?" :jump-to-captured t :clock-in t :clock-keep t :immediate-finish t)
-	   ("n" "Note" entry (file+olp+datetree "journal.org") "** %? :Note:\n%T %a")
-	   ("t" "Task" entry (file+olp+datetree "journal.org") "** TODO %?\nSCHEDULED: %^T\n%(org-mac-chrome-get-frontmost-url)")
-	   ("s" "Start Task" entry (file+olp+datetree "journal.org") "** %(org-mac-chrome-get-frontmost-url)\n%T%?" :clock-in t :clock-resume t)
+	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?\nSCHEDULED: %^T\n")
+	   ("s" "Start Task" entry (file+headline "todos.org" "Todos") "** %?\n%T" :clock-in t :clock-resume t)
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %?" :clock-in t :clock-keep t)
 	   ))
