@@ -131,7 +131,7 @@ api.mapkey("yf", "Copy link: [o]rg, [m]arkdown", (key) => {
 
 const parsePageBitbucket = () => {
   return {
-    issueTitle: document.querySelector("#pull-request-details form span")?.textContent,
+    issueTitle: document.querySelectorAll("#pull-request-details header div")[2].textContent,
   };
 };
 
