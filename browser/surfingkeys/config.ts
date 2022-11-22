@@ -217,7 +217,7 @@ api.mapkey(
       });
     api.Clipboard.write(links.join("\n"));
   },
-  { domain: /github\.com\/([^\/]+\/.*\/)+(pulls|issues)$/ }
+  { domain: /github\.com\/([^\/]+\/.*\/)*(pulls|issues)\// }
 );
 
 const parsePageBacklogTicket = () => {
