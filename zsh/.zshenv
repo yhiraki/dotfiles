@@ -107,7 +107,7 @@ PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 [ -d "${HOME}/.local/homebrew" ] && eval "$(${HOME}/.local/homebrew/bin/brew shellenv)"
 
 command -v brew >/dev/null && {
-  for i in {coreutils,gnu-sed,findutils,gnu-tar,grep}; do
+  for i in {coreutils,gnu-sed,findutils,gnu-tar,grep,make}; do
     if [ -d "$HOMEBREW_PREFIX/opt/$i/libexec" ]; then
       PATH="$HOMEBREW_PREFIX/opt/$i/libexec/gnubin:$PATH"
       MANPATH="$HOMEBREW_PREFIX/opt/$i/libexec/gnuman:$MANPATH"
