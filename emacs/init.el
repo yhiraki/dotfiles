@@ -1323,7 +1323,7 @@ Version 2019-11-04"
 	 `(("d" "default" entry
 		"* %?"
 		:target (file+head "%<%Y-%m-%d>.org"
-						   "#+SETUPFILE: ../../tags.org\n#+title: %<%Y-%m-%d>\n#+OPTIONS: ^:{} H:5 toc:nil\n"))))
+						   "#+SETUPFILE: ../../tags.org\n#+OPTIONS: ^:{} H:5 toc:nil\n#+title: %<%Y-%m-%d>\n"))))
 	:bind-keymap
 	("C-c n d" . org-roam-dailies-map)
 	:bind
