@@ -1,2 +1,2 @@
-0 */3 * * * $HOME/bin/archive-old-files $HOME/Downloads $HOME/Downloads/archived-`date "+\%Y-\%m-\%d"` 7 2>> /tmp/cron1-`date "+\%s"`.log
+0 */3 * * * $HOME/bin/archive-old-files $HOME/Downloads $HOME/Downloads/archived- 7 2>> /tmp/cron1-`date "+\%s"`.log
 0 */3 * * * cat $HOME/.auto-push-repos | xargs -I{} $HOME/bin/git-acp {} >> /tmp/cron2-`date "+\%s"`.log
