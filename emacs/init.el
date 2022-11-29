@@ -1555,7 +1555,6 @@ Version 2019-11-04"
 	  :config
 	  (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
 	  (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
-	  ;; (push '(:async) org-babel-default-header-args:plantuml)
 	  (push '(:cache . "yes") org-babel-default-header-args:plantuml)
 	  )
 
@@ -1568,7 +1567,7 @@ Version 2019-11-04"
 	(use-package ob-shell
 	  :after ob
 	  :custom
-	  (org-babel-default-header-args:sh '((:async) (:cache . "yes") (:results . "output")))
+	  (org-babel-default-header-args:sh '((:cache . "yes") (:results . "output")))
 	  )
 
 	(use-package ob-python
@@ -1581,13 +1580,13 @@ Version 2019-11-04"
 			   (setq-local org-babel-python-command (concat path "bin/python"))))))
 	  :custom
 	  (org-babel-python-command "python3")
-	  (org-babel-default-header-args:python '((:async) (:cache . "yes") (:results . "output")))
+	  (org-babel-default-header-args:python '((:cache . "yes") (:results . "output")))
 	  )
 
 	(use-package ob-C
 	  :after ob
 	  :custom
-	  (org-babel-default-header-args:C '((:async) (:cache . "yes")))
+	  (org-babel-default-header-args:C '((:cache . "yes")))
 	  (org-babel-default-header-args:C++
 	   (append org-babel-default-header-args:C '((:includes . "<iostream>"))))
 	  )
