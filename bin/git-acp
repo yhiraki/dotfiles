@@ -8,7 +8,6 @@ if [ "$($GIT diff --name-only | wc -l)" -eq 0 ]; then
   exit 0
 fi
 
-$GIT pull &&
-  $GIT add . &&
+$GIT add . &&
   $GIT commit -mupdate &&
   $GIT push
