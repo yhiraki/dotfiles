@@ -244,7 +244,7 @@ Version 2019-11-04"
   )
 
 (use-package autorevert
-  :config (global-auto-revert-mode)
+  :config (global-auto-revert-mode t)
   )
 
 (use-package executable
