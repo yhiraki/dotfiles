@@ -1496,6 +1496,9 @@ Version 2019-11-04"
 	(org-hide-emphasis-markers t)
 	)
 
+  (use-package org-sticky-header :ensure t
+	:hook (org-mode . org-sticky-header-mode))
+
   (use-package ob
 	:after org
 	:hook
@@ -2318,6 +2321,9 @@ Version 2019-11-04"
 (use-package embark-consult :ensure t
   :bind
   ("C-o" . 'embark-act))
+
+(use-package topsy :ensure t
+  :hook (prog-mode . topsy-mode))
 
 (use-package key-binding :no-require
   :config
