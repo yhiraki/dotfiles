@@ -13,3 +13,7 @@
 	default = current
 [pull]
 	rebase = true
+[github]
+	user = yhiraki
+[user]
+	name = yhiraki
