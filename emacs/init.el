@@ -1120,7 +1120,15 @@ Version 2019-11-04"
 	   (setq prettify-symbols-alist
 			 '(("[ ]" . "☐")
 			   ("[X]" . "☑")
-			   ("[-]" . "◪")))))
+			   ("[-]" . "〼")
+			   (":PROPERTIES:" . "»")
+			   (":LOGBOOK:" . "›")
+			   (":END:" . "⎺")
+			   ("#+begin_src" . "⌟")
+			   ("#+end_src" . "⌝")
+			   ("#+RESULTS:" . "▷")
+			   ("#+RESULTS" . "▷")
+			   ))))
 
   :custom
   (org-directory "~/org/")
