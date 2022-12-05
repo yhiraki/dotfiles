@@ -45,10 +45,9 @@
 (require 'package)
 (setq package-user-dir (locate-user-emacs-file "elpa"))
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
+      '(("gnu" . "https://elpa.gnu.org/packages/")
 		("nongnu" . "https://elpa.nongnu.org/nongnu/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("emacswiki" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/emacswiki/")
+        ("melpa" . "https://melpa.org/packages/")
         ))
 (package-initialize)
 (unless package-archive-contents
