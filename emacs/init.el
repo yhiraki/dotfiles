@@ -1093,11 +1093,6 @@ Version 2019-11-04"
 			"gr" #'xref-find-references)
   )
 
-(use-package executable
-  :hook
-  (after-save . executable-make-buffer-file-executable-if-script-p)
-  )
-
 (use-package edit-indirect :ensure t
   :commands edit-indirect-region
   )
