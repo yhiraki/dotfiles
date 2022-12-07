@@ -1113,7 +1113,7 @@ Version 2019-11-04"
 
   :hook
   (org-after-todo-statistics . org-summary-todo)
-  (org-checkbox-statistics . my/org-checkbox-todo)
+  ;; (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
   (org-mode . prettify-symbols-mode)
   (org-mode
@@ -1160,6 +1160,7 @@ Version 2019-11-04"
 	(let (org-log-done org-log-states)   ; turn off logging
 	  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
+  ;; 使っていない。ヘッダにTODO状態を記載するとorg-agendaに載るので邪魔
   ;; https://emacs.stackexchange.com/questions/19843/how-to-automatically-adjust-an-org-task-state-with-its-children-checkboxes
   (defun my/org-checkbox-todo ()
 	"Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
