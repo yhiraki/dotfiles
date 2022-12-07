@@ -1119,16 +1119,22 @@ Version 2019-11-04"
   (org-mode
    . (lambda ()
 	   (setq prettify-symbols-alist
-			 '(("[ ]" . "☐")
-			   ("[X]" . "☑")
-			   ("[-]" . "〼")
-			   (":PROPERTIES:" . "»")
-			   (":LOGBOOK:" . "›")
-			   (":END:" . "⎺")
+			 '(
+			   ("#+DOWNLOADED:" . "📥")
+			   ("#+RESULTS" . "▷")
+			   ("#+RESULTS:" . "▷")
 			   ("#+begin_src" . "⌟")
 			   ("#+end_src" . "⌝")
-			   ("#+RESULTS:" . "▷")
-			   ("#+RESULTS" . "▷")
+			   (":END:" . "⎺")
+			   (":LOGBOOK:" . "📚")
+			   (":PROPERTIES:" . "⚙")
+			   ("CLOCK:" . "⏰")
+			   ("CLOSED:" . "✅")
+			   ("DEADLINE:" . "⛔️")
+			   ("SCHEDULED:" . "📅")
+			   ("[ ]" . "☐")
+			   ("[-]" . "〼")
+			   ("[X]" . "☑")
 			   ))))
 
   :custom
