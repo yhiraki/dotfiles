@@ -1034,10 +1034,11 @@ Version 2019-11-04"
   :after tree-sitter)
 
 (use-package add-node-modules-path :ensure t
-  :hook (js-mode
+  :hook ((js-mode
          typescript-mode
          web-mode
          vue-mode)
+		 . add-node-modules-path)
   )
 
 (use-package eslint-fix :ensure t
