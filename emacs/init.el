@@ -352,7 +352,13 @@ Version 2019-11-04"
 
 (use-package exec-path-from-shell :ensure t
   :custom
-  (exec-path-from-shell-arguments '("-l"))
+  (exec-path-from-shell-variables
+   '(
+	 "GOPATH"
+	 "MANPATH"
+	 "PATH"
+	 ))
+  ;; (exec-path-from-shell-arguments '("-l"))
   :config
   (exec-path-from-shell-initialize))
 
