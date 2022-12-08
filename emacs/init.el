@@ -103,6 +103,15 @@ Version 2019-11-04"
   (interactive)
   (shell-command "open ."))
 
+(defun my-path-join (&rest paths)
+  "Join file PATHS"
+  (let
+	  ((file (nth 0 (last paths)))
+	   (dirs (butlast paths)))
+	(concat
+	 (mapconcat #'file-name-as-directory dirs "")
+	 file)))
+
 (use-package straight :no-require
   :config
   (defvar bootstrap-version)
@@ -1664,7 +1673,7 @@ Version 2019-11-04"
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files (list org-directory))
+  (org-agenda-files '(org-directory (my-path-join org-directory "projects")))
   (org-agenda-span 'day)
   (org-agenda-sticky t)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
