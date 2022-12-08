@@ -1662,7 +1662,7 @@ Version 2019-11-04"
 
 (use-package org-agenda
   :commands (org-agenda org-refile)
-  :hook (find-file . my/add-org-agenda-file)
+  :hook (find-file . my/add-org-roam-to-agenda)
   :demand t
 
   :custom
@@ -1673,7 +1673,7 @@ Version 2019-11-04"
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files '(org-directory (my-path-join org-directory "projects")))
+  (org-agenda-files `(,org-directory ,(my-path-join org-directory "projects")))
   (org-agenda-span 'day)
   (org-agenda-sticky t)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
@@ -1684,11 +1684,11 @@ Version 2019-11-04"
 	(interactive) (org-call-with-arg 'org-agenda-todo 'right)
 	)
 
-  (defun my/add-org-agenda-file ()
+  (defun my/add-org-roam-to-agenda ()
 	(let ((orgdir (file-truename (expand-file-name org-directory))))
 	  ;; ~org/ 直下のファイル以外。直下のファイルはすでに追加されているため無視する
 	  (when
-		  (string-match (concat orgdir ".*/.*\\.org$") buffer-file-name)
+		  (string-match (concat orgdir "roam/.*/.*\\.org$") buffer-file-name)
 		(add-to-list 'org-agenda-files (string-replace orgdir org-directory buffer-file-name)))))
 
   :bind
