@@ -103,8 +103,8 @@ Version 2019-11-04"
   (interactive)
   (shell-command "open ."))
 
-(defun my-path-join (&rest paths)
-  "Join file PATHS"
+(defun my/path-join (&rest paths)
+  "Join file PATHS."
   (let
 	  ((file (nth 0 (last paths)))
 	   (dirs (butlast paths)))
@@ -1333,10 +1333,7 @@ Version 2019-11-04"
 	:custom
 	(org-roam-db-update-on-save t)
 	(org-roam-completion-everywhere t)
-	(org-roam-directory
-	 (concat
-	  (file-name-as-directory org-directory)
-	  "roam"))
+	(org-roam-directory (my/path-join org-directory "roam"))
 	(org-roam-dailies-capture-templates
 	 `(("d" "default" entry
 		"* %?"
