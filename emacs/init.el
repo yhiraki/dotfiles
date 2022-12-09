@@ -621,7 +621,10 @@ Version 2019-11-04"
 			"]g" #'diff-hl-next-hunk)
   )
 
-(use-package browse-at-remote :ensure t)
+(use-package browse-at-remote :ensure t
+  :commands browse-at-remote
+  :custom (browse-at-remote-prefer-symbolic nil) ;; use hash instead of branch name
+  )
 
 (use-package recentf
   :commands (recentf-mode recentf-open-files)
