@@ -25,8 +25,8 @@
 ;;; Code:
 
 
-(defvar my-profiler-enabled nil)
-(when my-profiler-enabled
+(defvar my/profiler-enabled nil)
+(when my/profiler-enabled
   (require 'profiler)
   (profiler-start 'cpu)
   (add-hook 'after-init-hook
@@ -64,7 +64,7 @@
 (defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
 
-(defun my-open-in-external-app (&optional @fname)
+(defun my/open-in-external-app (&optional @fname)
   "Open the current file or dired marked files in external app.
 The app is chosen from your OS's preference.
 
@@ -99,7 +99,7 @@ Version 2019-11-04"
 		 (lambda ($fpath) (let ((process-connection-type nil))
 							(start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
-(defun my-open-current-dir ()
+(defun my/open-current-dir ()
   (interactive)
   (shell-command "open ."))
 
@@ -275,13 +275,13 @@ Version 2019-11-04"
   :if darwin-p
 
   :hook
-  (window-setup . my-reload-font)
+  (window-setup . my/reload-font)
   (window-setup . set-apple-color-emoji)
 
   :config
   (defvar yhiraki-font 'cica)
 
-  (defun my-reload-font (&optional frame)
+  (defun my/reload-font (&optional frame)
     "reload my font settings"
     (interactive)
 
@@ -312,7 +312,7 @@ Version 2019-11-04"
       (push '("Apple color emoji" . 0.9) face-font-rescale-alist) ; 4文字幅に揃える
       )
 
-    (remove-hook 'window-setup-hook #'my-reload-font)
+    (remove-hook 'window-setup-hook #'my/reload-font)
     )
 
   (defun set-apple-color-emoji ()
@@ -439,7 +439,7 @@ Version 2019-11-04"
   ;;  |
   ;; }
   ;; https://github.com/Fuco1/smartparens/issues/80
-  (defun my-open-block-c-mode (id action context)
+  (defun my/open-block-c-mode (id action context)
     (when (eq action 'insert)
       (newline)
       (indent-according-to-mode)
@@ -447,7 +447,7 @@ Version 2019-11-04"
       (indent-according-to-mode)))
 
   ;; (sp-with-modes '(prog-mode vue-mode)
-  ;;   (sp-local-pair  "{" nil :post-handlers '((my-open-block-c-mode "RET")))
+  ;;   (sp-local-pair  "{" nil :post-handlers '((my/open-block-c-mode "RET")))
   ;;   )
 
   (smartparens-global-mode)
@@ -469,7 +469,7 @@ Version 2019-11-04"
   :general
   (:keymaps 'dired-mode-map
 		   :states '(normal visual)
-		   "C-c C-o" #'my-open-in-external-app
+		   "C-c C-o" #'my/open-in-external-app
 		   "C-j" #'dired-next-dirline
 		   "C-k" #'dired-prev-dirline
 		   "h" #'dired-subtree-remove
@@ -1085,13 +1085,13 @@ Version 2019-11-04"
 			"<localleader>f" #'prettier-js)
 
   :config
-  (defun my-img-embed-convert-for-backlog-style-region (begin end)
+  (defun my/img-embed-convert-for-backlog-style-region (begin end)
 	(interactive "r")
 	(save-excursion
 	  (replace-regexp "!\\[img\\](.*/+\\(.*\\))" "![img][\\1]" nil begin end)))
-  (defun my-img-embed-convert-for-backlog-style ()
+  (defun my/img-embed-convert-for-backlog-style ()
 	(interactive)
-	(my-img-embed-convert-for-backlog-style-region (point-min) (point-max)))
+	(my/img-embed-convert-for-backlog-style-region (point-min) (point-max)))
   )
 
 (use-package terraform-mode :ensure t)
@@ -1356,35 +1356,35 @@ Version 2019-11-04"
 			 "<leader> nS" #'org-roam-db-sync
 			 "<leader> nb" #'org-roam-buffer
 			 "<leader> n/" #'org-roam-node-find
-			 "<leader> nF" #'my-org-roam-fix-exported-markdown)
+			 "<leader> nF" #'my/org-roam-fix-exported-markdown)
 	:config
 	(require 'org-roam-dailies)
 
-	(defun my-unlink-all-markdown-file-links-region (begin end)
+	(defun my/unlink-all-markdown-file-links-region (begin end)
 	  "MarkdownFile link to normal text from BEGIN to END"
 	  (interactive "r")
 	  (save-excursion
 		(replace-regexp "\\[\\(.*\\)\\](.*.md)" "\\1" nil begin end)))
 
-	(defun my-unlink-all-markdown-file-links ()
+	(defun my/unlink-all-markdown-file-links ()
 	  "MarkdownFile link to normal text"
 	  (interactive)
-	  (my-unlink-all-markdown-file-links-region (point-min) (point-max)))
+	  (my/unlink-all-markdown-file-links-region (point-min) (point-max)))
 
-	(defun my-remove-all-backslashes ()
+	(defun my/remove-all-backslashes ()
 	  (interactive)
-	  (my-remove-all-backslashes-region (point-min) (point-max)))
+	  (my/remove-all-backslashes-region (point-min) (point-max)))
 
-	(defun my-remove-all-backslashes-region (begin end)
+	(defun my/remove-all-backslashes-region (begin end)
 	  "Remove all backslashes from BEGIN to END"
 	  (interactive "r")
 	  (save-excursion
 		(replace-regexp "\\\\" "" nil begin end)))
 
-	(defun my-org-roam-fix-exported-markdown ()
+	(defun my/org-roam-fix-exported-markdown ()
 	  (interactive)
-	  (my-unlink-all-markdown-file-links)
-	  (my-remove-all-backslashes))
+	  (my/unlink-all-markdown-file-links)
+	  (my/remove-all-backslashes))
 
 	;; add org-daily files to org-agenda-files
 	(mapcar
@@ -1531,7 +1531,7 @@ Version 2019-11-04"
 	   (shell . t)))
 	:config
 	;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
-	;; (defun my-org-confirm-babel-evaluate (lang body)
+	;; (defun my/org-confirm-babel-evaluate (lang body)
 	;; 	(not (member lang
 	;; 				 '(
 	;; 				   "C"
@@ -1672,7 +1672,7 @@ Version 2019-11-04"
 	 "-"
 	 "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
-  (org-agenda-files `(,org-directory ,(my-path-join org-directory "projects")))
+  (org-agenda-files `(,org-directory ,(my/path-join org-directory "projects")))
   (org-agenda-span 'day)
   (org-agenda-sticky t)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
@@ -1776,7 +1776,7 @@ Version 2019-11-04"
   (sqlind-minor-mode
    . (lambda ()
       (setq-local sqlind-indentation-offsets-alist
-            my-sql-indentation-offsets-alist)))
+            my/sql-indentation-offsets-alist)))
   (sql-mode
    . (lambda ()
       (sqlind-minor-mode)
@@ -1799,7 +1799,7 @@ Version 2019-11-04"
 
   :config
   (setq sql-indent-offset 2)
-  (defvar my-sql-indentation-offsets-alist
+  (defvar my/sql-indentation-offsets-alist
     `((select-clause)
       (insert-clause 0)
       (delete-clause 0)
@@ -1946,7 +1946,7 @@ Version 2019-11-04"
 	(kbd "<leader>f f") 'find-file
 	(kbd "<leader>f g") 'grep-find
 	(kbd "<leader>f j") 'open-junk-file
-	(kbd "<leader>f o") 'my-open-current-dir
+	(kbd "<leader>f o") 'my/open-current-dir
 	(kbd "<leader>f r") 'recentf-open-files
 	(kbd "<leader>g c") 'magit-commit
 	(kbd "<leader>g f") 'consult-ls-git
@@ -2158,36 +2158,36 @@ Version 2019-11-04"
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
   (setcar (nthcdr 2 (assq 'space-mark whitespace-display-mappings)) [?_]) ; set nbsp:%
 
-  (defun my-whitespace-zenkaku-to-hankaku-buffer ()
+  (defun my/whitespace-zenkaku-to-hankaku-buffer ()
 	"Japanese zenkaku space to hankaku"
 	(interactive)
-	(my-whitespace-zenkaku-to-hankaku-region (point-min) (point-max)))
+	(my/whitespace-zenkaku-to-hankaku-region (point-min) (point-max)))
 
-  (defun my-whitespace-zenkaku-to-hankaku-region (begin end)
+  (defun my/whitespace-zenkaku-to-hankaku-region (begin end)
 	"Japanese zenkaku space to hankaku"
 	(interactive "r")
 	(save-excursion
 	  (replace-string "\u3000" " " nil begin end)))
 
-  (defun my-whitespace-cleanup ()
+  (defun my/whitespace-cleanup ()
 	"Whitespace cleanup inclues zenkaku space"
 	(interactive)
-	(my-whitespace-zenkaku-to-hankaku-buffer)
+	(my/whitespace-zenkaku-to-hankaku-buffer)
 	(whitespace-cleanup)
 	)
 
-  (defun my-whitespace-cleanup-region (begin end)
+  (defun my/whitespace-cleanup-region (begin end)
 	"Whitespace cleanup inclues zenkaku space"
 	(interactive "r")
-	(my-whitespace-zenkaku-to-hankaku-region begin end)
+	(my/whitespace-zenkaku-to-hankaku-region begin end)
 	(whitespace-cleanup-region)
 	)
 
   :general
   (:states 'normal
-		   "<localleader>w" #'my-whitespace-cleanup)
+		   "<localleader>w" #'my/whitespace-cleanup)
   (:states 'visual
-		   "<localleader>w" #'my-whitespace-cleanup-region)
+		   "<localleader>w" #'my/whitespace-cleanup-region)
   )
 
 (use-package yasnippet :ensure t
