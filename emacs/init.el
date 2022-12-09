@@ -1419,7 +1419,7 @@ Version 2019-11-04"
 	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?\nSCHEDULED: %^T\n")
 	   ("s" "Start Task" entry (file+headline "todos.org" "Todos") "** %?\n%T" :clock-in t :clock-resume t)
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
-	   ("C" "Entry (Clocking)" entry (clock) "* %?" :clock-in t :clock-keep t)
+	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
 	   ))
 	)
 
