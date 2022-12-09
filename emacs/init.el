@@ -218,8 +218,10 @@ Version 2019-11-04"
   )
 
 (use-package simple
-  :bind
-  ("C-q" . universal-argument) ; C-u -> C-q
+  :general
+  (:states
+   '(normal visual insert)
+   "C-q" 'universal-argument ; C-u -> C-q)
   )
 
 (use-package tempbuf :straight t
