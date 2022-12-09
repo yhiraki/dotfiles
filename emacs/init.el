@@ -221,8 +221,8 @@ Version 2019-11-04"
   :general
   (:states
    '(normal visual insert)
-   "C-q" 'universal-argument ; C-u -> C-q)
-  )
+   "C-q" 'universal-argument ; C-u -> C-q
+  ))
 
 (use-package tempbuf :straight t
   :hook
