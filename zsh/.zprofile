@@ -7,7 +7,7 @@ fi
 
 source "$SSH_AGENT_RC"
 
-if ! kill -s 0 "$SSH_AGENT_PID"; then
+if ! kill -s 0 "$SSH_AGENT_PID" >/dev/null; then
   ssh-agent >$SSH_AGENT_RC
   ssh-add
   source "$SSH_AGENT_RC"
