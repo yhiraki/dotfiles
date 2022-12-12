@@ -3,13 +3,8 @@ autoload -Uz add-zsh-hook
 # Tmux
 {
   configure_tmux() {
-    if [[ -n "$INSIDE_EMACS" ]]; then
-      return
-    fi
-
-    if ! command -v tmux >/dev/null; then
-      return
-    fi
+    ! command -v tmux >/dev/null && return
+    [ -n "$INSIDE_EMACS" ] && return
 
     if [[ -n "$TMUX" ]]; then
       function my_refresh_tmux_status() {
@@ -21,11 +16,6 @@ autoload -Uz add-zsh-hook
 
     local TMUX_DEFAULT_NAME=default
 
-    if [[ -n "$INSIDE_EMACS" ]]; then
-      exec tmux new
-      return
-    fi
-
     if tmux has -t "${TMUX_DEFAULT_NAME}"; then
       exec tmux attach -t "${TMUX_DEFAULT_NAME}"
       return
@@ -33,9 +23,7 @@ autoload -Uz add-zsh-hook
 
     exec tmux new -s "${TMUX_DEFAULT_NAME}"
   }
-  case $(tty) in
-    /dev/tty*) configure_tmux ;;
-  esac
+  configure_tmux
   unset -f configure_tmux
 }
 
