@@ -1292,14 +1292,16 @@ Version 2019-11-04"
 
   (use-package org-clock
 	:hook
-	(kill-emacs . my:org-clock-out-and-save-when-exit)
+	;; (kill-emacs . my:org-clock-out-and-save-when-exit) ;; use persistent clock instead
 	(org-after-todo-state-change . my:org-clock-in-if-starting)
 	(org-after-todo-state-change . my:org-clock-out-if-waiting)
+	(org-mode . org-clock-persistence-insinuate)
 
 	:custom
 	(org-clock-clocked-in-display 'frame-title)
 	(org-clock-idle-time 5)
 	(org-clock-out-remove-zero-time-clocks t)
+    (org-clock-persist t)
 
 	:config
 	;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
