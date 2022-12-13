@@ -355,6 +355,7 @@ Version 2019-11-04"
 
 (use-package exec-path-from-shell :ensure t
   :custom
+  (exec-path-from-shell-shell-name "INSIDE_EMACS=1 $SHELL")
   (exec-path-from-shell-variables
    '(
 	 "GOPATH"
@@ -510,16 +511,16 @@ Version 2019-11-04"
   :general
   (:keymaps 'vterm-mode-map
 			:states '(insert emacs)
-			"C-a" #'vterm-send-C-a
-			"C-c" #'vterm-send-C-c
-			"C-d" #'vterm-toggle-cd
-			"C-e" #'vterm-send-C-e
-			"C-h" #'vterm-send-C-h
-			"C-k" #'vterm-send-C-k
-			"C-n" #'vterm-send-C-n
-			"C-p" #'vterm-send-C-p
-			"C-r" #'vterm-send-C-r
-			"C-x" #'vterm-send-C-x
+			"C-a" #'vterm-self-insert
+			"C-c" #'vterm-self-insert
+			"C-d" #'vterm-self-insert
+			"C-e" #'vterm-self-insert
+			"C-h" #'vterm-self-insert
+			"C-k" #'vterm-self-insert
+			"C-n" #'vterm-self-insert
+			"C-p" #'vterm-self-insert
+			"C-r" #'vterm-self-insert
+			"C-x" #'vterm-self-insert
 			"M-t" #'vterm-toggle-cd
 			)
   )
