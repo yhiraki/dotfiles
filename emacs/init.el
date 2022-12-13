@@ -1419,12 +1419,45 @@ Version 2019-11-04"
 	 `(
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
 	   ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%(format-time-string \"%Y-%m-%d\")|" :table-line-pos "II-1")
-	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?\nSCHEDULED: %^T\n")
+	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?\nSCHEDULED: %T\n")
 	   ("s" "Start Task" entry (file+headline "todos.org" "Todos") "** %?\n%T" :clock-in t :clock-resume t)
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
+	   ("d" "diary" entry (file+headline my/org-capture-file-today "Journal") "** %?")
+	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** %?")
+	   ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
+** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
+ [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
+ on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
+
+%(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
+
+#+begin_src %(my/get-major-mode \"%F\")
+%i
+#+end_src
+
+%?
+")
 	   ))
-	)
+
+	:config
+	(defun my/org-capture-file-today ()
+	  (my/path-join
+	   org-directory
+	   "diary"
+	   (format-time-string "%Y-%m-%d.org")))
+
+     (defun my/get-major-mode (f)
+       "get major-mode for F"
+       (with-current-buffer (find-buffer-visiting f)
+         (replace-regexp-in-string "-mode" "" (format "%s" major-mode))))
+
+	 (defun my/get-local-git-repo ()
+	   "returns github.com/repo/name"
+	   (let ((repo (magit-repository-local-repository)))
+		 (string-match "\\([^\\/]+\\/[^\\/]+\\/[^\\/]+\\)\\/$" repo)
+		 (match-string 1 repo)))
+	 )
 
   (use-package org-checklist
 	:after org
@@ -1936,17 +1969,22 @@ Version 2019-11-04"
   (evil-set-leader '(normal visual emacs) (kbd "C-c SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
-  (defun find-user-emacs-init-file ()
+  (defun my/find-user-emacs-init-file ()
 	(interactive)
 	(find-file (locate-user-emacs-file "init.el")))
 
+  (defun my/find-inbox-org ()
+	(interactive)
+	(find-file (my/path-join org-directory "inbox.org")))
+
   (evil-define-key '(normal visual) 'global
 	(kbd "<leader>/") 'imenu
-	(kbd "<leader>.") 'find-user-emacs-init-file
+	(kbd "<leader>.") 'my/find-user-emacs-init-file
 	(kbd "<leader>G g") 'google-this
 	(kbd "<leader>a") 'org-agenda
 	(kbd "<leader>b") 'bookmark-jump
 	(kbd "<leader>c") 'org-capture
+	(kbd "<leader>i") 'my/find-inbox-org
 	(kbd "<leader>f b") 'switch-to-buffer
 	(kbd "<leader>f d") 'dired-sidebar-toggle-sidebar
 	(kbd "<leader>f f") 'find-file
