@@ -355,14 +355,12 @@ Version 2019-11-04"
 
 (use-package exec-path-from-shell :ensure t
   :custom
-  (exec-path-from-shell-shell-name "INSIDE_EMACS=1 $SHELL")
   (exec-path-from-shell-variables
    '(
 	 "GOPATH"
 	 "MANPATH"
 	 "PATH"
 	 ))
-  ;; (exec-path-from-shell-arguments '("-l"))
   :config
   (exec-path-from-shell-initialize))
 
