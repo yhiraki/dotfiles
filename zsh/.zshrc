@@ -23,7 +23,8 @@ autoload -Uz add-zsh-hook
 
     exec tmux new -s "${TMUX_DEFAULT_NAME}"
   }
-  configure_tmux
+  [ -n "${TTY}" ] || [ -n "${tty}" ] &&
+    configure_tmux
   unset -f configure_tmux
 }
 
