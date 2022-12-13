@@ -1358,13 +1358,13 @@ Version 2019-11-04"
 		  ("C-M-i" . completion-at-point))
 	:general
 	(:states '(normal visual)
-			 "<leader> n" #'org-roam-dailies-map
+			 ;; "<leader> n" #'org-roam-dailies-map
 			 "<leader> nS" #'org-roam-db-sync
 			 "<leader> nb" #'org-roam-buffer
 			 "<leader> n/" #'org-roam-node-find
 			 "<leader> nF" #'my/org-roam-fix-exported-markdown)
 	:config
-	(require 'org-roam-dailies)
+	;; (require 'org-roam-dailies)
 
 	(defun my/unlink-all-markdown-file-links-region (begin end)
 	  "MarkdownFile link to normal text from BEGIN to END"
@@ -1393,20 +1393,20 @@ Version 2019-11-04"
 	  (my/remove-all-backslashes))
 
 	;; add org-daily files to org-agenda-files
-	(mapcar
-	 #'(lambda (i)
-		 (let
-			 ((filename
-			   (concat
-				(file-name-as-directory org-roam-directory)
-				(file-name-as-directory "daily")
-				(format-time-string
-				 "%Y-%m-%d.org"
-				 (time-add (current-time) (* -1 i 60 60 24))))))
-		   (when (file-readable-p filename)
-			 (add-to-list 'org-agenda-files filename))))
-	 (number-sequence 0 13)  ; two weeks
-	 )
+	;; (mapcar
+	;;  #'(lambda (i)
+	;; 	 (let
+	;; 		 ((filename
+	;; 		   (concat
+	;; 			(file-name-as-directory org-roam-directory)
+	;; 			(file-name-as-directory "daily")
+	;; 			(format-time-string
+	;; 			 "%Y-%m-%d.org"
+	;; 			 (time-add (current-time) (* -1 i 60 60 24))))))
+	;; 	   (when (file-readable-p filename)
+	;; 		 (add-to-list 'org-agenda-files filename))))
+	;;  (number-sequence 0 13)  ; two weeks
+	;;  )
 	)
 
   (use-package org-capture
