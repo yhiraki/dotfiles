@@ -622,7 +622,7 @@ Version 2019-11-04"
   )
 
 (use-package browse-at-remote :ensure t
-  :commands browse-at-remote
+  :commands (browse-at-remote browse-at-remote-get-url)
   :custom (browse-at-remote-prefer-symbolic nil) ;; use hash instead of branch name
   )
 
