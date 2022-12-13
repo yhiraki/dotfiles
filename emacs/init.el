@@ -226,7 +226,6 @@ Version 2019-11-04"
 
 (use-package tempbuf :straight t
   :hook
-  ((dired-mode magit-mode) . turn-on-tempbuf-mode)
   (find-file
    . (lambda ()
        (when (string-match "^/private/tmp\\|^/tmp" (buffer-file-name))
