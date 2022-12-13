@@ -1145,6 +1145,7 @@ Version 2019-11-04"
 
   :custom
   (org-directory "~/org/")
+  (org-archive-location (concat (my/path-join org-directory "archived" "%s") "::"))
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
@@ -1157,6 +1158,7 @@ Version 2019-11-04"
 	 (sequence "|" "CANCELLED(c)")
 	 (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
+  (org-log-into-drawer "LOGBOOK")
   (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width or fixed width
 
   :after evil
