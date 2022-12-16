@@ -509,16 +509,16 @@ Version 2019-11-04"
   :general
   (:keymaps 'vterm-mode-map
 			:states '(insert emacs)
-			"C-a" #'vterm-self-insert
-			"C-c" #'vterm-self-insert
-			"C-d" #'vterm-self-insert
-			"C-e" #'vterm-self-insert
-			"C-h" #'vterm-self-insert
-			"C-k" #'vterm-self-insert
-			"C-n" #'vterm-self-insert
-			"C-p" #'vterm-self-insert
-			"C-r" #'vterm-self-insert
-			"C-x" #'vterm-self-insert
+			"C-a" #'vterm--self-insert
+			"C-c" #'vterm--self-insert
+			"C-d" #'vterm--self-insert
+			"C-e" #'vterm--self-insert
+			"C-h" #'vterm--self-insert
+			"C-k" #'vterm--self-insert
+			"C-n" #'vterm--self-insert
+			"C-p" #'vterm--self-insert
+			"C-r" #'vterm--self-insert
+			"C-x" #'vterm--self-insert
 			"M-t" #'vterm-toggle-cd
 			)
   )
