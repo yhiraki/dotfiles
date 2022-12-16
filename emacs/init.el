@@ -2112,10 +2112,6 @@ Version 2019-11-04"
    . (lambda ()
 	   (load-theme 'modus-vivendi t)))
   :custom
-  (modus-themes-headings
-   '((1 . (overline))
-	 (2 . (rainbow overline))
-	 (t . (no-bold))))
   (modus-themes-paren-match '(bold underline))
   (modus-themes-region '(bg-only no-extend))
   (modus-themes-italic-constructs t)
