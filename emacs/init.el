@@ -1424,6 +1424,7 @@ Version 2019-11-04"
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
 	   ("d" "diary" entry (file+headline my/org-capture-file-today "Journal") "** %?")
 	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** %?")
+	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** %?\n%c" :clock-in t :clock-resume t)
 	   ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
