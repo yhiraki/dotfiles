@@ -586,6 +586,19 @@ Version 2019-11-04"
 
   )
 
+(use-package blamer :ensure t
+  :config
+  (defvar my/blamer-enabled t)
+  (defun my/blamer-turnon () (blamer-mode 1))
+  (defun my/blamer-turnoff () (blamer-mode -1))
+  (defun my/setup-blamer-mode()
+	(when my/blamer-enabled
+	  (global-blamer-mode 1)
+	  (add-hook 'evil-insert-state-entry-hook #'my/blamer-turnoff)
+	  (add-hook 'evil-insert-state-exit-hook #'my/blamer-turnon)))
+  (my/setup-blamer-mode)
+  )
+
 (use-package gist :ensure t
   :config
   (evil-set-initial-state 'gist-list-mode 'insert)
