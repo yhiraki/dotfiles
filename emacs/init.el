@@ -1867,7 +1867,9 @@ Version 2019-11-04"
       ,@sqlind-default-indentation-offsets-alist))
   )
 
-(use-package toml-mode :ensure t)
+(use-package toml-mode :ensure t
+  :mode
+  ("\\Pipfile\\'"))
 
 (use-package typescript-mode :ensure t
   :hook
