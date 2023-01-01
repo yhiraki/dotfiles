@@ -1438,10 +1438,12 @@ Version 2019-11-04"
 	   ("d" "diary" entry (file+headline my/org-capture-file-today "Journal") "** %?")
 	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** %?")
 	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** %?\n%c" :clock-in t :clock-resume t)
+	   ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** %a\n%T\n%?")
 	   ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
  on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
+%K
 
 %(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
 
