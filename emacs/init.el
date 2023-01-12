@@ -1159,6 +1159,7 @@ Version 2019-11-04"
   :custom
   (org-directory "~/org/")
   (org-archive-location (concat (my/path-join org-directory "archived" "%s") "::"))
+  (org-id-link-to-org-use-id t)
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
@@ -1437,9 +1438,9 @@ Version 2019-11-04"
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
 	   ("d" "diary" entry (file+headline my/org-capture-file-today "Journal") "** %?")
-	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** %?")
-	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** %?\n%c" :clock-in t :clock-resume t)
-	   ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** %a\n%T\n%?")
+	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?")
+	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** STARTED %?\n%c" :clock-in t :clock-resume t)
+	   ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** MEETING %a\n%T\n%?")
 	   ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
