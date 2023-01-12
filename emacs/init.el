@@ -345,10 +345,11 @@ Version 2019-11-04"
 
 (use-package files
   :custom
-  (trash-directory "~/.Trash")
   (confirm-kill-emacs nil)
   (find-file-visit-truename t)
   (require-final-newline t)
+  (safe-local-variable-values '((org-log-done)))
+  (trash-directory "~/.Trash")
   :config
   (setq save-silently t)
   )
