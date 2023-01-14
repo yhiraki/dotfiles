@@ -2170,11 +2170,6 @@ Version 2019-11-04"
 		 . hide-mode-line-mode)
   )
 
-(use-package beacon :ensure t
-  :config (beacon-mode)
-  :diminish
-  )
-
 (use-package clipetty :ensure t
   :diminish clipetty-mode
   :config (global-clipetty-mode))
