@@ -1351,9 +1351,10 @@ Version 2019-11-04"
 		 (org-roam--replace-roam-links-on-save-h)
 		 ))
 	:custom
-	(org-roam-db-update-on-save t)
 	(org-roam-completion-everywhere t)
+	(org-roam-db-update-on-save t)
 	(org-roam-directory (my/path-join org-directory "roam"))
+	(org-roam-node-display-template "${title:*} ${tags:50}")
 	(org-roam-dailies-capture-templates
 	 `(("d" "default" entry
 		"* %?"
