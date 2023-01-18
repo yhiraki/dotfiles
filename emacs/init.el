@@ -1296,11 +1296,10 @@ Version 2019-11-04"
 	(org-block-begin-line ((t (:height 0.7    :foreground "gray40" :background nil :underline "gray20"))))
 	(org-block-end-line   ((t (:underline nil :overline "gray20"))))
 	(org-date             ((t (:height 0.7    :foreground "gold4"))))
-	(org-drawer           ((t (:height 0.55   :foreground "gray40"))))
+	(org-drawer           ((t (:height 0.7    :foreground "gray40"))))
 	(org-meta-line        ((t (:height 0.7    :foreground "gray40"))))
-	(org-property-value   ((t (:height 0.8))))
+	(org-property-value   ((t (:height 0.7))))
 	(org-sexp-date        ((t (:height 0.7    :foreground "gray40"))))
-	(org-special-keyword  ((t (:height 0.7    :foreground "gray40"))))
 	(org-table            ((t (:height 0.9))))
 	)
 
