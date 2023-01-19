@@ -213,6 +213,46 @@ api.mapkey(
   { domain: /oreilly\.co\.jp\/books\/\d+/ }
 );
 
+// yf | Lambdanote books
+api.mapkey(
+  "yf",
+  "Copy link Lambdanote: [o]rg, [m]arkdown",
+  (key) => {
+    const { url, title } = parsePageCurent();
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`[${title}](${url})`);
+        break;
+      case "o":
+        const price = Number(
+          document.querySelector('meta[property="og:price:amount"]')?.content.replace(",", "")
+        );
+        const price_tax = Math.round(price * 1.1 * 100000) / 100000;
+        const name = document.querySelector('meta[property="og:title"]')?.content;
+        const author = "";
+        const isbn = "";
+        const date = new Date().toISOString().slice(0, 10);
+        api.Clipboard.write(`${name}
+:PROPERTIES:
+:price: ${price_tax}
+:name: ${name}
+:author: ${author}
+:isbn: ${isbn}
+:added_at: <${date}>
+:bought_at:
+:read_at:
+:store_name: lambdanote
+:store_url: ${url}
+:ebook: t
+:ebook_url:
+:END:
+`);
+        break;
+    }
+  },
+  { domain: /www\.lambdanote\.com\/products/ }
+);
+
 const parsePageBitbucket = () => {
   return {
     issueTitle: document.querySelectorAll("#pull-request-details header div")[2].textContent,
