@@ -284,11 +284,16 @@ api.mapkey(
   "yF",
   "[GitHub PR/Issues] Copy links: [o]rg, [m]arkdown",
   (key) => {
-    const links = Array.from(document.querySelectorAll("a"))
-      .filter((v) => /\/(pull|issues)\/\d+$/.test(v.href))
-      .sort((a, b) => Number(a.href > b.href))
-      .filter((v, i, arr) => i > 0 && v.href !== arr[i - 1].href) // unique
-      .map((v) => {
+    const links = (() => {
+      const links = Array.from(document.querySelectorAll("a")).filter((v) =>
+        /\/(pull|issues)\/\d+$/.test(v.href)
+      );
+      const linkMap = new Map();
+      for (const l of links) {
+        // only use first link of same hrefs
+        if (!linkMap.get(l.href)) linkMap.set(l.href, l);
+      }
+      return Array.from(linkMap.values()).map((v) => {
         const { issueNo, repoName } = parseURLGithub(v.href);
         switch (key) {
           case "m":
@@ -297,6 +302,7 @@ api.mapkey(
             return `${repoName} [[${v.href}][#${issueNo}]] ${v.textContent}`;
         }
       });
+    })();
     api.Clipboard.write(links.join("\n"));
   },
   { domain: /github\.com\/([^\/]+\/.*\/)*(pulls|issues)\// }
