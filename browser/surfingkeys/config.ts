@@ -161,9 +161,10 @@ api.mapkey(
 :added_at: <${date}>
 :bought_at:
 :read_at:
-:store: amazon
+:store_name: amazon
+:store_url: ${url}
 :ebook: t
-:url: ${url}
+:ebook_url:
 :END:
 `);
         break;
@@ -200,9 +201,10 @@ api.mapkey(
 :added_at: <${date}>
 :bought_at:
 :read_at:
-:store: oreilly
+:store_name: oreilly
+:store_url: ${url}
 :ebook: t
-:url: ${url}
+:ebook_url:
 :END:
 `);
         break;
