@@ -589,15 +589,24 @@ Version 2019-11-04"
 
 (use-package blamer :ensure t
   :config
-  (defvar my/blamer-enabled t)
-  (defun my/blamer-turnon () (blamer-mode 1))
-  (defun my/blamer-turnoff () (blamer-mode -1))
-  (defun my/setup-blamer-mode()
+  (defvar my/blamer-enabled nil)
+  (defun my/toggle-blamer ()
+	(interactive)
+	(setq my/blamer-enabled (not my/blamer-enabled))
+	(unless my/blamer-enabled
+	  (my/blamer-turnoff)))
+  (defun my/blamer-turnon ()
 	(when my/blamer-enabled
-	  (global-blamer-mode 1)
-	  (add-hook 'evil-insert-state-entry-hook #'my/blamer-turnoff)
-	  (add-hook 'evil-insert-state-exit-hook #'my/blamer-turnon)))
+	  (blamer-mode 1)))
+  (defun my/blamer-turnoff ()
+	(blamer-mode -1))
+  (defun my/setup-blamer-mode()
+	(add-hook 'evil-insert-state-entry-hook #'my/blamer-turnoff)
+	(add-hook 'evil-insert-state-exit-hook #'my/blamer-turnon))
   (my/setup-blamer-mode)
+  :general
+  (:states '(normal visual)
+		   "<localleader>gb" 'my/toggle-blamer)
   )
 
 (use-package gist :ensure t
