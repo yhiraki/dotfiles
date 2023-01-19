@@ -184,10 +184,10 @@ api.mapkey(
         api.Clipboard.write(`[${title}](${url})`);
         break;
       case "o":
-        const price = document
-          .querySelectorAll(".buying-options > div > div")[3]
-          .textContent.replace(",", "")
-          .replace("円", "");
+        const price = (() => {
+          const options = document.querySelectorAll(".buying-options > div");
+          return options[0].childNodes[3]?.textContent.trim().replace(/[円,]/g, "");
+        })();
         const name = document.querySelector("[itemprop=name]").textContent;
         const author = document.querySelector("[itemprop=author]").textContent;
         const isbn = document.querySelector("[itemprop=isbn]").textContent;
