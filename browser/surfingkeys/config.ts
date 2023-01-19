@@ -129,6 +129,88 @@ api.mapkey("yf", "Copy link: [o]rg, [m]arkdown", (key) => {
   }
 });
 
+// yf | Amazon books
+api.mapkey(
+  "yf",
+  "Copy link Amazon: [o]rg, [m]arkdown",
+  (key) => {
+    const { url, title } = parsePageCurent();
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`[${title}](${url})`);
+        break;
+      case "o":
+        const price = (
+          document.getElementById("price") || document.getElementById("kindle-price")
+        )?.textContent
+          .trim()
+          .replace("￥", "")
+          .replace(",", "");
+        const name = document.getElementById("productTitle")?.textContent;
+        const author = Array.from(document.querySelectorAll(".author"))
+          .map((v) => v.textContent.replace(/\s/g, ""))
+          .join(" ");
+        const isbn = document.querySelector("[itemprop=isbn]")?.textContent;
+        const date = new Date().toISOString().slice(0, 10);
+        api.Clipboard.write(`${name}
+:PROPERTIES:
+:price: ${price}
+:name: ${name}
+:author: ${author}
+:isbn: ${isbn}
+:added_at: <${date}>
+:bought_at:
+:read_at:
+:store: amazon
+:ebook: t
+:url: ${url}
+:END:
+`);
+        break;
+    }
+  },
+  { domain: /amazon\.co\.jp/ }
+);
+
+// yf | Oreilly books
+api.mapkey(
+  "yf",
+  "Copy link Oreilly: [o]rg, [m]arkdown",
+  (key) => {
+    const { url, title } = parsePageCurent();
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`[${title}](${url})`);
+        break;
+      case "o":
+        const price = document
+          .querySelectorAll(".buying-options > div > div")[3]
+          .textContent.replace(",", "")
+          .replace("円", "");
+        const name = document.querySelector("[itemprop=name]").textContent;
+        const author = document.querySelector("[itemprop=author]").textContent;
+        const isbn = document.querySelector("[itemprop=isbn]").textContent;
+        const date = new Date().toISOString().slice(0, 10);
+        api.Clipboard.write(`${name}
+:PROPERTIES:
+:price: ${price}
+:name: ${name}
+:author: ${author}
+:isbn: ${isbn}
+:added_at: <${date}>
+:bought_at:
+:read_at:
+:store: oreilly
+:ebook: t
+:url: ${url}
+:END:
+`);
+        break;
+    }
+  },
+  { domain: /oreilly\.co\.jp\/books\/\d+/ }
+);
+
 const parsePageBitbucket = () => {
   return {
     issueTitle: document.querySelectorAll("#pull-request-details header div")[2].textContent,
