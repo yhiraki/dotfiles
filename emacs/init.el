@@ -2232,10 +2232,17 @@ Version 2019-11-04"
 	(save-excursion
 	  (replace-string "\u3000" " " nil begin end)))
 
+  (defun my/whitespace-zerowidth-cleanup-region (begin end)
+	"remove zero space width"
+	(interactive "r")
+	(save-excursion
+	  (replace-string "\u200B" " " nil begin end)))
+
   (defun my/whitespace-cleanup ()
 	"Whitespace cleanup inclues zenkaku space"
 	(interactive)
 	(my/whitespace-zenkaku-to-hankaku-buffer)
+	(my/whitespace-zerowidth-cleanup-region (point-min) (point-max))
 	(whitespace-cleanup)
 	)
 
