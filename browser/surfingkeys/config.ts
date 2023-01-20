@@ -253,6 +253,46 @@ api.mapkey(
   { domain: /www\.lambdanote\.com\/products/ }
 );
 
+// yf | Gihyo books
+api.mapkey(
+  "yf",
+  "Copy link Gihyo: [o]rg, [m]arkdown",
+  (key) => {
+    const { url, title } = parsePageCurent();
+    switch (key) {
+      case "m":
+        api.Clipboard.write(`[${title}](${url})`);
+        break;
+      case "o":
+        const price = document
+          .querySelector(".buy")
+          .firstChild.textContent.trim()
+          .replace(/[円,]/g, "");
+        const name = document.getElementById("bookTitle").textContent;
+        const author = document.querySelector("[itemprop=author]").textContent.replace(/　著$/, "");
+        const isbn = '';
+        const date = new Date().toISOString().slice(0, 10);
+        api.Clipboard.write(`${name}
+:PROPERTIES:
+:price: ${price}
+:name: ${name}
+:author: ${author}
+:isbn: ${isbn}
+:added_at: <${date}>
+:bought_at:
+:read_at:
+:store_name: gihyo
+:store_url: ${url}
+:ebook: t
+:ebook_url:
+:END:
+`);
+        break;
+    }
+  },
+  { domain: /gihyo\.jp\/dp\/ebook\// }
+);
+
 const parsePageBitbucket = () => {
   return {
     issueTitle: document.querySelectorAll("#pull-request-details header div")[2].textContent,
