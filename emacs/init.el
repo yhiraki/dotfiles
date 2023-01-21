@@ -112,6 +112,19 @@ Version 2019-11-04"
 	 (mapconcat #'file-name-as-directory dirs "")
 	 file)))
 
+(defun my/up-directory (filename)
+  "A directory up for FILENAME."
+  (replace-regexp-in-string "[^/]+/?$" "" filename))
+
+(defun my/find-up-directory (filename basedir)
+  "Find a FILENAME in upper level directories from BASEDIR."
+  (let ((dir basedir)
+		(file (f-join basedir filename)))
+	(while (and (not (string= "/" dir))
+				(not (file-exists-p file)))
+	  (setq dir (my/up-directory dir)))
+	(if (file-exists-p file) file "")))
+
 (use-package straight :no-require
   :config
   (defvar bootstrap-version)
