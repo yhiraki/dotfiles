@@ -999,6 +999,8 @@ Version 2019-11-04"
       (:compile-only . "flake8 %s"))
     :override t)
 
+  (quickrun-set-default "typescript" "typescript/deno")
+
   (defadvice quickrun (before quickrun-before-save ())
 	"Save buffer before quickrun."
 	(save-buffer))
