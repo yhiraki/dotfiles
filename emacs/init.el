@@ -1778,7 +1778,10 @@ Version 2019-11-04"
 		("j" . org-agenda-next-item)
 		("k" . org-agenda-previous-item)
 		("t" . my/org-agenda-todo-next)
-		))
+		)
+
+  (use-package org-collector)
+  )
 
 (use-package electric
   :hook (python-mode . electric-indent-mode)
