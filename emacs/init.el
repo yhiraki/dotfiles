@@ -1377,7 +1377,7 @@ Version 2019-11-04"
 	(org-roam-completion-everywhere t)
 	(org-roam-db-update-on-save t)
 	(org-roam-directory (my/path-join org-directory "roam"))
-	(org-roam-node-display-template "${title:*} ${tags:50}")
+	(org-roam-node-display-template "${title:*} ${tags:10}")
 	(org-roam-dailies-capture-templates
 	 `(("d" "default" entry
 		"* %?"
@@ -1393,6 +1393,7 @@ Version 2019-11-04"
 		  ("C-c n i" . org-roam-node-insert)
 		  ("C-c n l" . org-roam-buffer-toggle)
 		  ("C-c n o" . org-id-get-create)
+		  ("C-c n t" . org-roam-tag-add)
 		  ("C-M-i" . completion-at-point))
 	:general
 	(:states '(normal visual)
