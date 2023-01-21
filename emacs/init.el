@@ -112,18 +112,17 @@ Version 2019-11-04"
 	 (mapconcat #'file-name-as-directory dirs "")
 	 file)))
 
-(defun my/up-directory (filename)
-  "A directory up for FILENAME."
-  (replace-regexp-in-string "[^/]+/?$" "" filename))
-
 (defun my/find-up-directory (filename basedir)
   "Find a FILENAME in upper level directories from BASEDIR."
   (let ((dir basedir)
-		(file (f-join basedir filename)))
-	(while (and (not (string= "/" dir))
-				(not (file-exists-p file)))
-	  (setq dir (my/up-directory dir)))
-	(if (file-exists-p file) file "")))
+		(file nil)
+		(found-file nil))
+	(while dir
+	  (setq file (f-join dir filename))
+	  (when (and (not found-file) (file-exists-p file))
+		(setq found-file file))
+	  (setq dir (f-dirname dir)))
+	found-file))
 
 (use-package straight :no-require
   :config
@@ -1903,6 +1902,9 @@ Version 2019-11-04"
   :hook
   (typescript-mode
    . (lambda ()
+	   (if (my/find-up-directory "package.json" (buffer-file-name))
+		   (setq-local lsp-enabled-clients '(ts-ls))
+		 (setq-local lsp-enabled-clients '(deno-ls)))
 	   (evil-define-key '(normal visual) 'local
 		 (kbd "<localleader>f") #'prettier-js)))
   :custom
