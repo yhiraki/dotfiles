@@ -1363,6 +1363,8 @@ Version 2019-11-04"
 		(org-clock-out)))
 	)
 
+  (use-package org-collector)
+
   (use-package org-roam :ensure t
 	:after evil
 	:demand t  ; completion-at-point on plain org-mode
@@ -1779,8 +1781,6 @@ Version 2019-11-04"
 		("k" . org-agenda-previous-item)
 		("t" . my/org-agenda-todo-next)
 		)
-
-  (use-package org-collector)
   )
 
 (use-package electric
