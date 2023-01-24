@@ -210,7 +210,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /oreilly\.co\.jp\/books\/\d+/ }
+  { domain: /oreilly\.co\.jp\/\/?books\/\d+/ }
 );
 
 // yf | Lambdanote books
