@@ -147,9 +147,9 @@ api.mapkey(
           .replace("￥", "")
           .replace(",", "");
         const name = document.getElementById("productTitle")?.textContent;
-        const author = Array.from(document.querySelectorAll(".author"))
-          .map((v) => v.textContent.replace(/\s/g, ""))
-          .join(" ");
+        const author = Array.from(document.querySelectorAll(".author .a-link-normal")).map(
+          (v) => v?.textContent
+        );
         const isbn = document.querySelector("[itemprop=isbn]")?.textContent;
         const date = new Date().toISOString().slice(0, 10);
         api.Clipboard.write(`${name}
@@ -269,8 +269,10 @@ api.mapkey(
           .firstChild.textContent.trim()
           .replace(/[円,]/g, "");
         const name = document.getElementById("bookTitle").textContent;
-        const author = document.querySelector("[itemprop=author]").textContent.replace(/　著$/, "");
-        const isbn = '';
+        const author = document
+          .querySelector("[itemprop=author]")
+          .textContent.replace(/\u3000著$/, "");
+        const isbn = "";
         const date = new Date().toISOString().slice(0, 10);
         api.Clipboard.write(`${name}
 :PROPERTIES:
@@ -304,10 +306,12 @@ api.mapkey(
         api.Clipboard.write(`[${title}](${url})`);
         break;
       case "o":
-        const price = document.getElementsByName("cxenseparse:sho-price")[0]?.content
-        const name = document.getElementsByName("cxenseparse:sho-product-name")[0]?.content
-        const author = Array.from(document.getElementsByName("cxenseparse:sho-author")).map(v=>v?.content)
-        const isbn = document.getElementsByName("cxenseparse:sho-isbn")[0]?.content
+        const price = document.getElementsByName("cxenseparse:sho-price")[0]?.content;
+        const name = document.getElementsByName("cxenseparse:sho-product-name")[0]?.content;
+        const author = Array.from(document.getElementsByName("cxenseparse:sho-author")).map(
+          (v) => v?.content
+        );
+        const isbn = document.getElementsByName("cxenseparse:sho-isbn")[0]?.content;
         const date = new Date().toISOString().slice(0, 10);
         api.Clipboard.write(`${name}
 :PROPERTIES:
