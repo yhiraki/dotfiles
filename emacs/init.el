@@ -2432,9 +2432,6 @@ Version 2019-11-04"
   :bind
   ("C-o" . 'embark-act))
 
-(use-package topsy :ensure t
-  :hook (prog-mode . topsy-mode))
-
 (use-package key-binding :no-require
   :config
   (global-set-key (kbd "C-\\") nil)
