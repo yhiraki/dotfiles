@@ -1463,7 +1463,7 @@ Version 2019-11-04"
 	   ("s" "Start Task" entry (file+headline "todos.org" "Todos") "** %?\n%T" :clock-in t :clock-resume t)
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
-	   ("d" "diary" entry (file+headline my/org-capture-file-today "Journal") "** %?")
+	   ("j" "Journal" entry (file+datetree "journal.org") "** %U %?" :kill-buffer t)
 	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?")
 	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** STARTED %?\n%c" :clock-in t :clock-resume t)
 	   ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** MEETING %a\n%T\n%?")
