@@ -813,13 +813,11 @@ Version 2019-11-04"
   )
 
 (use-package lsp-pyright :ensure t
-  :custom
-  (lsp-pyright-python-executable-cmd "python3")
-
   :hook
   (python-mode
    . (lambda ()
 	   (require 'lsp-pyright)
+	   (setq lsp-pyright-python-executable-cmd (my/find-venv-python-or-global))
 	   (evil-local-set-key 'normal (kbd "<localleader>f") #'python-black-buffer)
 	   (evil-local-set-key 'visual (kbd "<localleader>f") #'python-black-region)
 	   (lsp)))
@@ -994,7 +992,7 @@ Version 2019-11-04"
   (quickrun-set-default "c++" "c++17/g++")
 
   (quickrun-add-command "python"
-    '((:command . "python3")
+    '((:command . my/find-venv-python-or-global)
       (:compile-only . "flake8 %s"))
     :override t)
 
@@ -1670,13 +1668,11 @@ Version 2019-11-04"
 	  )
 
 	(use-package ob-python
-	  :after auto-virtualenvwrapper
+	  :after ob
 	  :hook
 	  (org-mode
 	   . (lambda ()
-		   (let ((path (auto-virtualenvwrapper-find-virtualenv-path)))
-			 (when path
-			   (setq-local org-babel-python-command (concat path "bin/python"))))))
+		   (setq-local org-babel-python-command (my/find-venv-python-or-global))))
 	  :custom
 	  (org-babel-python-command "python3")
 	  (org-babel-default-header-args:python '((:cache . "yes") (:results . "output")))
@@ -1800,9 +1796,11 @@ Version 2019-11-04"
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
 
   :config
-  (use-package auto-virtualenvwrapper :ensure t
-	:commands auto-virtualenvwrapper-find-virtualenv-path
-	:hook (python-mode . auto-virtualenvwrapper-activate))
+  (defun my/find-venv-python-or-global ()
+	(let ((venv (my/find-up-directory ".venv" ".")))
+	  (if venv
+		  (format "%s/bin/python" venv)
+		"python3")))
 
   (use-package py-yapf :ensure t
 	:commands (py-yapf-buffer)
