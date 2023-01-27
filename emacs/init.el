@@ -1751,7 +1751,6 @@ Version 2019-11-04"
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
   (org-agenda-files `(,org-directory))
   (org-agenda-span 'day)
-  (org-agenda-sticky t)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
 
   :config
