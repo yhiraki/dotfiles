@@ -127,6 +127,9 @@ command -v brew >/dev/null && {
   HOMEBREW_NO_AUTO_UPDATE=1
 }
 
+DENO_INSTALL="$HOME/.deno"
+PATH="$DENO_INSTALL/bin:$PATH"
+
 TERM=xterm-256color
 
 LANG=ja_JP.UTF-8
