@@ -998,6 +998,14 @@ Version 2019-11-04"
 
   (quickrun-set-default "typescript" "typescript/deno")
 
+  (quickrun-add-command "typescript/deno-test"
+	'((:command . "deno")
+	  (:exec . "%c test -A %s")
+	  (:compile-only . "%c compile %s")
+	  (:compile-conf . ((:compilation-mode . nil) (:mode . js-mode)))
+	  (:remove  . ("%n.js"))
+	  (:description . "Test TypeScript script with deno")))
+
   (defadvice quickrun (before quickrun-before-save ())
 	"Save buffer before quickrun."
 	(save-buffer))
@@ -1899,10 +1907,15 @@ Version 2019-11-04"
   (typescript-mode
    . (lambda ()
 	   (if (my/find-up-directory "package.json" (buffer-file-name))
-		   (setq-local lsp-enabled-clients '(ts-ls))
-		 (setq-local lsp-enabled-clients '(deno-ls)))
-	   (evil-define-key '(normal visual) 'local
-		 (kbd "<localleader>f") #'prettier-js)))
+		   (progn
+			 (setq-local lsp-enabled-clients '(ts-ls))
+			 (evil-define-key '(normal visual) 'local
+			   (kbd "<localleader>f") #'prettier-js))
+		 (progn
+		   (when (string-match "_test\\.ts$" (buffer-file-name))
+			 (setq-local quickrun-option-cmdkey "typescript/deno-test"))
+		   (setq-local lsp-enabled-clients '(deno-ls)))
+	   )))
   :custom
   (typescript-indent-level 2)
   :mode
