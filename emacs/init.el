@@ -1188,7 +1188,7 @@ Version 2019-11-04"
   :custom
   (org-directory "~/org/")
   (org-archive-location (concat (my/path-join org-directory "archived" "%s") "::"))
-  (org-id-link-to-org-use-id t)
+  ;; (org-id-link-to-org-use-id t)  ; org-roam-node-add する時にidが作成されてしまうので無効化
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
@@ -2069,6 +2069,7 @@ Version 2019-11-04"
 	(kbd "<leader>o a") 'org-agenda
 	(kbd "<leader>o b") 'org-switchb
 	(kbd "<leader>o c") 'org-capture
+	(kbd "<leader>o i") 'org-id-get-create
 	(kbd "<leader>o j") 'org-clock-goto
 	(kbd "<leader>o l") 'org-store-link
 	(kbd "<leader>o s") 'org-save-all-org-buffers
