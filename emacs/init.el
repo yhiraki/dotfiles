@@ -1359,7 +1359,8 @@ Version 2019-11-04"
 	(defun my:org-clock-in-if-starting ()
 	  "Clock in when the task is marked STARTED."
 	  (when (and (string= org-state "STARTED")
-				 (not (string= org-last-state org-state)))
+				 (not (string= org-last-state org-state))
+				 (not (org-clocking-p)))
 		(org-clock-in)))
 
 	(defun my:org-clock-out-if-waiting ()
