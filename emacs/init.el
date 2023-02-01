@@ -1160,7 +1160,7 @@ Version 2019-11-04"
   :diminish org-indent-mode
 
   :hook
-  (org-after-todo-statistics . org-summary-todo)
+  (org-after-todo-statistics . my/org-summary-todo)
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
   (org-mode . prettify-symbols-mode)
@@ -1195,9 +1195,10 @@ Version 2019-11-04"
   (org-src-tab-acts-natively nil)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
+   '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d)")
+	 (sequence "PROJECT(p)" "|")
 	 (sequence "WAITING(w)" "STARTED" "|")
-	 (sequence "|" "SOMEDAY(S)")
+	 (sequence "SOMEDAY(S)" "|")
 	 (sequence "|" "CANCELLED(c)")
 	 (sequence "|" "MEETING(m)")))
   (org-log-done 'time) ; DONEの時刻を記録
@@ -1206,10 +1207,10 @@ Version 2019-11-04"
 
   :after evil
   :config
-  (defun org-summary-todo (n-done n-not-done)
-	"Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (defun my/org-summary-todo (n-done n-not-done)
+	"Switch entry to DONE when all subentries are done, to PROJECT otherwise."
 	(let (org-log-done org-log-states)   ; turn off logging
-	  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+	  (org-todo (if (= n-not-done 0) "DONE" "PROJECT"))))
 
   ;; https://emacs.stackexchange.com/questions/19843/how-to-automatically-adjust-an-org-task-state-with-its-children-checkboxes
   (defun my/org-checkbox-todo ()
@@ -1298,15 +1299,17 @@ Version 2019-11-04"
 
 	:custom
 	(org-todo-keyword-faces
-	 '(("TODO" :foreground "red" :weight bold)
-	   ("STARTED" :foreground "orange" :weight bold)
-	   ("DOING" :foreground "orange" :weight bold)
-	   ("WAITING" :foreground "light pink" :weight bold)
-	   ("SOMEDAY" :foreground "dark gray")
-	   ("DONE" :foreground "forest green" :weight bold)
+	 '(("TODO"      :foreground "red"          :weight bold)
+	   ("NEXT"      :foreground "green"          :weight bold)
+	   ("PROJECT"   :foreground "orange"       :weight bold)
+	   ("STARTED"   :foreground "orange"       :weight bold)
+	   ("DOING"     :foreground "orange"       :weight bold)
+	   ("WAITING"   :foreground "light pink"   :weight bold)
+	   ("SOMEDAY"   :foreground "dark gray")
+	   ("DONE"      :foreground "forest green" :weight bold)
 	   ("CANCELLED" :foreground "forest green" :weight bold)
-	   ("AGENDA" :foreground "sky blue" :weight bold)
-	   ("MEETING" :foreground "sky blue" :weight bold)))
+	   ("AGENDA"    :foreground "sky blue"     :weight bold)
+	   ("MEETING"   :foreground "sky blue"     :weight bold)))
 	;; Only use the first 4 styles and do not cycle.
 	(org-cycle-level-faces nil)
 	(org-n-level-faces 4)
@@ -1760,6 +1763,15 @@ Version 2019-11-04"
   (org-agenda-files `(,org-directory))
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
+  (org-agenda-custom-commands
+   '(("g" . "GTD")
+	 ("gt" todo "TODO")
+	 ("gp" todo "PROJECT")
+	 ("gn" todo "NEXT")
+	 ("gw" todo "WAITING")
+	 ("gs" todo "SOMEDAY")
+	 ("gd" todo "DONE")
+	 ))
 
   :config
   (defun my/org-agenda-todo-next ()
