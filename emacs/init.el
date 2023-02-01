@@ -1603,9 +1603,6 @@ Version 2019-11-04"
 	(org-hide-emphasis-markers t)
 	)
 
-  (use-package org-sticky-header :ensure t
-	:hook (org-mode . org-sticky-header-mode))
-
   (use-package ob
 	:after org
 	:hook
