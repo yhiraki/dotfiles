@@ -1467,13 +1467,21 @@ Version 2019-11-04"
 	(org-capture-templates
 	 `(
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
-	   ("b" "Book" table-line (file+headline "books.org" "wish list") "|Name|Price|eBook?|Created|\n|%?|||%(format-time-string \"%Y-%m-%d\")|" :table-line-pos "II-1")
-	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?\nSCHEDULED: %T\n")
+	   ("b" "Book" table-line (file+headline "books.org" "Books") "** %?")
+	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
+:LOGBOOK:
+- created at %U
+:END:
+")
 	   ("s" "Start Task" entry (file+headline "todos.org" "Todos") "** %?\n%T" :clock-in t :clock-resume t)
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
 	   ("j" "Journal" entry (file+datetree "journal.org") "** %U %?" :kill-buffer t)
-	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?")
+	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?
+:LOGBOOK:
+- created at %U
+:END:
+")
 	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** STARTED %?\n%c" :clock-in t :clock-resume t)
 	   ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** MEETING %a\n%T\n%?")
 	   ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
