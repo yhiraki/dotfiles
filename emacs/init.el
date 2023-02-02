@@ -1362,11 +1362,11 @@ Version 2019-11-04"
 		(org-clock-in)))
 
 	(defun my:org-clock-out-if-waiting ()
-	  "Clock in when the task is marked STARTED."
-	  (when (and (or
-				  ;; (string= org-state "TODO")
-				  (string= org-state "WAITING"))
-				 (not (string= org-last-state org-state)))
+	  "Clock out when the task is not marked STARTED."
+	  (when (and
+			 (and (not (string= org-state "WAITING"))
+				  (string= (org-clock--mode-line-heading) org-clock-heading))
+			 (not (string= org-last-state org-state)))
 		(org-clock-out)))
 	)
 
