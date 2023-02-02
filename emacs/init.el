@@ -471,21 +471,19 @@ Version 2019-11-04"
 (use-package dired
   :hook
   (dired-mode . dired-hide-details-mode)
-  (dired-mode
-   . (lambda ()
-	   "prevent keymap SPC always override by dired"
-	   (evil-define-key '(normal visual) dired-mode-map
-		 (kbd "SPC") #'evil-send-leader)))
 
-  :general
-  (:keymaps 'dired-mode-map
-		   :states '(normal visual)
-		   "C-c C-o" #'my/open-in-external-app
-		   "C-j" #'dired-next-dirline
-		   "C-k" #'dired-prev-dirline
-		   "h" #'dired-subtree-remove
-		   "l" #'dired-subtree-insert
-		   )
+  :bind
+  (:map dired-mode-map
+		("C-c C-o" . my/open-in-external-app)
+		("C-j" . dired-next-dirline)
+		("C-k" . dired-prev-dirline)
+		("j" . dired-next-line)
+		("k" . dired-previous-line)
+		("h" . dired-subtree-remove)
+		("l" . dired-subtree-insert)
+		("i" . wdired-change-to-wdired-mode)
+		;; ("SPC" . (kbd "C-c SPC"))
+		)
 
   :config
   (use-package dired-filter :ensure t)
@@ -2103,6 +2101,7 @@ Version 2019-11-04"
   (evil-mode)
 
   (evil-set-initial-state 'vterm-mode 'emacs)
+  (evil-set-initial-state 'dired-mode 'emacs)
 
   (use-package evil-surround :ensure t
 	:after evil
@@ -2115,7 +2114,6 @@ Version 2019-11-04"
 	(evil-collection-init
 	 '(
 	   (package-menu package)
-	   dired
 	   ediff
 	   flycheck
 	   ibuffer
