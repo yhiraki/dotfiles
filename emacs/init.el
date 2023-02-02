@@ -1796,8 +1796,11 @@ Version 2019-11-04"
   :bind
   (:map org-agenda-mode-map
 		(":" . evil-ex)
+		("G" . evil-goto-line)
 		("K" . org-capture)
 		("T" . org-agenda-todo)
+		("g" . nil)
+		("gg" . evil-goto-first-line)
 		("j" . org-agenda-next-item)
 		("k" . org-agenda-previous-item)
 		("t" . my/org-agenda-todo-next)
