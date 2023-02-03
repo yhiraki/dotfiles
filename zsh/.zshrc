@@ -1,10 +1,16 @@
+# Local .zshrc
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
 autoload -Uz add-zsh-hook
 
 # Tmux
 {
   configure_tmux() {
-    ! command -v tmux >/dev/null && return
-    [ -n "$INSIDE_EMACS" ] && return
+    if ! command -v tmux >/dev/null ||
+      [ -n "$INSIDE_EMACS" ] ||
+      [ -n "$TMUX_IGNORE" ]; then
+      return
+    fi
 
     if [[ -n "$TMUX" ]]; then
       function my_refresh_tmux_status() {
@@ -338,9 +344,6 @@ export PATH=$(echo "$PATH" |
   cut -d ' ' -f 2 |
   uniq |
   tr '\n' :)
-
-# Local .zshrc
-[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 command -v zprof >/dev/null &&
   zprof
