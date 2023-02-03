@@ -1364,7 +1364,7 @@ Version 2019-11-04"
 	(defun my:org-clock-out-if-waiting ()
 	  "Clock out when the task is not marked STARTED."
 	  (when (and
-			 (and (not (string= org-state "WAITING"))
+			 (and (not (string= org-state "STARTED"))
 				  (string= (org-clock--mode-line-heading) org-clock-heading))
 			 (not (string= org-last-state org-state)))
 		(org-clock-out)))
