@@ -961,6 +961,7 @@ Version 2019-11-04"
   :commands quickrun
 
   :custom
+  (quickrun-focus-p nil)
   (quickrun-timeout-seconds 30)
 
   :config
@@ -1757,6 +1758,8 @@ Version 2019-11-04"
   :demand t
 
   :custom
+  (org-agenda-window-setup 'current-window)
+  (org-agenda-restore-windows-after-quit nil)
   (org-agenda-current-time-string "← now")
   (org-agenda-time-grid ;; Format is changed from 9.1
    '((daily today require-timed)
@@ -2166,13 +2169,34 @@ Version 2019-11-04"
 	(evil-goggles-mode))
   )
 
-(use-package popwin :ensure t
-  :config
-  (push '("*Error*") popwin:special-display-config)
-  (push '("*Org-Babel Error Output*") popwin:special-display-config)
-  (push '("*quickrun*" :regexp t :position bottom :dedicated t) popwin:special-display-config)
-  (push '("*xref*" :position bottom ) popwin:special-display-config)
-  (popwin-mode)
+(use-package window
+  :custom
+  (display-buffer-alist
+   '(("\\*\\(quickrun\\|Org-Babel Error Output\\|Backtrace\\|xref\\)\\*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . bottom)
+	  (window-height . 10))
+	 ("\\*Agenda Commands\\*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . top))
+	 ("\\*Org Agenda\\*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . top)
+	  (window-height . 0.5))
+	 ("\\*Org Select\\*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . bottom)
+	  )
+	 ("CAPTURE-.*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . bottom)
+	  (window-height . 0.5)
+	  )))
   )
 
 (use-package all-the-icons :ensure t)
