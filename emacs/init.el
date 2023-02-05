@@ -1408,7 +1408,7 @@ Version 2019-11-04"
 	(:states '(normal visual)
 			 ;; "<leader> n" #'org-roam-dailies-map
 			 "<leader> nS" #'org-roam-db-sync
-			 "<leader> nb" #'org-roam-buffer
+			 "<leader> nb" #'org-roam-buffer-display-dedicated
 			 "<leader> n/" #'org-roam-node-find
 			 "<leader> nF" #'my/org-roam-fix-exported-markdown)
 	:config
