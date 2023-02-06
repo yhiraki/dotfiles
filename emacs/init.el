@@ -700,7 +700,7 @@ Version 2019-11-04"
 
 (use-package pangu-spacing :ensure t
   :hook
-  ((text-mode-hook twittering-edit-mode) . pangu-spacing-mode)
+  ((text-mode-hook) . pangu-spacing-mode)
 
   :custom
   ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
@@ -714,20 +714,6 @@ Version 2019-11-04"
 
   ;; 見た目ではなくて実際にスペースを入れる
   ;; (pangu-spacing-real-insert-separtor t)
-  )
-
-(use-package twittering-mode :ensure t
-  :commands (twit)
-
-  :custom
-  ;; master-password を設定する際に注意すること
-  ;; https://blog.web-apps.tech/emacs-mac-twittering-mode-every-asked-pin/
-  (twittering-use-master-password t)
-
-  :config
-  ;; https://github.com/hayamiz/twittering-mode/issues/154
-  (when (>= 27 emacs-major-version)
-    (defalias 'epa--decode-coding-string 'decode-coding-string))
   )
 
 (use-package lsp-mode :ensure t
@@ -2100,10 +2086,6 @@ Version 2019-11-04"
 	(kbd "<leader>o l") 'org-store-link
 	(kbd "<leader>o s") 'org-save-all-org-buffers
 	(kbd "<leader>s") 'magit-status
-	(kbd "<leader>t h") 'twit
-	(kbd "<leader>t m") 'twittering-mentions-timeline
-	(kbd "<leader>t r") 'rocket-chat-edit
-	(kbd "<leader>t u") 'twittering-update-status-interactive
 	(kbd "<leader>z e") 'eval-buffer
 	(kbd "<leader>z k") 'save-buffers-kill-emacs
 	(kbd "<leader>z r") 'restart-emacs
