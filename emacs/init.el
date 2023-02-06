@@ -2120,6 +2120,10 @@ Version 2019-11-04"
 	   ))
 	)
 
+  (use-package evil-surround :ensure t
+	:after evil
+	:config (global-evil-surround-mode))
+
   (use-package evil-commentary :ensure t
 	:diminish evil-commentary-mode
 	:after evil
