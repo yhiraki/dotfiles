@@ -1181,7 +1181,6 @@ Version 2019-11-04"
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d)")
-	 (sequence "PROJECT(p)" "|")
 	 (sequence "WAITING(w)" "STARTED" "|")
 	 (sequence "SOMEDAY(S)" "|")
 	 (sequence "|" "CANCELLED(c)")
@@ -1193,9 +1192,9 @@ Version 2019-11-04"
   :after evil
   :config
   (defun my/org-summary-todo (n-done n-not-done)
-	"Switch entry to DONE when all subentries are done, to PROJECT otherwise."
+	"Switch entry to DONE when all subentries are done, to TODO otherwise."
 	(let (org-log-done org-log-states)   ; turn off logging
-	  (org-todo (if (= n-not-done 0) "DONE" "PROJECT"))))
+	  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
   ;; https://emacs.stackexchange.com/questions/19843/how-to-automatically-adjust-an-org-task-state-with-its-children-checkboxes
   (defun my/org-checkbox-todo ()
@@ -1286,7 +1285,6 @@ Version 2019-11-04"
 	(org-todo-keyword-faces
 	 '(("TODO"      :foreground "red"          :weight bold)
 	   ("NEXT"      :foreground "green"          :weight bold)
-	   ("PROJECT"   :foreground "orange"       :weight bold)
 	   ("STARTED"   :foreground "orange"       :weight bold)
 	   ("DOING"     :foreground "orange"       :weight bold)
 	   ("WAITING"   :foreground "light pink"   :weight bold)
@@ -1743,6 +1741,13 @@ Version 2019-11-04"
   :hook (find-file . my/add-org-roam-to-agenda)
   :demand t
 
+  :init
+  (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
+  (defvar my/org-agenda-entry-is-project
+	'(org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp my/org-sub-todo-progress-regexp)))
+  (defvar my/org-agenda-entry-is-not-project
+	'(org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp)))
+
   :custom
   (org-agenda-window-setup 'current-window)
   (org-agenda-restore-windows-after-quit t)
@@ -1757,20 +1762,26 @@ Version 2019-11-04"
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
   (org-agenda-custom-commands
-   '(("t" "Tasks"
+   `(("t" "Tasks"
 	  ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))))
-	   (todo "STARTED")
-	   (todo "NEXT")
-	   (todo "WAITING")
+	   (todo "STARTED" (,my/org-agenda-entry-is-not-project
+						(org-agenda-overriding-header "On progress: ")))
+	   (todo "NEXT" (,my/org-agenda-entry-is-not-project
+					 (org-agenda-overriding-header "Next Actions: ")))
+	   (todo "WAITING" (,my/org-agenda-entry-is-not-project
+						(org-agenda-overriding-header "Waitings: ")))
+	   (todo 'not-done (,my/org-agenda-entry-is-project
+						(org-agenda-overriding-header "Projects: ")))
 	   ))
-	 ("r" . "GTD review")
-	 ("rt" todo "TODO")
-	 ("rp" todo "PROJECT")
-	 ("rn" todo "NEXT|STARTED")
-	 ("rw" todo "WAITING")
-	 ("rs" todo "SOMEDAY")
-	 ("rd" todo "DONE")
-	 ("rA" "Done tasks to be archived"
+	 ("r" "GTD review"
+	  ((todo "TODO" (,my/org-agenda-entry-is-not-project
+					 (org-agenda-overriding-header "Todos: ")))
+	   (todo 'not-done (,my/org-agenda-entry-is-project
+						(org-agenda-overriding-header "Projects: ")))
+	   (todo "SOMEDAY" (,my/org-agenda-entry-is-not-project
+						(org-agenda-overriding-header "Someday: ")))
+	   ))
+	 ("A" "Done tasks to be archived"
 	  ((tags "CLOSED<=\"<-1w>\"" ((org-agenda-files '("inbox.org" "todos.org")))))
 	  )))
 
