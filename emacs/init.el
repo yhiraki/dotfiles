@@ -2029,13 +2029,7 @@ Version 2019-11-04"
   (:map evil-insert-state-map
 		("C-n" . 'completion-at-point)
 		("C-p" . 'completion-at-point)
-		("C-u" . (lambda ()
-				   (interactive)
-				   (evil-delete (point-at-bol) (point))))
 		)
-
-  :init
-  (setq evil-want-keybinding nil)
 
   :custom
   (evil-ex-search-vim-style-regexp t)
@@ -2043,6 +2037,7 @@ Version 2019-11-04"
   (evil-undo-system 'undo-redo)
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
+  (evil-want-C-u-delete t)
   (evil-want-keybinding nil)
 
   :config
