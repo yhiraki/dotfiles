@@ -1193,8 +1193,7 @@ Version 2019-11-04"
   :config
   (defun my/org-summary-todo (n-done n-not-done)
 	"Switch entry to DONE when all subentries are done, to TODO otherwise."
-	(let (org-log-done org-log-states)   ; turn off logging
-	  (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+	  (org-todo (if (= n-not-done 0) "DONE" "TODO")))
 
   ;; https://emacs.stackexchange.com/questions/19843/how-to-automatically-adjust-an-org-task-state-with-its-children-checkboxes
   (defun my/org-checkbox-todo ()
@@ -1782,8 +1781,9 @@ SCHEDULED: %t
 						(org-agenda-overriding-header "Someday: ")))
 	   ))
 	 ("A" "Done tasks to be archived"
-	  ((tags "CLOSED<=\"<-1w>\"" ((org-agenda-files '("inbox.org" "todos.org")))))
-	  )))
+	  ((tags "CLOSED<=\"<-1w>\"+LEVEL=2"
+			 ((org-agenda-files '("inbox.org" "todos.org"))))))
+	 ))
 
   :config
   (defun my/org-agenda-todo-next ()
