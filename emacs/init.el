@@ -1745,7 +1745,7 @@ Version 2019-11-04"
 
   :custom
   (org-agenda-window-setup 'current-window)
-  (org-agenda-restore-windows-after-quit nil)
+  (org-agenda-restore-windows-after-quit t)
   (org-agenda-current-time-string "← now")
   (org-agenda-time-grid ;; Format is changed from 9.1
    '((daily today require-timed)
@@ -2175,20 +2175,23 @@ Version 2019-11-04"
 	  (reusable-frames)
 	  (side . bottom)
 	  (window-height . 0.5))
-	 ("magit: "
-	  (display-buffer-reuse-window display-buffer-in-side-window)
-	  (reusable-frames)
-	  (side . bottom))
 
-	 ;; Sidebar top
+	 ;; Org agenda at top
 	 ("\\*Agenda Commands\\*"
-	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (display-buffer-reuse-window display-buffer-in-direction)
 	  (reusable-frames)
-	  (side . top))
+	  (direction . top))
 	 ("\\*Org Agenda\\*"
-	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (display-buffer-reuse-window display-buffer-in-direction)
 	  (reusable-frames)
-	  (side . top)
+	  (direction . top)
+	  (window-height . 0.5))
+
+	 ;; magit at bottom
+	 ("magit: "
+	  (display-buffer-reuse-window display-buffer-in-direction)
+	  (reusable-frames)
+	  (direction . bottom)
 	  (window-height . 0.5))
 	 ))
   )
