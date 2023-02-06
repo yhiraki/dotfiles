@@ -1771,16 +1771,21 @@ Version 2019-11-04"
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
   (org-agenda-custom-commands
-   '(("t" . "GTD")
-	 ("tt" todo "TODO")
-	 ("tp" todo "PROJECT")
-	 ("tn" todo "NEXT|STARTED")
-	 ("tw" todo "WAITING")
-	 ("ts" todo "SOMEDAY")
-	 ("td" todo "DONE")
-	 ("tA" "Done tasks to be archived"
-	  ((tags-todo "+CLOSED<=\"<-1w>\"/DONE|MEETING|CANCELLED")
-	   (org-agenda-files '("inbox.org" "todos.org")))
+   '(("t" "Tasks"
+	  ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))))
+	   (todo "STARTED")
+	   (todo "NEXT")
+	   (todo "WAITING")
+	   ))
+	 ("r" . "GTD review")
+	 ("rt" todo "TODO")
+	 ("rp" todo "PROJECT")
+	 ("rn" todo "NEXT|STARTED")
+	 ("rw" todo "WAITING")
+	 ("rs" todo "SOMEDAY")
+	 ("rd" todo "DONE")
+	 ("rA" "Done tasks to be archived"
+	  ((tags "CLOSED<=\"<-1w>\"" ((org-agenda-files '("inbox.org" "todos.org")))))
 	  )))
 
   :config
