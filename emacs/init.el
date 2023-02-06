@@ -2036,12 +2036,13 @@ Version 2019-11-04"
   (evil-ex-search-vim-style-regexp t)
   (evil-toggle-key "C-M-z")
   (evil-undo-system 'undo-redo)
-  (evil-want-fine-undo t)
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
   (evil-want-keybinding nil)
 
   :config
+  (evil-select-search-module 'evil-search-module 'evil-search)
+
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
   (evil-add-command-properties #'find-file :jump t)
