@@ -2172,11 +2172,28 @@ Version 2019-11-04"
 (use-package window
   :custom
   (display-buffer-alist
-   '(("\\*\\(quickrun\\|Org-Babel Error Output\\|Backtrace\\|xref\\)\\*"
+   '(
+	 ;; Sidebar bottom
+	 ("\\*\\(quickrun\\|Org-Babel Error Output\\|Backtrace\\|xref\\)\\*"
 	  (display-buffer-reuse-window display-buffer-in-side-window)
 	  (reusable-frames)
 	  (side . bottom)
 	  (window-height . 10))
+	 ("\\*Org Select\\*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . bottom))
+	 ("CAPTURE-.*"
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . bottom)
+	  (window-height . 0.5))
+	 ("magit: "
+	  (display-buffer-reuse-window display-buffer-in-side-window)
+	  (reusable-frames)
+	  (side . bottom))
+
+	 ;; Sidebar top
 	 ("\\*Agenda Commands\\*"
 	  (display-buffer-reuse-window display-buffer-in-side-window)
 	  (reusable-frames)
@@ -2186,17 +2203,7 @@ Version 2019-11-04"
 	  (reusable-frames)
 	  (side . top)
 	  (window-height . 0.5))
-	 ("\\*Org Select\\*"
-	  (display-buffer-reuse-window display-buffer-in-side-window)
-	  (reusable-frames)
-	  (side . bottom)
-	  )
-	 ("CAPTURE-.*"
-	  (display-buffer-reuse-window display-buffer-in-side-window)
-	  (reusable-frames)
-	  (side . bottom)
-	  (window-height . 0.5)
-	  )))
+	 ))
   )
 
 (use-package all-the-icons :ensure t)
