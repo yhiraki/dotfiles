@@ -1457,8 +1457,8 @@ Version 2019-11-04"
 :LOGBOOK:
 - created at %U
 :END:
+:SCHEDULED: %t
 ")
-	   ("s" "Start Task" entry (file+headline "todos.org" "Todos") "** %?\n%T" :clock-in t :clock-resume t)
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
 	   ("j" "Journal" entry (file+datetree "journal.org") "** %U %?" :kill-buffer t)
@@ -1467,7 +1467,7 @@ Version 2019-11-04"
 - created at %U
 :END:
 ")
-	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** STARTED %?\n%c" :clock-in t :clock-resume t)
+	   ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** DONE %?\nCLOSED: %U" :clock-in t :clock-resume t)
 	   ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** MEETING %a\n%T\n%?")
 	   ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
