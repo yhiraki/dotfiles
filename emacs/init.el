@@ -1452,10 +1452,10 @@ Version 2019-11-04"
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
 	   ("b" "Book" table-line (file+headline "books.org" "Books") "** %?")
 	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
+SCHEDULED: %t
 :LOGBOOK:
 - created at %U
 :END:
-:SCHEDULED: %t
 ")
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
@@ -2181,11 +2181,6 @@ Version 2019-11-04"
 	  (display-buffer-reuse-window display-buffer-in-side-window)
 	  (reusable-frames)
 	  (side . bottom))
-	 ("CAPTURE-.*"
-	  (display-buffer-reuse-window display-buffer-in-side-window)
-	  (reusable-frames)
-	  (side . bottom)
-	  (window-height . 0.5))
 
 	 ;; Org agenda at top
 	 ("\\*Agenda Commands\\*"
@@ -2198,8 +2193,13 @@ Version 2019-11-04"
 	  (direction . top)
 	  (window-height . 0.5))
 
-	 ;; magit at bottom
+	 ;; at bottom
 	 ("magit: "
+	  (display-buffer-reuse-window display-buffer-in-direction)
+	  (reusable-frames)
+	  (direction . bottom)
+	  (window-height . 0.5))
+	 ("CAPTURE-.*"
 	  (display-buffer-reuse-window display-buffer-in-direction)
 	  (reusable-frames)
 	  (direction . bottom)
