@@ -1773,7 +1773,10 @@ SCHEDULED: %t
 						(org-agenda-overriding-header "Projects: ")))
 	   ))
 	 ("r" "GTD review"
-	  ((todo "TODO" (,my/org-agenda-entry-is-not-project
+	  ((tags-todo "TAGS=\"\"+LEVEL=2"
+				  ((org-agenda-files '("inbox.org" "todos.org"))
+				   (org-agenda-overriding-header "Untagged TODOs")))
+	   (todo "TODO" (,my/org-agenda-entry-is-not-project
 					 (org-agenda-overriding-header "Todos: ")))
 	   (todo 'not-done (,my/org-agenda-entry-is-project
 						(org-agenda-overriding-header "Projects: ")))
