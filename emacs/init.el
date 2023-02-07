@@ -1805,13 +1805,17 @@ SCHEDULED: %t
   (:map org-agenda-mode-map
 		(":" . evil-ex)
 		("G" . evil-goto-line)
+		("H" . org-agenda-do-date-earlier)
 		("K" . org-capture)
+		("L" . org-agenda-do-date-later)
 		("T" . org-agenda-todo)
 		("g" . nil)
 		("gg" . evil-goto-first-line)
 		("j" . org-agenda-next-item)
 		("k" . org-agenda-previous-item)
 		("t" . my/org-agenda-todo-next)
+		("C-b" . evil-scroll-page-up)
+		("C-f" . evil-scroll-page-down)
 		)
   )
 
