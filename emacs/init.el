@@ -474,15 +474,15 @@ Version 2019-11-04"
 
   :bind
   (:map dired-mode-map
+		(":" . evil-ex)
 		("C-c C-o" . my/open-in-external-app)
 		("C-j" . dired-next-dirline)
 		("C-k" . dired-prev-dirline)
+		("h" . dired-subtree-remove)
+		("i" . wdired-change-to-wdired-mode)
 		("j" . dired-next-line)
 		("k" . dired-previous-line)
-		("h" . dired-subtree-remove)
 		("l" . dired-subtree-insert)
-		("i" . wdired-change-to-wdired-mode)
-		;; ("SPC" . (kbd "C-c SPC"))
 		)
 
   :config
@@ -1245,6 +1245,8 @@ Version 2019-11-04"
 	(kbd "<localleader>v") 'org-toggle-inline-images
 	(kbd "<localleader>xp") 'org-set-property
 
+	(kbd "C-j") 'org-next-visible-heading
+	(kbd "C-k") 'org-previous-visible-heading
 	(kbd "C-S-j") 'org-next-visible-heading
 	(kbd "C-S-k") 'org-previous-visible-heading
 	(kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
