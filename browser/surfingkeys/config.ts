@@ -10,8 +10,7 @@ settings.smartPageBoundary = false;
 
 // click `save` button to make above settings to take effect.
 // set theme
-settings.theme =
-  "\
+settings.theme = "\
 .sk_theme { \
     background: #fff; \
     color: #000; \
@@ -141,14 +140,17 @@ api.mapkey(
         break;
       case "o":
         const price = (
-          document.getElementById("price") || document.getElementById("kindle-price")
+          document.getElementById("price") ||
+          document.getElementById("kindle-price")
         )?.textContent
           .trim()
           .replace("￥", "")
           .replace(",", "");
         const name = document.getElementById("productTitle")?.textContent;
-        const author = Array.from(document.querySelectorAll(".author .a-link-normal")).map(
-          (v) => v?.textContent
+        const author = Array.from(
+          document.querySelectorAll(".author .a-link-normal"),
+        ).map(
+          (v) => v?.textContent,
         );
         const isbn = document.querySelector("[itemprop=isbn]")?.textContent;
         const date = new Date().toISOString().slice(0, 10);
@@ -170,7 +172,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /amazon\.co\.jp/ }
+  { domain: /amazon\.co\.jp/ },
 );
 
 // yf | Oreilly books
@@ -186,7 +188,10 @@ api.mapkey(
       case "o":
         const price = (() => {
           const options = document.querySelectorAll(".buying-options > div");
-          return options[0].childNodes[3]?.textContent.trim().replace(/[円,]/g, "");
+          return options[0].childNodes[3]?.textContent.trim().replace(
+            /[円,]/g,
+            "",
+          );
         })();
         const name = document.querySelector("[itemprop=name]").textContent;
         const author = document.querySelector("[itemprop=author]").textContent;
@@ -210,7 +215,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /oreilly\.co\.jp\/\/?books\/\d+/ }
+  { domain: /oreilly\.co\.jp\/\/?books\/\d+/ },
 );
 
 // yf | Lambdanote books
@@ -225,10 +230,12 @@ api.mapkey(
         break;
       case "o":
         const price = Number(
-          document.querySelector('meta[property="og:price:amount"]')?.content.replace(",", "")
+          document.querySelector('meta[property="og:price:amount"]')?.content
+            .replace(",", ""),
         );
         const price_tax = Math.round(price * 1.1 * 100000) / 100000;
-        const name = document.querySelector('meta[property="og:title"]')?.content;
+        const name = document.querySelector('meta[property="og:title"]')
+          ?.content;
         const author = "";
         const isbn = "";
         const date = new Date().toISOString().slice(0, 10);
@@ -250,7 +257,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /www\.lambdanote\.com\/products/ }
+  { domain: /www\.lambdanote\.com\/products/ },
 );
 
 // yf | Gihyo books
@@ -292,7 +299,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /gihyo\.jp\/dp\/ebook\// }
+  { domain: /gihyo\.jp\/dp\/ebook\// },
 );
 
 // yf | SEShop books
@@ -306,12 +313,18 @@ api.mapkey(
         api.Clipboard.write(`[${title}](${url})`);
         break;
       case "o":
-        const price = document.getElementsByName("cxenseparse:sho-price")[0]?.content;
-        const name = document.getElementsByName("cxenseparse:sho-product-name")[0]?.content;
-        const author = Array.from(document.getElementsByName("cxenseparse:sho-author")).map(
-          (v) => v?.content
+        const price = document.getElementsByName("cxenseparse:sho-price")[0]
+          ?.content;
+        const name = document.getElementsByName(
+          "cxenseparse:sho-product-name",
+        )[0]?.content;
+        const author = Array.from(
+          document.getElementsByName("cxenseparse:sho-author"),
+        ).map(
+          (v) => v?.content,
         );
-        const isbn = document.getElementsByName("cxenseparse:sho-isbn")[0]?.content;
+        const isbn = document.getElementsByName("cxenseparse:sho-isbn")[0]
+          ?.content;
         const date = new Date().toISOString().slice(0, 10);
         api.Clipboard.write(`${name}
 :PROPERTIES:
@@ -331,14 +344,15 @@ api.mapkey(
         break;
     }
   },
-  { domain: /seshop.com\/product\// }
+  { domain: /seshop.com\/product\// },
 );
 
 // https://raw.githubusercontent.com/yhiraki/dotfiles/master/browser/surfingkeys/config.ts
 
 const parsePageBitbucket = () => {
   return {
-    issueTitle: document.querySelectorAll("#pull-request-details header div")[2].textContent,
+    issueTitle: document.querySelectorAll("#pull-request-details header div")[2]
+      .textContent,
   };
 };
 
@@ -363,11 +377,13 @@ api.mapkey(
         api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
         break;
       case "o":
-        api.Clipboard.write(`${repoName} [[${url}][#${issueNo}]] ${issueTitle}`);
+        api.Clipboard.write(
+          `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`,
+        );
         break;
     }
   },
-  { domain: /bitbucket\.org\/.*\/pull-requests\/\d+/ }
+  { domain: /bitbucket\.org\/.*\/pull-requests\/\d+/ },
 );
 
 const parsePageGithub = () => {
@@ -397,11 +413,13 @@ api.mapkey(
         api.Clipboard.write(`${repoName} [#${issueNo}](${url}) ${issueTitle}`);
         break;
       case "o":
-        api.Clipboard.write(`${repoName} [[${url}][#${issueNo}]] ${issueTitle}`);
+        api.Clipboard.write(
+          `${repoName} [[${url}][#${issueNo}]] ${issueTitle}`,
+        );
         break;
     }
   },
-  { domain: /github\.com\/.*\/(pull|issues)\/\d+/ }
+  { domain: /github\.com\/.*\/(pull|issues)\/\d+/ },
 );
 
 // yF | [GitHub PR/Issues] Copy links
@@ -430,14 +448,15 @@ api.mapkey(
     })();
     api.Clipboard.write(links.join("\n"));
   },
-  { domain: /github\.com\/([^\/]+\/.*\/)*(pulls|issues)\// }
+  { domain: /github\.com\/([^\/]+\/.*\/)*(pulls|issues)\// },
 );
 
 const parsePageBacklogTicket = () => {
   return {
     ticketKey: document.querySelector(".ticket__key-number")?.textContent,
     ticketTitle: document.querySelector(".ticket__title")?.textContent,
-    summaryMarkdown: document.querySelector(".ticket__collapsed-summary")?.textContent,
+    summaryMarkdown: document.querySelector(".ticket__collapsed-summary")
+      ?.textContent,
   };
 };
 
@@ -457,7 +476,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /backlog\.jp\/view/ }
+  { domain: /backlog\.jp\/view/ },
 );
 
 // yF | [Backlog] copy links
@@ -481,7 +500,7 @@ api.mapkey(
       });
     api.Clipboard.write(links.join("\n"));
   },
-  { domain: /backlog\.jp\/find/ }
+  { domain: /backlog\.jp\/find/ },
 );
 
 // yb | [Backlog] Copy body
@@ -496,7 +515,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /backlog\.jp\/view/ }
+  { domain: /backlog\.jp\/view/ },
 );
 
 function parsePageBacklogWiki() {
@@ -519,7 +538,7 @@ api.mapkey(
         break;
     }
   },
-  { domain: /backlog\.jp\/wiki/ }
+  { domain: /backlog\.jp\/wiki/ },
 );
 
 api.unmapAllExcept(
