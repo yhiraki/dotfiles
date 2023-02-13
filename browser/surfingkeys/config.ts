@@ -2,9 +2,6 @@
 // const api = createAPI();
 // let settings: any;
 
-settings.blacklistPattern =
-  /.*mail.google.com.*|.*inbox.google.com.*|trello.com|duolingo.com|youtube.com|udemy.com|localhost/i;
-
 // Prevent automatic next/previous page loads
 settings.smartPageBoundary = false;
 
@@ -543,5 +540,5 @@ api.mapkey(
 
 api.unmapAllExcept(
   ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
-  /.*\.google\.com/,
+  /(mail|drive|docs)\.google\.com/,
 );
