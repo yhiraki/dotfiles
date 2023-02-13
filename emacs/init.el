@@ -2118,10 +2118,6 @@ SCHEDULED: %t
   (evil-set-initial-state 'vterm-mode 'emacs)
   (evil-set-initial-state 'dired-mode 'emacs)
 
-  (use-package evil-surround :ensure t
-	:after evil
-	:config (global-evil-surround-mode))
-
   (use-package evil-collection :ensure t
 	:after evil
 	:diminish evil-collection-unimpaired-mode
