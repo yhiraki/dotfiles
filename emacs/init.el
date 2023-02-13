@@ -533,6 +533,7 @@ Version 2019-11-04"
 			"C-r" #'vterm--self-insert
 			"C-x" #'vterm--self-insert
 			"M-t" #'vterm-toggle-cd
+			"SPC" #'vterm--self-insert
 			)
   )
 
@@ -2057,8 +2058,7 @@ SCHEDULED: %t
   (evil-add-command-properties #'xref-find-definitions :jump t)
   (evil-add-command-properties #'xref-find-references :jump t)
 
-  (evil-set-leader '(normal visual) (kbd "SPC"))
-  (evil-set-leader '(normal visual emacs) (kbd "C-c SPC"))
+  (evil-set-leader '(normal visual emacs) (kbd "SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
   (defun my/find-user-emacs-init-file ()
@@ -2069,7 +2069,7 @@ SCHEDULED: %t
 	(interactive)
 	(find-file (my/path-join org-directory "inbox.org")))
 
-  (evil-define-key '(normal visual) 'global
+  (evil-define-key nil 'global
 	(kbd "<leader>/") 'imenu
 	(kbd "<leader>.") 'my/find-user-emacs-init-file
 	(kbd "<leader>G g") 'google-this
