@@ -522,4 +522,7 @@ api.mapkey(
   { domain: /backlog\.jp\/wiki/ }
 );
 
-api.unmapAllExcept(["E", "R", "T", "b", "cf", "f", "r", "t"], /mail.google.com/);
+api.unmapAllExcept(
+  ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
+  /.*\.google\.com/,
+);
