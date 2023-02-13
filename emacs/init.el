@@ -475,7 +475,9 @@ Version 2019-11-04"
   :bind
   (:map dired-mode-map
 		(":" . evil-ex)
+		("C-b" .  scroll-up)
 		("C-c C-o" . my/open-in-external-app)
+		("C-f" .  scroll-down)
 		("C-j" . dired-next-dirline)
 		("C-k" . dired-prev-dirline)
 		("h" . dired-subtree-remove)
