@@ -1176,7 +1176,7 @@ Version 2019-11-04"
   :custom
   (org-directory "~/org/")
   (org-archive-location (concat (my/path-join org-directory "archived" "%s") "::"))
-  ;; (org-id-link-to-org-use-id t)  ; org-roam-node-add する時にidが作成されてしまうので無効化
+  (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
