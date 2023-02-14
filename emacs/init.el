@@ -1767,7 +1767,9 @@ SCHEDULED: %t
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
   (org-agenda-custom-commands
    `(("t" "Tasks"
-	  ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))))
+	  ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
+				   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+				   ))
 	   (todo "STARTED" (,my/org-agenda-entry-is-not-project
 						(org-agenda-overriding-header "On progress: ")))
 	   (todo "NEXT" (,my/org-agenda-entry-is-not-project
