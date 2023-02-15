@@ -1162,6 +1162,8 @@ Version 2019-11-04"
 (use-package terraform-mode :ensure t)
 
 (use-package prog-mode
+  :custom
+  (prettify-symbols-unprettify-at-point t)
   :general
   (:keymaps 'prog-mode-map
 			:states '(normal visual)
