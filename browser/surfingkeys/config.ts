@@ -542,3 +542,8 @@ api.unmapAllExcept(
   ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
   /(mail|drive|docs)\.google\.com/,
 );
+
+api.unmapAllExcept(
+  ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
+  /app\.diagrams\.net/,
+);
