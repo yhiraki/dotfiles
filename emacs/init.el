@@ -1410,6 +1410,11 @@ Version 2019-11-04"
 	(org-roam-db-update-on-save t)
 	(org-roam-directory (my/path-join org-directory "roam"))
 	(org-roam-node-display-template "${title:*} ${tags:10}")
+	(org-roam-capture-templates
+	 '(("d" "default" plain "%?"
+		:target (file+head "nodes/%<%Y%m%d%H%M%S>-${slug}.org"
+						   "#+title: ${title}\n")
+		:unnarrowed t)))
 	(org-roam-dailies-capture-templates
 	 `(("d" "default" entry
 		"* %?"
