@@ -1742,6 +1742,10 @@ SCHEDULED: %t
   (use-package ox
 	:commands org-export-dispatch
 
+	:custom
+	(org-export-with-sub-superscripts '{})
+	(org-export-headline-levels 5)
+
 	:config
 	(use-package ox-gfm :ensure t)
 
