@@ -366,6 +366,15 @@ Version 2019-11-04"
   (setq save-silently t)
   )
 
+(use-package time-stamp
+  :hook
+  (org-mode
+   . (lambda ()
+	   (add-hook 'before-save-hook #'time-stamp nil t)))
+  :custom
+  (time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S")
+  )
+
 (use-package exec-path-from-shell :ensure t
   :custom
   (exec-path-from-shell-variables
@@ -1413,7 +1422,11 @@ Version 2019-11-04"
 	(org-roam-capture-templates
 	 '(("d" "default" plain "%?"
 		:target (file+head "nodes/%<%Y%m%d%H%M%S>-${slug}.org"
-						   "#+title: ${title}\n")
+						   ":PROPERTIES:
+:Time-stamp: <>
+:END:
+#+title: ${title}
+")
 		:unnarrowed t)))
 	(org-roam-dailies-capture-templates
 	 `(("d" "default" entry
@@ -1748,8 +1761,12 @@ SCHEDULED: %t
 	:commands org-export-dispatch
 
 	:custom
-	(org-export-with-sub-superscripts '{})
 	(org-export-headline-levels 5)
+	(org-export-use-babel nil)
+	(org-export-with-broken-links t)
+	(org-export-with-section-numbers nil)
+	(org-export-with-sub-superscripts '{})
+	(org-export-with-toc nil)
 
 	:config
 	(use-package ox-gfm :ensure t)
