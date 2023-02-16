@@ -368,9 +368,13 @@ Version 2019-11-04"
 
 (use-package time-stamp
   :hook
+  (before-save . time-stamp)
   (org-mode
    . (lambda ()
-	   (add-hook 'before-save-hook #'time-stamp nil t)))
+	   (setq-local time-stamp-start "DATE:")
+	   (setq-local time-stamp-end "$")
+	   (setq-local time-stamp-format " %Y-%02m-%02d %02H:%02M:%02S")
+	   ))
   :custom
   (time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S")
   )
@@ -1422,11 +1426,7 @@ Version 2019-11-04"
 	(org-roam-capture-templates
 	 '(("d" "default" plain "%?"
 		:target (file+head "nodes/%<%Y%m%d%H%M%S>-${slug}.org"
-						   ":PROPERTIES:
-:Time-stamp: <>
-:END:
-#+title: ${title}
-")
+						   "#+title: ${title}\n#+DATE:")
 		:unnarrowed t)))
 	(org-roam-dailies-capture-templates
 	 `(("d" "default" entry
