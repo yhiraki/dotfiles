@@ -2285,10 +2285,10 @@ SCHEDULED: %t
 (use-package doom-modeline :ensure t :disabled)
 
 (use-package modus-themes :ensure t
-  :hook
-  (after-init
-   . (lambda ()
-	   (load-theme 'modus-vivendi t)))
+  :config
+  (defun my/load-theme ()
+	(load-theme 'modus-vivendi t))
+  (my/load-theme)
   :custom
   (modus-themes-paren-match '(bold underline))
   (modus-themes-region '(bg-only no-extend))
