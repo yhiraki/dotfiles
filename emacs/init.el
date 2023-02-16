@@ -1762,7 +1762,7 @@ SCHEDULED: %t
 
 	:custom
 	(org-export-headline-levels 5)
-	(org-export-use-babel nil)
+	(org-export-use-babel t)
 	(org-export-with-broken-links t)
 	(org-export-with-section-numbers nil)
 	(org-export-with-sub-superscripts '{})
