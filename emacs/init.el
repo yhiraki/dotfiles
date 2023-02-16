@@ -1775,7 +1775,6 @@ SCHEDULED: %t
 
 	(use-package ox-html
 	  :custom
-	  (org-html-head "<style>pre.src{ white-space: initial; }</style>")
 	  (org-html-validation-link nil)
 	  (org-html-mathjax-options
 	   '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
