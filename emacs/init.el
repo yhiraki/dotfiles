@@ -1516,7 +1516,7 @@ SCHEDULED: %t
 ")
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
-	   ("j" "Journal" entry (file+datetree "journal.org") "** %U %?" :kill-buffer t)
+	   ("j" "Journal" entry (file+olp+datetree "journal.org") "** %U %?" :kill-buffer t)
 	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?
 :LOGBOOK:
 - created at %U
