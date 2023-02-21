@@ -174,11 +174,7 @@ Version 2019-11-04"
   (setq-default indicate-buffer-boundaries 'left) ;; バッファの終端を表示
   (setq-default indicate-empty-lines t) ;; バッファの終端以降を可視化
 
-	;; mule-cmds
-  ;; unicode の一部を1文字幅として扱う
-  ;; "┃" : git-gutter
-  ;; "│" : highlight-indent-guides
-  (set-language-environment "English")
+  (set-language-environment "Japanese")
   ;; magitでの文字化け対策
   (prefer-coding-system 'utf-8)
 
