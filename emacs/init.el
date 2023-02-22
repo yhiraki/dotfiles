@@ -182,6 +182,11 @@ Version 2019-11-04"
   ("C-s" . ctl-x-map)
   )
 
+(use-package man
+  ;; The 'nanual-entry' command locks Emacs for several seconds, which is annoying.
+  :bind ("s-M" . nil)
+  )
+
 (use-package diminish :ensure t)
 
 (use-package abbrev
