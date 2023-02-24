@@ -332,10 +332,6 @@ Version 2019-11-04"
     (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
     (remove-hook 'find-file-hook #'set-apple-color-emoji))
 
-  ;; http://misohena.jp/blog/2017-09-26-symbol- font-settings-for-emacs25.html
-  ;; TODO: インデント可視化用のunicode文字は半角幅にしたいので無効化
-  ;; (setq use-default-font-for-symbols nil) ; 記号をデフォルトのフォントにしない ○△□が全角幅になる
-
   ;; |あいうえお|かきくけこ|
   ;; |１２３４５|一二三四五|
   ;; |①②③④⑤|○△□☆…|
