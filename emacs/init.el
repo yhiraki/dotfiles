@@ -2490,7 +2490,28 @@ SCHEDULED: %t
 
 (use-package oj :ensure t
   :custom
-  (oj-default-online-judge 'atcoder))
+  (oj-default-online-judge 'atcoder)
+  :config
+  (defun my/oj-submit ()
+	"Submit code."
+	(interactive)
+	(let ((alist (quickrun--command-info
+				  (quickrun--command-key (buffer-file-name)))))
+	  (oj--exec-script (format "cd %s" default-directory))
+	  (oj--exec-script
+	   (concat
+		(format "oj submit %s" (buffer-file-name))
+		(when oj-submit-args
+		  (format " %s" (mapconcat #'identity oj-submit-args " ")))
+		(when (or (string= "clang" oj-compiler-c)
+				  (string-match "clang" (format "%s" (alist-get :command alist))))
+		  " --guess-cxx-compiler clang")
+		(when (or (string= "pypy" oj-compiler-python)
+				  (string-match "pypy" (format "%s" (alist-get :command alist))))
+		  " --guess-python-interpreter pypy")
+		))))
+  (advice-add 'oj-submit :override #'my/oj-submit)
+  )
 
 (use-package emacs-lock
   :config
