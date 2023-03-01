@@ -1772,6 +1772,22 @@ SCHEDULED: %t
 
 	(use-package ox-html
 	  :custom
+	  (org-html-head-include-scripts nil)
+	  (org-html-head-include-default-style nil)
+	  (org-html-head "\
+<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />
+<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/tokyo-night-dark.min.css\" id=\"hljs-css\">
+<link rel=\"stylesheet\" href=\"https://yhiraki.github.io/memo/static/css/main.css\">
+")
+	  (org-html-postamble t)
+	  (org-html-postamble-format
+	   '(("en" "\
+<p class=\"date\">Date: %d</p>
+<p class=\"author\">Author: %a</p>
+<link rel=\"stylesheet\" href=\"static/css/main.css\" >\
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js\"></script>
+<script src=\"https://yhiraki.github.io/memo/static/js/main.js\"></script>
+")))
 	  (org-html-validation-link nil)
 	  (org-html-mathjax-options
 	   '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
@@ -1792,8 +1808,6 @@ SCHEDULED: %t
 	  )
 
 	(use-package ox-rst :ensure t)
-
-	(use-package htmlize :ensure t)
 	)
   )
 
