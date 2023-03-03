@@ -1406,6 +1406,8 @@ Version 2019-11-04"
 
   (use-package org-collector)
 
+  (use-package org-habit)
+
   (use-package org-roam :ensure t
 	:after evil
 	:demand t  ; completion-at-point on plain org-mode
