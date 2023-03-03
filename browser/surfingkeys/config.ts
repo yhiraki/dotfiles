@@ -539,11 +539,11 @@ api.mapkey(
 );
 
 api.unmapAllExcept(
-  ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
+  ["d", "E", "R", "T", "b", "cf", "f", "t"],
   /(mail|drive|docs|meet)\.google\.com/,
 );
 
 api.unmapAllExcept(
-  ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
+  ["d", "E", "R", "T", "b", "cf", "f", "t"],
   /app\.diagrams\.net/,
 );
