@@ -1866,6 +1866,9 @@ SCHEDULED: %t
 	 ("A" "Done tasks to be archived"
 	  ((tags "CLOSED<=\"<-1w>\"+LEVEL=2"
 			 ((org-agenda-files '("inbox.org" "todos.org"))))))
+	 ("b" "Books"
+	  ((tags "+LEVEL=2"
+			 ((org-agenda-files '("books.org"))))))
 	 ))
 
   :config
