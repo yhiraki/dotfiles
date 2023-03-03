@@ -1720,7 +1720,7 @@ SCHEDULED: %t
 	(use-package ob-shell
 	  :after ob
 	  :custom
-	  (org-babel-default-header-args:sh '((:cache . "yes") (:results . "output")))
+	  (org-babel-default-header-args:shell '((:cache . "yes") (:results . "output") (:exports . "both")))
 	  )
 
 	(use-package ob-python
