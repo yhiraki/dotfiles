@@ -540,7 +540,7 @@ api.mapkey(
 
 api.unmapAllExcept(
   ["d", "E", "R", "T", "b", "cf", "f", "r", "t"],
-  /(mail|drive|docs)\.google\.com/,
+  /(mail|drive|docs|meet)\.google\.com/,
 );
 
 api.unmapAllExcept(
