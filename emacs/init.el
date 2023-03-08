@@ -1506,7 +1506,21 @@ Version 2019-11-04"
 	(org-capture-templates
 	 `(
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
-	   ("b" "Book" entry (file+headline "books.org" "Books") "** %?")
+	   ("b" "Book" entry (file+headline "books.org" "Books") "** %?
+:PROPERTIES:
+:price:
+:name:
+:author:
+:isbn:
+:added_at: %u
+:bought_at:
+:read_at:
+:store_name:
+:store_url:
+:ebook: t
+:ebook_url:
+:END:
+")
 	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
 SCHEDULED: %t
 :LOGBOOK:
