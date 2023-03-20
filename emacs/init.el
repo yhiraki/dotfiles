@@ -1633,6 +1633,18 @@ SCHEDULED: %t
 		  ("C-c g" . org-mac-link-get-link)
 		  ))
 
+  (use-package org-ai
+	:straight
+	(:host github :repo "rksm/org-ai" :files ("*.el" "README.md" "snippets"))
+	:commands (org-ai-mode)
+	:init
+	(add-hook 'org-mode-hook #'org-ai-mode)
+	;; :custom
+	;; (org-ai-openai-api-token "openai-access-token")
+	:config
+	;; if you are using yasnippet and want `ai` snippets
+	(org-ai-install-yasnippets))
+
   (use-package japanese-holidays :ensure t
 	:hook
 	(calendar-today-visible . japanese-holiday-mark-weekend)
