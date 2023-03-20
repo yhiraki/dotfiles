@@ -991,8 +991,13 @@ Version 2019-11-04"
 
   (quickrun-add-command "python"
     '((:command . my/find-venv-python-or-global)
-      (:compile-only . "flake8 %s"))
+      (:compile-only . "flake8 %s")
+	  )
     :override t)
+
+  (quickrun-add-command "python/pytest"
+    '((:command . (lambda () (my/find-venv-executable "pytest")))
+	  (:exec    . ("%c %s"))))
 
   (quickrun-set-default "typescript" "typescript/deno")
 
@@ -1929,16 +1934,28 @@ SCHEDULED: %t
 (use-package python :ensure t
   :defer t
 
+  :hook
+  (python-mode
+   . (lambda ()
+	   (when (string-match "test_.*\\.py$" (buffer-file-name))
+		 (setq-local quickrun-option-cmdkey "python/pytest"))))
+
   :custom
   (python-shell-interpreter "python3")
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
 
   :config
-  (defun my/find-venv-python-or-global ()
+  (defun my/find-venv-dir ()
+	(my/find-up-directory ".venv" "."))
+
+  (defun my/find-venv-executable (cmd)
 	(let ((venv (my/find-up-directory ".venv" ".")))
 	  (if venv
-		  (format "%s/bin/python" venv)
-		"python3")))
+		  (format "%s/bin/%s" venv cmd)
+		cmd)))
+
+  (defun my/find-venv-python-or-global ()
+	(my/find-venv-executable "python3"))
 
   (use-package py-yapf :ensure t
 	:commands (py-yapf-buffer)
