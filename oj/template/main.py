@@ -19,6 +19,8 @@
 %>\
 #!/usr/bin/env python3
 from typing import *
+from sys import setrecursionlimit
+setrecursionlimit(200000)
 
 ${python.declare_constants(data)}
 
