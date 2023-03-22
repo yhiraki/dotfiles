@@ -407,6 +407,7 @@ Version 2019-11-04"
   )
 
 (use-package highlight-indent-guides :ensure t
+  :if window-system
   :diminish highlight-indent-guides-mode
   :hook
   ((prog-mode yaml-mode) . highlight-indent-guides-mode)
