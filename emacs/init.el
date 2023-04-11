@@ -1640,7 +1640,8 @@ SCHEDULED: %t
 	:commands (org-ai-mode)
 	:init
 	(add-hook 'org-mode-hook #'org-ai-mode)
-	;; :custom
+	:custom
+	(org-ai-default-max-tokens 1024)
 	;; (org-ai-openai-api-token "openai-access-token")
 	:config
 	;; if you are using yasnippet and want `ai` snippets
@@ -1693,9 +1694,14 @@ SCHEDULED: %t
 	;; https://github.com/astahlman/ob-async/issues/61
 	;; for ob-async
 	(org-babel-load-languages
-	 '((emacs-lisp . t)
+	 '(
+	   (chatgpt . t)
+	   (emacs-lisp . t)
+	   (mermaid . t)
+	   (plantuml . t)
 	   (python . t)
-	   (shell . t)))
+	   (shell . t)
+	   ))
 	:config
 	;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
 	;; (defun my/org-confirm-babel-evaluate (lang body)
@@ -1716,9 +1722,6 @@ SCHEDULED: %t
 	;; 				   "typescript"
 	;; 				   "uml"
 	;; 				   ))))
-
-	(push '("ts" . typescript) org-src-lang-modes)
-	(push '("uml" . plantuml) org-src-lang-modes)
 
 	:config
 
@@ -1747,7 +1750,9 @@ SCHEDULED: %t
 	  :if darwin-p
 	  :after ob
 	  :custom
-	  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc"))
+	  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc")
+	  :config
+	  (setq mermaid-config-file "~/.config/mermaid/config.json"))
 
 	(use-package ob-shell
 	  :after ob
@@ -1783,9 +1788,23 @@ SCHEDULED: %t
 			"require('util').inspect(function(){\n%s\n}());")
 	  )
 
-	(use-package ob-typescript :ensure t)
+	(use-package ob-typescript :ensure t
+	  :config
+	  (push '("ts" . typescript) org-src-lang-modes)
+	  (org-babel-make-language-alias "ts" "typescript")
+	  )
 
 	(use-package ob-go :ensure t)
+
+	(use-package ob-chatgpt
+	  ;; :straight (:host github :repo "yhiraki/ob-chatgpt" :files ("*.el")))
+	  :load-path "~/src/github.com/yhiraki/ob-chatgpt"
+	  :custom
+	  (org-babel-default-header-args:chatgpt
+	   (append org-babel-default-header-args:chatgpt
+			   '((:async . "yes"))))
+	  (org-babel-chatgpt-aliases '("ask"))
+	  )
 	)
 
   (use-package ox
