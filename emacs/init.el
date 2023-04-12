@@ -1702,7 +1702,6 @@ SCHEDULED: %t
 	   (python . t)
 	   (shell . t)
 	   ))
-	(org-babel-default-header-args '((:eval . no-export)))
 	:config
 	;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
 	;; (defun my/org-confirm-babel-evaluate (lang body)
