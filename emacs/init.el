@@ -1802,7 +1802,7 @@ SCHEDULED: %t
 	  :custom
 	  (org-babel-default-header-args:chatgpt
 	   (append org-babel-default-header-args:chatgpt
-			   '((:async . "yes"))))
+			   '((:async . "yes") (:to-org . t) (:wrap . "quote"))))
 	  (org-babel-chatgpt-aliases '("ask"))
 	  )
 	)
