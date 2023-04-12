@@ -1969,7 +1969,8 @@ SCHEDULED: %t
   :hook
   (python-mode
    . (lambda ()
-	   (when (string-match "test_.*\\.py$" (buffer-file-name))
+	   (when (and buffer-file-name
+				  (string-match "test_.*\\.py$" buffer-file-name))
 		 (setq-local quickrun-option-cmdkey "python/pytest"))))
 
   :custom
