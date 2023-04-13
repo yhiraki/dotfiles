@@ -1691,6 +1691,8 @@ SCHEDULED: %t
 	:custom
 	(org-confirm-babel-evaluate nil)
 	(org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
+	(org-babel-default-header-args
+	 (append org-babel-default-header-args '((:exports . "both") (:eval . "no-export"))))
 	;; https://github.com/astahlman/ob-async/issues/61
 	;; for ob-async
 	(org-babel-load-languages
@@ -1753,12 +1755,6 @@ SCHEDULED: %t
 	  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc")
 	  :config
 	  (setq mermaid-config-file "~/.config/mermaid/config.json"))
-
-	(use-package ob-shell
-	  :after ob
-	  :custom
-	  (org-babel-default-header-args:shell '((:cache . "yes") (:results . "output") (:exports . "both")))
-	  )
 
 	(use-package ob-python
 	  :after ob
