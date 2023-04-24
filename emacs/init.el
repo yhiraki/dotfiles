@@ -1753,6 +1753,8 @@ SCHEDULED: %t
 	  :after ob
 	  :custom
 	  (ob-mermaid-cli-path "/opt/homebrew/bin/mmdc")
+	  (org-babel-default-header-args:mermaid
+	   (append org-babel-default-header-args:mermaid '((:cache . "yes") (:async . t))))
 	  :config
 	  (setq mermaid-config-file "~/.config/mermaid/config.json"))
 
