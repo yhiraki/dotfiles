@@ -1853,9 +1853,13 @@ SCHEDULED: %t
 		 (tagside "right"))
 	   ))
 
-	(use-package ox-reveal :ensure t
+	(use-package org-re-reveal :ensure t
 	  :custom
-	  (org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+	  (org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+	  (org-re-reveal-revealjs-version "4")
+	  (org-re-reveal-theme "white")
+	  (org-re-reveal-transition "none")
+	  (org-re-reveal-hlevel 5)
 	  )
 
 	(use-package ox-rst :ensure t)
