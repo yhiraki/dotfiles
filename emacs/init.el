@@ -1235,7 +1235,7 @@ Version 2019-11-04"
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
-	 (sequence "NEXT(n)" "STARTED")
+	 (sequence "NEXT(n)" "STARTED" "|")
 	 (sequence "WAITING(w)" "STARTED" "|")
 	 (sequence "SOMEDAY(S)" "|")
 	 (sequence "|" "CANCELLED(c)")
