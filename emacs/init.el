@@ -1234,7 +1234,8 @@ Version 2019-11-04"
   (org-src-tab-acts-natively nil)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "|" "DONE(d)")
+   '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
+	 (sequence "NEXT(n)" "STARTED")
 	 (sequence "WAITING(w)" "STARTED" "|")
 	 (sequence "SOMEDAY(S)" "|")
 	 (sequence "|" "CANCELLED(c)")
