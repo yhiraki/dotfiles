@@ -8,3 +8,9 @@
   args:
     executable: zsh
     creates: $GOPATH/bin/{{ item.name }}
+
+- name: install asdf
+  git:
+    repo: https://github.com/asdf-vm/asdf
+    dest: $HOME/.asdf
+    version: v0.11.3
