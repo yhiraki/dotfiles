@@ -336,6 +336,12 @@ autoload -Uz add-zsh-hook
 command -v direnv >/dev/null &&
   eval "$(direnv hook zsh)"
 
+# asdf setup
+[ -d "$HOME/.asdf" ] && {
+  . "$HOME/.asdf/asdf.sh"
+  fpath=(${ASDF_DIR}/completions $fpath)
+}
+
 # Path sort by string length
 export PATH=$(echo "$PATH" |
   tr : '\n' |
