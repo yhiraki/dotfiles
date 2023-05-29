@@ -103,15 +103,6 @@ Version 2019-11-04"
   (interactive)
   (shell-command "open ."))
 
-(defun my/path-join (&rest paths)
-  "Join file PATHS."
-  (let
-	  ((file (nth 0 (last paths)))
-	   (dirs (butlast paths)))
-	(concat
-	 (mapconcat #'file-name-as-directory dirs "")
-	 file)))
-
 (defun my/find-up-directory (filename basedir)
   "Find a FILENAME in upper level directories from BASEDIR."
   (let ((dir basedir)
@@ -1226,7 +1217,7 @@ Version 2019-11-04"
 
   :custom
   (org-directory "~/org/")
-  (org-archive-location (concat (my/path-join org-directory "archived" "%s") "::"))
+  (org-archive-location (f-join org-directory "archived" "%s::"))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
@@ -1427,7 +1418,7 @@ Version 2019-11-04"
 	:custom
 	(org-roam-completion-everywhere t)
 	(org-roam-db-update-on-save t)
-	(org-roam-directory (my/path-join org-directory "roam"))
+	(org-roam-directory (f-join org-directory "roam"))
 	(org-roam-node-display-template "${title:*} ${tags:10}")
 	(org-roam-capture-templates
 	 '(("d" "default" plain "%?"
@@ -1562,7 +1553,7 @@ SCHEDULED: %t
 
 	:config
 	(defun my/org-capture-file-today ()
-	  (my/path-join
+	  (f-join
 	   org-directory
 	   "diary"
 	   (format-time-string "%Y-%m-%d.org")))
@@ -2212,7 +2203,7 @@ SCHEDULED: %t
 
   (defun my/find-inbox-org ()
 	(interactive)
-	(find-file (my/path-join org-directory "inbox.org")))
+	(find-file (f-join org-directory "inbox.org")))
 
   (evil-define-key nil 'global
 	(kbd "<leader>/") 'imenu
