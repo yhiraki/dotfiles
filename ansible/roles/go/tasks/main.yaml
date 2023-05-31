@@ -4,8 +4,8 @@
     ARCH=$(uname -sp |
       tr ' ' -  |
       tr [:upper:] [:lower:] |
-      sed 's/x86_64/amd64/i')
-    curl -L https://go.dev/dl/go1.17.8.${ARCH}.tar.gz |
+      sed -e 's/x86_64/amd64/i' -e 's/arm/arm64/i')
+    curl -L https://go.dev/dl/go{{ golang_version }}.${ARCH}.tar.gz |
     tar -C /usr/local -xzf -
   args:
     creates: /usr/local/go
