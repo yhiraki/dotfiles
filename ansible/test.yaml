@@ -1,0 +1,13 @@
+---
+- name: Dotfiles
+  hosts: localhost
+  connection: local
+  roles:
+    # - role: yhiraki.python
+    #   python_version: 3.10.2
+    #   install_prefix: /usr/local
+    - role: git
+    # - role: go
+    # - role: tmux
+    # - role: zsh
+    # - role: zsh-tools
