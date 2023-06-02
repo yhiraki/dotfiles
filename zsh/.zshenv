@@ -127,6 +127,10 @@ command -v brew >/dev/null && {
   HOMEBREW_NO_AUTO_UPDATE=1
 }
 
+[ -d /Applications/Emacs.app/Contents/MacOS ] && {
+  PATH="/Applications/Emacs.app/Contents/MacOS/bin:$PATH"
+}
+
 DENO_INSTALL="$HOME/.deno"
 PATH="$DENO_INSTALL/bin:$PATH"
 
