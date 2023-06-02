@@ -357,6 +357,8 @@ command -v zprof >/dev/null &&
 # https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 # https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
 fpath=($ZDOTDIR/completion $fpath)
+
+fpath=($HOME/.zfunc $fpath)
 autoload -Uz compinit && compinit -i
 
 # emacs vterm
