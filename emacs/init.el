@@ -1504,21 +1504,7 @@ Version 2019-11-04"
 	(org-capture-templates
 	 `(
 	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
-	   ("b" "Book" entry (file+headline "books.org" "Books") "** %?
-:PROPERTIES:
-:price:
-:name:
-:author:
-:isbn:
-:added_at: %u
-:bought_at:
-:read_at:
-:store_name:
-:store_url:
-:ebook: t
-:ebook_url:
-:END:
-")
+	   ("b" "Book" entry (file+headline "books.org" "Books") "** WISH %(my/book-templeate-from-url \"%c\")%?")
 	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
 SCHEDULED: %t
 :LOGBOOK:
@@ -1568,6 +1554,43 @@ SCHEDULED: %t
 	   (let ((repo (magit-repository-local-repository)))
 		 (string-match "\\([^\\/]+\\/[^\\/]+\\/[^\\/]+\\)\\/$" repo)
 		 (match-string 1 repo)))
+
+
+	 (defun my/book-templeate-from-url (url)
+	   (unless (executable-find "bookinfo")
+		 (error "Requires \"bookinfo\" command"))
+	   (let ((info
+			  (json-read-from-string
+			   (shell-command-to-string
+				(s-join " "
+						(mapcar
+						 #'shell-quote-argument
+						 `("bookinfo" ,url))))
+			   )))
+		 (format
+		  "%s
+:PROPERTIES:
+:price: %s
+:name: %s
+:author: %s
+:isbn:
+:added_at: %%u
+:bought_at:
+:read_at:
+:store_name: %s
+:store_url: %s
+:ebook: %s
+:ebook_url:
+:END:
+"
+		  (cdr (assq 'name info))
+		  (cdr (assq 'price info))
+		  (cdr (assq 'name info))
+		  (cdr (assq 'author info))
+		  (cdr (assq 'store info))
+		  (cdr (assq 'url info))
+		  (cdr (assq 'ebook info)))
+		 ))
 	 )
 
   (use-package org-checklist
