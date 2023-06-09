@@ -1574,7 +1574,7 @@ SCHEDULED: %t
 :name: %s
 :author: %s
 :isbn:
-:added_at: %%u
+:added_at: %s
 :bought_at:
 :read_at:
 :store_name: %s
@@ -1587,6 +1587,7 @@ SCHEDULED: %t
 		  (cdr (assq 'price info))
 		  (cdr (assq 'name info))
 		  (cdr (assq 'author info))
+		  (format-time-string "[%Y-%m-%d]")
 		  (cdr (assq 'store info))
 		  (cdr (assq 'url info))
 		  (cdr (assq 'ebook info)))
