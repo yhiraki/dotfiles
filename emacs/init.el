@@ -1191,6 +1191,7 @@ Version 2019-11-04"
 
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
+  (org-after-todo-state-change . my/org-add-date-for-book-state)
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
   (org-mode . prettify-symbols-mode)
@@ -1266,6 +1267,14 @@ Version 2019-11-04"
 					  (org-todo 'done))
 				  (when (string-equal todo-state "DONE")
 					(org-todo 'todo)))))))))
+
+  (defun my/org-add-date-for-book-state ()
+	"Set date string when book state changed."
+	(when (string-equal org-state "BOUGHT")
+	  (org-entry-put (point) "bought_at" (format-time-string "[%Y-%m-%d]")))
+	(when (string-equal org-state "READ")
+	  (org-entry-put (point) "read_at" (format-time-string "[%Y-%m-%d]")))
+	)
 
   (defun my/org-todo-next ()
 	"Org todo next cycle"
