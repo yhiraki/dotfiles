@@ -1314,6 +1314,8 @@ Version 2019-11-04"
 	(kbd "t") 'my/org-todo-next
 	(kbd "<") 'org-metaleft
 	(kbd ">") 'org-metaright
+	(kbd "C-<") 'org-shiftmetaleft
+	(kbd "C->") 'org-shiftmetaright
 	(kbd "gh") 'outline-up-heading
 	(kbd "gp") 'outline-previous-heading
 	(kbd "<tab>") 'org-cycle
