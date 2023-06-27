@@ -1218,7 +1218,7 @@ Version 2019-11-04"
 
   :custom
   (org-directory "~/org/")
-  (org-archive-location (f-join org-directory "archived" "%s::"))
+  (org-archive-location (f-join org-directory "archived" (format-time-string "%Y/%m") "%s::"))
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
