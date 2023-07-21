@@ -1284,38 +1284,6 @@ Version 2019-11-04"
 	(kbd "<localleader>t") 'org-todo
 	(kbd "<localleader>v") 'org-toggle-inline-images
 	(kbd "<localleader>xp") 'org-set-property
-
-	(kbd "C-j") 'org-next-visible-heading
-	(kbd "C-k") 'org-previous-visible-heading
-	(kbd "C-S-j") 'org-next-visible-heading
-	(kbd "C-S-k") 'org-previous-visible-heading
-	(kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-	(kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
-	(kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-	(kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
-	(kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
-	(kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
-	(kbd "T") 'org-todo
-	(kbd "t") 'my/org-todo-next
-	(kbd "<") 'org-metaleft
-	(kbd ">") 'org-metaright
-	(kbd "C-<") 'org-shiftmetaleft
-	(kbd "C->") 'org-shiftmetaright
-	(kbd "gh") 'outline-up-heading
-	(kbd "gp") 'outline-previous-heading
-	(kbd "<tab>") 'org-cycle
-	)
-
-  (evil-define-key '(normal insert visual) org-mode-map
-	(kbd "M-S-h") 'org-metashiftleft
-	(kbd "M-S-j") 'org-metashiftdown
-	(kbd "M-S-k") 'org-metashiftup
-	(kbd "M-S-l") 'org-metashiftright
-	(kbd "M-h") 'org-metaleft
-	(kbd "M-j") 'org-metadown
-	(kbd "M-k") 'org-metaup
-	(kbd "M-l") 'org-metaright
-	(kbd "RET") 'org-return
 	)
 
   (use-package org-tempo
@@ -2291,23 +2259,43 @@ SCHEDULED: %t
 	  (advice-remove 'evil-collection-dired-setup 'my/evil-collection-dired-setup-extra))
 	(advice-add 'evil-collection-dired-setup :after 'my/evil-collection-dired-setup-extra)
 
-	(evil-collection-init
-	 '(
-	   (package-menu package)
-	   dired
-	   dired-sidebar
-	   ediff
-	   flycheck
-	   ibuffer
-	   magit
-	   magit-todos
-	   profiler
-	   quickrun
-	   replace
-	   wdired
-	   wgrep
-	   xref
-	   ))
+	(defun my/evil-collection-org-setup-extra ()
+	  (evil-collection-define-key '(normal visual) 'org-mode-map
+		(kbd "C-j") 'org-next-visible-heading
+		(kbd "C-k") 'org-previous-visible-heading
+		(kbd "C-S-j") 'org-next-visible-heading
+		(kbd "C-S-k") 'org-previous-visible-heading
+		(kbd "<M-return>") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+		(kbd "M-RET") '(lambda () (interactive) (evil-append-line 1) (org-meta-return))
+		(kbd "<C-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+		(kbd "C-RET") '(lambda () (interactive) (evil-insert-state) (org-insert-heading-after-current))
+		(kbd "<M-S-return>") '(lambda () (interactive) (evil-append-line 1) (org-insert-todo-heading 1))
+		(kbd "<C-S-return>") '(lambda () (interactive) (evil-insert-state) (org-insert-todo-heading-respect-content))
+		(kbd "T") 'org-todo
+		(kbd "t") 'my/org-todo-next
+		(kbd "<") 'org-metaleft
+		(kbd ">") 'org-metaright
+		(kbd "C-<") 'org-shiftmetaleft
+		(kbd "C->") 'org-shiftmetaright
+		(kbd "gh") 'outline-up-heading
+		(kbd "gp") 'outline-previous-heading
+		)
+	  (evil-collection-define-key '(normal insert visual) 'org-mode-map
+		(kbd "M-S-h") 'org-metashiftleft
+		(kbd "M-S-j") 'org-metashiftdown
+		(kbd "M-S-k") 'org-metashiftup
+		(kbd "M-S-l") 'org-metashiftright
+		(kbd "M-h") 'org-metaleft
+		(kbd "M-j") 'org-metadown
+		(kbd "M-k") 'org-metaup
+		(kbd "M-l") 'org-metaright
+		(kbd "RET") 'org-return
+		)
+	  (advice-remove 'evil-collection-org-setup 'my/evil-collection-org-setup-extra))
+	(advice-add 'evil-collection-org-setup :after 'my/evil-collection-org-setup-extra)
+
+
+	(evil-collection-init)
 	)
 
   (use-package evil-surround :ensure t
