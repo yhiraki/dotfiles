@@ -2250,7 +2250,7 @@ SCHEDULED: %t
 	  (evil-collection-define-key 'normal 'dired-mode-map
 		"h" 'dired-subtree-remove
 		"l" 'dired-subtree-insert
-		"r" 'rever-buffer
+		"r" 'revert-buffer
 		(kbd "C-c C-o") 'my/open-in-external-app
 		(kbd "C-j") 'dired-next-dirline
 		(kbd "C-k") 'dired-prev-dirline
