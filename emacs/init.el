@@ -474,21 +474,6 @@ Version 2019-11-04"
   :hook
   (dired-mode . dired-hide-details-mode)
 
-  :bind
-  (:map dired-mode-map
-		(":" . evil-ex)
-		("C-b" .  scroll-up)
-		("C-c C-o" . my/open-in-external-app)
-		("C-f" .  scroll-down)
-		("C-j" . dired-next-dirline)
-		("C-k" . dired-prev-dirline)
-		("h" . dired-subtree-remove)
-		("i" . wdired-change-to-wdired-mode)
-		("j" . dired-next-line)
-		("k" . dired-previous-line)
-		("l" . dired-subtree-insert)
-		)
-
   :config
   (use-package dired-filter :ensure t)
 
@@ -2287,15 +2272,30 @@ SCHEDULED: %t
   (evil-mode)
 
   (evil-set-initial-state 'vterm-mode 'emacs)
-  (evil-set-initial-state 'dired-mode 'emacs)
 
   (use-package evil-collection :ensure t
 	:after evil
 	:diminish evil-collection-unimpaired-mode
 	:config
+
+	(defun my/evil-collection-dired-setup-extra ()
+	  (evil-collection-define-key 'normal 'dired-mode-map
+		"h" 'dired-subtree-remove
+		"l" 'dired-subtree-insert
+		"r" 'rever-buffer
+		(kbd "C-c C-o") 'my/open-in-external-app
+		(kbd "C-j") 'dired-next-dirline
+		(kbd "C-k") 'dired-prev-dirline
+		(kbd "SPC") 'nil  ; for evil leader key
+		)
+	  (advice-remove 'evil-collection-dired-setup 'my/evil-collection-dired-setup-extra))
+	(advice-add 'evil-collection-dired-setup :after 'my/evil-collection-dired-setup-extra)
+
 	(evil-collection-init
 	 '(
 	   (package-menu package)
+	   dired
+	   dired-sidebar
 	   ediff
 	   flycheck
 	   ibuffer
@@ -2304,6 +2304,7 @@ SCHEDULED: %t
 	   profiler
 	   quickrun
 	   replace
+	   wdired
 	   wgrep
 	   xref
 	   ))
