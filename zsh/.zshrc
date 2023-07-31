@@ -7,7 +7,6 @@ autoload -Uz add-zsh-hook
 {
   configure_tmux() {
     if ! command -v tmux >/dev/null ||
-      [ -n "$INSIDE_EMACS" ] ||
       [ -n "$TMUX_IGNORE" ]; then
       return
     fi
@@ -22,9 +21,12 @@ autoload -Uz add-zsh-hook
 
     local TMUX_DEFAULT_NAME=default
 
+    if [ -n "$INSIDE_EMACS" ]; then
+      exec tmux new -s "${PWD##*src/}"
+    fi
+
     if tmux has -t "${TMUX_DEFAULT_NAME}"; then
       exec tmux attach -t "${TMUX_DEFAULT_NAME}"
-      return
     fi
 
     exec tmux new -s "${TMUX_DEFAULT_NAME}"
