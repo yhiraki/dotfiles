@@ -40,6 +40,19 @@
 (custom-set-faces
  '(fringe ((t (:background nil)))))
 
+;; https://jeffkreeftmeijer.com/emacs-native-comp-log/
+(defvar native-comp-deferred-compilation-deny-list nil)
+
+;; Avoid loading old bytecode instead of newer source.
+;; Re: jka-compr: https://www.mattduck.com/2021-05-upgrading-to-emacs-28.html
+;;
+;; NOTE: uncomment the next 3 lines if seeing issues like:
+;;
+;;     Recursive load: "/Applications/Emacs.app/Contents/Resources/lisp/jka-compr.el.gz"
+(setq load-prefer-newer nil)
+(require 'jka-compr)
+(setq load-prefer-newer t)
+
 (provide 'early-init)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; early-init.el ends here
