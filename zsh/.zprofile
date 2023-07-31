@@ -19,4 +19,10 @@ echo -e "\033]6;1;bg;red;brightness;34\a"
 echo -e "\033]6;1;bg;green;brightness;34\a"
 echo -e "\033]6;1;bg;blue;brightness;34\a"
 
+if [[ "$INSIDE_EMACS" = 'vterm' ]] &&
+  [[ -n ${EMACS_VTERM_PATH} ]] &&
+  [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
+  source ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+fi
+
 echo '.zprofile loaded'

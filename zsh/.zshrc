@@ -19,17 +19,15 @@ autoload -Uz add-zsh-hook
       return
     fi
 
-    local TMUX_DEFAULT_NAME=default
+    local VTERM_DEFAULT_SESSION="${PWD##*src/}"
+    VTERM_DEFAULT_SESSION="${VTERM_DEFAULT_SESSION//./_}"
 
     if [ -n "$INSIDE_EMACS" ]; then
-      exec tmux new -s "${PWD##*src/}"
+      exec tmux new-session -A -s "${VTERM_DEFAULT_SESSION}"
     fi
 
-    if tmux has -t "${TMUX_DEFAULT_NAME}"; then
-      exec tmux attach -t "${TMUX_DEFAULT_NAME}"
-    fi
-
-    exec tmux new -s "${TMUX_DEFAULT_NAME}"
+    local TMUX_DEFAULT_NAME=default
+    exec tmux new-session -A -s "${TMUX_DEFAULT_NAME}"
   }
   [ -n "${TTY}" ] || [ -n "${tty}" ] &&
     configure_tmux
