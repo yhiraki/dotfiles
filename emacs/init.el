@@ -518,6 +518,7 @@ Version 2019-11-04"
 			"C-x" #'vterm--self-insert
 			"M-t" #'vterm-toggle-cd
 			"SPC" #'vterm--self-insert
+			[(control return)] #'vterm-toggle-insert-cd
 			)
   )
 
@@ -2238,8 +2239,6 @@ SCHEDULED: %t
 
   (evil-mode)
 
-  (evil-set-initial-state 'vterm-mode 'emacs)
-
   (use-package evil-collection :ensure t
 	:after evil
 	:diminish evil-collection-unimpaired-mode
@@ -2295,6 +2294,8 @@ SCHEDULED: %t
 
 
 	(evil-collection-init)
+
+	  (evil-set-initial-state 'vterm-mode 'emacs)
 	)
 
   (use-package evil-surround :ensure t
