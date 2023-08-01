@@ -493,6 +493,23 @@ Version 2019-11-04"
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
+
+  :config
+  (defun my/get-tmux-prefix ()
+	(let* ((out (shell-command-to-string "tmux show-options -g prefix")))
+	  (when out
+		(string-match "prefix \\(.*\\)" out)
+		(match-string 1 out))))
+
+  (defvar my/tmux-prefix (my/get-tmux-prefix))
+
+  (defun my/vterm-insert-tmux-detach ()
+	(interactive)
+	(unless my/tmux-prefix
+	  (error "Could not get tmux prefix key"))
+	(vterm-send (kbd my/tmux-prefix))
+	(vterm-send (kbd "d")))
+
   :general
   (:keymaps 'vterm-mode-map
 			:states '(insert emacs)
@@ -506,7 +523,7 @@ Version 2019-11-04"
 			"C-p" #'vterm--self-insert
 			"C-r" #'vterm--self-insert
 			"C-x" #'vterm--self-insert
-			"M-t" #'vterm-toggle-cd
+			"M-t" #'my/vterm-insert-tmux-detach
 			"SPC" #'vterm--self-insert
 			[(control return)] #'vterm-toggle-insert-cd
 			)
