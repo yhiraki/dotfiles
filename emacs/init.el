@@ -394,16 +394,6 @@ Version 2019-11-04"
   (open-junk-file-format "~/.cache/junkfile/%Y/%m/%Y-%m%d-%H%M%S.")
   )
 
-(use-package highlight-indent-guides :ensure t
-  :if window-system
-  :diminish highlight-indent-guides-mode
-  :hook
-  ((prog-mode yaml-mode) . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'character)
-  (highlight-indent-guides-responsive t)
-  )
-
 (use-package eldoc
   :diminish eldoc-mode
   :hook ((emacs-lisp-mode-hook lisp-mode-hook) . eldoc-mode)
