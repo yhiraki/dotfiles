@@ -3,6 +3,12 @@
 
 autoload -Uz add-zsh-hook
 
+if [[ "$INSIDE_EMACS" = 'vterm' ]] &&
+  [[ -n ${EMACS_VTERM_PATH} ]] &&
+  [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
+  source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
+fi
+
 # Tmux
 {
   configure_tmux() {
@@ -23,7 +29,9 @@ autoload -Uz add-zsh-hook
     VTERM_DEFAULT_SESSION="${VTERM_DEFAULT_SESSION//./_}"
 
     if [ -n "$INSIDE_EMACS" ]; then
-      exec tmux new-session -A -s "${VTERM_DEFAULT_SESSION}"
+      exec tmux new-session -A -s "${VTERM_DEFAULT_SESSION}" \
+        -e INSIDE_EMACS=${INSIDE_EMACS} \
+        -e EMACS_VTERM_PATH=${EMACS_VTERM_PATH}
     fi
 
     local TMUX_DEFAULT_NAME=default
