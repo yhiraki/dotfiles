@@ -1762,7 +1762,13 @@ SCHEDULED: %t
 	  )
 
 	(use-package ob-async :ensure t
-	  :after ob)
+	  :after ob
+	  :config
+	  ;; https://github.com/astahlman/ob-async/issues/75
+	  (defun no-hide-overlays (orig-fun &rest args)
+		(setq org-babel-hide-result-overlays nil))
+	  (advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays)
+	  )
 
 	(use-package ob-js
 	  :config
