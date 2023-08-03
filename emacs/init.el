@@ -510,7 +510,11 @@ Version 2019-11-04"
 	  (unless my/tmux-prefix
 		(error "Could not get tmux prefix key")))
 	(vterm-send (kbd my/tmux-prefix))
-	(vterm-send (kbd "d")))
+	(vterm-send (kbd "d"))
+
+	;; unless TMUX buffer
+	(vterm-send (kbd "C-c"))
+	(vterm-send (kbd "C-d")))
 
   :bind
   ("M-t" . #'vterm-other-window)
