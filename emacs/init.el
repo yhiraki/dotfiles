@@ -506,9 +506,14 @@ Version 2019-11-04"
   (defun my/vterm-insert-tmux-detach ()
 	(interactive)
 	(unless my/tmux-prefix
-	  (error "Could not get tmux prefix key"))
+	  (setq my/tmux-prefix (my/get-tmux-prefix))
+	  (unless my/tmux-prefix
+		(error "Could not get tmux prefix key")))
 	(vterm-send (kbd my/tmux-prefix))
 	(vterm-send (kbd "d")))
+
+  :bind
+  ("M-t" . #'vterm-other-window)
 
   :general
   (:keymaps 'vterm-mode-map
@@ -525,15 +530,7 @@ Version 2019-11-04"
 			"C-x" #'vterm--self-insert
 			"M-t" #'my/vterm-insert-tmux-detach
 			"SPC" #'vterm--self-insert
-			[(control return)] #'vterm-toggle-insert-cd
 			)
-  )
-
-(use-package vterm-toggle :ensure t
-  :custom
-  (vterm-toggle-scope 'project)
-  :bind
-  ("M-t" . #'vterm-toggle-cd)
   )
 
 (use-package flycheck :ensure t
