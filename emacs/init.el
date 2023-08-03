@@ -2358,6 +2358,8 @@ SCHEDULED: %t
 	  (display-buffer-reuse-window display-buffer-in-side-window)
 	  (reusable-frames)
 	  (side . bottom))
+	 ("\\*vterm\\*"
+	  (display-buffer-in-side-window))
 
 	 ;; Org agenda at top
 	 ("\\*Agenda Commands\\*"
