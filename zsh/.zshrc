@@ -25,17 +25,24 @@ fi
       return
     fi
 
-    local VTERM_DEFAULT_SESSION="${PWD##*src/}"
-    VTERM_DEFAULT_SESSION="${VTERM_DEFAULT_SESSION//./_}"
+    local pj_root cwd session window envs
 
-    if [ -n "$INSIDE_EMACS" ]; then
-      exec tmux new-session -A -s "${VTERM_DEFAULT_SESSION}" \
-        -e INSIDE_EMACS=${INSIDE_EMACS} \
-        -e EMACS_VTERM_PATH=${EMACS_VTERM_PATH}
+    pj_root=$(git rev-parse --show-toplevel)
+    pj_root=${pj_root//./_}
+    pj_name=$(echo $pj_root | cut -d/ -f6-8)
+    cwd=${PWD//./_}
+    session="${pj_name:-default}"
+    window="${cwd/#${pj_root}/}"
+    window="${window:-_}"
+
+    if tmux has-session -t "${session}"; then
+      if ! tmux has-session -t "${session}:${window}"; then
+        tmux new-window -t "${session}" -n "${window}"
+      fi
+      exec tmux attach-session -t "${session}:${window}"
     fi
 
-    local TMUX_DEFAULT_NAME=default
-    exec tmux new-session -A -s "${TMUX_DEFAULT_NAME}"
+    exec tmux new-session -A -s "${session}" -n "${window}"
   }
   [ -n "${TTY}" ] || [ -n "${tty}" ] &&
     configure_tmux
