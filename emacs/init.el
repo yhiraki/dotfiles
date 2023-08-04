@@ -501,20 +501,21 @@ Version 2019-11-04"
 		(string-match "prefix \\(.*\\)" out)
 		(match-string 1 out))))
 
-  (defvar my/tmux-prefix (my/get-tmux-prefix))
+  (defvar my/tmux-prefix "C-t")
 
   (defun my/vterm-insert-tmux-detach ()
 	(interactive)
 	(unless my/tmux-prefix
-	  (setq my/tmux-prefix (my/get-tmux-prefix))
-	  (unless my/tmux-prefix
-		(error "Could not get tmux prefix key")))
-	(vterm-send (kbd my/tmux-prefix))
-	(vterm-send (kbd "d"))
+	  (error "Set tmux prefix key"))
+	(let ((buf (current-buffer)))
+	  (vterm-send (kbd my/tmux-prefix))
+	  (vterm-send (kbd "d"))
 
-	;; unless TMUX buffer
-	(vterm-send (kbd "C-c"))
-	(vterm-send (kbd "C-d")))
+	  ;; unless TMUX buffer
+	  (sleep-for 0.2)
+	  (when (buffer-live-p buf)
+		(vterm-send (kbd "C-c"))
+		(vterm-send (kbd "C-d")))))
 
   :bind
   ("M-t" . #'vterm-other-window)
