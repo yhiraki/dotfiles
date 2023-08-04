@@ -713,11 +713,13 @@ Version 2019-11-04"
   )
 
 (use-package lsp-mode :ensure t
-  :hook ((c++-mode
-          js-mode
-          ;; sh-mode
-          typescript-mode)
-         . lsp)
+  :hook ((
+		  c++-mode
+		  js-mode
+		  terraform-mode
+		  ;; sh-mode
+		  typescript-mode
+		  ) . lsp)
 
   :custom
   (lsp-auto-guess-root t)
