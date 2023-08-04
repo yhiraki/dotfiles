@@ -514,8 +514,7 @@ Version 2019-11-04"
 	  ;; unless TMUX buffer
 	  (sleep-for 0.2)
 	  (when (buffer-live-p buf)
-		(vterm-send (kbd "C-c"))
-		(vterm-send (kbd "C-d")))))
+		(quit-window))))
 
   :bind
   ("M-t" . #'vterm-other-window)
