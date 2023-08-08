@@ -1683,17 +1683,6 @@ SCHEDULED: %t
 	(org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
 	(org-babel-default-header-args
 	 (append org-babel-default-header-args '((:exports . "both") (:eval . "no-export"))))
-	;; https://github.com/astahlman/ob-async/issues/61
-	;; for ob-async
-	(org-babel-load-languages
-	 '(
-	   (chatgpt . t)
-	   (emacs-lisp . t)
-	   (mermaid . t)
-	   (plantuml . t)
-	   (python . t)
-	   (shell . t)
-	   ))
 	:config
 	;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
 	;; (defun my/org-confirm-babel-evaluate (lang body)
@@ -1715,7 +1704,19 @@ SCHEDULED: %t
 	;; 				   "uml"
 	;; 				   ))))
 
-	:config
+	;; https://github.com/astahlman/ob-async/issues/61
+	;; for ob-async
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '(
+	   (chatgpt . t)
+	   (emacs-lisp . t)
+	   (mermaid . t)
+	   (plantuml . t)
+	   (python . t)
+	   (shell . t)
+	   )
+	 )
 
 	(use-package ob-restclient :ensure t)
 
