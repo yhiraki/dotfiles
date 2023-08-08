@@ -2309,10 +2309,10 @@ SCHEDULED: %t
 	  (advice-remove 'evil-collection-org-setup 'my/evil-collection-org-setup-extra))
 	(advice-add 'evil-collection-org-setup :after 'my/evil-collection-org-setup-extra)
 
+	(setq evil-collection-mode-list (delete 'vterm evil-collection-mode-list))
+	(evil-set-initial-state 'vterm-mode 'emacs)
 
 	(evil-collection-init)
-
-	  (evil-set-initial-state 'vterm-mode 'emacs)
 	)
 
   (use-package evil-surround :ensure t
