@@ -1534,13 +1534,15 @@ SCHEDULED: %t
 	   (unless (executable-find "bookinfo")
 		 (error "Requires \"bookinfo\" command"))
 	   (let ((info
-			  (json-read-from-string
-			   (shell-command-to-string
-				(s-join " "
-						(mapcar
-						 #'shell-quote-argument
-						 `("bookinfo" ,url))))
-			   )))
+			  (ignore-errors
+				(json-read-from-string
+				 (shell-command-to-string
+				  (s-join " "
+						  (mapcar
+						   #'shell-quote-argument
+						   `("bookinfo" ,url))))))))
+		 (unless info
+		   (setq info `((url . ,url)(name . "%?"))))
 		 (format
 		  "%s
 :PROPERTIES:
