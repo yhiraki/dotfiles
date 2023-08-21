@@ -12,10 +12,13 @@ fi
 # Tmux
 {
   configure_tmux() {
-    if ! command -v tmux >/dev/null ||
-      [ -n "$TMUX_IGNORE" ]; then
-      return
-    fi
+	if ! command -v tmux >/dev/null; then
+	  return
+	fi
+
+	if [ -z "$INSIDE_EMACS" ] && [ -n "$TMUX_IGNORE" ]; then
+	  return
+	fi
 
     if [[ -n "$TMUX" ]]; then
       function my_refresh_tmux_status() {
