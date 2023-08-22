@@ -1481,6 +1481,11 @@ Version 2019-11-04"
 	:custom
 	(org-capture-templates
 	 `(
+	   ("d" "Diary" entry (file+olp+datetree my/org-capture-file-this-year) "** %(format-time-string \"%H:%M\") - %?
+:LOGBOOK:
+- created at %U
+:END:
+")
 	   ("b" "Book" entry (file+headline "books.org" "Books") "** WISH %(my/book-templeate-from-url \"%c\")%?")
 	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
 SCHEDULED: %t
@@ -1514,6 +1519,12 @@ SCHEDULED: %t
 	   ))
 
 	:config
+	(defun my/org-capture-file-this-year ()
+	  (f-join
+	   org-directory
+	   "diary"
+	   (format-time-string "%Y.org")))
+
 	(defun my/org-capture-file-today ()
 	  (f-join
 	   org-directory
