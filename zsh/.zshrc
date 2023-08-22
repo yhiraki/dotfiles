@@ -156,6 +156,9 @@ fi
     cd "$(ff-select-repo)" || return
   }
 
+  gpip() {
+    PIP_REQUIRE_VIRTUALENV="" pip "$@"
+  }
 }
 
 # Zsh overrides

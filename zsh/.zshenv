@@ -157,6 +157,8 @@ LOCATE_PATH="$HOME/var/db/locate.database"
 
 PIPENV_VENV_IN_PROJECT=true
 
+PIP_REQUIRE_VIRTUALENV=true
+
 # fzf
 command -v fzf >/dev/null && {
 
