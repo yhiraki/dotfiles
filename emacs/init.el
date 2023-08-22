@@ -1403,13 +1403,13 @@ Version 2019-11-04"
 		:target (file+head "public/${slug}.org"
 						   "#+title: ${title}\n#+DATE:")
 		:unnarrowed t)))
-	(org-roam-dailies-capture-templates
-	 `(("d" "default" entry
-		"* %?"
-		:target (file+head "%<%Y-%m-%d>.org"
-						   "#+SETUPFILE: ../../tags.org\n#+OPTIONS: ^:{} H:5 toc:nil\n#+title: %<%Y-%m-%d>\n"))))
-	:bind-keymap
-	("C-c n d" . org-roam-dailies-map)
+	;; (org-roam-dailies-capture-templates
+	;;  `(("d" "default" entry
+	;; 	"* %?"
+	;; 	:target (file+head "%<%Y-%m-%d>.org"
+	;; 					   "#+SETUPFILE: ../../tags.org\n#+OPTIONS: ^:{} H:5 toc:nil\n#+title: %<%Y-%m-%d>\n"))))
+	;; :bind-keymap
+	;; ("C-c n d" . org-roam-dailies-map)
 	:bind
 	("C-c n f" . org-roam-node-find)
 	(:map org-mode-map
