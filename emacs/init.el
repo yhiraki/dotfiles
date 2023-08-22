@@ -1506,7 +1506,7 @@ SCHEDULED: %t
 %(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
 
 #+begin_src %(my/get-major-mode \"%F\")
-%i
+%(org-escape-code-in-string \"%i\")
 #+end_src
 
 %?
