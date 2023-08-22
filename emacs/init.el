@@ -1481,7 +1481,6 @@ Version 2019-11-04"
 	:custom
 	(org-capture-templates
 	 `(
-	   ("B" "Blog" plain (file+olp "blog.org" "Blog Ideas") "hugo%?")
 	   ("b" "Book" entry (file+headline "books.org" "Books") "** WISH %(my/book-templeate-from-url \"%c\")%?")
 	   ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
 SCHEDULED: %t
@@ -1491,7 +1490,6 @@ SCHEDULED: %t
 ")
 	   ("c" "Item (Clocking)" item (clock) "%U %?")
 	   ("C" "Entry (Clocking)" entry (clock) "* %U %?")
-	   ("j" "Journal" entry (file+olp+datetree "journal.org") "** %U %?" :kill-buffer t)
 	   ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?
 :LOGBOOK:
 - created at %U
