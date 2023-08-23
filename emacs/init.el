@@ -1670,6 +1670,8 @@ SCHEDULED: %t
 	(calendar-mark-holidays-flag t)
 	)
 
+  (use-package org-web-tools :ensure t)
+
   (use-package org-appear :ensure t
 	:hook
 	(org-mode . org-appear-mode)
