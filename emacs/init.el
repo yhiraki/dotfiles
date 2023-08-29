@@ -133,10 +133,10 @@ Version 2019-11-04"
 (use-package emacs
   :hook
   ((ansible
-	yaml-mode)
+	yaml-mode
+	emacs-lisp-mode)
    . (lambda ()
-	   (setq indent-tabs-mode nil)
-	   ))
+	   (setq indent-tabs-mode nil)))
 
   :config
 
