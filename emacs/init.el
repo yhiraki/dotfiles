@@ -2478,8 +2478,9 @@ SCHEDULED: %t
                       tabs           ; タブ
                       spaces         ; スペース
                       empty          ; 先頭/末尾の空行
-                      space-mark     ; 表示のマッピング
-                      tab-mark))
+                      space-mark
+                      tab-mark
+                      ))
   (whitespace-display-mappings
    '((space-mark ?\u3000 [?\□])
      ;; WARNING: the mapping below has a problem.
@@ -2500,10 +2501,10 @@ SCHEDULED: %t
          calendar-mode))
 
   :custom-face
-  (whitespace-empty    ((t (:background "controlBackgroundColor" :foreground "DeepPink" :underline t))))
-  (whitespace-space    ((t (:background "controlBackgroundColor" :foreground "GreenYellow" :weight bold))))
-  (whitespace-tab      ((t (:background "controlBackgroundColor"))))
-  (whitespace-trailing ((t (:background "controlBackgroundColor" :foreground "DeepPink" :underline t :inherit 'default))))
+  (whitespace-empty    ((t (:background nil :foreground "gray12" :strike-through t :inherit nil))))
+  (whitespace-space    ((t (:background nil :foreground "GreenYellow" :inherit nil))))
+  (whitespace-tab      ((t (:background nil :inherit nil))))
+  (whitespace-trailing ((t (:background nil :underline (:color "DeepPink" :style wave) :inherit nil))))
 
   :config
   (set-display-table-slot standard-display-table 'truncation ?<) ; set lcs=extends:<,precedes:<
