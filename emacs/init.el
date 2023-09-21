@@ -2729,6 +2729,14 @@ SCHEDULED: %t
   (global-set-key (kbd "C-h") 'delete-backward-char) ; use this for using terminal
   )
 
+(use-package mozc :ensure t
+  :custom
+  (default-input-method "japanese-mozc"))
+
+(use-package mozc-temp :ensure t
+  :bind
+  ("M-n" . mozc-temp-convert))
+
 (use-package rocket-chat-post
   :commands rocket-chat-edit
   :after evil
