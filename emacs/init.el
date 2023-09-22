@@ -2321,7 +2321,6 @@ SCHEDULED: %t
         (kbd "M-j") 'org-metadown
         (kbd "M-k") 'org-metaup
         (kbd "M-l") 'org-metaright
-        (kbd "RET") 'org-return
         )
       (advice-remove 'evil-collection-org-setup 'my/evil-collection-org-setup-extra))
     (advice-add 'evil-collection-org-setup :after 'my/evil-collection-org-setup-extra)
