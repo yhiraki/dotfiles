@@ -1502,7 +1502,11 @@ SCHEDULED: %t
 :END:
 ")
        ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** DONE %?\nCLOSED: %U" :clock-in t :clock-resume t)
-       ("m" "Meeting Note" entry (file+headline "inbox.org" "Inbox") "** MEETING %a\nCLOSED: %T\n%?")
+       ("m" "Meeting Note" entry (file+headline "meetings.org" "Meetings") "** NEXT %?
+:LOGBOOK:
+- created at %U
+:END:
+")
        ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
