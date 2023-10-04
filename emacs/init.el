@@ -1489,25 +1489,19 @@ Version 2019-11-04"
 ")
        ("b" "Book" entry (file+headline "books.org" "Books") "** WISH %(my/book-templeate-from-url \"%c\")%?")
        ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
-SCHEDULED: %t
 :LOGBOOK:
 - created at %U
 :END:
 ")
+       ("T" "Task (Interrupt)" entry (file+headline "todos.org" "Todos") "** DONE %?\nCLOSED: %U" :clock-in t :clock-resume t)
        ("c" "Item (Clocking)" item (clock) "%U %?")
        ("C" "Entry (Clocking)" entry (clock) "* %U %?")
-       ("i" "Inbox" entry (file+headline "inbox.org" "Inbox") "** TODO %?
-:LOGBOOK:
-- created at %U
-:END:
-")
-       ("I" "Interrupt" entry (file+headline "inbox.org" "Inbox") "** DONE %?\nCLOSED: %U" :clock-in t :clock-resume t)
        ("m" "Meeting Note" entry (file+headline "meetings.org" "Meetings") "** NEXT %?
 :LOGBOOK:
 - created at %U
 :END:
 ")
-       ("r" "Review" entry (file+headline "inbox.org" "Inbox") "\
+       ("r" "Review" entry (file+headline "todos.org" "Todos") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
  on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
@@ -1925,9 +1919,10 @@ SCHEDULED: %t
        ))
      ("r" "GTD review"
       ((tags-todo "TAGS=\"\"+LEVEL=2"
-                  ((org-agenda-files '("inbox.org" "todos.org"))
+                  ((org-agenda-files '("todos.org"))
                    (org-agenda-overriding-header "Untagged TODOs")))
-       (todo "TODO" (,my/org-agenda-entry-is-not-project
+       (todo "TODO" ((org-agenda-files '("todos.org"))
+                     ,my/org-agenda-entry-is-not-project
                      (org-agenda-overriding-header "Todos: ")))
        (todo 'not-done (,my/org-agenda-entry-is-project
                         (org-agenda-overriding-header "Projects: ")))
@@ -1936,7 +1931,7 @@ SCHEDULED: %t
        ))
      ("A" "Done tasks to be archived"
       ((tags "CLOSED<=\"<-1w>\"+LEVEL=2"
-             ((org-agenda-files '("inbox.org" "todos.org"))))))
+             ((org-agenda-files '("todos.org"))))))
      ("b" "Books"
       ((tags "+LEVEL=2"
              ((org-agenda-files '("books.org"))))))
@@ -2227,9 +2222,9 @@ SCHEDULED: %t
     (interactive)
     (find-file (locate-user-emacs-file "init.el")))
 
-  (defun my/find-inbox-org ()
+  (defun my/find-org-todos ()
     (interactive)
-    (find-file (f-join org-directory "inbox.org")))
+    (find-file (f-join org-directory "todos.org")))
 
   (evil-define-key nil 'global
     (kbd "<leader>/") 'imenu
@@ -2238,7 +2233,6 @@ SCHEDULED: %t
     (kbd "<leader>a") 'org-agenda
     (kbd "<leader>b") 'bookmark-jump
     (kbd "<leader>c") 'org-capture
-    (kbd "<leader>i") 'my/find-inbox-org
     (kbd "<leader>f b") 'switch-to-buffer
     (kbd "<leader>f d") 'dired-sidebar-toggle-sidebar
     (kbd "<leader>f f") 'find-file
@@ -2270,6 +2264,7 @@ SCHEDULED: %t
     (kbd "<leader>o l") 'org-store-link
     (kbd "<leader>o s") 'org-save-all-org-buffers
     (kbd "<leader>s") 'magit-status
+    (kbd "<leader>t") 'my/find-org-todos
     (kbd "<leader>z e") 'eval-buffer
     (kbd "<leader>z k") 'save-buffers-kill-emacs
     (kbd "<leader>z r") 'restart-emacs
