@@ -1400,10 +1400,7 @@ Version 2019-11-04"
         :target (file+head "nodes/%<%Y%m%d%H%M%S>-${slug}.org"
                            "#+title: ${title}\n#+DATE:")
         :unnarrowed t)
-       ("p" "public" plain "%?"
-        :target (file+head "public/${slug}.org"
-                           "#+title: ${title}\n#+DATE:")
-        :unnarrowed t)))
+       ))
     ;; (org-roam-dailies-capture-templates
     ;;  `(("d" "default" entry
     ;;     "* %?"
