@@ -1605,6 +1605,9 @@ Version 2019-11-04"
   (use-package org-attach
     :custom
     (org-attach-directory (f-join org-directory "data"))
+
+    :config
+    (use-package org-attach-git)
     )
 
   (use-package org-download :ensure t
