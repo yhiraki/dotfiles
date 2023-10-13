@@ -1401,6 +1401,9 @@ Version 2019-11-04"
                            "#+title: ${title}\n#+DATE:")
         :unnarrowed t)
        ))
+    (org-roam-db-node-include-function
+     (lambda ()
+       (not (member "ATTACH" (org-get-tags)))))
     ;; (org-roam-dailies-capture-templates
     ;;  `(("d" "default" entry
     ;;     "* %?"
@@ -1599,6 +1602,11 @@ Version 2019-11-04"
     (org-superstar-leading       ((t (:height 1.3))))
     )
 
+  (use-package org-attach
+    :custom
+    (org-attach-directory (f-join org-directory "data"))
+    )
+
   (use-package org-download :ensure t
     :commands
     (org-download-clipboard
@@ -1606,8 +1614,7 @@ Version 2019-11-04"
      org-download-screenshot)
 
     :custom
-    (org-download-heading-lvl nil)
-    (org-download-image-dir (concat (file-name-as-directory org-directory) "images"))
+    (org-download-method 'attach)
     (org-download-screenshot-method "screencapture -i %s")
 
     :init
