@@ -86,7 +86,7 @@ ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 SHELL=/bin/zsh
 
-PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin"
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin:$PATH"
 
 GOPATH="$HOME"
 PATH="$PATH:$GOPATH/bin"
