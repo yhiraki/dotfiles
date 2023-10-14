@@ -60,6 +60,13 @@
 (defvar linux-p (eq system-type 'gnu/linux))
 (defvar carbon-p (eq system-type 'mac))
 (defvar meadow-p (featurep 'meadow))
+(defvar wsl-p
+  (let* ((ver-file "/proc/version")
+         (exists? (file-exists-p ver-file)))
+    (when exists?
+      (with-temp-buffer
+        (insert-file-contents ver-file)
+        (when (string-match "WSL" (buffer-string)) t)))))
 
 (defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
@@ -99,9 +106,16 @@ Version 2019-11-04"
          (lambda ($fpath) (let ((process-connection-type nil))
                             (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
+(defconst my/filer-command
+  (or
+   (when darwin-p "open")
+   (when wsl-p "explorer.exe")))
+
 (defun my/open-current-dir ()
   (interactive)
-  (shell-command "open ."))
+  (unless my/filer-command
+    (error "Cannot open filer"))
+  (shell-command (format "%s ." my/filer-command)))
 
 (defun my/find-up-directory (filename basedir)
   "Find a FILENAME in upper level directories from BASEDIR."
