@@ -124,12 +124,11 @@ Version 2019-11-04"
 (defun my/open-file (f)
   (or
    (when darwin-p (my/open-file-darwin f))
-   (when wsl-p (my/open-file-wsl f))))
+   (when wsl-p (my/open-file-wsl f))
+   (error "No function for open file")))
 
 (defun my/open-current-dir ()
   (interactive)
-  (unless my/open-file
-    (error "No function for open file"))
   (my/open-file "."))
 
 (defun my/find-up-directory (filename basedir)
