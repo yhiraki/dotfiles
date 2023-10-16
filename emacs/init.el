@@ -106,16 +106,31 @@ Version 2019-11-04"
          (lambda ($fpath) (let ((process-connection-type nil))
                             (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
-(defconst my/filer-command
+(defun my/open-file-darwin (file-or-directory)
+  "Open FILE-OR-DIRECTORY in darwin."
+  (let* ((cmd (format "open %s" file-or-directory)))
+    (shell-command cmd)))
+
+(defun my/open-file-wsl (file-or-directory)
+  "Open FILE-OR-DIRECTORY in wsl."
+  (let* ((cmd (format "explorer.exe $(wslpath -w %s)" file-or-directory)))
+    (shell-command cmd)))
+
+(defun my/select-file-open ()
   (or
-   (when darwin-p "open")
-   (when wsl-p "explorer.exe")))
+   (ignore-error (dired-get-filename))
+   (buffer-file-name)))
+
+(defun my/open-file (f)
+  (or
+   (when darwin-p (my/open-file-darwin f))
+   (when wsl-p (my/open-file-wsl f))))
 
 (defun my/open-current-dir ()
   (interactive)
-  (unless my/filer-command
-    (error "Cannot open filer"))
-  (shell-command (format "%s ." my/filer-command)))
+  (unless my/open-file
+    (error "No function for open file"))
+  (my/open-file "."))
 
 (defun my/find-up-directory (filename basedir)
   "Find a FILENAME in upper level directories from BASEDIR."
