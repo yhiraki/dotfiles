@@ -116,16 +116,10 @@ Version 2019-11-04"
   (let* ((cmd (format "explorer.exe $(wslpath -w %s)" file-or-directory)))
     (shell-command cmd)))
 
-(defun my/select-file-open ()
+(defvar my/open-file
   (or
-   (ignore-error (dired-get-filename))
-   (buffer-file-name)))
-
-(defun my/open-file (f)
-  (or
-   (when darwin-p (my/open-file-darwin f))
-   (when wsl-p (my/open-file-wsl f))
-   (error "No function for open file")))
+   (when darwin-p #'my/open-file-darwin)
+   (when wsl-p #'my/open-file-wsl)))
 
 (defun my/open-current-dir ()
   (interactive)
