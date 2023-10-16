@@ -71,41 +71,6 @@
 (defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
 
-(defun my/open-in-external-app (&optional @fname)
-  "Open the current file or dired marked files in external app.
-The app is chosen from your OS's preference.
-
-When called in emacs lisp, if @fname is given, open that.
-
-URL `http://ergoemacs.org/emacs/emacs_dired_open_file_in_ext_apps.html'
-Version 2019-11-04"
-  (interactive)
-  (let* (
-         ($file-list
-          (if @fname
-              (progn (list @fname))
-            (if (string-equal major-mode "dired-mode")
-                (dired-get-marked-files)
-              (list (buffer-file-name)))))
-         ($do-it-p (if (<= (length $file-list) 5)
-                       t
-                     (y-or-n-p "Open more than 5 files? "))))
-    (when $do-it-p
-      (cond
-       ((string-equal system-type "windows-nt")
-        (mapc
-         (lambda ($fpath)
-           (w32-shell-execute "open" $fpath)) $file-list))
-       ((string-equal system-type "darwin")
-        (mapc
-         (lambda ($fpath)
-           (shell-command
-            (concat "open " (shell-quote-argument $fpath))))  $file-list))
-       ((string-equal system-type "gnu/linux")
-        (mapc
-         (lambda ($fpath) (let ((process-connection-type nil))
-                            (start-process "" nil "xdg-open" $fpath))) $file-list))))))
-
 (defun my/open-file-darwin (file-or-directory)
   "Open FILE-OR-DIRECTORY in darwin."
   (let* ((cmd (format "open %s" file-or-directory)))
@@ -116,10 +81,14 @@ Version 2019-11-04"
   (let* ((cmd (format "explorer.exe $(wslpath -w %s)" file-or-directory)))
     (shell-command cmd)))
 
-(defvar my/open-file
+(defvar my/open-file-function
   (or
    (when darwin-p #'my/open-file-darwin)
    (when wsl-p #'my/open-file-wsl)))
+
+(defun my/open-file (file-or-directory)
+  "Open FILE-OR-DIRECTORY."
+  (funcall my/open-file-function file-or-directory))
 
 (defun my/open-current-dir ()
   (interactive)
@@ -479,6 +448,12 @@ Version 2019-11-04"
 (use-package dired
   :hook
   (dired-mode . dired-hide-details-mode)
+
+  :init
+  (defun my/dired-open-in-external-app ()
+    "Open file in external app on dired."
+    (interactive)
+    (my/open-file (dired-get-filename)))
 
   :config
   (use-package dired-filter :ensure t)
@@ -2311,7 +2286,7 @@ Version 2019-11-04"
         "h" 'dired-subtree-remove
         "l" 'dired-subtree-insert
         "r" 'revert-buffer
-        (kbd "C-c C-o") 'my/open-in-external-app
+        (kbd "C-c C-o") 'my/dired-open-in-external-app
         (kbd "C-j") 'dired-next-dirline
         (kbd "C-k") 'dired-prev-dirline
         (kbd "SPC") 'nil  ; for evil leader key
