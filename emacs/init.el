@@ -1195,11 +1195,14 @@
     (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
     )
 
-  (defun my/org-mode-set-prop-timestamp (prop)
+  (defun my/org-mode-set-prop-timestamp (prop &optional inactive)
     "Set timestamp PROP if it does not exists."
-    (let* ((exists? (org-entry-get (point) prop)))
+    (let* ((exists? (org-entry-get (point) prop))
+           (str (if inactive
+                    (format-time-string "[%Y-%m-%d %T]")
+                  (format-time-string "<%Y-%m-%d %T>"))))
       (unless exists?
-        (org-set-property prop (format-time-string "<%Y-%m-%d %T>")))))
+        (org-set-property prop str))))
 
   (defun my/org-mode-insert-time-stamp-created-heading ()
     (save-excursion
