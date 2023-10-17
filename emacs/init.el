@@ -1514,6 +1514,7 @@
     :commands org-capture
     :hook
     (org-capture-mode . (lambda () (evil-insert 0)))
+    (org-capture-prepare-finalize . my/org-mode-insert-time-stamp-created-heading)
 
     :custom
     (org-capture-templates
