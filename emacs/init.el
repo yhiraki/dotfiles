@@ -341,13 +341,9 @@
   )
 
 (use-package time-stamp
+  :commands time-stamp
   :hook
   (before-save . time-stamp)
-  (org-mode
-   . (lambda ()
-       (setq-local time-stamp-start "DATE:")
-       (setq-local time-stamp-end "$")
-       (setq-local time-stamp-format " %Y-%02m-%02d %02H:%02M:%02S")))
   :custom
   (time-stamp-format "%Y-%02m-%02d %02H:%02M:%02S")
   )
@@ -1208,6 +1204,21 @@
                ("[-]" . "〼")
                ("[X]" . "☑")
                ))))
+  (org-mode
+   . (lambda ()
+       (add-hook 'before-save-hook
+                 #'(lambda ()
+                     (let ((time-stamp-start "DATE:")
+                           (time-stamp-end "$")
+                           (time-stamp-format " %Y-%02m-%02d"))
+                       (time-stamp))
+                     nil t))
+       (add-hook 'before-save-hook
+                 #'(lambda ()
+                     (let ((time-stamp-start ":MODIFIED:[ \t]+\\\\?[\"<]+"))
+                       (time-stamp))
+                     nil t))
+       ))
 
   :custom
   (org-directory "~/org/")
