@@ -1178,6 +1178,44 @@
 (use-package org :ensure org-contrib
   :diminish org-indent-mode
 
+  :init
+  (defun my/org-mode-update-time-stamp-date ()
+    (let ((time-stamp-start "DATE:")
+          (time-stamp-end "$")
+          (time-stamp-format " %Y-%02m-%02d"))
+      (time-stamp)))
+
+  (defun my/org-mode-update-time-stamp-modified ()
+    (let ((time-stamp-start ":MODIFIED:[ \t]+\\\\?[\"<]+"))
+      (time-stamp)))
+
+  (defun my/setup-org-mode-local-hooks ()
+    (require 'time-stamp)
+    (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
+    (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
+    )
+
+  (defun my/org-mode-set-prop-timestamp (prop)
+    "Set timestamp PROP if it does not exists."
+    (let* ((exists? (org-entry-get (point) prop)))
+      (unless exists?
+        (org-set-property prop (format-time-string "<%Y-%m-%d %T>")))))
+
+  (defun my/org-mode-insert-time-stamp-created-heading ()
+    (save-excursion
+      (org-back-to-heading)
+      (my/org-mode-set-prop-timestamp "CREATED")))
+
+  (defun my/org-mode-insert-time-stamp-file ()
+    (when (and (eq major-mode 'org-mode)
+               (string= (buffer-string) ""))
+      (save-excursion
+        (point-min)
+        (my/org-mode-set-prop-timestamp "CREATED")
+        (my/org-mode-set-prop-timestamp "MODIFIED"))))
+
+  (add-hook 'find-file-hook #'my/org-mode-insert-time-stamp-file)
+
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
   (org-after-todo-state-change . my/org-add-date-for-book-state)
@@ -1204,21 +1242,8 @@
                ("[-]" . "〼")
                ("[X]" . "☑")
                ))))
-  (org-mode
-   . (lambda ()
-       (add-hook 'before-save-hook
-                 #'(lambda ()
-                     (let ((time-stamp-start "DATE:")
-                           (time-stamp-end "$")
-                           (time-stamp-format " %Y-%02m-%02d"))
-                       (time-stamp))
-                     nil t))
-       (add-hook 'before-save-hook
-                 #'(lambda ()
-                     (let ((time-stamp-start ":MODIFIED:[ \t]+\\\\?[\"<]+"))
-                       (time-stamp))
-                     nil t))
-       ))
+  (org-mode . my/setup-org-mode-local-hooks)
+  (org-insert-heading . my/org-mode-insert-time-stamp-created-heading)
 
   :custom
   (org-directory "~/org/")
