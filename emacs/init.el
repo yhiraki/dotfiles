@@ -1207,7 +1207,7 @@
   (defun my/org-mode-insert-time-stamp-created-heading ()
     (save-excursion
       (org-back-to-heading)
-      (my/org-mode-set-prop-timestamp "CREATED")))
+      (my/org-mode-set-prop-timestamp "CREATED" t)))
 
   (defun my/org-mode-insert-time-stamp-file ()
     (when (and (eq major-mode 'org-mode)
