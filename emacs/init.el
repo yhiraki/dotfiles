@@ -1206,18 +1206,14 @@
 
   (defun my/org-mode-insert-time-stamp-created-heading ()
     (save-excursion
-      (org-back-to-heading)
-      (my/org-mode-set-prop-timestamp "CREATED" t)))
+      (when (ignore-errors (org-back-to-heading))
+        (my/org-mode-set-prop-timestamp "CREATED" t))))
 
   (defun my/org-mode-insert-time-stamp-file ()
-    (when (and (eq major-mode 'org-mode)
-               (string= (buffer-string) ""))
-      (save-excursion
-        (point-min)
-        (my/org-mode-set-prop-timestamp "CREATED")
-        (my/org-mode-set-prop-timestamp "MODIFIED"))))
-
-  (add-hook 'find-file-hook #'my/org-mode-insert-time-stamp-file)
+    (save-excursion
+      (goto-char (point-min))
+      (my/org-mode-set-prop-timestamp "CREATED")
+      (my/org-mode-set-prop-timestamp "MODIFIED")))
 
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
@@ -1514,7 +1510,11 @@
     :commands org-capture
     :hook
     (org-capture-mode . (lambda () (evil-insert 0)))
-    (org-capture-prepare-finalize . my/org-mode-insert-time-stamp-created-heading)
+    (org-capture-prepare-finalize
+     . (lambda ()
+         (goto-char (point-min))
+         (my/org-mode-insert-time-stamp-created-heading)))
+    (org-capture-before-finalize . my/org-mode-insert-time-stamp-file)
 
     :custom
     (org-capture-templates
