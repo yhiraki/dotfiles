@@ -1409,8 +1409,6 @@
         (org-clock-out)))
     )
 
-  (use-package org-collector)
-
   (use-package org-habit)
 
   (use-package org-roam :ensure t
@@ -1617,10 +1615,6 @@
           (cdr (assq 'ebook info)))
          ))
      )
-
-  (use-package org-checklist
-    :after org
-    )
 
   (use-package org-superstar :ensure t
     :hook (org-mode . org-superstar-mode)
