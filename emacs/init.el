@@ -1517,25 +1517,15 @@
     :custom
     (org-capture-templates
      `(
-       ("d" "Diary" entry (file+olp+datetree my/org-capture-file-this-year) "** %(format-time-string \"%H:%M\") - %?
-:LOGBOOK:
-- created at %U
-:END:
-")
+       ("d" "Diary" entry (file+olp+datetree my/org-capture-file-this-year) "** %(format-time-string \"%H:%M\") - %?")
        ("b" "Book" entry (file+headline "books.org" "Books") "** WISH %(my/book-templeate-from-url \"%c\")%?")
-       ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?
-:LOGBOOK:
-- created at %U
-:END:
-")
-       ("T" "Task (Interrupt)" entry (file+headline "todos.org" "Todos") "** DONE %?\nCLOSED: %U" :clock-in t :clock-resume t)
+       ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?")
+       ("T" "Task (Interrupt)" entry (file+headline "todos.org" "Todos") "** STARTED %?"
+        :clock-in t :clock-resume t
+        :prepare-finalize (lambda () (org-todo 'done)))
        ("c" "Item (Clocking)" item (clock) "%U %?")
        ("C" "Entry (Clocking)" entry (clock) "* %U %?")
-       ("m" "Meeting Note" entry (file+headline "meetings.org" "Meetings") "** NEXT %?
-:LOGBOOK:
-- created at %U
-:END:
-")
+       ("m" "Meeting Note" entry (file+headline "meetings.org" "Meetings") "** NEXT %?")
        ("r" "Review" entry (file+headline "todos.org" "Todos") "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
