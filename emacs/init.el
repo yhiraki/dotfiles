@@ -1175,7 +1175,7 @@
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
 
-(use-package org :ensure org-contrib
+(use-package org :ensure t :pin gnu
   :diminish org-indent-mode
 
   :init
