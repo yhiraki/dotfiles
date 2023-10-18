@@ -1205,11 +1205,13 @@
         (org-set-property prop str))))
 
   (defun my/org-mode-insert-time-stamp-created-heading ()
+    (interactive)
     (save-excursion
       (when (ignore-errors (org-back-to-heading))
         (my/org-mode-set-prop-timestamp "CREATED" t))))
 
   (defun my/org-mode-insert-time-stamp-file ()
+    (interactive)
     (save-excursion
       (goto-char (point-min))
       (my/org-mode-set-prop-timestamp "CREATED")
