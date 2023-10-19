@@ -1833,6 +1833,13 @@
       (defun no-hide-overlays (orig-fun &rest args)
         (setq org-babel-hide-result-overlays nil))
       (advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays)
+
+      (when (string> org-version "9.6")
+        ;; Fix for using #+CALL: to earn error
+        (advice-remove 'org-babel-execute-src-block 'ob-async-org-babel-execute-src-block)
+        (defun ob-async-org-babel-execute-src-block-fixed (&optional orig-fun arg info params executor-type)
+          (ob-async-org-babel-execute-src-block orig-fun arg info params))
+        (advice-add 'org-babel-execute-src-block :around 'ob-async-org-babel-execute-src-block-fixed))
       )
 
     (use-package ob-js
