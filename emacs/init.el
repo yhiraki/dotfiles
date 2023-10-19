@@ -1195,8 +1195,8 @@
       (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
       (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
       (require 'evil)
-      (add-hook 'evil-insert-state-exit-hook #'my/org-mode-insert-time-stamp-modified-heading t)
-      (add-hook 'evil-operator-state-exit-hook #'my/org-mode-insert-time-stamp-modified-heading t)
+      (add-hook 'evil-insert-state-exit-hook #'my/org-mode-insert-time-stamp-modified-heading nil t)
+      (add-hook 'evil-operator-state-exit-hook #'my/org-mode-insert-time-stamp-modified-heading nil t)
       ))
 
   (defun my/org-mode-set-prop-timestamp (prop &optional inactive overwrite)
