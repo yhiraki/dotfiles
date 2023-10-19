@@ -1190,25 +1190,38 @@
       (time-stamp)))
 
   (defun my/setup-org-mode-local-hooks ()
-    (require 'time-stamp)
-    (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
-    (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
-    )
+    (when (s-prefix? (file-truename org-directory) (buffer-file-name))
+      (require 'time-stamp)
+      (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
+      (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
+      (require 'evil)
+      (add-hook 'evil-insert-state-exit-hook #'my/org-mode-insert-time-stamp-modified-heading t)
+      (add-hook 'evil-operator-state-exit-hook #'my/org-mode-insert-time-stamp-modified-heading t)
+      ))
 
-  (defun my/org-mode-set-prop-timestamp (prop &optional inactive)
+  (defun my/org-mode-set-prop-timestamp (prop &optional inactive overwrite)
     "Set timestamp PROP if it does not exists."
     (let* ((exists? (org-entry-get (point) prop))
            (str (if inactive
                     (format-time-string "[%Y-%m-%d %T]")
                   (format-time-string "<%Y-%m-%d %T>"))))
-      (unless exists?
+      (when (or overwrite (not exists?))
         (org-set-property prop str))))
 
   (defun my/org-mode-insert-time-stamp-created-heading ()
     (interactive)
     (save-excursion
-      (when (ignore-errors (org-back-to-heading))
+      (when (and (ignore-errors (org-back-to-heading))
+                 (org-at-heading-p))
         (my/org-mode-set-prop-timestamp "CREATED" t))))
+
+  (defun my/org-mode-insert-time-stamp-modified-heading ()
+    (interactive)
+    (save-excursion
+      (when (and (ignore-errors (org-back-to-heading))
+                 (org-at-heading-p))
+        (my/org-mode-set-prop-timestamp "CREATED" t)
+        (my/org-mode-set-prop-timestamp "MODIFIED" t t))))
 
   (defun my/org-mode-insert-time-stamp-file ()
     (interactive)
