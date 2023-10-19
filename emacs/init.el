@@ -641,7 +641,8 @@
 (use-package browse-url
   :init
   (defun my/browse-url-wsl-browser (url &rest args)
-    (shell-command (concat "explorer.exe " url)))
+    (with-temp-buffer
+      (shell-command (format "cmd.exe /c start '%s'" url) (current-buffer))))
   :custom
   (browse-url-browser-function
    (if wsl-p
