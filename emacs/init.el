@@ -638,6 +638,17 @@
             "]g" #'diff-hl-next-hunk)
   )
 
+(use-package browse-url
+  :init
+  (defun my/browse-url-wsl-browser (url &rest args)
+    (shell-command (concat "explorer.exe " url)))
+  :custom
+  (browse-url-browser-function
+   (if wsl-p
+       #'my/browse-url-wsl-browser
+     browse-url-browser-function))
+  )
+
 (use-package browse-at-remote :ensure t
   :commands (browse-at-remote browse-at-remote-get-url)
   :custom (browse-at-remote-prefer-symbolic nil) ;; use hash instead of branch name
