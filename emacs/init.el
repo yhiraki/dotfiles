@@ -2780,7 +2780,6 @@
 
 (use-package key-binding :no-require
   :config
-  (global-set-key (kbd "C-\\") nil)
   (global-set-key (kbd "s-t") nil)
   ;; (keyboard-translate ?\C-h ?\C-?)
   (global-set-key (kbd "C-h") 'delete-backward-char) ; use this for using terminal
@@ -2788,11 +2787,8 @@
 
 (use-package mozc :ensure t
   :custom
+  (mozc-candidate-style 'echo-area)
   (default-input-method "japanese-mozc"))
-
-(use-package mozc-temp :ensure t
-  :bind
-  ("M-n" . mozc-temp-convert))
 
 (use-package rocket-chat-post
   :commands rocket-chat-edit
