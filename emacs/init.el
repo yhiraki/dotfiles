@@ -1490,6 +1490,8 @@
     :config
     ;; (require 'org-roam-dailies)
 
+    (defvar my/true-org-roam-directory (file-truename org-roam-directory))
+
     (defun my/unlink-all-markdown-file-links-region (begin end)
       "MarkdownFile link to normal text from BEGIN to END"
       (interactive "r")
@@ -1942,7 +1944,7 @@
 
 (use-package org-agenda
   :commands (org-agenda org-refile)
-  :hook (find-file . my/add-org-roam-to-agenda)
+  :hook (after-save . my/add-org-roam-to-agenda)
   :demand t
 
   :init
@@ -2000,17 +2002,17 @@
      ))
 
   :config
+  (defvar my/true-org-directory (file-truename org-directory))
+
   (defun my/org-agenda-todo-next ()
     "Org agenda todo next cycle"
     (interactive) (org-call-with-arg 'org-agenda-todo 'right)
     )
 
   (defun my/add-org-roam-to-agenda ()
-    (let ((orgdir (file-truename (expand-file-name org-directory))))
-      ;; ~org/ 直下のファイル以外。直下のファイルはすでに追加されているため無視する
-      (when
-          (string-match (concat orgdir "roam/.*/.*\\.org$") buffer-file-name)
-        (add-to-list 'org-agenda-files (string-replace orgdir org-directory buffer-file-name)))))
+    (let ((buffname (file-truename (buffer-file-name))))
+      (when (s-prefix? my/true-org-roam-directory buffname)
+        (add-to-list 'org-agenda-files buffname))))
 
   :bind
   (:map org-agenda-mode-map
