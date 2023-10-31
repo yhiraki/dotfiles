@@ -2042,13 +2042,6 @@
   :config
   (defvar my/true-org-directory (file-truename org-directory))
 
-  (defun my/org-agenda-files-todo ()
-    (with-temp-buffer
-      (let* ((cmd (concat "rg -l '^\\*+ (TODO|NEXT|STARTED)' -g '!**/archived/*.org' " org-directory))
-             (stat (shell-command cmd (current-buffer)))
-             (res (s-split "\n" (s-trim (buffer-string)))))
-        res)))
-
   (defun my/timestamps-this-week ()
     (let ((t1 (current-time))
           (aday (* 24 60 60)))
@@ -2060,21 +2053,33 @@
        '(0 1 2 3 4 5 6)))
     )
 
-  (defun my/org-agenda-files-recent ()
-    (with-temp-buffer
-      (let* ((cmd (concat "rg -l '[\\[<](" (s-join "|" (my/timestamps-this-week)) ")' -g '!**/archived/*.org' " org-directory))
-             (stat (shell-command cmd (current-buffer)))
-             (res (s-split "\n" (s-trim (buffer-string)))))
-        res)))
+  (when (executable-find "rg")
 
-  (defun my/update-org-agenda-files ()
-    (setq org-agenda-files
-          (delete-dups
-           (append
-            (my/org-agenda-files-todo)
-            (my/org-agenda-files-recent)))))
+    (defun my/org-agenda-files-todo ()
+      (with-temp-buffer
+        (let* ((states "TODO|NEXT|STARTED")
+               (cmd (concat "rg -l '^\\*+ (" states ")' -g '!**/archived/*.org' " org-directory))
+               (stat (shell-command cmd (current-buffer)))
+               (res (s-split "\n" (s-trim (buffer-string)))))
+          res)))
 
-  (my/update-org-agenda-files)
+    (defun my/org-agenda-files-recent ()
+      (with-temp-buffer
+        (let* ((dates (s-join "|" (my/timestamps-this-week)))
+               (cmd (concat "rg -l '[\\[<](" dates ")' -g '!**/archived/*.org' " org-directory))
+               (stat (shell-command cmd (current-buffer)))
+               (res (s-split "\n" (s-trim (buffer-string)))))
+          res)))
+
+    (defun my/update-org-agenda-files ()
+      (setq org-agenda-files
+            (delete-dups
+             (append
+              (my/org-agenda-files-todo)
+              (my/org-agenda-files-recent)))))
+
+    (my/update-org-agenda-files)
+    )
 
   (defun my/org-agenda-todo-next ()
     "Org agenda todo next cycle"
