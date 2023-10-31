@@ -1548,16 +1548,39 @@
     :custom
     (org-capture-templates
      `(
-       ("d" "Diary" entry (file+olp+datetree my/org-capture-file-this-year) "** %(format-time-string \"%H:%M\") - %?")
-       ("b" "Book" entry (file+headline "books.org" "Books") "** WISH %(my/book-templeate-from-url \"%c\")%?")
-       ("t" "Task" entry (file+headline "todos.org" "Todos") "** TODO %?")
-       ("T" "Task (Interrupt)" entry (file+headline "todos.org" "Todos") "** STARTED %?"
+       ("d" "Diary"
+        entry (file+olp+datetree my/org-capture-file-this-year)
+        "** %(format-time-string \"%H:%M\") - %?")
+
+       ("b" "Book"
+        entry (file+headline "books.org" "Books")
+        "** WISH %(my/book-templeate-from-url \"%c\")%?")
+
+       ("t" "Task"
+        entry (file my/org-capture-file-inbox)
+        "** TODO %?")
+
+       ("T" "Task (Interrupt)"
+        entry (file my/org-capture-file-inbox)
+        "** STARTED %?"
         :clock-in t :clock-resume t
         :prepare-finalize (lambda () (org-todo 'done)))
-       ("c" "Item (Clocking)" item (clock) "%U %?")
-       ("C" "Entry (Clocking)" entry (clock) "* %U %?")
-       ("m" "Meeting Note" entry (file+headline "meetings.org" "Meetings") "** NEXT %?")
-       ("r" "Review" entry (file+headline "todos.org" "Todos") "\
+
+       ("c" "Item (Clocking)"
+        item (clock)
+        "%U %?")
+
+       ("C" "Entry (Clocking)"
+        entry (clock)
+        "* %U %?")
+
+       ("m" "Meeting Note"
+        entry (file my/org-capture-file-inbox)
+        "** NEXT %?")
+
+       ("r" "Review"
+        entry (file my/org-capture-file-inbox)
+        "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
  on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
@@ -1574,6 +1597,13 @@
        ))
 
     :config
+    (defun my/org-capture-file-inbox ()
+      (let* ((s (format-time-string "%s"))
+             (d (substring s 8)))
+      (f-join
+       org-directory
+       "inbox" d (format "%s.org" s))))
+
     (defun my/org-capture-file-this-year ()
       (f-join
        org-directory
