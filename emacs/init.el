@@ -1558,11 +1558,13 @@
 
        ("t" "Task"
         entry (file my/org-capture-file-inbox)
-        "** TODO %?")
+        "** TODO %?
+#+CATEGORY: Inbox")
 
        ("T" "Task (Interrupt)"
         entry (file my/org-capture-file-inbox)
-        "** STARTED %?"
+        "** STARTED %?
+#+CATEGORY: Inbox"
         :clock-in t :clock-resume t
         :prepare-finalize (lambda () (org-todo 'done)))
 
