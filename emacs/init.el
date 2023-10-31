@@ -2019,10 +2019,8 @@
        ))
      ("r" "GTD review"
       ((tags-todo "TAGS=\"\"+LEVEL=2"
-                  ((org-agenda-files '("todos.org"))
-                   (org-agenda-overriding-header "Untagged TODOs")))
-       (todo "TODO" ((org-agenda-files '("todos.org"))
-                     ,my/org-agenda-entry-is-not-project
+                  ((org-agenda-overriding-header "Untagged TODOs")))
+       (todo "TODO" (,my/org-agenda-entry-is-not-project
                      (org-agenda-overriding-header "Todos: ")))
        (todo 'not-done (,my/org-agenda-entry-is-project
                         (org-agenda-overriding-header "Projects: ")))
@@ -2039,6 +2037,40 @@
 
   :config
   (defvar my/true-org-directory (file-truename org-directory))
+
+  (defun my/org-agenda-files-todo ()
+    (with-temp-buffer
+      (let* ((cmd (concat "rg -l '^\\*+ (TODO|NEXT|STARTED)' -g '!**/archived/*.org' " org-directory))
+             (stat (shell-command cmd (current-buffer)))
+             (res (s-split "\n" (s-trim (buffer-string)))))
+        res)))
+
+  (defun my/timestamps-this-week ()
+    (let ((t1 (current-time))
+          (aday (* 24 60 60)))
+      (mapcar
+       #'(lambda (i)
+           (format-time-string
+            "%Y-%m-%d"
+            (time-subtract t1 (* i aday))))
+       '(0 1 2 3 4 5 6)))
+    )
+
+  (defun my/org-agenda-files-recent ()
+    (with-temp-buffer
+      (let* ((cmd (concat "rg -l '[\\[<](" (s-join "|" (my/timestamps-this-week)) ")' -g '!**/archived/*.org' " org-directory))
+             (stat (shell-command cmd (current-buffer)))
+             (res (s-split "\n" (s-trim (buffer-string)))))
+        res)))
+
+  (defun my/update-org-agenda-files ()
+    (setq org-agenda-files
+          (delete-dups
+           (append
+            (my/org-agenda-files-todo)
+            (my/org-agenda-files-recent)))))
+
+  (my/update-org-agenda-files)
 
   (defun my/org-agenda-todo-next ()
     "Org agenda todo next cycle"
