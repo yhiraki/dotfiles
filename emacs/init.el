@@ -1597,12 +1597,18 @@
        ))
 
     :config
-    (defun my/org-capture-file-inbox ()
+    (defun my/org-new-random-file (parent-dir)
       (let* ((s (format-time-string "%s"))
-             (d (substring s 8)))
-      (f-join
-       org-directory
-       "inbox" d (format "%s.org" s))))
+             (pref (substring s 8))
+             (dir (f-join
+                   org-directory
+                   parent-dir pref))
+             (file (f-join dir (format "%s.org" s))))
+        (make-directory dir t)
+        file))
+
+    (defun my/org-capture-file-inbox ()
+      (my/org-new-random-file "inbox"))
 
     (defun my/org-capture-file-this-year ()
       (f-join
