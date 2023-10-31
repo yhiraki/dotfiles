@@ -1988,9 +1988,11 @@
   :init
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
   (defvar my/org-agenda-entry-is-project
-    '(org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp my/org-sub-todo-progress-regexp)))
+    '(org-agenda-skip-function
+      '(org-agenda-skip-entry-if 'notregexp my/org-sub-todo-progress-regexp)))
   (defvar my/org-agenda-entry-is-not-project
-    '(org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp)))
+    '(org-agenda-skip-function
+      '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp)))
 
   :custom
   (org-agenda-window-setup 'current-window)
