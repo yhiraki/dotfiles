@@ -2079,6 +2079,12 @@
               (my/org-agenda-files-recent)))))
 
     (my/update-org-agenda-files)
+
+    (add-hook
+     'after-save-hook
+     #'(lambda ()
+               (when (eq major-mode 'org-mode)
+                 (my/update-org-agenda-files))))
     )
 
   (defun my/org-agenda-todo-next ()
