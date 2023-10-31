@@ -68,6 +68,12 @@
         (insert-file-contents ver-file)
         (when (string-match "WSL" (buffer-string)) t)))))
 
+(defvar emacs24+ (string> emacs-version "24.0"))
+(defvar emacs25+ (string> emacs-version "25.0"))
+(defvar emacs26+ (string> emacs-version "26.0"))
+(defvar emacs27+ (string> emacs-version "27.0"))
+(defvar emacs28+ (string> emacs-version "28.0"))
+
 (defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
 
@@ -2347,7 +2353,7 @@
   :custom
   (evil-ex-search-vim-style-regexp t)
   (evil-toggle-key "C-M-z")
-  (evil-undo-system 'undo-redo)
+  (evil-undo-system (when emacs28+ 'undo-redo))
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
   (evil-want-C-u-delete t)
