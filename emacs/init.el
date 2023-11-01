@@ -336,6 +336,16 @@
   )
 
 (use-package files
+  :init
+  (defun my/delete-empty-file ()
+    (let* ((fname (buffer-file-name))
+           (buf (buffer-string)))
+      (when (and
+             (not (s-prefix? "." (f-filename fname)))
+             (string= "" buf))
+        (delete-file fname))))
+  :hook
+  (after-save . my/delete-empty-file)
   :custom
   (confirm-kill-emacs nil)
   (find-file-visit-truename t)
