@@ -1459,33 +1459,37 @@
   (use-package org-roam :ensure t
     :after evil
     :demand t  ; completion-at-point on plain org-mode
+    :init
+    (defun my/org-roam-remove-file-level-properties ()
+      (save-excursion
+        (goto-char (point-min))
+        (org-delete-property "ID")
+        (org-delete-property "ROAM_REFS")))
     :hook
     (org-mode
      . (lambda ()
          (org-roam--register-completion-functions-h)
          (org-roam--replace-roam-links-on-save-h)
          ))
+    (org-capture-after-finalize . my/org-roam-remove-file-level-properties)
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
     (org-roam-directory (f-join org-directory "roam"))
     (org-roam-node-display-template "${title:*} ${tags:10}")
-    (org-roam-capture-templates
-     '(("d" "default" plain "%?"
-        :target (file+head "nodes/%<%Y%m%d%H%M%S>-${slug}.org"
-                           "#+title: ${title}\n#+DATE:")
+    (setq org-roam-capture-templates
+     '(("d" "default" plain "#+DATE:
+* ${title}
+:PROPERTIES:
+:ID: %(org-id-new)
+:END:
+%?"
+        :target (file "nodes/%<%Y%m%d%H%M%S>-${slug}.org")
         :unnarrowed t)
        ))
     (org-roam-db-node-include-function
      (lambda ()
        (not (member "ATTACH" (org-get-tags)))))
-    ;; (org-roam-dailies-capture-templates
-    ;;  `(("d" "default" entry
-    ;;     "* %?"
-    ;;     :target (file+head "%<%Y-%m-%d>.org"
-    ;;                        "#+SETUPFILE: ../../tags.org\n#+OPTIONS: ^:{} H:5 toc:nil\n#+title: %<%Y-%m-%d>\n"))))
-    ;; :bind-keymap
-    ;; ("C-c n d" . org-roam-dailies-map)
     :bind
     ("C-c n f" . org-roam-node-find)
     (:map org-mode-map
@@ -1594,7 +1598,9 @@
 
        ("m" "Meeting Note"
         entry (file my/org-capture-file-inbox)
-        "** NEXT %?")
+        "** NEXT %? :Meeting:
+#+CATEGORY: Meeting
+")
 
        ("r" "Review"
         entry (file my/org-capture-file-inbox)
