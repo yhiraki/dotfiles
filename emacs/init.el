@@ -1477,7 +1477,7 @@
     (org-roam-db-update-on-save t)
     (org-roam-directory (f-join org-directory "roam"))
     (org-roam-node-display-template "${title:*} ${tags:10}")
-    (setq org-roam-capture-templates
+    (org-roam-capture-templates
      '(("d" "default" plain "#+DATE:
 * ${title}
 :PROPERTIES:
