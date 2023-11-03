@@ -1634,6 +1634,9 @@
     (defun my/org-capture-file-inbox ()
       (my/org-new-random-file "inbox"))
 
+    (defun my/iso-today ()
+      (format-time-string "%Y-%m-%d"))
+
     (defun my/org-capture-file-this-year ()
       (f-join
        org-directory
@@ -1644,6 +1647,7 @@
       (f-join
        org-directory
        "diary"
+       (format-time-string "%Y")
        (format-time-string "%Y-%m-%d.org")))
 
      (defun my/get-major-mode (f)
@@ -1756,18 +1760,8 @@
           ("C-c g" . org-mac-link-get-link)
           ))
 
-  (use-package org-ai
-    :straight
-    (:host github :repo "rksm/org-ai" :files ("*.el" "README.md" "snippets"))
-    :commands (org-ai-mode)
-    :init
-    (add-hook 'org-mode-hook #'org-ai-mode)
-    :custom
-    (org-ai-default-max-tokens 1024)
-    ;; (org-ai-openai-api-token "openai-access-token")
-    :config
-    ;; if you are using yasnippet and want `ai` snippets
-    (org-ai-install-yasnippets))
+  (use-package chatgpt
+    :load-path "~/src/github.com/yhiraki/chatgpt.el")
 
   (use-package japanese-holidays :ensure t
     :hook
