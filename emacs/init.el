@@ -345,7 +345,8 @@
              (string= "" buf))
         (delete-file fname))))
   :hook
-  (after-save . my/delete-empty-file)
+  ;; Unexpected deletion: after org-capture done
+  ;; (after-save . my/delete-empty-file)
   :custom
   (confirm-kill-emacs nil)
   (find-file-visit-truename t)
