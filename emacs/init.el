@@ -2054,12 +2054,12 @@
      ("b" "Books"
       ((tags "+LEVEL=2"
              ((org-agenda-files '("books.org"))))))
-     (("p" "Published"
-       ((tags "ID={.}-ATTACH+LEVEL=1" ))
-       ((org-agenda-overriding-header "Recentry Modified Files:")
-        (org-agenda-view-columns-initially t)
-        (org-overriding-columns-format "%1FILE %40ITEM %PUBLISH %MODIFIED")
-        (org-agenda-sorting-strategy '(timestamp-down)))))
+     ("p" "Published"
+      ((tags "ID={.}-ATTACH+LEVEL=1"))
+      ((org-agenda-overriding-header "Recentry Modified Files:")
+       (org-agenda-view-columns-initially t)
+       (org-overriding-columns-format "%1FILE %40ITEM %PUBLISH %MODIFIED")
+       (org-agenda-sorting-strategy '(timestamp-down))))
      ))
 
   :config
