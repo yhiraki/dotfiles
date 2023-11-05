@@ -1258,8 +1258,9 @@
     (interactive)
     (save-excursion
       (goto-char (point-min))
-      (my/org-mode-set-prop-timestamp "CREATED")
-      (my/org-mode-set-prop-timestamp "MODIFIED")))
+      (unless (org-at-heading-p)
+        (my/org-mode-set-prop-timestamp "CREATED")
+        (my/org-mode-set-prop-timestamp "MODIFIED"))))
 
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
@@ -1560,11 +1561,7 @@
     :commands org-capture
     :hook
     (org-capture-mode . (lambda () (evil-insert 0)))
-    (org-capture-prepare-finalize
-     . (lambda ()
-         (goto-char (point-min))
-         (my/org-mode-insert-time-stamp-created-heading)))
-    (org-capture-before-finalize . my/org-mode-insert-time-stamp-file)
+    (org-capture-before-finalize . my/org-mode-insert-time-stamp-created-heading)
 
     :custom
     (org-capture-templates
