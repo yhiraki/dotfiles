@@ -1567,8 +1567,9 @@
     (org-capture-templates
      `(
        ("j" "Journal"
-        entry (file my/org-capture-file-journal)
-        "* %(format-time-string \"%H:%M\") %? :Journal:
+        plain (file my/org-capture-file-journal)
+        "#+DATE:
+* %(format-time-string \"%H:%M\") %? :Journal:
 :PROPERTIES:
 :ID: %(org-id-new)
 :journal_link: [[id:%(format-time-string \"%Y-%m-%d\")]]
@@ -1713,7 +1714,7 @@
          (unless (file-exists-p ftoday)
            (make-directory d t)
            (with-current-buffer (find-file-noselect ftoday)
-             (insert (format "* %s" today))
+             (insert (format "#+DATE: \n* %s" today))
              (org-set-property "ID" today)
              (my/org-mode-insert-time-stamp-modified-heading)
              (org-set-tags (format-time-string ":Journal:"))
