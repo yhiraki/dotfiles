@@ -1569,9 +1569,13 @@
     :custom
     (org-capture-templates
      `(
-       ("d" "Diary"
-        entry (file+olp+datetree my/org-capture-file-this-year)
-        "** %(format-time-string \"%H:%M\") - %?")
+       ("j" "Journal"
+        entry (file my/org-capture-file-journal)
+        "* %(format-time-string \"%H:%M\") %? :Journal:
+:PROPERTIES:
+:ID: %(org-id-new)
+:journal_link: [[id:%(format-time-string \"%Y-%m-%d\")]]
+:END:")
 
        ("b" "Book"
         entry (file+headline "books.org" "Books")
@@ -1579,12 +1583,12 @@
 
        ("t" "Task"
         entry (file my/org-capture-file-inbox)
-        "** TODO %?
+        "* TODO %?
 #+CATEGORY: Inbox")
 
        ("T" "Task (Interrupt)"
         entry (file my/org-capture-file-inbox)
-        "** STARTED %?
+        "* STARTED %?
 #+CATEGORY: Inbox"
         :clock-in t :clock-resume t
         :prepare-finalize (lambda () (org-todo 'done)))
@@ -1599,7 +1603,7 @@
 
        ("m" "Meeting Note"
         entry (file my/org-capture-file-inbox)
-        "** NEXT %? :Meeting:
+        "* NEXT %? :Meeting:
 #+CATEGORY: Meeting
 ")
 
@@ -1700,6 +1704,25 @@
           (cdr (assq 'url info))
           (cdr (assq 'ebook info)))
          ))
+
+     (defun my/org-capture-file-journal ()
+       (let* ((d (f-join
+                  org-roam-directory
+                  "journal"
+                  (format-time-string "%Y/%m/%d")))
+              (today (format-time-string "%Y-%m-%d"))
+              (ftoday (f-join d "index.org"))
+              (fnow (f-join d (format-time-string "%H%M%S.org"))))
+         (unless (file-exists-p ftoday)
+           (make-directory d t)
+           (with-current-buffer (find-file-noselect ftoday)
+             (insert (format "* %s" today))
+             (org-set-property "ID" today)
+             (my/org-mode-insert-time-stamp-modified-heading)
+             (org-set-tags (format-time-string ":Journal:"))
+             (save-buffer)
+             (kill-current-buffer)))
+         fnow))
      )
 
   (use-package org-superstar :ensure t
