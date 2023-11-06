@@ -2102,7 +2102,7 @@
     (defun my/org-agenda-files-todo ()
       (with-temp-buffer
         (let* ((states "TODO|NEXT|STARTED")
-               (cmd (concat "rg -l '^\\*+ (" states ")' -g '!**/archived/*.org' " org-directory))
+               (cmd (concat "rg -l '^\\*+ (" states ")' -g '!**/archived/**/*.org' " org-directory))
                (stat (shell-command cmd (current-buffer)))
                (res (s-split "\n" (s-trim (buffer-string)))))
           res)))
@@ -2110,7 +2110,7 @@
     (defun my/org-agenda-files-recent ()
       (with-temp-buffer
         (let* ((dates (s-join "|" (my/timestamps-this-week)))
-               (cmd (concat "rg -l '[\\[<](" dates ")' -g '!**/archived/*.org' " org-directory))
+               (cmd (concat "rg -l '[\\[<](" dates ")' -g '!**/archived/**/*.org' " org-directory))
                (stat (shell-command cmd (current-buffer)))
                (res (s-split "\n" (s-trim (buffer-string)))))
           res)))
