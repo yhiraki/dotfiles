@@ -338,15 +338,14 @@
 (use-package files
   :init
   (defun my/delete-empty-file ()
+    "Delete current file if empty."
+    (interactive)
     (let* ((fname (buffer-file-name))
            (buf (buffer-string)))
       (when (and
              (not (s-prefix? "." (f-filename fname)))
              (string= "" buf))
         (delete-file fname))))
-  :hook
-  ;; Unexpected deletion: after org-capture done
-  ;; (after-save . my/delete-empty-file)
   :custom
   (confirm-kill-emacs nil)
   (find-file-visit-truename t)
@@ -1219,6 +1218,7 @@
       (time-stamp)))
 
   (defun my/setup-org-mode-local-hooks ()
+    (add-hook 'after-save-hook #'my/delete-empty-file t)
     (when (s-prefix? (file-truename org-directory) (buffer-file-name))
       (require 'time-stamp)
       (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
