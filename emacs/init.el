@@ -1473,7 +1473,7 @@
          (org-roam--register-completion-functions-h)
          (org-roam--replace-roam-links-on-save-h)
          ))
-    (org-capture-after-finalize . my/org-roam-remove-file-level-properties)
+    (org-capture-before-finalize . my/org-roam-remove-file-level-properties)
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
