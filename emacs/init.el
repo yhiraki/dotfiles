@@ -1225,7 +1225,7 @@
       (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
       (require 'evil)
       (add-hook 'evil-normal-state-entry-hook
-                #'(lambda () (unless (eq 'normal evil-previous-state)
+                #'(lambda () (when (eq 'insert evil-previous-state)
                                (my/org-mode-insert-time-stamp-modified-heading)))
                 nil t)
       ))
