@@ -1462,18 +1462,21 @@
     :after evil
     :demand t  ; completion-at-point on plain org-mode
     :init
-    (defun my/org-roam-remove-file-level-properties ()
+    (defun my/org-roam-move-properties-to-1st-heading ()
       (save-excursion
         (goto-char (point-min))
-        (org-delete-property "ID")
-        (org-delete-property "ROAM_REFS")))
+        (let ((id (org-entry-get (point) "ID")))
+          (org-delete-property "ID")
+          (org-delete-property "ROAM_REFS")
+          (org-next-visible-heading 1)
+          (org-set-property "ID" id))))
     :hook
     (org-mode
      . (lambda ()
          (org-roam--register-completion-functions-h)
          (org-roam--replace-roam-links-on-save-h)
          ))
-    (org-capture-before-finalize . my/org-roam-remove-file-level-properties)
+    (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
@@ -1482,9 +1485,6 @@
     (org-roam-capture-templates
      '(("d" "default" plain "#+DATE:
 * ${title}
-:PROPERTIES:
-:ID: %(org-id-new)
-:END:
 %?"
         :target (file "nodes/%<%Y%m%d%H%M%S>-${slug}.org")
         :unnarrowed t)
