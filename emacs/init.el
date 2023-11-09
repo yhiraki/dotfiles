@@ -1465,11 +1465,12 @@
     (defun my/org-roam-move-properties-to-1st-heading ()
       (save-excursion
         (goto-char (point-min))
-        (let ((id (org-entry-get (point) "ID")))
-          (org-delete-property "ID")
-          (org-delete-property "ROAM_REFS")
-          (org-next-visible-heading 1)
-          (org-set-property "ID" id))))
+        (unless (org-at-heading-p)
+          (let ((id (org-entry-get (point) "ID")))
+            (org-delete-property "ID")
+            (org-delete-property "ROAM_REFS")
+            (org-next-visible-heading 1)
+            (org-set-property "ID" id)))))
     :hook
     (org-mode
      . (lambda ()
