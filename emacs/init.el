@@ -1605,6 +1605,14 @@
 #+CATEGORY: Meeting
 ")
 
+       ("f" "Add Reference"
+        entry (file my/org-capture-file-refs)
+        "* %^{URL}p%^{Title} :Reference:noexport:
+:PROPERTIES:
+:ID: %(org-id-new)
+:END:
+")
+
        ("r" "Review"
         entry (file my/org-capture-file-inbox)
         "\
@@ -1625,17 +1633,21 @@
 
     :config
     (defun my/org-new-random-file (parent-dir)
-      (let* ((s (format-time-string "%s"))
-             (pref (substring s 8))
+      (let* ((s (org-id-new))
+             (pref (substring s 0 2))
+             (suff (string-replace "-" "" (substring s 2)))
              (dir (f-join
                    org-directory
                    parent-dir pref))
-             (file (f-join dir (format "%s.org" s))))
+             (file (f-join dir (format "%s.org" suff))))
         (make-directory dir t)
         file))
 
     (defun my/org-capture-file-inbox ()
       (my/org-new-random-file "inbox"))
+
+    (defun my/org-capture-file-refs ()
+      (my/org-new-random-file "roam/refs"))
 
     (defun my/iso-today ()
       (format-time-string "%Y-%m-%d"))
