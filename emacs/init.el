@@ -2092,8 +2092,10 @@
       ((tags "ID={.}-ATTACH+LEVEL=1"))
       ((org-agenda-overriding-header "Recentry Modified Files:")
        (org-agenda-view-columns-initially t)
-       (org-overriding-columns-format "%1FILE %40ITEM %PUBLISH %MODIFIED")
+       (org-overriding-columns-format "%1FILE %40ITEM %PUBLISH %MODIFIED %CREATED")
        (org-agenda-sorting-strategy '(timestamp-down))))
+     ("x" "Headings created today"
+      ((tags "+LEVEL=1+CREATED>=\"<today>\"")))
      ))
 
   :config
