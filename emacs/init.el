@@ -1188,6 +1188,28 @@
 (use-package prog-mode
   :custom
   (prettify-symbols-unprettify-at-point t)
+  (prettify-symbols-alist
+   '(
+     ("#+DOWNLOADED:" . "📥")
+     ("#+RESULTS" . "📎")
+     ("#+RESULTS:" . "📎")
+     ("#+begin_src" . "📝")
+     ("#+end_src" . "«")
+     ("#+begin_quote" . "„")
+     ("#+end_quote" . "“")
+     ("#+begin_example" . "👉")
+     ("#+end_example" . "«")
+     (":LOGBOOK:" . "📚")
+     (":PROPERTIES:" . "⚙")
+     (":END:" . "«")
+     ("CLOCK:" . "⏰")
+     ("CLO⍞SED:" . "✅")
+     ("DEADLINE:" . "⛔️")
+     ("SCHEDULED:" . "📅")
+     ("[ ]" . "☐")
+     ("[-]" . "〼")
+     ("[X]" . "☑")
+     ))
   :general
   (:keymaps 'prog-mode-map
             :states '(normal visual)
@@ -1268,26 +1290,6 @@
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
   (org-mode . prettify-symbols-mode)
-  (org-mode
-   . (lambda ()
-       (setq prettify-symbols-alist
-             '(
-               ;; ("#+DOWNLOADED:" . "📥")
-               ("#+RESULTS" . "▷")
-               ("#+RESULTS:" . "▷")
-               ("#+begin_src" . "⌟")
-               ("#+end_src" . "⌝")
-               ;; (":END:" . "⎺")
-               ;; (":LOGBOOK:" . "📚")
-               ;; (":PROPERTIES:" . "⚙")
-               ;; ("CLOCK:" . "⏰")
-               ;; ("CLOSED:" . "✅")
-               ;; ("DEADLINE:" . "⛔️")
-               ;; ("SCHEDULED:" . "📅")
-               ("[ ]" . "☐")
-               ("[-]" . "〼")
-               ("[X]" . "☑")
-               ))))
   (org-mode . my/setup-org-mode-local-hooks)
   (org-insert-heading . my/org-mode-insert-time-stamp-created-heading)
 
