@@ -1473,6 +1473,27 @@
             (org-delete-property "ROAM_REFS")
             (org-next-visible-heading 1)
             (org-set-property "ID" id)))))
+
+    (defun my/org-roam-set-insert-with-tags ()
+      (interactive)
+      (org-set-property "NODE_INSERT_WITH_TAGS" "yes"))
+
+    (defun my/org-roam-node-add-auto-tag (id _description)
+      "Insert node with tags. Node found with iD."
+      (when-let*
+          ((node (org-roam-node-from-id id))
+           (tags (org-roam-node-tags node))
+           (prop (org-roam-node-properties node))
+           (inherit (assoc "NODE_INSERT_WITH_TAGS" prop)))
+        (save-excursion
+          (ignore-errors
+            (org-back-to-heading)
+            (org-set-tags
+             (seq-uniq
+              (append
+               tags
+               (org-get-tags nil t))))))))
+
     :hook
     (org-mode
      . (lambda ()
@@ -1480,6 +1501,8 @@
          (org-roam--replace-roam-links-on-save-h)
          ))
     (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
+    (org-roam-post-node-insert . my/org-roam-node-add-auto-tag)
+
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
