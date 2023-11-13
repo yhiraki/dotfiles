@@ -1284,12 +1284,14 @@
         (my/org-mode-set-prop-timestamp "CREATED")
         (my/org-mode-set-prop-timestamp "MODIFIED"))))
 
+  (when window-system
+    (add-hook 'org-mode-hook #'prettify-symbols-mode))
+
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
   (org-after-todo-state-change . my/org-add-date-for-book-state)
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
-  (org-mode . prettify-symbols-mode)
   (org-mode . my/setup-org-mode-local-hooks)
   (org-insert-heading . my/org-mode-insert-time-stamp-created-heading)
 
