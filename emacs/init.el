@@ -1494,6 +1494,19 @@
                tags
                (org-get-tags nil t))))))))
 
+  (defun my/org-roam-node-add-auto-category (id _description)
+    "Insert node with category as prop. Node found with iD."
+    (interactive)
+    (when-let*
+        ((node (org-roam-node-from-id id))
+         (prop (org-roam-node-properties node))
+         (inherit (assoc "NODE_INSERT_WITH_CATEGORY" prop))
+         (category (cdr (assoc "CATEGORY" prop))))
+      (save-excursion
+        (ignore-errors
+          (org-back-to-heading)
+          (org-set-property "CATEGORY" category)))))
+
     :hook
     (org-mode
      . (lambda ()
@@ -1502,6 +1515,7 @@
          ))
     (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
     (org-roam-post-node-insert . my/org-roam-node-add-auto-tag)
+    (org-roam-post-node-insert . my/org-roam-node-add-auto-category)
 
     :custom
     (org-roam-completion-everywhere t)
