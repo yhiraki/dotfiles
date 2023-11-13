@@ -1474,9 +1474,17 @@
             (org-next-visible-heading 1)
             (org-set-property "ID" id)))))
 
+    (defvar my/org-roam--flag-insert-with-tags "NODE_INSERT_WITH_TAGS")
+    (defvar my/org-roam--flag-insert-with-category "NODE_INSERT_WITH_CATEGORY")
+
     (defun my/org-roam-set-insert-with-tags ()
       (interactive)
-      (org-set-property "NODE_INSERT_WITH_TAGS" "yes"))
+      (org-set-property my/org-roam--flag-insert-with-tags "yes"))
+
+    (defun my/org-roam-set-insert-with-category ()
+      (interactive)
+      (org-set-property "CATEGORY" (read-from-minibuffer "CATEGORY: "))
+      (org-set-property my/org-roam--flag-insert-with-category "yes"))
 
     (defun my/org-roam-node-add-auto-tag (id _description)
       "Insert node with tags. Node found with iD."
@@ -1484,7 +1492,7 @@
           ((node (org-roam-node-from-id id))
            (tags (org-roam-node-tags node))
            (prop (org-roam-node-properties node))
-           (inherit (assoc "NODE_INSERT_WITH_TAGS" prop)))
+           (inherit (assoc my/org-roam--flag-insert-with-tags prop)))
         (save-excursion
           (ignore-errors
             (org-back-to-heading)
@@ -1500,7 +1508,7 @@
     (when-let*
         ((node (org-roam-node-from-id id))
          (prop (org-roam-node-properties node))
-         (inherit (assoc "NODE_INSERT_WITH_CATEGORY" prop))
+         (inherit (assoc my/org-roam--flag-insert-with-category prop))
          (category (cdr (assoc "CATEGORY" prop))))
       (save-excursion
         (ignore-errors
@@ -1541,6 +1549,8 @@
           ("C-c n l" . org-roam-buffer-toggle)
           ("C-c n o" . org-id-get-create)
           ("C-c n t" . org-roam-tag-add)
+          ("C-c n I t" . my/org-roam-set-insert-with-tags)
+          ("C-c n I c" . my/org-roam-set-insert-with-category)
           ("C-M-i" . completion-at-point))
     :general
     (:states '(normal visual)
