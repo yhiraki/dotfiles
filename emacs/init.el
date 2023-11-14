@@ -1563,6 +1563,40 @@
             (org-back-to-heading)
             (org-set-property "CATEGORY" category)))))
 
+    (defun my/org-rename-current-file-from-tags ()
+      (interactive)
+      (my/with-org-1st-heading
+       (if-let* ((old-name (buffer-file-name))
+                 (old-exist (file-exists-p old-name))
+                 (file-prefix (s-join "-" (mapcar #'s-downcase (org-get-tags))))
+                 (filename (read-from-minibuffer "FileName: " file-prefix))
+                 (filename-valid (let ((case-fold-search nil))
+                                   (string-match "[a-z0-9\\-\\.]+" filename)))
+                 (new-name (f-join (file-name-directory old-name) filename))
+                 (new-not-exist (not (file-exists-p new-name))))
+           (progn
+             (rename-file old-name new-name)
+             (rename-buffer filename)
+             (save-current-buffer))
+         (cond
+          ((not old-exist)
+           (error "Save file: %s" old-name))
+          ((not filename-valid)
+           (error "File name should contains only alpha or number."))
+          ((not new-not-exist)
+           (error "File exists: %s" new-name)))
+         )))
+
+    (defun my/org-set-prop-publish ()
+      (interactive)
+      (my/with-org-1st-heading
+       (org-set-property "PUBLISH" "t")))
+
+    (defun my/org-set-publish-current-file ()
+      (interactive)
+      (my/org-rename-current-file-from-tags)
+      (my/org-set-prop-publish))
+
     :hook
     (org-mode
      . (lambda ()
@@ -1596,6 +1630,7 @@
           ("C-c n i" . org-roam-node-insert)
           ("C-c n l" . org-roam-buffer-toggle)
           ("C-c n o" . org-id-get-create)
+          ("C-c n p" . my/org-set-publish-current-file)
           ("C-c n t" . org-roam-tag-add)
           ("C-c n I t" . my/org-roam-set-insert-with-tags)
           ("C-c n I c" . my/org-roam-set-insert-with-category)
