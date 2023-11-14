@@ -1550,18 +1550,18 @@
                tags
                (org-get-tags nil t))))))))
 
-  (defun my/org-roam-node-add-auto-category (id _description)
-    "Insert node with category as prop. Node found with iD."
-    (interactive)
-    (when-let*
-        ((node (org-roam-node-from-id id))
-         (prop (org-roam-node-properties node))
-         (inherit (assoc my/org-roam--flag-insert-with-category prop))
-         (category (cdr (assoc "CATEGORY" prop))))
-      (save-excursion
-        (ignore-errors
-          (org-back-to-heading)
-          (org-set-property "CATEGORY" category)))))
+    (defun my/org-roam-node-add-auto-category (id _description)
+      "Insert node with category as prop. Node found with iD."
+      (interactive)
+      (when-let*
+          ((node (org-roam-node-from-id id))
+           (prop (org-roam-node-properties node))
+           (inherit (assoc my/org-roam--flag-insert-with-category prop))
+           (category (cdr (assoc "CATEGORY" prop))))
+        (save-excursion
+          (ignore-errors
+            (org-back-to-heading)
+            (org-set-property "CATEGORY" category)))))
 
     :hook
     (org-mode
@@ -1763,32 +1763,32 @@
        (format-time-string "%Y")
        (format-time-string "%Y-%m-%d.org")))
 
-     (defun my/get-major-mode (f)
-       "get major-mode for F"
-       (with-current-buffer (find-buffer-visiting f)
-         (replace-regexp-in-string "-mode" "" (format "%s" major-mode))))
+    (defun my/get-major-mode (f)
+      "get major-mode for F"
+      (with-current-buffer (find-buffer-visiting f)
+        (replace-regexp-in-string "-mode" "" (format "%s" major-mode))))
 
-     (defun my/get-local-git-repo ()
-       "returns github.com/repo/name"
-       (let ((repo (magit-repository-local-repository)))
-         (string-match "\\([^\\/]+\\/[^\\/]+\\/[^\\/]+\\)\\/$" repo)
-         (match-string 1 repo)))
+    (defun my/get-local-git-repo ()
+      "returns github.com/repo/name"
+      (let ((repo (magit-repository-local-repository)))
+        (string-match "\\([^\\/]+\\/[^\\/]+\\/[^\\/]+\\)\\/$" repo)
+        (match-string 1 repo)))
 
-     (defun my/book-templeate-from-url (url)
-       (unless (executable-find "bookinfo")
-         (error "Requires \"bookinfo\" command"))
-       (let ((info
-              (ignore-errors
-                (json-read-from-string
-                 (shell-command-to-string
-                  (s-join " "
-                          (mapcar
-                           #'shell-quote-argument
-                           `("bookinfo" ,url))))))))
-         (unless info
-           (setq info `((url . ,url)(name . "%?"))))
-         (format
-          "%s
+    (defun my/book-templeate-from-url (url)
+      (unless (executable-find "bookinfo")
+        (error "Requires \"bookinfo\" command"))
+      (let ((info
+             (ignore-errors
+               (json-read-from-string
+                (shell-command-to-string
+                 (s-join " "
+                         (mapcar
+                          #'shell-quote-argument
+                          `("bookinfo" ,url))))))))
+        (unless info
+          (setq info `((url . ,url)(name . "%?"))))
+        (format
+         "%s
 :PROPERTIES:
 :price: %s
 :name: %s
@@ -1803,35 +1803,35 @@
 :ebook_url:
 :END:
 "
-          (cdr (assq 'name info))
-          (cdr (assq 'price info))
-          (cdr (assq 'name info))
-          (cdr (assq 'author info))
-          (format-time-string "[%Y-%m-%d]")
-          (cdr (assq 'store info))
-          (cdr (assq 'url info))
-          (cdr (assq 'ebook info)))
-         ))
+         (cdr (assq 'name info))
+         (cdr (assq 'price info))
+         (cdr (assq 'name info))
+         (cdr (assq 'author info))
+         (format-time-string "[%Y-%m-%d]")
+         (cdr (assq 'store info))
+         (cdr (assq 'url info))
+         (cdr (assq 'ebook info)))
+        ))
 
-     (defun my/org-capture-file-journal ()
-       (let* ((d (f-join
-                  org-roam-directory
-                  "journal"
-                  (format-time-string "%Y/%m/%d")))
-              (today (format-time-string "%Y-%m-%d"))
-              (ftoday (f-join d "index.org"))
-              (fnow (f-join d (format-time-string "%H%M%S.org"))))
-         (unless (file-exists-p ftoday)
-           (make-directory d t)
-           (with-current-buffer (find-file-noselect ftoday)
-             (insert (format "#+DATE: \n* %s" today))
-             (org-set-property "ID" today)
-             (my/org-mode-insert-time-stamp-modified-heading)
-             (org-set-tags (format-time-string ":Journal:"))
-             (save-buffer)
-             (kill-current-buffer)))
-         fnow))
-     )
+    (defun my/org-capture-file-journal ()
+      (let* ((d (f-join
+                 org-roam-directory
+                 "journal"
+                 (format-time-string "%Y/%m/%d")))
+             (today (format-time-string "%Y-%m-%d"))
+             (ftoday (f-join d "index.org"))
+             (fnow (f-join d (format-time-string "%H%M%S.org"))))
+        (unless (file-exists-p ftoday)
+          (make-directory d t)
+          (with-current-buffer (find-file-noselect ftoday)
+            (insert (format "#+DATE: \n* %s" today))
+            (org-set-property "ID" today)
+            (my/org-mode-insert-time-stamp-modified-heading)
+            (org-set-tags (format-time-string ":Journal:"))
+            (save-buffer)
+            (kill-current-buffer)))
+        fnow))
+    )
 
   (use-package org-superstar :ensure t
     :hook (org-mode . org-superstar-mode)
