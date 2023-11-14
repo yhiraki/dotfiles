@@ -135,6 +135,46 @@
    . (lambda ()
        (setq indent-tabs-mode nil)))
 
+  :custom
+  (display-buffer-alist
+   '(
+     ;; Sidebar bottom
+     ("\\*\\(quickrun\\|Org-Babel Error Output\\|Backtrace\\|xref\\)\\*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (reusable-frames)
+      (side . bottom)
+      (window-height . 10))
+     ("\\*Org Select\\*"
+      (display-buffer-reuse-window display-buffer-in-side-window)
+      (reusable-frames)
+      (side . bottom))
+     ("\\*vterm\\*"
+      (display-buffer-in-side-window))
+
+     ;; Org agenda at top
+     ("\\*Agenda Commands\\*"
+      (display-buffer-reuse-window display-buffer-in-direction)
+      (reusable-frames)
+      (direction . top))
+     ("\\*Org Agenda\\*"
+      (display-buffer-reuse-window display-buffer-in-direction)
+      (reusable-frames)
+      (direction . top)
+      (window-height . 0.5))
+
+     ;; at bottom
+     ("magit: "
+      (display-buffer-reuse-window display-buffer-in-direction)
+      (reusable-frames)
+      (direction . bottom)
+      (window-height . 0.5))
+     ("CAPTURE-.*"
+      (display-buffer-reuse-window display-buffer-in-direction)
+      (reusable-frames)
+      (direction . bottom)
+      (window-height . 0.5))
+     ))
+
   :config
 
   ;; autosave
@@ -2634,48 +2674,6 @@
     :config
     (evil-goggles-use-diff-faces)
     (evil-goggles-mode))
-  )
-
-(use-package window
-  :custom
-  (display-buffer-alist
-   '(
-     ;; Sidebar bottom
-     ("\\*\\(quickrun\\|Org-Babel Error Output\\|Backtrace\\|xref\\)\\*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (reusable-frames)
-      (side . bottom)
-      (window-height . 10))
-     ("\\*Org Select\\*"
-      (display-buffer-reuse-window display-buffer-in-side-window)
-      (reusable-frames)
-      (side . bottom))
-     ("\\*vterm\\*"
-      (display-buffer-in-side-window))
-
-     ;; Org agenda at top
-     ("\\*Agenda Commands\\*"
-      (display-buffer-reuse-window display-buffer-in-direction)
-      (reusable-frames)
-      (direction . top))
-     ("\\*Org Agenda\\*"
-      (display-buffer-reuse-window display-buffer-in-direction)
-      (reusable-frames)
-      (direction . top)
-      (window-height . 0.5))
-
-     ;; at bottom
-     ("magit: "
-      (display-buffer-reuse-window display-buffer-in-direction)
-      (reusable-frames)
-      (direction . bottom)
-      (window-height . 0.5))
-     ("CAPTURE-.*"
-      (display-buffer-reuse-window display-buffer-in-direction)
-      (reusable-frames)
-      (direction . bottom)
-      (window-height . 0.5))
-     ))
   )
 
 (use-package all-the-icons :ensure t)
