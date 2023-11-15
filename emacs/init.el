@@ -2132,17 +2132,15 @@
       (org-html-head-include-default-style nil)
       (org-html-head "\
 <link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />
-<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/tokyo-night-dark.min.css\" id=\"hljs-css\">
-<link rel=\"stylesheet\" href=\"https://yhiraki.github.io/memo/static/css/main.css\">
+<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css\" id=\"hljs-css\">
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js\"></script>
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lisp.min.js\"></script>
 ")
       (org-html-postamble t)
       (org-html-postamble-format
        '(("en" "\
 <p class=\"date\">Date: %d</p>
 <p class=\"author\">Author: %a</p>
-<link rel=\"stylesheet\" href=\"static/css/main.css\" >\
-<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js\"></script>
-<script src=\"https://yhiraki.github.io/memo/static/js/main.js\"></script>
 ")))
       (org-html-validation-link nil)
       (org-html-mathjax-options
@@ -2156,7 +2154,9 @@
          (multlinewidth "85%")
          (tagindent ".8em")
          (tagside "right"))
-       ))
+       )
+      (org-html-htmlize-output-type nil) ;; non-nil cause error when exports org text as src block
+      )
 
     (use-package org-re-reveal :ensure t
       :custom
