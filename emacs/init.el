@@ -1748,7 +1748,7 @@
 
        ("f" "Add Reference"
         entry (file my/org-capture-file-refs)
-        "* %^{URL}p%^{Title} :Reference:noexport:
+        "* %^{URL}p%^{Title} :Reference:
 :PROPERTIES:
 :ID: %(org-id-new)
 :END:
