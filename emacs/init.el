@@ -1750,7 +1750,7 @@
 
        ("f" "Add Reference"
         entry (file my/org-capture-file-refs)
-        "* %^{URL}p%? :Reference:
+        "* %^{ROAM_REFS}p%? :Reference:
 :PROPERTIES:
 :ID: %(org-id-new)
 :END:
