@@ -1328,10 +1328,10 @@
     (add-hook 'org-mode-hook #'prettify-symbols-mode))
 
   (defmacro my/with-org-1st-heading (&rest body)
-    (save-excursion
-      (goto-char (point-min))
-      (org-next-visible-heading 1)
-      `(progn ,@body)))
+    `(save-excursion
+       (goto-char (point-min))
+       (org-next-visible-heading 1)
+       (progn ,@body)))
 
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
