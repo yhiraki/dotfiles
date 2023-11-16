@@ -2158,6 +2158,9 @@
          (tagside "right"))
        )
       (org-html-htmlize-output-type nil) ;; non-nil cause error when exports org text as src block
+      (org-html-text-markup-alist
+       (cons '(code . "<kbd>%s</kbd>")
+             org-html-text-markup-alist))
       )
 
     (use-package org-re-reveal :ensure t
