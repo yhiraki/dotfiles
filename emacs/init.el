@@ -1541,6 +1541,8 @@
            (tags (org-roam-node-tags node))
            (prop (org-roam-node-properties node))
            (inherit (assoc my/org-roam--flag-insert-with-tags prop)))
+        (setq tags (delete "Reference" tags))
+        (setq tags (delete "noexport" tags))
         (save-excursion
           (ignore-errors
             (org-back-to-heading)
@@ -1748,7 +1750,7 @@
 
        ("f" "Add Reference"
         entry (file my/org-capture-file-refs)
-        "* %^{URL}p%^{Title} :Reference:
+        "* %^{URL}p%? :Reference:
 :PROPERTIES:
 :ID: %(org-id-new)
 :END:
