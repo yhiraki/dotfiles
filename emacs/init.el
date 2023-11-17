@@ -1280,7 +1280,7 @@
       (time-stamp)))
 
   (defun my/setup-org-mode-local-hooks ()
-    (add-hook 'after-save-hook #'my/delete-empty-file t)
+    (add-hook 'after-save-hook #'my/delete-empty-file nil t)
     (when (s-prefix? (file-truename org-directory) (buffer-file-name))
       (require 'time-stamp)
       (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
