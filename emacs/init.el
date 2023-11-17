@@ -1565,13 +1565,14 @@
             (org-back-to-heading)
             (org-set-property "CATEGORY" category)))))
 
-    (defun my/org-roam-link-repalce-auto-tags-to-heading (old-func &rest args)
+    (defun my/org-roam-link-repalce-auto-tags-and-category (old-func &rest args)
       (apply old-func args)
       (let* ((link (org-element-context))
              (id (org-element-property :path link)))
+        (my/org-roam-node-add-auto-category id nil)
         (my/org-roam-node-add-auto-tag id nil)))
 
-    (advice-add #'org-roam-link-replace-at-point :around #'my/org-roam-link-repalce-auto-tags-to-heading)
+    (advice-add #'org-roam-link-replace-at-point :around #'my/org-roam-link-repalce-auto-tags-and-category)
 
     (defun my/org-rename-current-file-from-tags ()
       (interactive)
