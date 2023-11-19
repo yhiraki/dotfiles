@@ -1587,8 +1587,7 @@
                  (new-not-exist (not (file-exists-p new-name))))
            (progn
              (rename-file old-name new-name)
-             (rename-buffer filename)
-             (save-current-buffer))
+             (rename-buffer filename))
          (cond
           ((not old-exist)
            (error "Save file: %s" old-name))
@@ -1606,7 +1605,8 @@
     (defun my/org-set-publish-current-file ()
       (interactive)
       (my/org-rename-current-file-from-tags)
-      (my/org-set-prop-publish))
+      (my/org-set-prop-publish)
+      (save-buffer))
 
     :hook
     (org-mode
