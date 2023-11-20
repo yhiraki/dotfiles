@@ -1874,14 +1874,27 @@
             (kill-current-buffer)))
         fnow))
 
+    (defun my/org-reference-exists (url)
+      (when-let* ((url-ref (progn
+                             (string-match "\\(^.*:\\)\\(//.*$\\)" url)
+                             (match-string 2 url)))
+                  (exist (org-roam-db-query
+                          [:select [ref]
+                                   :from refs
+                                   :where (= ref $s1)]
+                          url-ref)))))
+
     (defun my/org-capture-new-reference ()
       (let* ((url (read-from-minibuffer "URL: "))
+             (url-not-exist (not (my/org-reference-exists url)))
              (dom (ignore-errors
                     (with-current-buffer
                         (url-retrieve-synchronously url)
                       (libxml-parse-html-region url-http-end-of-headers (point-max)))))
              (title (dom-text (dom-by-tag dom 'title))))
-        (format "* %s :Reference:
+        (unless url-not-exist
+          (error "Already exists Ref: %s" url))
+        (format "* %s%%? :Reference:
 :PROPERTIES:
 :ID: %s
 :ROAM_REFS: %s
