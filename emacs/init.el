@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 
 (defvar my/profiler-enabled nil)
 (when my/profiler-enabled
@@ -3098,6 +3099,24 @@
   (load my/user-emacs-file-local t)
   )
 
+;; 謎のエラーが出るのでここに記載する
+;; Symbol’s function definition is void: \(setf\ org-export-backend-transcoders\)
+(with-eval-after-load 'ox-md
+  (defun org-md-timestamp (timestamp _contents info)
+    "Transcode a TIMESTAMP object from Org to Markdown.
+CONTENTS is nil.  INFO is a plist holding contextual
+information."
+    (format "`%s`" (plist-get (car (cdr timestamp)) :raw-value)))
+
+  (let* ((be (org-export-get-backend 'md))
+         (tr (org-export-backend-transcoders be)))
+
+    ;; timestamp用のTranscoderを追加する
+    (push '(timestamp . org-md-timestamp) tr)
+
+    ;; Transcoderを追加したリストでBackendを上書きする
+    (setf (org-export-backend-transcoders be) tr)
+    ))
 
 (provide 'init)
 ;;; init.el ends here
