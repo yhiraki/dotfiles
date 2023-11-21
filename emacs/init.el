@@ -2001,202 +2001,203 @@
     (org-appear-trigger 'manual)
     (org-hide-emphasis-markers t)
     )
+  )
 
-  (use-package ob
-    :after org
-    :hook
-    (org-babel-after-execute . org-display-inline-images)
-    :custom
-    (org-confirm-babel-evaluate nil)
-    (org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
-    (org-babel-default-header-args
-     (append org-babel-default-header-args '((:exports . "both") (:eval . "no-export"))))
-    :config
-    ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
-    ;; (defun my/org-confirm-babel-evaluate (lang body)
-    ;;   (not (member lang
-    ;;                '(
-    ;;                  "C"
-    ;;                  "cpp"
-    ;;                  "dot"
-    ;;                  "elisp"
-    ;;                  "go"
-    ;;                  "js"
-    ;;                  "plantuml"
-    ;;                  "python"
-    ;;                  "restclient"
-    ;;                  "sh"
-    ;;                  "shell"
-    ;;                  "ts"
-    ;;                  "typescript"
-    ;;                  "uml"
-    ;;                  ))))
+(use-package ob
+  :after org
+  :hook
+  (org-babel-after-execute . org-display-inline-images)
+  :custom
+  (org-confirm-babel-evaluate nil)
+  (org-babel-C++-compiler "g++ -Wall -Wextra -std=c++14")
+  (org-babel-default-header-args
+   (append org-babel-default-header-args '((:exports . "both") (:eval . "no-export"))))
+  :config
+  ;; https://emacs.stackexchange.com/questions/21124/execute-org-mode-source-blocks-without-security-confirmation
+  ;; (defun my/org-confirm-babel-evaluate (lang body)
+  ;;   (not (member lang
+  ;;                '(
+  ;;                  "C"
+  ;;                  "cpp"
+  ;;                  "dot"
+  ;;                  "elisp"
+  ;;                  "go"
+  ;;                  "js"
+  ;;                  "plantuml"
+  ;;                  "python"
+  ;;                  "restclient"
+  ;;                  "sh"
+  ;;                  "shell"
+  ;;                  "ts"
+  ;;                  "typescript"
+  ;;                  "uml"
+  ;;                  ))))
 
-    ;; https://github.com/astahlman/ob-async/issues/61
-    ;; for ob-async
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '(
-       (chatgpt . t)
-       (emacs-lisp . t)
-       (mermaid . t)
-       (plantuml . t)
-       (python . t)
-       (shell . t)
-       )
+  ;; https://github.com/astahlman/ob-async/issues/61
+  ;; for ob-async
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (chatgpt . t)
+     (emacs-lisp . t)
+     (mermaid . t)
+     (plantuml . t)
+     (python . t)
+     (shell . t)
      )
+   )
 
-    (use-package ob-restclient :ensure t)
+  (use-package ob-restclient :ensure t)
 
-    (use-package ob-exp
-      :custom
-      (org-export-use-babel t))
+  (use-package ob-exp
+    :custom
+    (org-export-use-babel t))
 
-    (use-package ob-plantuml
-      :after ob
-      :hook
-      (ob-async-pre-execute-src-block
-       . (lambda ()
-           (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
-      :custom
-      (org-plantuml-jar-path my/plantuml-jar-path)
-      (plantuml-server-url nil)
-      :config
-      (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
-      (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
-      (push '(:cache . "yes") org-babel-default-header-args:plantuml)
-      )
-
-    (use-package ob-mermaid :ensure t
-      :after ob
-      :custom
-      (org-babel-default-header-args:mermaid
-       (append org-babel-default-header-args:mermaid '((:cache . "yes"))))
-      :config
-      (setq mermaid-config-file "~/.config/mermaid/config.json"))
-
-    (use-package ob-python
-      :after ob
-      :hook
-      (org-mode
-       . (lambda ()
-           (setq-local org-babel-python-command (my/find-venv-python-or-global))))
-      :custom
-      (org-babel-python-command "python3")
-      (org-babel-default-header-args:python '((:cache . "yes") (:results . "output")))
-      )
-
-    (use-package ob-C
-      :after ob
-      :custom
-      (org-babel-default-header-args:C '((:cache . "yes")))
-      (org-babel-default-header-args:C++
-       (append org-babel-default-header-args:C '((:includes . "<iostream>"))))
-      )
-
-    (use-package ob-async :ensure t
-      :after ob
-      :config
-      ;; https://github.com/astahlman/ob-async/issues/75
-      (defun no-hide-overlays (orig-fun &rest args)
-        (setq org-babel-hide-result-overlays nil))
-      (advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays)
-
-      (when (string> org-version "9.6")
-        ;; Fix for using #+CALL: to earn error
-        (advice-remove 'org-babel-execute-src-block 'ob-async-org-babel-execute-src-block)
-        (defun ob-async-org-babel-execute-src-block-fixed (&optional orig-fun arg info params executor-type)
-          (ob-async-org-babel-execute-src-block orig-fun arg info params))
-        (advice-add 'org-babel-execute-src-block :around 'ob-async-org-babel-execute-src-block-fixed))
-      )
-
-    (use-package ob-js
-      :config
-      (setq org-babel-js-function-wrapper
-            "require('util').inspect(function(){\n%s\n}());")
-      )
-
-    (use-package ob-typescript :ensure t
-      :config
-      (push '("ts" . typescript) org-src-lang-modes)
-      (org-babel-make-language-alias "ts" "typescript")
-      )
-
-    (use-package ob-go :ensure t)
-
-    (use-package ob-chatgpt
-      ;; :straight (:host github :repo "yhiraki/ob-chatgpt" :files ("*.el")))
-      :load-path "~/src/github.com/yhiraki/ob-chatgpt"
-      :custom
-      (org-babel-default-header-args:chatgpt
-       (append org-babel-default-header-args:chatgpt
-               '((:to-org . t) (:wrap . "quote"))))
-      (org-babel-chatgpt-aliases '("ask"))
-      )
+  (use-package ob-plantuml
+    :after ob
+    :hook
+    (ob-async-pre-execute-src-block
+     . (lambda ()
+         (setq org-plantuml-jar-path "~/lib/java/plantuml.jar")))
+    :custom
+    (org-plantuml-jar-path my/plantuml-jar-path)
+    (plantuml-server-url nil)
+    :config
+    (push (cons ':java my/plantuml-java-options) org-babel-default-header-args:plantuml)
+    (push (cons ':cmdline (s-join " " my/plantuml-jar-args)) org-babel-default-header-args:plantuml)
+    (push '(:cache . "yes") org-babel-default-header-args:plantuml)
     )
 
-  (use-package ox
-    :commands org-export-dispatch
-
+  (use-package ob-mermaid :ensure t
+    :after ob
     :custom
-    (org-export-headline-levels 5)
-    (org-export-use-babel t)
-    (org-export-with-broken-links t)
-    (org-export-with-section-numbers nil)
-    (org-export-with-sub-superscripts '{})
-    (org-export-with-toc nil)
-
+    (org-babel-default-header-args:mermaid
+     (append org-babel-default-header-args:mermaid '((:cache . "yes"))))
     :config
-    (use-package ox-gfm :ensure t)
+    (setq mermaid-config-file "~/.config/mermaid/config.json"))
 
-    (use-package ox-hugo :ensure t)
+  (use-package ob-python
+    :after ob
+    :hook
+    (org-mode
+     . (lambda ()
+         (setq-local org-babel-python-command (my/find-venv-python-or-global))))
+    :custom
+    (org-babel-python-command "python3")
+    (org-babel-default-header-args:python '((:cache . "yes") (:results . "output")))
+    )
 
-    (use-package ox-html
-      :custom
-      (org-html-head-include-scripts nil)
-      (org-html-head-include-default-style nil)
-      (org-html-head "\
+  (use-package ob-C
+    :after ob
+    :custom
+    (org-babel-default-header-args:C '((:cache . "yes")))
+    (org-babel-default-header-args:C++
+     (append org-babel-default-header-args:C '((:includes . "<iostream>"))))
+    )
+
+  (use-package ob-async :ensure t
+    :after ob
+    :config
+    ;; https://github.com/astahlman/ob-async/issues/75
+    (defun no-hide-overlays (orig-fun &rest args)
+      (setq org-babel-hide-result-overlays nil))
+    (advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays)
+
+    (when (string> org-version "9.6")
+      ;; Fix for using #+CALL: to earn error
+      (advice-remove 'org-babel-execute-src-block 'ob-async-org-babel-execute-src-block)
+      (defun ob-async-org-babel-execute-src-block-fixed (&optional orig-fun arg info params executor-type)
+        (ob-async-org-babel-execute-src-block orig-fun arg info params))
+      (advice-add 'org-babel-execute-src-block :around 'ob-async-org-babel-execute-src-block-fixed))
+    )
+
+  (use-package ob-js
+    :config
+    (setq org-babel-js-function-wrapper
+          "require('util').inspect(function(){\n%s\n}());")
+    )
+
+  (use-package ob-typescript :ensure t
+    :config
+    (push '("ts" . typescript) org-src-lang-modes)
+    (org-babel-make-language-alias "ts" "typescript")
+    )
+
+  (use-package ob-go :ensure t)
+
+  (use-package ob-chatgpt
+    ;; :straight (:host github :repo "yhiraki/ob-chatgpt" :files ("*.el")))
+    :load-path "~/src/github.com/yhiraki/ob-chatgpt"
+    :custom
+    (org-babel-default-header-args:chatgpt
+     (append org-babel-default-header-args:chatgpt
+             '((:to-org . t) (:wrap . "quote"))))
+    (org-babel-chatgpt-aliases '("ask"))
+    )
+  )
+
+(use-package ox
+  :after org
+
+  :custom
+  (org-export-headline-levels 5)
+  (org-export-use-babel t)
+  (org-export-with-broken-links t)
+  (org-export-with-section-numbers nil)
+  (org-export-with-sub-superscripts '{})
+  (org-export-with-toc nil)
+
+  :config
+
+  (use-package ox-gfm :ensure t)
+
+  (use-package ox-hugo :ensure t)
+
+  (use-package ox-html
+    :custom
+    (org-html-head-include-scripts nil)
+    (org-html-head-include-default-style nil)
+    (org-html-head "\
 <link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />
 <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css\" id=\"hljs-css\">
 <script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js\"></script>
 <script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lisp.min.js\"></script>
 ")
-      (org-html-postamble t)
-      (org-html-postamble-format
-       '(("en" "\
+    (org-html-postamble t)
+    (org-html-postamble-format
+     '(("en" "\
 <p class=\"date\">Date: %d</p>
 <p class=\"author\">Author: %a</p>
 ")))
-      (org-html-validation-link nil)
-      (org-html-mathjax-options
-       '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
-         (scale "100")
-         (align "center")
-         (font "TeX")
-         (linebreaks "false")
-         (autonumber "AMS")
-         (indent "0em")
-         (multlinewidth "85%")
-         (tagindent ".8em")
-         (tagside "right"))
-       )
-      (org-html-htmlize-output-type nil) ;; non-nil cause error when exports org text as src block
-      (org-html-text-markup-alist
-       (cons '(code . "<kbd>%s</kbd>")
-             org-html-text-markup-alist))
-      )
-
-    (use-package org-re-reveal :ensure t
-      :custom
-      (org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
-      (org-re-reveal-revealjs-version "4")
-      (org-re-reveal-theme "white")
-      (org-re-reveal-transition "none")
-      (org-re-reveal-hlevel 5)
-      )
-
-    (use-package ox-rst :ensure t)
+    (org-html-validation-link nil)
+    (org-html-mathjax-options
+     '((path "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+       (scale "100")
+       (align "center")
+       (font "TeX")
+       (linebreaks "false")
+       (autonumber "AMS")
+       (indent "0em")
+       (multlinewidth "85%")
+       (tagindent ".8em")
+       (tagside "right"))
+     )
+    (org-html-htmlize-output-type nil) ;; non-nil cause error when exports org text as src block
+    (org-html-text-markup-alist
+     (cons '(code . "<kbd>%s</kbd>")
+           org-html-text-markup-alist))
     )
+
+  (use-package org-re-reveal :ensure t
+    :custom
+    (org-re-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+    (org-re-reveal-revealjs-version "4")
+    (org-re-reveal-theme "white")
+    (org-re-reveal-transition "none")
+    (org-re-reveal-hlevel 5)
+    )
+
+  (use-package ox-rst :ensure t)
   )
 
 (use-package org-agenda
