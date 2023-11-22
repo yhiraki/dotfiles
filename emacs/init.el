@@ -1617,11 +1617,12 @@
 
     (defun my/org-roam-node-open-ref ()
       (interactive)
-      (browse-url
-       (car (org-roam-node-refs
-             (org-roam-node-read
-              ""
-              #'my/org-roam-filter-has-refs)))))
+      (let ((org-roam-node-display-template "${title:*} ${refs:20} ${tags:10}"))
+        (browse-url
+         (car (org-roam-node-refs
+               (org-roam-node-read
+                ""
+                #'my/org-roam-filter-has-refs))))))
 
     :hook
     (org-mode
