@@ -1913,6 +1913,7 @@
         (format "* %s%%? :Reference:
 :PROPERTIES:
 :ID: %s
+:CATEGORY: Reference
 :ROAM_REFS: %s
 :END:" title (org-id-new) url)))
     )
