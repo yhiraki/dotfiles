@@ -69,11 +69,11 @@
         (insert-file-contents ver-file)
         (when (string-match "WSL" (buffer-string)) t)))))
 
-(defvar emacs24+ (string> emacs-version "24.0"))
-(defvar emacs25+ (string> emacs-version "25.0"))
-(defvar emacs26+ (string> emacs-version "26.0"))
-(defvar emacs27+ (string> emacs-version "27.0"))
-(defvar emacs28+ (string> emacs-version "28.0"))
+(defvar emacs24+ (version<= "24" emacs-version))
+(defvar emacs25+ (version<= "25" emacs-version))
+(defvar emacs26+ (version<= "26" emacs-version))
+(defvar emacs27+ (version<= "27" emacs-version))
+(defvar emacs28+ (version<= "28" emacs-version))
 
 (defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
 (require 'use-package)
