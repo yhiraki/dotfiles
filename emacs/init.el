@@ -1609,6 +1609,20 @@
       (my/org-set-prop-publish)
       (save-buffer))
 
+    (defun my/org-roam-filter-has-refs (node)
+      (when-let* ((refs (org-roam-node-refs node))
+                  (url (car refs))
+                  (http? (string-prefix-p "http" url)))
+        t))
+
+    (defun my/org-roam-node-open-ref ()
+      (interactive)
+      (browse-url
+       (car (org-roam-node-refs
+             (org-roam-node-read
+              ""
+              #'my/org-roam-filter-has-refs)))))
+
     :hook
     (org-mode
      . (lambda ()
@@ -1653,6 +1667,7 @@
              "<leader> nS" #'org-roam-db-sync
              "<leader> nb" #'org-roam-buffer-display-dedicated
              "<leader> n/" #'org-roam-node-find
+             "<leader> no" #'my/org-roam-node-open-ref
              "<leader> nF" #'my/org-roam-fix-exported-markdown)
     :config
     ;; (require 'org-roam-dailies)
