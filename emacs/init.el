@@ -1361,6 +1361,20 @@
   (org-log-done 'time) ; DONEの時刻を記録
   (org-log-into-drawer "LOGBOOK")
   (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width or fixed width
+  (org-tag-alist
+   '((:startgrouptag)
+     ("Work")
+     (:grouptags)
+     ("Project")
+     (:endgrouptag)
+     ;; ---
+     (:startgrouptag)
+     ("Project")
+     (:grouptags)
+     (:startgroup . nil)
+     ("pj@.+")
+     (:endgroup . nil)
+     (:endgrouptag)))
 
   :after evil
   :config
@@ -2232,6 +2246,15 @@
     '(org-agenda-skip-function
       '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp)))
 
+  (defun my/org-agenda-tasks-setting (tag)
+    `((agenda ,tag ((org-agenda-entry-types '(:deadline :scheduled))
+                    (org-agenda-skip-function
+                     '(org-agenda-skip-entry-if 'todo 'done))))
+      (tags-todo ,tag (,my/org-agenda-entry-is-not-project
+                       (org-agenda-overriding-header "TODOs: ")))
+      (tags-todo ,tag (,my/org-agenda-entry-is-project
+                       (org-agenda-overriding-header "Projects: ")))))
+
   :custom
   (org-agenda-window-setup 'current-window)
   (org-agenda-restore-windows-after-quit t)
@@ -2246,19 +2269,9 @@
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
   (org-agenda-custom-commands
-   `(("t" "Tasks"
-      ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
-                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                   ))
-       (todo "STARTED" (,my/org-agenda-entry-is-not-project
-                        (org-agenda-overriding-header "On progress: ")))
-       (todo "NEXT" (,my/org-agenda-entry-is-not-project
-                     (org-agenda-overriding-header "Next Actions: ")))
-       (todo "WAITING" (,my/org-agenda-entry-is-not-project
-                        (org-agenda-overriding-header "Waitings: ")))
-       (todo 'not-done (,my/org-agenda-entry-is-project
-                        (org-agenda-overriding-header "Projects: ")))
-       ))
+   `(("t" . "Tasks")
+     ("tw" "Work" ,(my/org-agenda-tasks-setting "Work"))
+     ("tp" "Private" ,(my/org-agenda-tasks-setting "-Work"))
      ("r" "GTD review"
       ((tags-todo "TAGS=\"\"+LEVEL=2"
                   ((org-agenda-overriding-header "Untagged TODOs")))
