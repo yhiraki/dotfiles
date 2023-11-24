@@ -1886,23 +1886,30 @@
          (cdr (assq 'ebook info)))
         ))
 
-    (defun my/org-capture-file-journal ()
+    (defun my/org-capture-journal-today-directory ()
       (let* ((d (f-join
                  org-roam-directory
                  "journal"
-                 (format-time-string "%Y/%m/%d")))
+                 (format-time-string "%Y/%m/%d"))))
+        (make-directory d t)
+        d))
+
+    (defun my/org-capture-journal-create-today-file ()
+      (let* ((d (my/org-capture-journal-today-directory))
              (today (format-time-string "%Y-%m-%d"))
-             (ftoday (f-join d "index.org"))
-             (fnow (f-join d (format-time-string "%H%M%S.org"))))
+             (ftoday (f-join d "index.org")))
         (unless (file-exists-p ftoday)
-          (make-directory d t)
           (with-current-buffer (find-file-noselect ftoday)
             (insert (format "#+DATE: \n* %s" today))
             (org-set-property "ID" today)
-            (my/org-mode-insert-time-stamp-modified-heading)
             (org-set-tags (format-time-string ":Journal:"))
             (save-buffer)
-            (kill-current-buffer)))
+            (kill-current-buffer)))))
+
+    (defun my/org-capture-file-journal ()
+      (my/org-capture-journal-create-today-file)
+      (let* ((d (my/org-capture-journal-today-directory))
+             (fnow (f-join d (format-time-string "%H%M%S.org"))))
         fnow))
 
     (defun my/org-reference-exists (url)
@@ -1916,6 +1923,7 @@
                           url-ref)))))
 
     (defun my/org-capture-new-reference ()
+      (my/org-capture-journal-create-today-file)
       (let* ((url (read-from-minibuffer "URL: "))
              (url-not-exist (not (my/org-reference-exists url)))
              (dom (ignore-errors
@@ -1930,8 +1938,12 @@
 :ID: %s
 :CATEGORY: Reference
 :ROAM_REFS: %s
-:END:" title (org-id-new) url)))
-    )
+:journal_link: %s
+:END:"
+                title
+                (org-id-new)
+                url
+                (org-link-make-string (format-time-string "id:%Y-%m-%d"))))))
 
   (use-package org-superstar :ensure t
     :hook (org-mode . org-superstar-mode)
