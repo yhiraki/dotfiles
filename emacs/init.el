@@ -1619,9 +1619,9 @@
 
     (defun my/org-set-publish-current-file ()
       (interactive)
-      (my/org-rename-current-file-from-tags)
       (my/org-set-prop-publish)
-      (save-buffer))
+      (save-buffer)
+      (my/org-rename-current-file-from-tags))
 
     (defun my/org-roam-filter-has-refs (node)
       (when-let* ((refs (org-roam-node-refs node))
