@@ -1902,6 +1902,7 @@
           (with-current-buffer (find-file-noselect ftoday)
             (insert (format "#+DATE: \n* %s" today))
             (org-set-property "ID" today)
+            (org-set-property "PUBLISH" "t")
             (org-set-tags (format-time-string ":Journal:"))
             (save-buffer)
             (kill-current-buffer)))))
