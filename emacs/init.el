@@ -2698,17 +2698,14 @@
 
   (evil-mode)
 
-  (defun my/evil-open-below-at-heading (count)
+  (defun my/evil-move-to-end-of-drawer ()
     (when (org-at-heading-p)
       (org-end-of-meta-data)
-      (unless (org-at-drawer-p)
-        (previous-line))
-      (evil-open-below count)
-      t))
+      (goto-char (- (point) 1))))
 
   (defun my/advice-evil-open-below-at-heading (old-func count)
-    (unless (my/evil-open-below-at-heading count)
-      (funcall old-func count)))
+    (my/evil-move-to-end-of-drawer)
+      (funcall old-func count))
 
   (advice-add #'evil-open-below :around #'my/advice-evil-open-below-at-heading)
 
