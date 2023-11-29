@@ -2328,29 +2328,28 @@
 
   (when (executable-find "rg")
 
-    (defun my/org-agenda-files-todo ()
+    (defun my/list-agenda-files (regex)
       (with-temp-buffer
-        (let* ((states "TODO|NEXT|STARTED")
-               (cmd (concat "rg -l '^\\*+ (" states ")' -g '!**/archived/**/*.org' " org-directory))
+        (let* ((cmd (concat "rg -l '" regex "' -g '!**/archived/**/*.org' " org-directory))
                (stat (shell-command cmd (current-buffer)))
                (res (s-split "\n" (s-trim (buffer-string)))))
           res)))
 
+    (defun my/org-agenda-files-todo ()
+      (let* ((states "TODO|NEXT|STARTED")
+             (regex (concat "^\\*+ (" states ")")))
+        (my/list-agenda-files regex)))
+
     (defun my/org-agenda-files-tags ()
-      (with-temp-buffer
-        (let* ((tags ":Meeting:")
-               (cmd (concat "rg -l '^\\*+.*(" tags ")' -g '!**/archived/**/*.org' " org-directory))
-               (stat (shell-command cmd (current-buffer)))
-               (res (s-split "\n" (s-trim (buffer-string)))))
-          res)))
+      (let* ((tags ":Meeting:")
+             (regex (concat "^\\*+.*(" tags ")")))
+        (my/list-agenda-files regex)))
 
     (defun my/org-agenda-files-recent ()
       (with-temp-buffer
         (let* ((dates (s-join "|" (my/timestamps-this-week)))
-               (cmd (concat "rg -l '[\\[<](" dates ")' -g '!**/archived/**/*.org' " org-directory))
-               (stat (shell-command cmd (current-buffer)))
-               (res (s-split "\n" (s-trim (buffer-string)))))
-          res)))
+               (regex (concat "[\\[<](" dates ")")))
+        (my/list-agenda-files regex))))
 
     (defun my/update-org-agenda-files ()
       (setq org-agenda-files
@@ -2363,10 +2362,11 @@
     (my/update-org-agenda-files)
 
     (add-hook
-     'after-save-hook
+     'org-mode-hook
      #'(lambda ()
-               (when (eq major-mode 'org-mode)
-                 (my/update-org-agenda-files))))
+         (add-hook
+          'after-save-hook
+          #'my/update-org-agenda-files nil t)))
     )
 
   (defun my/org-agenda-todo-next ()
