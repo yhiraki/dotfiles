@@ -2315,15 +2315,22 @@
   :config
   (defvar my/true-org-directory (file-truename org-directory))
 
-  (defun my/timestamps-this-week ()
+  (defun my/make-sequence (end &optional beg)
+    (let ((l '())
+          (beg (or beg 0)))
+      (dotimes (i (- end beg))
+        (push (+ i beg) l))
+      (reverse l)))
+
+  (defun my/timestamps-days-offsets (offsets)
     (let ((t1 (current-time))
           (aday (* 24 60 60)))
       (mapcar
        #'(lambda (i)
            (format-time-string
             "%Y-%m-%d"
-            (time-subtract t1 (* i aday))))
-       '(0 1 2 3 4 5 6)))
+            (time-add t1 (* i aday))))
+       offsets))
     )
 
   (when (executable-find "rg")
@@ -2347,9 +2354,10 @@
 
     (defun my/org-agenda-files-recent ()
       (with-temp-buffer
-        (let* ((dates (s-join "|" (my/timestamps-this-week)))
-               (regex (concat "[\\[<](" dates ")")))
-        (my/list-agenda-files regex))))
+        (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
+                    (dates (s-join "|" d)) ;; 2 weeks
+                    (regex (concat "[\\[<](" dates ")")))
+          (my/list-agenda-files regex))))
 
     (defun my/update-org-agenda-files ()
       (setq org-agenda-files
