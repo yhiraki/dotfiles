@@ -1365,6 +1365,7 @@
    '((:startgrouptag)
      ("Work")
      (:grouptags)
+     ("Office")
      ("Project")
      (:endgrouptag)
      ;; ---
@@ -2335,6 +2336,14 @@
                (res (s-split "\n" (s-trim (buffer-string)))))
           res)))
 
+    (defun my/org-agenda-files-tags ()
+      (with-temp-buffer
+        (let* ((tags ":Meeting:")
+               (cmd (concat "rg -l '^\\*+.*(" tags ")' -g '!**/archived/**/*.org' " org-directory))
+               (stat (shell-command cmd (current-buffer)))
+               (res (s-split "\n" (s-trim (buffer-string)))))
+          res)))
+
     (defun my/org-agenda-files-recent ()
       (with-temp-buffer
         (let* ((dates (s-join "|" (my/timestamps-this-week)))
@@ -2348,6 +2357,7 @@
             (delete-dups
              (append
               (my/org-agenda-files-todo)
+              (my/org-agenda-files-tags)
               (my/org-agenda-files-recent)))))
 
     (my/update-org-agenda-files)
