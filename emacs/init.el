@@ -1777,7 +1777,7 @@
 
        ("m" "Meeting Note"
         entry (file my/org-capture-file-inbox)
-        "* NEXT %? :Meeting:
+        "* %? :Meeting:
 #+CATEGORY: Meeting
 ")
 
