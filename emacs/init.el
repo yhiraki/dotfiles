@@ -1748,11 +1748,11 @@
      `(
        ("j" "Journal"
         plain (file my/org-capture-file-journal)
-        "#+DATE:
-* %(format-time-string \"%H:%M\") %? :Journal:
+        "* %(format-time-string \"%H:%M\") %? :Journal:
 :PROPERTIES:
 :ID: %(org-id-new)
 :journal_link: [[id:%(format-time-string \"%Y-%m-%d\")]]
+:CATEGORY: Journal
 :END:")
 
        ("b" "Book"
