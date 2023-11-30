@@ -2339,9 +2339,17 @@
 
   (when (executable-find "rg")
 
-    (defun my/list-agenda-files (regex)
+    (defun my/list-agenda-files (regex &optional extra-filters)
       (with-temp-buffer
-        (let* ((cmd (concat "rg -l '" regex "' -g '!**/archived/**/*.org' " org-directory))
+        (let* ((filters (append '("!**/archived/**/*.org") extra-filters))
+               (cmd (string-join
+                     `("rg" "-l"
+                       ,(concat "'" regex "'")
+                       ,(mapconcat
+                         '(lambda (x) (concat "-g '" x "'"))
+                         filters
+                         " ")
+                       ,org-directory) " "))
                (stat (shell-command cmd (current-buffer)))
                (res (s-split "\n" (s-trim (buffer-string)))))
           res)))
@@ -2357,11 +2365,10 @@
         (my/list-agenda-files regex)))
 
     (defun my/org-agenda-files-recent ()
-      (with-temp-buffer
-        (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
-                    (dates (s-join "|" d)) ;; 2 weeks
-                    (regex (concat "[\\[<](" dates ")")))
-          (my/list-agenda-files regex))))
+      (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
+                  (dates (s-join "|" d)) ;; 2 weeks
+                  (regex (concat "[\\[<](" dates ")")))
+        (my/list-agenda-files regex)))
 
     (defun my/update-org-agenda-files ()
       (setq org-agenda-files
