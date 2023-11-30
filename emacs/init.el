@@ -1532,7 +1532,7 @@
       (save-excursion
         (goto-char (point-min))
         (unless (org-at-heading-p)
-          (let ((id (org-entry-get (point) "ID")))
+          (when-let ((id (org-entry-get (point) "ID")))
             (org-delete-property "ID")
             (org-delete-property "ROAM_REFS")
             (org-next-visible-heading 1)
