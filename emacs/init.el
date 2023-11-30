@@ -2368,7 +2368,7 @@
       (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
                   (dates (s-join "|" d)) ;; 2 weeks
                   (regex (concat "[\\[<](" dates ")")))
-        (my/list-agenda-files regex)))
+        (my/list-agenda-files regex '("!**/roam/refs/**/*.org"))))
 
     (defun my/update-org-agenda-files ()
       (setq org-agenda-files
