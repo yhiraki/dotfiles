@@ -1590,28 +1590,32 @@
 
     (advice-add #'org-roam-link-replace-at-point :around #'my/org-roam-link-repalce-auto-tags-and-category)
 
+    (defun my/filename-is-valid-for-publish (filename)
+      (let ((case-fold-search nil))
+        (string-match "[a-z0-9\\-\\.]+" filename)))
+
     (defun my/org-rename-current-file-from-tags ()
       (interactive)
-      (my/with-org-1st-heading
-       (if-let* ((old-name (buffer-file-name))
-                 (old-exist (file-exists-p old-name))
-                 (file-prefix (s-join "-" (mapcar #'s-downcase (org-get-tags))))
-                 (filename (read-from-minibuffer "FileName: " file-prefix))
-                 (filename-valid (let ((case-fold-search nil))
-                                   (string-match "[a-z0-9\\-\\.]+" filename)))
-                 (new-name (f-join (file-name-directory old-name) filename))
-                 (new-not-exist (not (file-exists-p new-name))))
-           (progn
-             (rename-file old-name new-name)
-             (rename-buffer filename))
-         (cond
-          ((not old-exist)
-           (error "Save file: %s" old-name))
-          ((not filename-valid)
-           (error "File name should contains only alpha or number."))
-          ((not new-not-exist)
-           (error "File exists: %s" new-name)))
-         )))
+      (unless (my/filename-is-valid-for-publish (buffer-name))
+        (my/with-org-1st-heading
+         (if-let* ((old-name (buffer-file-name))
+                   (old-exist (file-exists-p old-name))
+                   (file-prefix (s-join "-" (mapcar #'s-downcase (org-get-tags))))
+                   (filename (read-from-minibuffer "FileName: " file-prefix))
+                   (filename-valid (my/filename-is-valid-for-publish filename))
+                   (new-name (f-join (file-name-directory old-name) filename))
+                   (new-not-exist (not (file-exists-p new-name))))
+             (progn
+               (rename-file old-name new-name)
+               (rename-buffer filename))
+           (cond
+            ((not old-exist)
+             (error "Save file: %s" old-name))
+            ((not filename-valid)
+             (error "File name should contains only alpha or number."))
+            ((not new-not-exist)
+             (error "File exists: %s" new-name)))
+           ))))
 
     (defun my/org-set-prop-publish ()
       (interactive)
