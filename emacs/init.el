@@ -2128,13 +2128,17 @@
 
   (use-package ob-python
     :after ob
-    :hook
-    (org-mode
-     . (lambda ()
-         (setq-local org-babel-python-command (my/find-venv-python-or-global))))
+
     :custom
     (org-babel-python-command "python3")
     (org-babel-default-header-args:python '((:cache . "yes") (:results . "output")))
+
+    :config
+    (defun my/org-babel-python-set-python-command (old-func &rest args)
+      (setq-local org-babel-python-command (my/find-venv-python-or-global)))
+    (advice-add
+     'org-babel-execute:python :before
+     #'my/org-babel-python-set-python-command)
     )
 
   (use-package ob-C
