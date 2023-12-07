@@ -1357,7 +1357,9 @@
      (sequence "WAITING(w)" "STARTED" "|")
      (sequence "SOMEDAY(S)" "|")
      (sequence "|" "CANCELLED(c)")
-     (sequence "|" "MEETING(m)")))
+     (sequence "|" "MEETING(m)")
+     (sequence "DRAFT" "|" "PUBLISH")
+     ))
   (org-log-done 'time) ; DONEの時刻を記録
   (org-log-into-drawer "LOGBOOK")
   (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width or fixed width
