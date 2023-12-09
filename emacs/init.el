@@ -1592,7 +1592,7 @@
 
     (defun my/filename-is-valid-for-publish (filename)
       (let ((case-fold-search nil))
-        (string-match "[a-z0-9\\-\\.]+" filename)))
+        (string-match "^[a-z0-9-\\.]+$" filename)))
 
     (defun my/org-rename-current-file-from-tags ()
       (interactive)
