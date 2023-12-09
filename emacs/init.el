@@ -1643,6 +1643,21 @@
                 ""
                 #'my/org-roam-filter-has-refs))))))
 
+    (defun my/org-roam-async-db-sync ()
+      (interactive)
+      (async-start
+       `(lambda ()
+          (require 'package)
+          (package-initialize)
+          (require 'org-roam)
+          (setq org-roam-directory ,org-roam-directory)
+          (org-roam-db-sync))
+       '(lambda (start-time)
+          (let ((now (current-time)))
+            (message "org-roam-db-sync done in %0.1fsec."
+                     (time-to-seconds (time-subtract now start-time)))))
+       ))
+
     :hook
     (org-mode
      . (lambda ()
@@ -1684,7 +1699,7 @@
     :general
     (:states '(normal visual)
              ;; "<leader> n" #'org-roam-dailies-map
-             "<leader> nS" #'org-roam-db-sync
+             "<leader> nS" #'my/org-roam-async-db-sync
              "<leader> nb" #'org-roam-buffer-display-dedicated
              "<leader> n/" #'org-roam-node-find
              "<leader> no" #'my/org-roam-node-open-ref
