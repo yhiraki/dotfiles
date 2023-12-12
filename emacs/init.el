@@ -1079,7 +1079,7 @@
 (use-package annotate :ensure t)
 
 (use-package csharp-mode
-  :if (string< emacs-version "29")
+  :if (version< emacs-version "29")
   :ensure t)
 
 (use-package dockerfile-mode :ensure t)
