@@ -1934,19 +1934,29 @@
              (fnow (f-join d (format-time-string "%H%M%S.org"))))
         fnow))
 
+    (defun my/url-for-reference (url)
+      (let* ((p (url-generic-parse-url url))
+             (u (concat
+                 (url-type p)
+                 "://"
+                 (url-host p)
+                 (url-filename p))))
+        u))
+
     (defun my/org-reference-exists (url)
-      (when-let* ((url-ref (progn
-                             (string-match "\\(^.*:\\)\\(//.*$\\)" url)
-                             (match-string 2 url)))
+      (when-let* ((url-ref (my/url-for-reference url))
+                  (url-ref (replace-regexp-in-string "^https?:" "" url-ref))
                   (exist (org-roam-db-query
                           [:select [ref]
                                    :from refs
                                    :where (= ref $s1)]
-                          url-ref)))))
+                          url-ref)))
+        exist))
 
     (defun my/org-capture-new-reference ()
       (my/org-capture-journal-create-today-file)
       (let* ((url (read-from-minibuffer "URL: "))
+             (url (my/url-for-reference url))
              (url-not-exist (not (my/org-reference-exists url)))
              (dom (ignore-errors
                     (with-current-buffer
