@@ -1941,7 +1941,7 @@
                  "://"
                  (url-host p)
                  (url-filename p))))
-        u))
+        (replace-regexp-in-string "/$" "" u)))
 
     (defun my/org-reference-exists (url)
       (when-let* ((url-ref (my/url-for-reference url))
