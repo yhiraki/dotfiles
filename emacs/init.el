@@ -1649,11 +1649,15 @@
       (interactive)
       (async-start
        `(lambda ()
-          (require 'package)
-          (package-initialize)
-          (require 'org-roam)
-          (setq org-roam-directory ,org-roam-directory)
-          (org-roam-db-sync))
+          (let ((now (current-time)))
+            (require 'package)
+            (package-initialize)
+            (require 'org)
+            (require 'org-roam)
+            (setq org-roam-directory ,org-roam-directory)
+            (setq org-todo-keywords ',org-todo-keywords)
+            (org-roam-db-sync)
+            now))
        '(lambda (start-time)
           (let ((now (current-time)))
             (message "org-roam-db-sync done in %0.1fsec."
@@ -1674,7 +1678,10 @@
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
     (org-roam-directory (f-join org-directory "roam"))
-    (org-roam-node-display-template "${title:*} ${tags:10}")
+    (org-roam-node-template-prefixes
+     '(("tags" . "#")
+       ("todo" . "")))
+    (org-roam-node-display-template "${todo:1} ${title:*} ${tags:10}")
     (org-roam-capture-templates
      '(("d" "default" plain "#+DATE:
 * ${title}
