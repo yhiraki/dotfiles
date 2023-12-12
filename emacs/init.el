@@ -2414,9 +2414,10 @@
     )
 
   (defun my/add-org-roam-to-agenda ()
-    (let ((buffname (file-truename (buffer-file-name))))
-      (when (s-prefix? my/true-org-roam-directory buffname)
-        (add-to-list 'org-agenda-files buffname))))
+    (let ((fname (file-truename (buffer-file-name))))
+      (when (s-prefix? my/true-org-roam-directory fname)
+        (add-to-list 'org-agenda-files fname)
+        (setq org-agenda-files (delete-dups org-agenda-files)))))
 
   :bind
   (:map org-agenda-mode-map
