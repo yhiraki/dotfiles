@@ -2344,10 +2344,10 @@
       ((tags "+LEVEL=2"
              ((org-agenda-files '("books.org"))))))
      ("p" "Published"
-      ((tags "ID={.}-ATTACH+LEVEL=1"))
+      ((todo "PUBLISH|DRAFT"))
       ((org-agenda-overriding-header "Recentry Modified Files:")
        (org-agenda-view-columns-initially t)
-       (org-overriding-columns-format "%1FILE %40ITEM %PUBLISH %MODIFIED %CREATED")
+       (org-overriding-columns-format "%TODO %40ITEM %MODIFIED %CREATED")
        (org-agenda-sorting-strategy '(timestamp-down))))
      ("x" "Headings created today"
       ((tags "+LEVEL=1+CREATED>=\"<today>\"")))
