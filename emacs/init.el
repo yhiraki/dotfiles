@@ -1262,6 +1262,11 @@
   :commands edit-indirect-region
   )
 
+(use-package chatgpt-shell :ensure t
+  :custom
+  (chatgpt-shell-model-version "gpt-3.5-turbo")
+  (chatgpt-shell-openai-key my/openai-access-token))
+
 (defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
@@ -2037,9 +2042,6 @@
           ("C-c g" . org-mac-link-get-link)
           ))
 
-  (use-package chatgpt
-    :load-path "~/src/github.com/yhiraki/chatgpt.el")
-
   (use-package japanese-holidays :ensure t
     :hook
     (calendar-today-visible . japanese-holiday-mark-weekend)
@@ -2205,16 +2207,6 @@
     )
 
   (use-package ob-go :ensure t)
-
-  (use-package ob-chatgpt
-    ;; :straight (:host github :repo "yhiraki/ob-chatgpt" :files ("*.el")))
-    :load-path "~/src/github.com/yhiraki/ob-chatgpt"
-    :custom
-    (org-babel-default-header-args:chatgpt
-     (append org-babel-default-header-args:chatgpt
-             '((:to-org . t) (:wrap . "quote"))))
-    (org-babel-chatgpt-aliases '("ask"))
-    )
   )
 
 (use-package ox
