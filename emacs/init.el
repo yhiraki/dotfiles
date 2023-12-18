@@ -1803,12 +1803,6 @@
         entry (clock)
         "* %U %?")
 
-       ("m" "Meeting Note"
-        entry (file my/org-capture-file-inbox)
-        "* %? :Meeting:
-#+CATEGORY: Meeting
-")
-
        ("f" "Add Reference"
         entry (file my/org-capture-file-refs)
         (function my/org-capture-new-reference))
