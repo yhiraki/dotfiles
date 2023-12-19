@@ -2082,6 +2082,50 @@
     )
   )
 
+(use-package appt
+  :after org-agenda
+
+  :custom
+  (appt-time-msg-list nil)         ;; clear existing appt list
+  (appt-display-interval '3)
+  (appt-message-warning-time '10)  ;; send first warning 10 minutes before appointment
+  (appt-display-mode-line nil)     ;; don't show in the modeline
+  (appt-display-format 'window)    ;; pass warnings to the designated window function
+
+  :config
+  (appt-activate 1)                ;; activate appointment notification
+  (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
+  (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
+  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+  )
+
+(use-package appt
+  :if darwin-p
+  :config
+  (defvar my/notifier-path "terminal-notifier")
+
+  (defun my/appt-send-notification (title msg)
+    (when (executable-find "terminal-notifier")
+      (shell-command
+       (concat my/notifier-path
+               " -message " msg
+               " -title " title
+               " -sender org.gnu.Emacs"
+               " -active org.gnu.Emacs"
+               " -sound Funk"))))
+
+  (defun my/appt-display (min-to-app new-time msg)
+    (my-appt-send-notification
+     (format "'Appointment in %s minutes'" min-to-app)
+     (format "'%s'" msg)))
+
+  (advice-add 'appt-disp-window :before 'my/appt-display)
+
+  (add-hook 'org-mode-hook
+            (lambda() (add-hook 'before-save-hook
+                                'org-agenda-to-appt t)))
+  )
+
 (use-package ob
   :after org
   :hook
