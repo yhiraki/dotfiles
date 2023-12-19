@@ -3125,6 +3125,10 @@
   :custom
   (consult-project-root-function #'vc-root-dir)
   (consult-find-args "find . -not ( -name .venv -prune -o -name node_modules -prune -o -name .git -prune )")
+  (consult-ripgrep-args
+  "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\
+   --smart-case --no-heading --with-filename --line-number --search-zip\
+   --hidden --glob !.git/")
 
   :general
   (:states '(normal visual)
