@@ -2085,6 +2085,9 @@
 (use-package appt
   :after org-agenda
 
+  :hook
+  (org-finalize-agenda . org-agenda-to-appt) ;; update appt list on agenda view
+
   :custom
   (appt-time-msg-list nil)         ;; clear existing appt list
   (appt-display-interval '3)
@@ -2096,7 +2099,9 @@
   (appt-activate 1)                ;; activate appointment notification
   (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
   (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt) ;; update appt list on agenda view
+  (add-hook 'org-mode-hook
+            (lambda() (add-hook 'after-save-hook
+                                'org-agenda-to-appt nil t)))
   )
 
 (use-package appt
@@ -2115,15 +2120,11 @@
                " -sound Funk"))))
 
   (defun my/appt-display (min-to-app new-time msg)
-    (my-appt-send-notification
+    (my/appt-send-notification
      (format "'Appointment in %s minutes'" min-to-app)
      (format "'%s'" msg)))
 
   (advice-add 'appt-disp-window :before 'my/appt-display)
-
-  (add-hook 'org-mode-hook
-            (lambda() (add-hook 'before-save-hook
-                                'org-agenda-to-appt t)))
   )
 
 (use-package ob
