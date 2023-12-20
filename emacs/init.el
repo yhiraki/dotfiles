@@ -2162,7 +2162,6 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '(
-     (chatgpt . t)
      (emacs-lisp . t)
      (mermaid . t)
      (plantuml . t)
