@@ -1267,6 +1267,11 @@
   (chatgpt-shell-model-version "gpt-3.5-turbo")
   (chatgpt-shell-openai-key my/openai-access-token))
 
+(use-package ob-chatgpt-shell :ensure t
+  :after ob
+  :config
+  (org-babel-make-language-alias "ask" "chatgpt-shell"))
+
 (defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
