@@ -2112,17 +2112,20 @@
   (defun my/appt-send-notification (title msg)
     (when (executable-find "terminal-notifier")
       (shell-command
-       (concat my/notifier-path
-               " -message " msg
-               " -title " title
-               " -sender org.gnu.Emacs"
-               " -active org.gnu.Emacs"
-               " -sound Funk"))))
+       (mapconcat
+        #'shell-quote-argument
+        `(,my/notifier-path
+          "-message" ,(string-trim-right msg " +:.*:") ;; remove tags from heading text
+          "-title" ,title
+          "-sender" "org.gnu.Emacs"
+          "-active" "org.gnu.Emacs"
+          "-sound" "Funk")
+        " "))))
 
   (defun my/appt-display (min-to-app new-time msg)
     (my/appt-send-notification
-     (format "'Appointment in %s minutes'" min-to-app)
-     (format "'%s'" msg)))
+     (format "Appointment in %s minutes" min-to-app)
+     (format "%s" msg)))
 
   (advice-add 'appt-disp-window :before 'my/appt-display)
   )
