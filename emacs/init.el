@@ -1265,10 +1265,10 @@
 (use-package chatgpt-shell :ensure t
   :custom
   (chatgpt-shell-model-version "gpt-3.5-turbo")
-  (chatgpt-shell-openai-key my/openai-access-token))
+  (chatgpt-shell-openai-key (lambda () my/openai-access-token)))
 
 (use-package ob-chatgpt-shell :ensure t
-  :after ob
+  :after (ob chatgpt-shell)
   :config
   (org-babel-make-language-alias "ask" "chatgpt-shell"))
 
