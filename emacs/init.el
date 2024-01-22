@@ -3219,12 +3219,60 @@
 
 (use-package orderless :ensure t)
 
+(use-package orderless-migemo :no-require t
+  :after (migemo orderless)
+
+  :config
+  ;; https://nyoho.jp/diary/?date=20210615
+  (defun orderless-migemo (component)
+    (let ((pattern (migemo-get-pattern component)))
+      (condition-case nil
+          (progn (string-match-p pattern "") pattern)
+        (invalid-regexp nil))))
+
+  (orderless-define-completion-style orderless-default-style
+    (orderless-matching-styles '(orderless-literal
+                                 orderless-regexp)))
+
+  (orderless-define-completion-style orderless-migemo-style
+    (orderless-matching-styles '(orderless-literal
+                                 orderless-regexp
+                                 orderless-migemo)))
+
+  (setq completion-category-overrides
+        '((command (styles orderless-default-style))
+          (file (styles orderless-migemo-style))
+          (buffer (styles orderless-migemo-style))
+          (symbol (styles orderless-default-style))
+          (consult-location (styles orderless-migemo-style))
+          (consult-multi (styles orderless-migemo-style))
+          (org-roam-node (styles orderless-migemo-style))
+          (unicode-name (styles orderless-migemo-style))
+          (variable (styles orderless-default-style))))
+  )
+
 (use-package marginalia :ensure t
   :hook (after-init . marginalia-mode))
 
 (use-package embark-consult :ensure t
   :bind
   ("C-o" . 'embark-act))
+
+(use-package migemo :ensure t
+  :if (executable-find "cmigemo")
+  :custom
+  (migemo-command "cmigemo")
+  (migemo-options '("-q" "-e"))
+  (migemo-user-dictionary nil)
+  (migemo-regex-dictionary nil)
+  (migemo-coding-system 'utf-8-unix)
+  :config
+  (when linux-p
+    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+  (when darwin-p
+    (setq migemo-dictionary "/opt/homebrew/share/migemo/utf-8/migemo-dict"))
+  (migemo-init)
+  )
 
 (use-package key-binding :no-require
   :config
