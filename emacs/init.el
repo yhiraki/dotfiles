@@ -113,19 +113,6 @@
       (setq dir (f-dirname dir)))
     found-file))
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
 (use-package general :ensure t)
 
 (use-package emacs
@@ -262,16 +249,6 @@
    '(normal visual insert)
    "C-q" 'universal-argument ; C-u -> C-q
   ))
-
-(use-package tempbuf :straight t
-  :hook
-  (find-file
-   . (lambda ()
-       (when (string-match "^/private/tmp\\|^/tmp" (buffer-file-name))
-         (turn-on-tempbuf-mode))))
-  :custom
-  (tempbuf-kill-message nil)
-  )
 
 (use-package midnight
   :hook (find-file . midnight-mode))
@@ -2037,15 +2014,6 @@
     (:states 'normal
              "<localleader>d" #'org-download-map)
     )
-
-  (use-package org-mac-link
-    :if darwin-p
-    :straight (org-mac-link :host gitlab :repo "aimebertrand/org-mac-link")
-    :commands org-mac-link-get-link
-    :bind
-    (:map org-mode-map
-          ("C-c g" . org-mac-link-get-link)
-          ))
 
   (use-package japanese-holidays :ensure t
     :hook
