@@ -2290,7 +2290,10 @@
     (org-re-reveal-hlevel 5)
     )
 
-  (use-package ox-rst :ensure t)
+  (use-package ox-rst :ensure t
+    :custom
+    (org-rst-headline-underline-characters '(?= ?- ?~ ?' ?^ ?+))
+    )
   )
 
 (use-package org-agenda
