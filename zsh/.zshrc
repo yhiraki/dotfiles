@@ -363,6 +363,11 @@ command -v direnv >/dev/null &&
   fpath=(${ASDF_DIR}/completions $fpath)
 }
 
+# mise setup
+command -v mise >/dev/null && {
+  eval "$(mise activate zsh)"
+}
+
 # Path sort by string length
 export PATH=$(echo "$PATH" |
   tr : '\n' |
