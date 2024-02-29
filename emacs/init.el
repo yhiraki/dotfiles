@@ -1931,39 +1931,43 @@
                  (url-filename p))))
         (replace-regexp-in-string "/$" "" u)))
 
-    (defun my/org-reference-exists (url)
+    (defun my/org-find-reference (url)
       (when-let* ((url-ref (my/url-for-reference url))
                   (url-ref (replace-regexp-in-string "^https?:" "" url-ref))
-                  (exist (org-roam-db-query
-                          [:select [ref]
+                  (res (org-roam-db-query
+                          [:select [node-id]
                                    :from refs
                                    :where (= ref $s1)]
-                          url-ref)))
-        exist))
+                          url-ref))
+                  (node-id (caar res)))
+        (org-roam-node-from-id node-id)))
 
     (defun my/org-capture-new-reference ()
       (my/org-capture-journal-create-today-file)
       (let* ((url (read-from-minibuffer "URL: "))
              (url (my/url-for-reference url))
-             (url-not-exist (not (my/org-reference-exists url)))
-             (dom (ignore-errors
-                    (with-current-buffer
-                        (url-retrieve-synchronously url)
-                      (libxml-parse-html-region url-http-end-of-headers (point-max)))))
-             (title (dom-text (dom-by-tag dom 'title))))
-        (unless url-not-exist
-          (error "Already exists Ref: %s" url))
-        (format "* %s%%? :Reference:
+             (dup-node (my/org-find-reference url)))
+        (if dup-node
+            (progn
+              (org-roam-node-visit dup-node t)
+              (error "Already exists Ref: %s" url))
+          (let* ((dom (ignore-errors
+                        (with-current-buffer
+                            (url-retrieve-synchronously url)
+                          (libxml-parse-html-region url-http-end-of-headers (point-max)))))
+                 (title (dom-text (dom-by-tag dom 'title))))
+            (format "* %s%%? :Reference:
 :PROPERTIES:
 :ID: %s
 :CATEGORY: Reference
 :ROAM_REFS: %s
 :journal_link: %s
 :END:"
-                title
-                (org-id-new)
-                url
-                (org-link-make-string (format-time-string "id:%Y-%m-%d"))))))
+                    title
+                    (org-id-new)
+                    url
+                    (org-link-make-string (format-time-string "id:%Y-%m-%d")))))))
+    )
 
   (use-package org-superstar :ensure t
     :hook (org-mode . org-superstar-mode)
