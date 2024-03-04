@@ -1771,19 +1771,19 @@
         "** WISH %(my/book-templeate-from-url \"%c\")%?")
 
        ("t" "Task"
-        entry (file my/org-capture-file-inbox)
+        entry (file my/org-capture-inbox-file)
         "* TODO %?
 :PROPERTIES:
-:ID: %(org-id-new)
+:ID: %(my/org-capture-inbox-new-id)
 :CATEGORY: Inbox
 :END:
 ")
 
        ("T" "Task (Interrupt)"
-        entry (file my/org-capture-file-inbox)
+        entry (file my/org-capture-inbox-file)
         "* STARTED %?
 :PROPERTIES:
-:ID: %(org-id-new)
+:ID: %(my/org-capture-inbox-new-id)
 :CATEGORY: Inbox
 :END:"
         :clock-in t :clock-resume t
@@ -1798,23 +1798,22 @@
         "* %U %?")
 
        ("f" "Add Reference"
-        entry (file my/org-capture-file-refs)
+        entry (file my/org-capture-ref-file)
         (function my/org-capture-new-reference))
 
        ("r" "Review"
-        entry (file my/org-capture-file-inbox)
+        entry (file my/org-capture-inbox-file)
         "\
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
  on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
 :PROPERTIES:
-:ID: %(org-id-new)
+:ID: %(my/org-capture-inbox-new-id)
+:ROAM_REFS: %(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
 :CATEGORY: Inbox
 :END:
 
 %K
-
-%(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
 
 #+begin_src %(my/get-major-mode \"%F\")
 %(org-escape-code-in-string \"%i\")
@@ -1825,10 +1824,9 @@
        ))
 
     :config
-    (defun my/org-new-random-file (parent-dir)
-      (let* ((s (org-id-new))
-             (pref (substring s 0 2))
-             (suff (string-replace "-" "" (substring s 2)))
+    (defun my/org-new-random-file (parent-dir id num-subdir)
+      (let* ((pref (substring id 0 num-subdir))
+             (suff (substring id num-subdir))
              (dir (f-join
                    org-directory
                    parent-dir pref))
@@ -1836,11 +1834,25 @@
         (make-directory dir t)
         file))
 
-    (defun my/org-capture-file-inbox ()
-      (my/org-new-random-file "roam/inbox"))
+    (defvar my/-org-capture-inbox-new-id nil)
 
-    (defun my/org-capture-file-refs ()
-      (my/org-new-random-file "roam/refs"))
+    (defun my/org-capture-inbox-file ()
+      (let ((id (org-id-new)))
+        (setq my/-org-capture-inbox-new-id id)
+        (my/org-new-random-file "roam/inbox" (string-replace "-" "" id) 2)))
+
+    (defun my/org-capture-inbox-new-id ()
+      my/-org-capture-inbox-new-id)
+
+    (defvar my/-org-capture-ref-new-id nil)
+
+    (defun my/org-capture-ref-file ()
+      (let ((id (org-id-new)))
+        (setq my/-org-capture-ref-new-id id)
+        (my/org-new-random-file "roam/refs" (string-replace "-" "" id) 2)))
+
+    (defun my/org-capture-ref-new-id ()
+      my/-org-capture-ref-new-id)
 
     (defun my/iso-today ()
       (format-time-string "%Y-%m-%d"))
@@ -1976,7 +1988,7 @@
 :journal_link: %s
 :END:"
                     title
-                    (org-id-new)
+                    (my/org-capture-ref-new-id)
                     url
                     (org-link-make-string (format-time-string "id:%Y-%m-%d")))))))
     )
