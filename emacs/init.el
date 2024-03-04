@@ -1773,12 +1773,19 @@
        ("t" "Task"
         entry (file my/org-capture-file-inbox)
         "* TODO %?
-#+CATEGORY: Inbox")
+:PROPERTIES:
+:ID: %(org-id-new)
+:CATEGORY: Inbox
+:END:
+")
 
        ("T" "Task (Interrupt)"
         entry (file my/org-capture-file-inbox)
         "* STARTED %?
-#+CATEGORY: Inbox"
+:PROPERTIES:
+:ID: %(org-id-new)
+:CATEGORY: Inbox
+:END:"
         :clock-in t :clock-resume t
         :prepare-finalize (lambda () (org-todo 'done)))
 
@@ -1800,6 +1807,11 @@
 ** %(with-current-buffer (org-capture-get :original-buffer) (my/get-local-git-repo))\
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
  on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
+:PROPERTIES:
+:ID: %(org-id-new)
+:CATEGORY: Inbox
+:END:
+
 %K
 
 %(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
@@ -1825,7 +1837,7 @@
         file))
 
     (defun my/org-capture-file-inbox ()
-      (my/org-new-random-file "inbox"))
+      (my/org-new-random-file "roam/inbox"))
 
     (defun my/org-capture-file-refs ()
       (my/org-new-random-file "roam/refs"))
