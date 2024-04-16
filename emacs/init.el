@@ -119,7 +119,8 @@
   :hook
   ((ansible
     yaml-mode
-    emacs-lisp-mode)
+    emacs-lisp-mode
+    rst-mode)
    . (lambda ()
        (setq indent-tabs-mode nil)))
 
@@ -2320,6 +2321,7 @@
 
   (use-package ox-rst :ensure t
     :custom
+    (org-rst-code-block 'code-block)
     (org-rst-headline-underline-characters '(?= ?- ?~ ?' ?^ ?+))
     )
   )
