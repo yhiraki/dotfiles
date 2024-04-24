@@ -1366,6 +1366,7 @@
      ("pj@.+")
      (:endgroup . nil)
      (:endgrouptag)))
+  (org-use-property-inheritance t)
 
   :after evil
   :config
