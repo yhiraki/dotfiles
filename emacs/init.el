@@ -1322,6 +1322,25 @@
        (org-next-visible-heading 1)
        (progn ,@body)))
 
+  (defun my/update-tangle-dir (old-func &rest args)
+    (let ((info (apply old-func args)))
+      (ignore-errors
+        (when-let* ((tangle-dir (org-entry-get nil "tangle-dir" t))
+                    (tangle-dir (->> tangle-dir
+                                     (split-string)
+                                     (apply 'file-name-concat)))
+                    (header-args (nth 2 info))
+                    (tangle-base (->> header-args
+                                      (assq :tangle)
+                                      (cdr)))
+                    (tangle-file (file-name-concat tangle-dir tangle-base)))
+          (unless (string= tangle-base "no")
+            (push `(:tangle . ,tangle-file) header-args)
+            (setf (elt info 2) header-args))))
+      info)
+    )
+  (advice-add #'org-babel-get-src-block-info :around #'my/update-tangle-dir)
+
   :hook
   (org-after-todo-statistics . my/org-summary-todo)
   (org-after-todo-state-change . my/org-add-date-for-book-state)
