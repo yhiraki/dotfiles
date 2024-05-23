@@ -3179,6 +3179,12 @@
     (emacs-lock-mode 'kill))
   )
 
+(use-package jinx :ensure t
+  ;; :hook (emacs-startup . global-jinx-mode)  ; Emacs killed
+  :config
+  (push '(t "[ぁ-んァ-ン一-龯]") jinx-exclude-regexps)
+  )
+
 (use-package ol
   :bind ("C-c l" . org-store-link))
 
