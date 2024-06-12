@@ -1780,7 +1780,7 @@
      `(
        ("j" "Journal"
         plain (file my/org-capture-file-journal)
-        "* %(format-time-string \"%H:%M\") %? :Journal:
+        "* %? :Journal:
 :PROPERTIES:
 :ID: %(org-id-new)
 :journal_link: [[id:%(format-time-string \"%Y-%m-%d\")]]
