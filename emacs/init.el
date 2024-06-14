@@ -1816,7 +1816,8 @@
 
        ("f" "Add Reference"
         entry (file my/org-capture-ref-file)
-        (function my/org-capture-new-reference))
+        (function my/org-capture-new-reference)
+        :hook my/capture-new-reference-hook)
 
        ("r" "Review"
         entry (file my/org-capture-inbox-file)
@@ -1983,6 +1984,18 @@
                   (node-id (caar res)))
         (org-roam-node-from-id node-id)))
 
+    (defun my/switch-to-buffer-capture-new-reference (status)
+      (let* ((dom (libxml-parse-html-region url-http-end-of-headers (point-max)))
+             (title (dom-text (dom-by-tag dom 'title))))
+        (with-current-buffer (window-buffer (selected-window))
+          (org-edit-headline title))
+        ))
+
+    (defun my/capture-new-reference-hook ()
+      (let* ((url (org-entry-get nil "ROAM_REFS"))
+             (url (string-trim url "\"" "\"")))
+        (url-retrieve url 'my/switch-to-buffer-capture-new-reference)))
+
     (defun my/org-capture-new-reference ()
       (my/org-capture-journal-create-today-file)
       (let* ((url (read-from-minibuffer "URL: "))
@@ -1992,22 +2005,18 @@
             (progn
               (org-roam-node-visit dup-node t)
               (error "Already exists Ref: %s" url))
-          (let* ((dom (ignore-errors
-                        (with-current-buffer
-                            (url-retrieve-synchronously url)
-                          (libxml-parse-html-region url-http-end-of-headers (point-max)))))
-                 (title (dom-text (dom-by-tag dom 'title))))
-            (format "* %s%%? :Reference:
+          (format "* %%? :Reference:
 :PROPERTIES:
 :ID: %s
 :CATEGORY: Reference
-:ROAM_REFS: %s
+:ROAM_REFS: \"%s\"
 :journal_link: %s
 :END:"
-                    title
-                    (my/org-capture-ref-new-id)
-                    url
-                    (org-link-make-string (format-time-string "id:%Y-%m-%d")))))))
+                  (my/org-capture-ref-new-id)
+                  url
+                  (org-link-make-string (format-time-string "id:%Y-%m-%d")))
+          )))
+
     )
 
   (use-package org-superstar :ensure t
