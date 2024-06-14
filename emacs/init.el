@@ -886,10 +886,6 @@
         )
   :init
   (global-corfu-mode)
-  :config
-  (evil-make-overriding-map corfu-map)
-  (advice-add 'corfu--setup :after 'evil-normalize-keymaps)
-  (advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
   )
 
 (use-package corfu-terminal :ensure t
