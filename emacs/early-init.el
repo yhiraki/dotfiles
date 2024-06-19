@@ -51,6 +51,7 @@
 ;;     Recursive load: "/Applications/Emacs.app/Contents/Resources/lisp/jka-compr.el.gz"
 (setq load-prefer-newer nil)
 (require 'jka-compr)
+(require 'cc-fonts) ; emacs 29+
 (setq load-prefer-newer t)
 
 (provide 'early-init)
