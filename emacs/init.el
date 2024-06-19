@@ -2714,9 +2714,16 @@
               (">" . 'evil-window-increase-width)))
   )
 
-(use-package undo-fu :ensure t
+(use-package undo-fu :ensure t :disabled
   ;; for evil undo function
   :if (not emacs28+))
+
+(use-package undo-tree :ensure t
+  :hook (after-init . global-undo-tree-mode)
+  :bind
+  (:map evil-normal-state-map
+        ("C-S-r" . 'undo-tree-visualize))
+  )
 
 (use-package evil :ensure t
 
@@ -2739,10 +2746,7 @@
   :custom
   (evil-ex-search-vim-style-regexp t)
   (evil-toggle-key "C-M-z")
-  (evil-undo-system
-   (if emacs28+
-       'undo-redo
-     'undo-fu))
+  (evil-undo-system 'undo-tree)
   (evil-want-C-i-jump t)
   (evil-want-C-u-scroll t)
   (evil-want-C-u-delete t)
