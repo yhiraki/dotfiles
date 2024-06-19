@@ -2747,7 +2747,7 @@
   (evil-ex-search-vim-style-regexp t)
   (evil-toggle-key "C-M-z")
   (evil-undo-system 'undo-tree)
-  (evil-want-C-i-jump t)
+  (evil-want-C-i-jump window-system)
   (evil-want-C-u-scroll t)
   (evil-want-C-u-delete t)
   (evil-want-keybinding nil)
