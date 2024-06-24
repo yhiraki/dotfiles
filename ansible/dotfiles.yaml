@@ -4,7 +4,7 @@
   connection: local
   roles:
     - role: yhiraki.emacs
-      emacs_version: 29.1
+      emacs_version: 29.3
       install_prefix: /usr/local
       build_options: >-
         --build=aarch64-apple-darwin
