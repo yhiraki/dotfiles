@@ -732,7 +732,7 @@
       (concat dirname (file-name-nondirectory FILE))))
   )
 
-(use-package undohist :ensure t
+(use-package undohist :ensure t :disabled  ; use undo-tree session
   :custom
   (undohist-ignored-files '("\\.git/COMMIT_EDITMSG$"))
   :config (undohist-initialize))
@@ -2714,7 +2714,7 @@
               (">" . 'evil-window-increase-width)))
   )
 
-(use-package undo-fu :ensure t :disabled
+(use-package undo-fu :ensure t :disabled  ; use undo-tree instead
   ;; for evil undo function
   :if (not emacs28+))
 
