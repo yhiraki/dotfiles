@@ -556,6 +556,7 @@
             "C-n" #'vterm--self-insert
             "C-p" #'vterm--self-insert
             "C-r" #'vterm--self-insert
+            "C-w" #'evil-window-up
             "C-x" #'vterm--self-insert
             "M-t" #'my/vterm-insert-tmux-detach
             "SPC" #'vterm--self-insert
