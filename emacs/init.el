@@ -1688,7 +1688,18 @@
 %?"
         :target (file "nodes/%<%Y%m%d%H%M%S>-${slug}.org")
         :unnarrowed t)
-       ))
+       ("t" "term" plain "#+DATE:
+* ${title}
+%?"
+        :target (file "nodes/${slug}.org")
+        :unnarrowed t)
+       ("T" "term publish" plain "#+DATE:
+* PUBLISH ${title}
+%?"
+        :target (file "nodes/${slug}.org")
+        :unnarrowed t)
+       )
+     )
     (org-roam-db-node-include-function
      (lambda ()
        (not (member "ATTACH" (org-get-tags)))))
@@ -1813,7 +1824,9 @@
        ("f" "Add Reference"
         entry (file my/org-capture-ref-file)
         (function my/org-capture-new-reference)
-        :hook my/capture-new-reference-hook)
+        :hook my/capture-new-reference-hook
+        :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
+        )
 
        ("r" "Review"
         entry (file my/org-capture-inbox-file)
