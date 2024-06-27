@@ -605,11 +605,6 @@
   (magit-diff-refine-hunk 'all)
 
   :config
-  (use-package magit-todos :ensure t
-    :hook (magit-mode . magit-todos-mode)
-    :custom
-    (magit-todos-exclude-globs '(".git/" "*.js.map" "*.css.map")))
-
   (use-package git-modes :ensure t)
 
   (use-package git-timemachine :ensure t)
