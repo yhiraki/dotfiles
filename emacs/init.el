@@ -2355,15 +2355,19 @@
   (defvar my/org-agenda-entry-is-not-project
     '(org-agenda-skip-function
       '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp)))
+  (defvar my/org-agenda-entry-is-not-project-subtree
+    '(org-agenda-skip-function
+      '(org-agenda-skip-subtree-if 'regexp my/org-sub-todo-progress-regexp)))
 
-  (defun my/org-agenda-tasks-setting (tag)
-    `((agenda ,tag ((org-agenda-entry-types '(:deadline :scheduled))
-                    (org-agenda-skip-function
-                     '(org-agenda-skip-entry-if 'todo 'done))))
-      (tags-todo ,tag (,my/org-agenda-entry-is-not-project
-                       (org-agenda-overriding-header "TODOs: ")))
-      (tags-todo ,tag (,my/org-agenda-entry-is-project
-                       (org-agenda-overriding-header "Projects: ")))))
+  (defun my/org-agenda-tasks-setting ()
+    `((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
+                  (org-agenda-skip-function
+                   '(org-agenda-skip-entry-if 'todo 'done))))
+      (todo "TODO|NEXT|STARTED" ((org-agenda-skip-function
+                                  '(org-agenda-skip-subtree-if 'regexp my/org-sub-todo-progress-regexp))
+                                 (org-agenda-overriding-header "TODOs: ")))
+      (todo 'todo (,my/org-agenda-entry-is-project
+                   (org-agenda-overriding-header "Projects: ")))))
 
   :custom
   (org-agenda-window-setup 'current-window)
@@ -2379,17 +2383,17 @@
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
   (org-agenda-custom-commands
-   `(("t" . "Tasks")
-     ("tw" "Work" ,(my/org-agenda-tasks-setting "Work"))
-     ("tp" "Private" ,(my/org-agenda-tasks-setting "-Work"))
+   `(("t" "Tasks" ,(my/org-agenda-tasks-setting))
      ("r" "GTD review"
       ((tags-todo "TAGS=\"\"+LEVEL=2"
                   ((org-agenda-overriding-header "Untagged TODOs")))
        (todo "TODO" (,my/org-agenda-entry-is-not-project
+                     ,my/org-agenda-entry-is-not-project-subtree
                      (org-agenda-overriding-header "Todos: ")))
        (todo 'not-done (,my/org-agenda-entry-is-project
                         (org-agenda-overriding-header "Projects: ")))
        (todo "SOMEDAY" (,my/org-agenda-entry-is-not-project
+                        ,my/org-agenda-entry-is-not-project-subtree
                         (org-agenda-overriding-header "Someday: ")))
        ))
      ("A" "Done tasks to be archived"
