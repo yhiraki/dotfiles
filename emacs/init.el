@@ -2731,11 +2731,18 @@
   ;; for evil undo function
   :if (not emacs28+))
 
-(use-package undo-tree :ensure t
+(use-package undo-tree :ensure t :disabled  ; use vundo instead
   :hook (after-init . global-undo-tree-mode)
   :bind
   (:map evil-normal-state-map
         ("C-S-r" . 'undo-tree-visualize))
+  )
+
+(use-package vundo :ensure t
+  :after evil
+  :bind
+  (:map evil-normal-state-map
+        ("C-S-r" . 'vundo))
   )
 
 (use-package evil :ensure t
@@ -2759,7 +2766,7 @@
   :custom
   (evil-ex-search-vim-style-regexp t)
   (evil-toggle-key "C-M-z")
-  (evil-undo-system 'undo-tree)
+  (evil-undo-system 'undo-redo)
   (evil-want-C-i-jump window-system)
   (evil-want-C-u-scroll t)
   (evil-want-C-u-delete t)
