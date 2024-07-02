@@ -2349,25 +2349,7 @@
 
   :init
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
-  (defvar my/org-agenda-entry-is-project
-    '(org-agenda-skip-function
-      '(org-agenda-skip-entry-if 'notregexp my/org-sub-todo-progress-regexp)))
-  (defvar my/org-agenda-entry-is-not-project
-    '(org-agenda-skip-function
-      '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp)))
-  (defvar my/org-agenda-entry-is-not-project-subtree
-    '(org-agenda-skip-function
-      '(org-agenda-skip-subtree-if 'regexp my/org-sub-todo-progress-regexp)))
 
-  (defun my/org-agenda-tasks-setting ()
-    `((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
-                  (org-agenda-skip-function
-                   '(org-agenda-skip-entry-if 'todo 'done))))
-      (todo "TODO|NEXT|STARTED" ((org-agenda-skip-function
-                                  '(org-agenda-skip-subtree-if 'regexp my/org-sub-todo-progress-regexp))
-                                 (org-agenda-overriding-header "TODOs: ")))
-      (todo 'todo (,my/org-agenda-entry-is-project
-                   (org-agenda-overriding-header "Projects: ")))))
 
   :custom
   (org-agenda-window-setup 'current-window)
@@ -2382,23 +2364,33 @@
   (org-agenda-files `(,org-directory))
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
+
+  ;; entry is project            : 'notregexp my/org-sub-todo-progress-regexp
+  ;; entry is not project        : 'regexp my/org-sub-todo-progress-regexp
+  ;; entry is not project subtree: 'regexp my/org-sub-todo-progress-regexp
   (org-agenda-custom-commands
-   `(("t" "Tasks" ,(my/org-agenda-tasks-setting))
-     ("r" "GTD review"
-      ((tags-todo "TAGS=\"\"+LEVEL=2"
-                  ((org-agenda-overriding-header "Untagged TODOs")))
-       (todo "TODO" (,my/org-agenda-entry-is-not-project
-                     ,my/org-agenda-entry-is-not-project-subtree
-                     (org-agenda-overriding-header "Todos: ")))
-       (todo 'not-done (,my/org-agenda-entry-is-project
-                        (org-agenda-overriding-header "Projects: ")))
-       (todo "SOMEDAY" (,my/org-agenda-entry-is-not-project
-                        ,my/org-agenda-entry-is-not-project-subtree
-                        (org-agenda-overriding-header "Someday: ")))
+   `(("t" "Tasks"
+      ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'todo 'done))))
+       (todo "TODO|STARTED|NEXT" ((org-agenda-skip-function
+                                   '(org-agenda-skip-subtree-if
+                                     'scheduled 'deadline
+                                     'regexp my/org-sub-todo-progress-regexp))
+                                  (org-agenda-overriding-header "TODOs: ")))
+       (todo 'todo ((org-agenda-skip-function
+                     '(org-agenda-skip-entry-if
+                       'notregexp my/org-sub-todo-progress-regexp
+                       'regexp my/org-sub-todo-progress-regexp)
+                     my/org-agenda-skip-entry-is-project)
+                    (org-agenda-overriding-header "Projects: ")))
        ))
-     ("A" "Done tasks to be archived"
-      ((tags "CLOSED<=\"<-1w>\"+LEVEL=2"
-             ((org-agenda-files '("todos.org"))))))
+     ("n" "Next Tasks"
+      ((todo "NEXT" ((org-agenda-overriding-header "Next Actions: ")))))
+     ("r" "GTD review"
+      ((tags-todo "CATEGORY=\"Inbox\"" ((org-agenda-overriding-header "Inbox: ")))
+       (todo "SOMEDAY" ((org-agenda-overriding-header "SOMEDAY: ")))
+       ))
      ("b" "Books"
       ((tags "+LEVEL=2"
              ((org-agenda-files '("books.org"))))))
