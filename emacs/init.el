@@ -2380,8 +2380,7 @@
                                   (org-agenda-overriding-header "TODOs: ")))
        (todo 'todo ((org-agenda-skip-function
                      '(org-agenda-skip-entry-if
-                       'notregexp my/org-sub-todo-progress-regexp
-                       'regexp my/org-sub-todo-progress-regexp)
+                       'notregexp my/org-sub-todo-progress-regexp)
                      my/org-agenda-skip-entry-is-project)
                     (org-agenda-overriding-header "Projects: ")))
        ))
