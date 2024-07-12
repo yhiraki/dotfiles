@@ -2442,7 +2442,7 @@
           res)))
 
     (defun my/org-agenda-files-todo ()
-      (let* ((states "TODO|NEXT|STARTED")
+      (let* ((states "TODO|NEXT|STARTED|WAITING")
              (regex (concat "^\\*+ (" states ")")))
         (my/list-agenda-files regex)))
 
