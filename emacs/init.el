@@ -1353,9 +1353,9 @@
   (org-todo-keywords
    '((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d)")
      (sequence "NEXT(n)" "STARTED" "|")
-     (sequence "WAITING(w)" "STARTED" "|")
+     (sequence "WAITING(w@)" "STARTED" "|")
      (sequence "SOMEDAY(S)" "|")
-     (sequence "|" "CANCELLED(c)")
+     (sequence "|" "CANCELLED(c@)")
      (sequence "|" "MEETING(m)")
      (sequence "DRAFT" "|" "PUBLISH")
      ))
