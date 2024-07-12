@@ -2746,7 +2746,6 @@
         ("C-l" . 'redraw-display)
         ("S-C-j" . 'evil-forward-section-begin)
         ("S-C-k" . 'evil-backward-section-begin)
-        ("Y" . "y$")
         )
 
   (:map evil-insert-state-map
@@ -2762,6 +2761,7 @@
   (evil-want-C-u-scroll t)
   (evil-want-C-u-delete t)
   (evil-want-keybinding nil)
+  (evil-want-Y-yank-to-eol t)
 
   :config
   (evil-select-search-module 'evil-search-module 'evil-search)
