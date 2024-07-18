@@ -2117,9 +2117,6 @@
   (appt-activate 1)                ;; activate appointment notification
   (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
   (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-  (add-hook 'org-mode-hook
-            (lambda() (add-hook 'after-save-hook
-                                'org-agenda-to-appt nil t)))
   )
 
 (use-package appt
@@ -2344,7 +2341,6 @@
 
 (use-package org-agenda
   :commands (org-agenda org-refile)
-  :hook (after-save . my/add-org-roam-to-agenda)
   :demand t
 
   :init
@@ -2458,6 +2454,7 @@
         (my/list-agenda-files regex '("!**/roam/refs/**/*.org"))))
 
     (defun my/update-org-agenda-files ()
+      (interactive)
       (setq org-agenda-files
             (delete-dups
              (append
@@ -2466,13 +2463,6 @@
               (my/org-agenda-files-recent)))))
 
     (my/update-org-agenda-files)
-
-    (add-hook
-     'org-mode-hook
-     #'(lambda ()
-         (add-hook
-          'after-save-hook
-          #'my/update-org-agenda-files nil t)))
     )
 
   (defun my/org-agenda-todo-next ()
