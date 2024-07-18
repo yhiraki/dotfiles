@@ -2393,10 +2393,21 @@
       ((todo "PUBLISH|DRAFT"))
       ((org-agenda-overriding-header "Recentry Modified Files:")
        (org-agenda-view-columns-initially t)
-       (org-overriding-columns-format "%TODO %40ITEM %MODIFIED %CREATED")
+       (org-overriding-columns-format "%TODO %CATEGORY %40ITEM %MODIFIED %CREATED")
        (org-agenda-sorting-strategy '(timestamp-down))))
-     ("x" "Headings created today"
-      ((tags "+LEVEL=1+CREATED>=\"<today>\"")))
+     ("x" "Headings created recentry"
+      ((tags "+LEVEL=1+CREATED>=\"<-2w>\""))
+      ((org-agenda-view-columns-initially t)
+       (org-overriding-columns-format "%CATEGORY %TODO %40ITEM %MODIFIED %CREATED")
+       (org-agenda-sorting-strategy '(timestamp-down))))
+     ("j" "Journals"
+      ((tags "+LEVEL=1+Journal"
+             ((org-agenda-overriding-header "Journals:")))
+       (tags "+LEVEL=1+Reference+CREATED>=\"<-2w>\""
+             ((org-agenda-overriding-header "References:"))))
+      ((org-agenda-view-columns-initially t)
+       (org-overriding-columns-format "%JOURNAL_LINK %TODO %ITEM")
+       (org-agenda-sorting-strategy '(timestamp-down))))
      ))
 
   :config
@@ -2451,7 +2462,8 @@
       (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
                   (dates (s-join "|" d)) ;; 2 weeks
                   (regex (concat "[\\[<](" dates ")")))
-        (my/list-agenda-files regex '("!**/roam/refs/**/*.org"))))
+        (my/list-agenda-files regex '())  ; referenceを除外したければ '("!**/roam/refs/**/*.org")
+        ))
 
     (defun my/update-org-agenda-files ()
       (interactive)
