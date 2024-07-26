@@ -1242,6 +1242,20 @@
   :config
   (org-babel-make-language-alias "ask" "chatgpt-shell"))
 
+(use-package ellama :ensure t
+  :init
+  (setopt ellama-keymap-prefix "C-c e")
+  (setopt ellama-language "Japanese")
+  (require 'llm-ollama)
+  (setopt ellama-provider
+          (make-llm-ollama :chat-model "llama3.1"))
+
+  (defun ellama-translate-to-english ()
+    (interactive)
+    (let ((ellama-language "English"))
+      (ellama-translate)))
+  )
+
 (defvar my/plantuml-java-options "-Djava.awt.headless=true") ; plantuml-modeのdefaultになったけどob-plantumlで使う
 (defvar my/plantuml-jar-path (expand-file-name "~/lib/java/plantuml.jar")) ; ob-plantumlで使う
 (defvar my/plantuml-jar-args (list "-charset" "UTF-8" "-config" (expand-file-name "~/.config/plantuml/color.uml"))) ; ob-plantumlで使う
