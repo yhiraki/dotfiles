@@ -1234,7 +1234,7 @@
 
 (use-package chatgpt-shell :ensure t
   :custom
-  (chatgpt-shell-model-version "gpt-3.5-turbo")
+  (chatgpt-shell-model-version "gpt-4o-mini")
   (chatgpt-shell-openai-key (lambda () my/openai-access-token)))
 
 (use-package ob-chatgpt-shell :ensure t
