@@ -2777,7 +2777,7 @@
   (evil-want-C-u-scroll t)
   (evil-want-C-u-delete t)
   (evil-want-keybinding nil)
-  (evil-want-Y-yank-to-eol t)
+  (evil-want-C-w-in-emacs-state t)
 
   :config
   (evil-select-search-module 'evil-search-module 'evil-search)
@@ -2913,6 +2913,8 @@
 
     (evil-collection-init)
     )
+
+  (setopt evil-want-Y-yank-to-eol t)
 
   (use-package evil-surround :ensure t
     :after evil
