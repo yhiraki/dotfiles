@@ -1736,7 +1736,8 @@
              ;; "<leader> n" #'org-roam-dailies-map
              "<leader> nS" #'my/org-roam-async-db-sync
              "<leader> nb" #'org-roam-buffer-display-dedicated
-             "<leader> n/" #'org-roam-node-find
+             "<leader> n/" #'my/org-roam-node-find-private
+             "<leader> n\\" #'org-roam-node-find
              "<leader> no" #'my/org-roam-node-open-ref
              "<leader> nF" #'my/org-roam-fix-exported-markdown)
     :config
@@ -1744,6 +1745,17 @@
 
     (defvar my/private-org-roam-directory org-roam-directory)
     (defvar my/true-org-roam-directory (file-truename org-roam-directory))
+
+    (defun my/org-roam-capture-private (old-func &rest args)
+      (let ((org-directory my/private-org-directory)
+            (org-roam-directory my/private-org-roam-directory))
+        (apply old-func args)))
+
+    (defun my/org-roam-node-find-private ()
+      (interactive)
+      (advice-add #'org-roam-capture- :around #'my/org-roam-capture-private)
+      (org-roam-node-find)
+      (advice-remove #'org-roam-capture- #'my/org-roam-capture-private))
 
     (defun my/unlink-all-markdown-file-links-region (begin end)
       "MarkdownFile link to normal text from BEGIN to END"
