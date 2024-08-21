@@ -2471,7 +2471,7 @@
       (with-temp-buffer
         (let* ((filters (append '("!**/archived/**/*.org") extra-filters))
                (cmd (string-join
-                     `("rg" "-l"
+                     `("rg" "-lL"
                        ,(concat "'" regex "'")
                        ,(mapconcat
                          '(lambda (x) (concat "-g '" x "'"))
