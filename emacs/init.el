@@ -1263,6 +1263,8 @@
   :diminish org-indent-mode
 
   :init
+  (defvar my/private-org-directory org-directory)
+
   (defun my/org-mode-update-time-stamp-date ()
     (let ((time-stamp-start "DATE:")
           (time-stamp-end "$")
@@ -1740,6 +1742,7 @@
     :config
     ;; (require 'org-roam-dailies)
 
+    (defvar my/private-org-roam-directory org-roam-directory)
     (defvar my/true-org-roam-directory (file-truename org-roam-directory))
 
     (defun my/unlink-all-markdown-file-links-region (begin end)
@@ -1864,6 +1867,12 @@
        ))
 
     :config
+    (defun my/org-capture-private ()
+      (interactive)
+      (let ((org-directory my/private-org-directory)
+            (org-roam-directory my/private-org-roam-directory))
+        (org-capture)))
+
     (defun my/org-new-random-file (parent-dir id num-subdir)
       (let* ((pref (substring id 0 num-subdir))
              (suff (substring id num-subdir))
@@ -2804,7 +2813,8 @@
     (kbd "<leader>G g") 'google-this
     (kbd "<leader>a") 'org-agenda
     (kbd "<leader>b") 'bookmark-jump
-    (kbd "<leader>c") 'org-capture
+    (kbd "<leader>c") 'my/org-capture-private
+    (kbd "<leader>C") 'org-capture
     (kbd "<leader>f b") 'switch-to-buffer
     (kbd "<leader>f d") 'dired-sidebar-toggle-sidebar
     (kbd "<leader>f f") 'find-file
