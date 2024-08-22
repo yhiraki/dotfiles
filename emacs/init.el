@@ -1889,7 +1889,7 @@
       (let* ((pref (substring id 0 num-subdir))
              (suff (substring id num-subdir))
              (dir (f-join
-                   org-directory
+                   org-roam-directory
                    parent-dir pref))
              (file (f-join dir (format "%s.org" suff))))
         (make-directory dir t)
@@ -1900,7 +1900,7 @@
     (defun my/org-capture-inbox-file ()
       (let ((id (org-id-new)))
         (setq my/-org-capture-inbox-new-id id)
-        (my/org-new-random-file "roam/inbox" (string-replace "-" "" id) 2)))
+        (my/org-new-random-file "inbox" (string-replace "-" "" id) 2)))
 
     (defun my/org-capture-inbox-new-id ()
       my/-org-capture-inbox-new-id)
@@ -1910,7 +1910,7 @@
     (defun my/org-capture-ref-file ()
       (let ((id (org-id-new)))
         (setq my/-org-capture-ref-new-id id)
-        (my/org-new-random-file "roam/refs" (string-replace "-" "" id) 2)))
+        (my/org-new-random-file "refs" (string-replace "-" "" id) 2)))
 
     (defun my/org-capture-ref-new-id ()
       my/-org-capture-ref-new-id)
