@@ -2394,6 +2394,7 @@
   (org-agenda-files `(,org-directory))
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
+  (org-agenda-cmp-user-defined #'my/org-agenda-sort-by-property-created)
 
   ;; entry is project            : 'notregexp my/org-sub-todo-progress-regexp
   ;; entry is not project        : 'regexp my/org-sub-todo-progress-regexp
@@ -2430,10 +2431,11 @@
        (org-overriding-columns-format "%TODO %CATEGORY %40ITEM %MODIFIED %CREATED")
        (org-agenda-sorting-strategy '(timestamp-down))))
      ("x" "Headings created recentry"
-      ((tags "+LEVEL=1+CREATED>=\"<-2w>\""))
-      ((org-agenda-view-columns-initially t)
+      tags "+LEVEL=1+CREATED>=\"<-2w>\""
+      ((org-agenda-sorting-strategy '(user-defined-up))
+       (org-agenda-view-columns-initially t)
        (org-overriding-columns-format "%CATEGORY %TODO %40ITEM %MODIFIED %CREATED")
-       (org-agenda-sorting-strategy '(timestamp-down))))
+       ))
      ("j" "Journals"
       ((tags "+LEVEL=1+Journal"
              ((org-agenda-overriding-header "Journals:")))
@@ -2441,7 +2443,7 @@
              ((org-agenda-overriding-header "References:"))))
       ((org-agenda-view-columns-initially t)
        (org-overriding-columns-format "%JOURNAL_LINK %TODO %ITEM")
-       (org-agenda-sorting-strategy '(timestamp-down))))
+       (org-agenda-sorting-strategy '(user-defined-up))))
      ))
 
   :config
@@ -2524,6 +2526,25 @@
                 (fname (f-join org-roam-directory fname)))
       (add-to-list 'org-agenda-files fname)
       (setq org-agenda-files (delete-dups org-agenda-files))))
+
+  (defun my/org-agenda-sort-by-property (prop a b)
+    "Compare two agenda entries A and B based on custom property PROP
+  Return non-nil if A should come before B in sorting."
+    (let* ((a-pos (get-text-property 0 'org-marker a))
+           (b-pos (get-text-property 0 'org-marker b))
+           (value-a (org-entry-get a-pos prop))
+           (value-b (org-entry-get b-pos prop)))
+      (cond
+       ((and value-a value-b) (if (string> value-a value-b) 1 -1))
+       ((and value-a (not value-b)) 1)
+       ((and value-b (not value-a)) -1)
+       (t nil))))
+
+  (defun my/org-agenda-sort-by-property-created (a b)
+    (my/org-agenda-sort-by-property "CREATED" a b))
+
+  (defun my/org-agenda-sort-by-property-modified (a b)
+    (my/org-agenda-sort-by-property "MODIFIED" a b))
 
   :bind
   (:map org-agenda-mode-map
