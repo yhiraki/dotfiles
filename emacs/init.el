@@ -688,12 +688,6 @@
 (use-package recentf
   :commands (recentf-mode recentf-open-files)
 
-  :init
-  (defun start-recentf-mode-function()
-    (recentf-mode)
-    (remove-function after-focus-change-function 'start-recentf-mode-function))
-  (add-function :after after-focus-change-function #'start-recentf-mode-function)
-
   :custom
   (recentf-save-file "~/.cache/emacs/recentf")
   (recentf-max-saved-items 2000)
@@ -713,6 +707,8 @@
       `(with-temp-message (or (current-message) "") ,@body)))
   (run-with-idle-timer 30 t #'(lambda ()
                                 (with-suppressed-message (recentf-save-list))))
+
+  (recentf-mode 1)
   )
 
 (use-package backup :no-require
