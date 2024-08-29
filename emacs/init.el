@@ -2423,6 +2423,7 @@
      ("p" "Published"
       ((todo "PUBLISH|DRAFT"))
       ((org-agenda-overriding-header "Recentry Modified Files:")
+       (org-agenda-sorting-strategy '(user-defined-up))
        (org-agenda-view-columns-initially t)
        (org-overriding-columns-format "%TODO %CATEGORY %40ITEM %MODIFIED %CREATED")
        (org-agenda-sorting-strategy '(timestamp-down))))
