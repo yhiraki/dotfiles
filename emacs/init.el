@@ -2833,10 +2833,6 @@
     (interactive)
     (find-file (locate-user-emacs-file "init.el")))
 
-  (defun my/find-org-todos ()
-    (interactive)
-    (find-file (f-join org-directory "todos.org")))
-
   (evil-define-key nil 'global
     (kbd "<leader>/") 'imenu
     (kbd "<leader>.") 'my/find-user-emacs-init-file
@@ -2876,7 +2872,6 @@
     (kbd "<leader>o l") 'org-store-link
     (kbd "<leader>o s") 'org-save-all-org-buffers
     (kbd "<leader>s") 'magit-status
-    (kbd "<leader>t") 'my/find-org-todos
     (kbd "<leader>z e") 'eval-buffer
     (kbd "<leader>z k") 'save-buffers-kill-emacs
     (kbd "<leader>z r") 'restart-emacs
