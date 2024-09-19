@@ -3017,11 +3017,11 @@
 
 (use-package nano-modeline :ensure t :disabled)
 
-(use-package mood-line :ensure t
+(use-package mood-line :ensure t :disabled
   :config
   (mood-line-mode))
 
-(use-package hide-mode-line :ensure t
+(use-package hide-mode-line :ensure t :disabled
   :hook ((
           dired-mode
           dired-sidebar-mode
@@ -3038,6 +3038,9 @@
           )
          . hide-mode-line-mode)
   )
+
+(use-package mini-echo :ensure t
+  :config (mini-echo-mode))
 
 (use-package clipetty :ensure t
   :diminish clipetty-mode
