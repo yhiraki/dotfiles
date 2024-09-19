@@ -2841,7 +2841,7 @@
     (kbd "<leader>b") 'bookmark-jump
     (kbd "<leader>c") 'my/org-capture-private
     (kbd "<leader>C") 'org-capture
-    (kbd "<leader>f b") 'switch-to-buffer
+    (kbd "<leader>f b") 'consult-buffer
     (kbd "<leader>f d") 'dired-sidebar-toggle-sidebar
     (kbd "<leader>f f") 'find-file
     (kbd "<leader>f g") 'grep-find
