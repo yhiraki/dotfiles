@@ -2411,6 +2411,21 @@
                      my/org-agenda-skip-entry-is-project)
                     (org-agenda-overriding-header "Projects: ")))
        ))
+     ("w" "Tasks for Work"
+      ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'todo 'done))))
+       (tags-todo "Work" ((org-agenda-skip-function
+                                   '(org-agenda-skip-subtree-if
+                                     'scheduled 'deadline
+                                     'regexp my/org-sub-todo-progress-regexp))
+                                  (org-agenda-overriding-header "TODOs: ")))
+       (todo 'todo ((org-agenda-skip-function
+                     '(org-agenda-skip-entry-if
+                       'notregexp my/org-sub-todo-progress-regexp)
+                     my/org-agenda-skip-entry-is-project)
+                    (org-agenda-overriding-header "Projects: "))))
+      )
      ("n" "Next Tasks"
       ((todo "NEXT" ((org-agenda-overriding-header "Next Actions: ")))))
      ("r" "GTD review"
