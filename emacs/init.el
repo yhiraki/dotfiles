@@ -1658,6 +1658,7 @@
 
     (defun my/org-roam-async-db-sync ()
       (interactive)
+      (my/update-org-agenda-files)
       (async-start
        `(lambda ()
           (let ((now (current-time)))
