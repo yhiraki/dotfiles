@@ -3069,10 +3069,10 @@
   :custom
   ;; http://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
   (whitespace-style '(face           ; faceで可視化
-                      ;; trailing       ; 行末 ; よくバグってバッファ全体にこれが適用されてしまう
+                      trailing       ; 行末
                       tabs           ; タブ
                       spaces         ; スペース
-                      empty          ; 先頭/末尾の空行
+                      ;; empty          ; 先頭/末尾の空行 ; よくバグってバッファ全体にこれが適用されてしまう
                       space-mark
                       tab-mark
                       ))
