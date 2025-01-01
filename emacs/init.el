@@ -3033,7 +3033,7 @@
 
 (use-package nano-modeline :ensure t :disabled)
 
-(use-package mood-line :ensure t :disabled
+(use-package mood-line :ensure t
   :config
   (mood-line-mode))
 
@@ -3055,7 +3055,7 @@
          . hide-mode-line-mode)
   )
 
-(use-package mini-echo :ensure t
+(use-package mini-echo :ensure t :disabled
   :config (mini-echo-mode))
 
 (use-package clipetty :ensure t
