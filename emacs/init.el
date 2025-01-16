@@ -571,9 +571,9 @@
     yaml-mode
     ) . flycheck-mode)
   :custom
-  (flycheck-python-flake8-executable "python3")
-  (flycheck-python-pycompile-executable "python3")
-  (flycheck-python-pylint-executable "python3")
+  (flycheck-python-flake8-executable "python")
+  (flycheck-python-pycompile-executable "python")
+  (flycheck-python-pylint-executable "python")
   (flycheck-deferred-syntax-check t)
   (flycheck-emacs-lisp-load-path 'inherit)
   :config
@@ -1244,7 +1244,12 @@
   (require 'llm-ollama)
   (setopt ellama-provider
           (make-llm-ollama :chat-model "llama3.1"))
-
+  (setopt ellama-translation-provider (make-llm-ollama
+                                       :chat-model "aya:8b"
+                                       :embedding-model "aya:8b"))
+  (setopt ellama-coding-provider (make-llm-ollama
+                                  :chat-model "qwen2.5-coder:7b"
+                                  :embedding-model "qwen2.5-coder:7b"))
   (defun ellama-translate-to-english ()
     (interactive)
     (let ((ellama-language "English"))
@@ -2252,7 +2257,7 @@
     :after ob
 
     :custom
-    (org-babel-python-command "python3")
+    (org-babel-python-command "python")
     (org-babel-default-header-args:python '((:cache . "yes") (:results . "output")))
 
     :config
@@ -2598,7 +2603,7 @@
          (setq-local quickrun-option-cmdkey "python/pytest"))))
 
   :custom
-  (python-shell-interpreter "python3")
+  (python-shell-interpreter "python")
   (python-shell-interpreter-args "-m IPython --simple-prompt -i")
 
   :config
@@ -2612,7 +2617,7 @@
         cmd)))
 
   (defun my/find-venv-python-or-global ()
-    (my/find-venv-executable "python3"))
+    (my/find-venv-executable "python"))
 
   (use-package py-yapf :ensure t
     :commands (py-yapf-buffer)
