@@ -2869,6 +2869,7 @@
     (kbd "<leader>f j") 'open-junk-file
     (kbd "<leader>f o") 'my/open-current-dir
     (kbd "<leader>f r") 'recentf-open-files
+    (kbd "<leader>f s") 'scratch-buffer
     (kbd "<leader>g c") 'magit-commit
     (kbd "<leader>g f") 'consult-ls-git
     (kbd "<leader>g g") 'vc-git-grep
