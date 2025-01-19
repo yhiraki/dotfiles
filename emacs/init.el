@@ -1242,7 +1242,9 @@
   (llm-warn-on-nonfree nil)
   ;; should be set in init.local.el
   ;; (setopt my/llm-gemini-provider (make-llm-gemini :key my-gemini-key))
-  ;; (setopt my/llm-default-providier my/llm-gemini-provider)
+  ;; (setopt my/llm-default-provider my/llm-gemini-provider)
+  :config
+  (require 'init-llm)
   )
 
 (use-package gptel :ensure t
