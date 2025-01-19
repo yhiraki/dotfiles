@@ -1237,6 +1237,23 @@
   :config
   (org-babel-make-language-alias "ask" "chatgpt-shell"))
 
+(use-package llm :ensure t
+  :custom
+  (llm-warn-on-nonfree nil)
+  ;; should be set in init.local.el
+  ;; (setopt my/llm-gemini-provider (make-llm-gemini :key my-gemini-key))
+  ;; (setopt my/llm-default-providier my/llm-gemini-provider)
+  )
+
+(use-package gptel :ensure t
+  :custom
+  (gptel-model 'gemini-1.5-flash)
+  ;; should be set in init.local.el
+  ;; (setopt gptel-backend (gptel-make-gemini "Gemini"
+  ;;                         :key my/gemini-api-key
+  ;;                         :stream t))
+  )
+
 (use-package ellama :ensure t
   :init
   (setopt ellama-keymap-prefix "C-c e")
