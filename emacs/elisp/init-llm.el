@@ -28,6 +28,12 @@
          (error (format "Error type: %s message: %s" type message)))
        ))))
 
+(defun my/llm-chat-streaming-replace (prompt)
+  "Translate region using llm."
+  (let* ((text (buffer-substring-no-properties begin end)))
+    (kill-region begin end)
+    (my/llm-chat-streaming-current-point prompt)))
+
 (defcustom my/llm-prompt-template-generate-commit-message
   "[Instructions]
 Refer to the log messages and generate a commit message from the Diffs.
@@ -64,10 +70,10 @@ Output only the translated text.
 (defun my/llm-translate-region (begin end)
   "Translate region using llm."
   (interactive "r")
-  (let* ((text (buffer-substring-no-properties begin end))
-         (prompt (llm-make-chat-prompt (format my/llm-prompt-template-translate text))))
-    (kill-region begin end)
-    (my/llm-chat-streaming-current-point prompt)))
+  (let* ((text (buffer-substring-no-properties begin end)))
+  (my/llm-chat-streaming-replace
+   (llm-make-chat-prompt (format my/llm-prompt-template-translate text))
+   )))
 
 (defcustom my/llm-prompt-code-completion-template
   "[instruction]
@@ -88,6 +94,27 @@ complete the following code snippet.
                   (format my/llm-prompt-code-completion-template
                           before-point after-point))))
     (my/llm-chat-streaming-current-point prompt)))
+
+(defcustom my/llm-prompt-covert-format
+  "[instruction]
+Convert the following text to %s format.
+Output only the converted text.
+
+[Text]
+%s
+"
+  "Prompt template for `my/llm-convert-format'.")
+
+(defun my/llm-convert-format (begin end)
+  "Convert region using llm."
+  (interactive "r")
+  (let* ((text (buffer-substring-no-properties begin end))
+         (format (completing-read
+                  "Format: "
+                  '("json" "yaml" "csv" "table"))))
+    (my/llm-chat-streaming-replace
+     (llm-make-chat-prompt
+      (format my/llm-prompt-covert-format format text)))))
 
 (provide 'init-llm)
 ;;; init.el ends here
