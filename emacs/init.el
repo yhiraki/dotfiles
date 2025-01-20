@@ -1229,11 +1229,11 @@
 
 (use-package chatgpt-shell :ensure t
   :custom
-  (chatgpt-shell-model-version "gpt-4o-mini")
+  (chatgpt-shell-model-version "gpt-4o")
   (chatgpt-shell-openai-key (lambda () my/openai-access-token)))
 
 (use-package ob-chatgpt-shell :ensure t
-  :after (ob chatgpt-shell)
+  :after ob
   :config
   (org-babel-make-language-alias "ask" "chatgpt-shell"))
 
@@ -1262,7 +1262,7 @@
   (setopt ellama-language "Japanese")
   (require 'llm-ollama)
   (setopt ellama-provider
-          (make-llm-ollama :chat-model "llama3.1"))
+          (make-llm-ollama :chat-model "llama3.2:3b"))
   (setopt ellama-translation-provider (make-llm-ollama
                                        :chat-model "aya:8b"
                                        :embedding-model "aya:8b"))
