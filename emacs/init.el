@@ -1249,7 +1249,7 @@
 
 (use-package gptel :ensure t
   :custom
-  (gptel-model 'gemini-1.5-flash)
+  (gptel-model 'gemini-2.0-flash-exp)
   ;; should be set in init.local.el
   ;; (setopt gptel-backend (gptel-make-gemini "Gemini"
   ;;                         :key my/gemini-api-key
