@@ -116,5 +116,28 @@ Output only the converted text.
      (llm-make-chat-prompt
       (format my/llm-prompt-covert-format format text)))))
 
+(defcustom my/llm-prompt-refactoring-code
+  "[instruction]
+You are a professional programmer.
+Refactor the following code while adhering to the constraints.
+Output only the refactored code.
+
+[Constraints]
+- Do not enclose in code blocks
+
+[Code]
+%s
+"
+  "Prompt template for `my/llm-refactoring-code'.")
+
+(defun my/llm-refactoring-code (begin end)
+  "Refactor region using llm."
+  (interactive "r")
+  (let* ((text (buffer-substring-no-properties begin end)))
+    (my/llm-chat-streaming-replace
+     (llm-make-chat-prompt
+      (format my/llm-prompt-refactoring-code text)
+      :context (buffer-string)))))
+
 (provide 'init-llm)
 ;;; init.el ends here
