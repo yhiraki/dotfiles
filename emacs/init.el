@@ -2908,7 +2908,7 @@
     (kbd "<leader>g t") 'git-timemachine
     (kbd "<leader>g u") 'magit-unstage
     (kbd "<leader>h") 'help
-    (kbd "<leader>l c") 'gptel-mode
+    (kbd "<leader>l c") 'gptel
     (kbd "<leader>l t") 'my/llm-translate-region
     (kbd "<leader>l <tab>") 'my/llm-code-completion-at-point
     (kbd "<leader>o I") 'org-clock-in
@@ -2930,6 +2930,10 @@
 
   (evil-define-key nil git-commit-mode-map
     (kbd "<leader>l <tab>") 'my/llm-generate-commit-message
+    )
+
+  (evil-define-key nil org-mode-map
+    (kbd "<leader>l c") 'gptel-mode
     )
 
   (evil-mode)
