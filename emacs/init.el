@@ -2192,10 +2192,17 @@
           "-sound" "Funk")
         " "))))
 
-  (defun my/appt-display (min-to-app new-time msg)
+  (defun my/appt-display (min-to-app new-time appt-msg)
     (my/appt-send-notification
-     (format "Appointment in %s minutes" min-to-app)
-     (format "%s" msg)))
+     (format "Appointment in %s minutes"
+             (if (listp min-to-app)
+                 (car min-to-app)
+               min-to-app))
+     (format "%s"
+             (if (listp appt-msg)
+                 (mapconcat #'identity appt-msg "\n")
+               appt-msg
+               ))))
 
   (advice-add 'appt-disp-window :before 'my/appt-display)
   )
@@ -2901,6 +2908,9 @@
     (kbd "<leader>g t") 'git-timemachine
     (kbd "<leader>g u") 'magit-unstage
     (kbd "<leader>h") 'help
+    (kbd "<leader>l c") 'gptel-mode
+    (kbd "<leader>l t") 'my/llm-translate-region
+    (kbd "<leader>l <tab>") 'my/llm-code-completion-at-point
     (kbd "<leader>o I") 'org-clock-in
     (kbd "<leader>o L") 'org-clock-in-last
     (kbd "<leader>o O") 'org-clock-out
@@ -2916,6 +2926,10 @@
     (kbd "<leader>z e") 'eval-buffer
     (kbd "<leader>z k") 'save-buffers-kill-emacs
     (kbd "<leader>z r") 'restart-emacs
+    )
+
+  (evil-define-key nil git-commit-mode-map
+    (kbd "<leader>l <tab>") 'my/llm-generate-commit-message
     )
 
   (evil-mode)
