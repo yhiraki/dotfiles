@@ -113,6 +113,25 @@
       (setq dir (f-dirname dir)))
     found-file))
 
+(defun my/dedent-string (text)
+  "Remove common leading whitespace from each line in TEXT."
+  (let* ((lines (split-string text "\n"))
+         (non-empty-lines (seq-filter (lambda (line) (not (string-match-p "^[ \t]*$" line))) lines))
+         (common-indent (if non-empty-lines
+                            (apply 'min
+                                   (mapcar (lambda (line)
+                                             (if (string-match "^\\([ \t]*\\)" line)
+                                                 (length (match-string 1 line))
+                                               0))
+                                           non-empty-lines))
+                          0)))
+    (mapconcat (lambda (line)
+                 (if (string-match (format "^ \\{%d\\}" common-indent) line)
+                     (replace-match "" nil nil line)
+                   line))
+               lines
+               "\n")))
+
 (use-package general :ensure t)
 
 (use-package emacs
