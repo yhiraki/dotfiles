@@ -37,12 +37,20 @@
 (defcustom my/llm-prompt-template-generate-commit-message
   "[Instructions]
 Refer to the log messages and generate a commit message from the Diffs.
+Include the translated text in a comment the commit message. The comment starts with '#'.
 
 [Logs]
 %s
 
 [Git Diffs]
 %s
+
+[Output]
+A one-line title
+
+Explanatory text
+
+# Translated explanatory text
 "
   "prompt template for `my/llm-generate-commit-message'")
 
