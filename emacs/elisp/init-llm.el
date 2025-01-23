@@ -71,9 +71,16 @@ Output only the translated text.
   "Translate region using llm."
   (interactive "r")
   (let* ((text (buffer-substring-no-properties begin end)))
-  (my/llm-chat-streaming-replace
-   (llm-make-chat-prompt (format my/llm-prompt-template-translate text))
-   )))
+    (my/llm-chat-streaming-replace
+     (llm-make-chat-prompt (format my/llm-prompt-template-translate text)))))
+
+(defun my/llm-completion-at-point (prompt-template)
+  "Get completion suggestions from llm at point."
+  (let* ((before-point (buffer-substring-no-properties (point-min) (point)))
+         (after-point (buffer-substring-no-properties (point) (point-max)))
+         (prompt (llm-make-chat-prompt
+                  (format prompt-template before-point after-point))))
+    (my/llm-chat-streaming-current-point prompt)))
 
 (defcustom my/llm-prompt-code-completion-template
   "[instruction]
@@ -83,17 +90,12 @@ complete the following code snippet.
 [code snippet]
 %s{%%?}%s
 "
-  "prompt template for `my/llm-code-completion-at-point'")
+  "Prompt template for `my/llm-code-completion-at-point'.")
 
 (defun my/llm-code-completion-at-point ()
   "Get code completion suggestions from llm at point."
   (interactive)
-  (let* ((before-point (buffer-substring-no-properties (point-min) (point)))
-         (after-point (buffer-substring-no-properties (point) (point-max)))
-         (prompt (llm-make-chat-prompt
-                  (format my/llm-prompt-code-completion-template
-                          before-point after-point))))
-    (my/llm-chat-streaming-current-point prompt)))
+    (my/llm-completion-at-point my/llm-prompt-code-completion-template))
 
 (defcustom my/llm-prompt-covert-format
   "[instruction]
