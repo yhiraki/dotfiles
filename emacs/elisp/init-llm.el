@@ -97,6 +97,21 @@ complete the following code snippet.
   (interactive)
     (my/llm-completion-at-point my/llm-prompt-code-completion-template))
 
+(defcustom my/llm-prompt-text-completion-template
+  "[instruction]
+complete the following text.
+{%%?} is the current cursor position. output only the text.
+
+[text]
+%s{%%?}%s
+"
+  "Prompt template for `my/llm-text-completion-at-point'.")
+
+(defun my/llm-text-completion-at-point ()
+  "Get text completion suggestions from llm at point."
+  (interactive)
+  (my/llm-completion-at-point my/llm-prompt-text-completion-template))
+
 (defcustom my/llm-prompt-covert-format
   "[instruction]
 Convert the following text to %s format.
