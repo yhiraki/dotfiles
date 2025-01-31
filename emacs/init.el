@@ -1574,7 +1574,8 @@
       (when (and
              (and (not (string= org-state "STARTED"))
                   (string= (org-clock--mode-line-heading) org-clock-heading))
-             (not (string= org-last-state org-state)))
+             (not (string= org-last-state org-state))
+             (org-clocking-p))
         (org-clock-out)))
     )
 
