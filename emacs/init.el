@@ -386,7 +386,7 @@
         (delete-file fname))))
   :custom
   (confirm-kill-emacs nil)
-  (find-file-visit-truename t)
+  (find-file-visit-truename nil)
   (require-final-newline t)
   (safe-local-variable-values '((org-log-done)))
   (trash-directory "~/.Trash")
@@ -1724,13 +1724,14 @@
      . (lambda ()
          (org-roam--register-completion-functions-h)
          (org-roam--replace-roam-links-on-save-h)
+         (org-roam-db-autosync--setup-update-on-save-h)
+         (add-hook 'after-save-hook #'my/add-org-roam-to-agenda nil t)
          ))
     (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
     (org-roam-post-node-insert . my/org-roam-node-add-auto-tag)
     (org-roam-post-node-insert . my/org-roam-node-add-auto-category)
 
     :custom
-    (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
     (org-roam-directory (f-join org-directory "roam"))
     (org-roam-node-template-prefixes
@@ -1784,7 +1785,6 @@
     ;; (require 'org-roam-dailies)
 
     (defvar my/private-org-roam-directory org-roam-directory)
-    (defvar my/true-org-roam-directory (file-truename org-roam-directory))
 
     (defun my/org-roam-capture-private (old-func &rest args)
       (advice-remove #'org-roam-capture- #'my/org-roam-capture-private)
@@ -2582,9 +2582,9 @@
     )
 
   (defun my/add-org-roam-to-agenda ()
-    (when-let* ((fname (file-truename (buffer-file-name)))
-                (prefix? (string-prefix-p my/true-org-roam-directory fname))
-                (fname (string-trim-left fname my/true-org-roam-directory))
+    (when-let* ((fname (buffer-file-name))
+                (prefix? (string-prefix-p org-roam-directory fname))
+                (fname (string-trim-left fname org-roam-directory))
                 (fname (string-trim-left fname "/"))
                 (fname (f-join org-roam-directory fname)))
       (add-to-list 'org-agenda-files fname)
