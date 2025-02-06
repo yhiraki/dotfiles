@@ -705,7 +705,7 @@
   )
 
 (use-package recentf
-  :commands (recentf-mode recentf-open-files)
+  :hook (after-init . recentf-mode)
 
   :custom
   (recentf-save-file "~/.cache/emacs/recentf")
