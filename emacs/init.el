@@ -1788,7 +1788,6 @@
     (defvar my/private-org-roam-directory org-roam-directory)
 
     (defun my/org-roam-capture-private (old-func &rest args)
-      (advice-remove #'org-roam-capture- #'my/org-roam-capture-private)
       (let ((org-directory my/private-org-directory)
             (org-roam-directory my/private-org-roam-directory))
         (apply old-func args)))
@@ -1796,7 +1795,8 @@
     (defun my/org-roam-node-find-private ()
       (interactive)
       (advice-add #'org-roam-capture- :around #'my/org-roam-capture-private)
-      (org-roam-node-find))
+      (org-roam-node-find)
+      (advice-remove #'org-roam-capture- #'my/org-roam-capture-private))
 
     (defun my/unlink-all-markdown-file-links-region (begin end)
       "MarkdownFile link to normal text from BEGIN to END"
