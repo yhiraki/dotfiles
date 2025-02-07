@@ -2448,7 +2448,11 @@
   ;; entry is not project        : 'regexp my/org-sub-todo-progress-regexp
   ;; entry is not project subtree: 'regexp my/org-sub-todo-progress-regexp
   (org-agenda-custom-commands
-   `(("t" "Tasks"
+   `(("a" "Agenda"
+      ((agenda "" ((org-agenda-skip-function
+                   '(org-agenda-skip-entry-if 'todo 'done))))))
+     ("A" "Agenda with Done" ((agenda)))
+     ("t" "Tasks"
       ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'todo 'done))))
@@ -2461,8 +2465,10 @@
                      '(org-agenda-skip-entry-if
                        'notregexp my/org-sub-todo-progress-regexp)
                      my/org-agenda-skip-entry-is-project)
-                    (org-agenda-overriding-header "Projects: ")))
-       ))
+                    (org-agenda-overriding-header "Projects: "))))
+      ;; ((org-agenda-view-columns-initially t)
+      ;;  (org-overriding-columns-format "%40ITEM %TODO %1PRIORITY %10CATEGORY %EFFORT{:} %CLOCKSUM{:} %TAGS"))
+      )
      ("w" "Tasks for Work"
       ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
                    (org-agenda-skip-function
@@ -2477,6 +2483,8 @@
                        'notregexp my/org-sub-todo-progress-regexp)
                      my/org-agenda-skip-entry-is-project)
                     (org-agenda-overriding-header "Projects: "))))
+      ;; ((org-agenda-view-columns-initially t)
+      ;;  (org-overriding-columns-format "%40ITEM %TODO %1PRIORITY %10CATEGORY %EFFORT{:} %CLOCKSUM{:} %TAGS"))
       )
      ("n" "Next Tasks"
       ((todo "NEXT" ((org-agenda-overriding-header "Next Actions: ")))))
