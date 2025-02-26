@@ -373,7 +373,7 @@ export PATH=$(echo "$PATH" |
   tr : '\n' |
   awk '{print length(), $0}' |
   sort -nr |
-  cut -d ' ' -f 2 |
+  cut -d ' ' -f 2- |
   uniq |
   tr '\n' :)
 
