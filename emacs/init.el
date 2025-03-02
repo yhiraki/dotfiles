@@ -23,6 +23,7 @@
 ;;
 
 ;;; Code:
+(setq debug-on-error t)
 
 (require 'cl-lib)
 
@@ -581,7 +582,7 @@
             )
   )
 
-(use-package flycheck :ensure t
+(use-package flycheck :ensure t :disabled t
   :hook
   ((
     markdown-mode
@@ -774,7 +775,7 @@
           ) . lsp)
 
   :custom
-  (lsp-auto-guess-root t)
+  (lsp-auto-guess-root nil)
   (lsp-clients-go-server "gopls")
   (lsp-clients-javascript-typescript-server "typescript-language-server")
   (lsp-enable-file-watchers nil)  ;; file watcher is too slow
@@ -1042,14 +1043,14 @@
       (:remove  . ("%n.js"))
       (:description . "Test TypeScript script with deno")))
 
-  (defadvice quickrun (before quickrun-before-save ())
-    "Save buffer before quickrun."
-    (save-buffer))
-  (defadvice quickrun-region (before quickrun-region-before-save ())
-    "Save buffer before quickrun-region."
-    (save-buffer))
-  (ad-activate 'quickrun)
-  (ad-activate 'quickrun-region)
+  ;; (defadvice quickrun (before quickrun-before-save ())
+  ;;   "Save buffer before quickrun."
+  ;;   (save-buffer))
+  ;; (defadvice quickrun-region (before quickrun-region-before-save ())
+  ;;   "Save buffer before quickrun-region."
+  ;;   (save-buffer))
+  ;; (ad-activate 'quickrun)
+  ;; (ad-activate 'quickrun-region)
 
   :general
   (:keymaps 'prog-mode-map
@@ -2175,57 +2176,57 @@
 
   )
 
-(use-package appt
-  :after org-agenda
-
-  :hook
-  (org-finalize-agenda . org-agenda-to-appt) ;; update appt list on agenda view
-
-  :custom
-  (appt-time-msg-list nil)         ;; clear existing appt list
-  (appt-display-interval '3)
-  (appt-message-warning-time '10)  ;; send first warning 10 minutes before appointment
-  (appt-display-mode-line nil)     ;; don't show in the modeline
-  (appt-display-format 'window)    ;; pass warnings to the designated window function
-
-  :config
-  (appt-activate 1)                ;; activate appointment notification
-  (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
-  (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-  )
-
-(use-package appt
-  :if darwin-p
-  :config
-  (defvar my/notifier-path "terminal-notifier")
-
-  (defun my/appt-send-notification (title msg)
-    (when (executable-find "terminal-notifier")
-      (shell-command
-       (mapconcat
-        #'shell-quote-argument
-        `(,my/notifier-path
-          "-message" ,(string-trim-right msg " +:.*:") ;; remove tags from heading text
-          "-title" ,title
-          "-sender" "org.gnu.Emacs"
-          "-active" "org.gnu.Emacs"
-          "-sound" "Funk")
-        " "))))
-
-  (defun my/appt-display (min-to-app new-time appt-msg)
-    (my/appt-send-notification
-     (format "Appointment in %s minutes"
-             (if (listp min-to-app)
-                 (car min-to-app)
-               min-to-app))
-     (format "%s"
-             (if (listp appt-msg)
-                 (mapconcat #'identity appt-msg "\n")
-               appt-msg
-               ))))
-
-  (advice-add 'appt-disp-window :before 'my/appt-display)
-  )
+;; (use-package appt
+;;   :after org-agenda
+;; 
+;;   :hook
+;;   (org-finalize-agenda . org-agenda-to-appt) ;; update appt list on agenda view
+;; 
+;;   :custom
+;;   (appt-time-msg-list nil)         ;; clear existing appt list
+;;   (appt-display-interval '3)
+;;   (appt-message-warning-time '10)  ;; send first warning 10 minutes before appointment
+;;   (appt-display-mode-line nil)     ;; don't show in the modeline
+;;   (appt-display-format 'window)    ;; pass warnings to the designated window function
+;; 
+;;   :config
+;;   (appt-activate 1)                ;; activate appointment notification
+;;   (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
+;;   (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
+;;   )
+;; 
+;; (use-package appt
+;;   :if darwin-p
+;;   :config
+;;   (defvar my/notifier-path "terminal-notifier")
+;; 
+;;   (defun my/appt-send-notification (title msg)
+;;     (when (executable-find "terminal-notifier")
+;;       (shell-command
+;;        (mapconcat
+;;         #'shell-quote-argument
+;;         `(,my/notifier-path
+;;           "-message" ,(string-trim-right msg " +:.*:") ;; remove tags from heading text
+;;           "-title" ,title
+;;           "-sender" "org.gnu.Emacs"
+;;           "-active" "org.gnu.Emacs"
+;;           "-sound" "Funk")
+;;         " "))))
+;; 
+;;   (defun my/appt-display (min-to-app new-time appt-msg)
+;;     (my/appt-send-notification
+;;      (format "Appointment in %s minutes"
+;;              (if (listp min-to-app)
+;;                  (car min-to-app)
+;;                min-to-app))
+;;      (format "%s"
+;;              (if (listp appt-msg)
+;;                  (mapconcat #'identity appt-msg "\n")
+;;                appt-msg
+;;                ))))
+;; 
+;;   (advice-add 'appt-disp-window :before 'my/appt-display)
+;;   )
 
 (use-package ob
   :after org
@@ -2256,19 +2257,6 @@
   ;;                  "typescript"
   ;;                  "uml"
   ;;                  ))))
-
-  ;; https://github.com/astahlman/ob-async/issues/61
-  ;; for ob-async
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '(
-     (emacs-lisp . t)
-     (mermaid . t)
-     (plantuml . t)
-     (python . t)
-     (shell . t)
-     )
-   )
 
   (use-package ob-restclient :ensure t)
 
@@ -2351,6 +2339,19 @@
     )
 
   (use-package ob-go :ensure t)
+
+  ;; https://github.com/astahlman/ob-async/issues/61
+  ;; for ob-async
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (emacs-lisp . t)
+     (mermaid . t)
+     (plantuml . t)
+     (python . t)
+     (shell . t)
+     )
+   )
   )
 
 (use-package ox
@@ -2428,11 +2429,11 @@
   :init
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
 
-
   :custom
   (org-agenda-window-setup 'current-window)
   (org-agenda-restore-windows-after-quit t)
   (org-agenda-current-time-string "← now")
+  (org-agenda-skip-unavailable-files t)
   (org-agenda-time-grid ;; Format is changed from 9.1
    '((daily today require-timed)
      (0900 01000 1100 1200 1300 1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400)
@@ -2582,7 +2583,7 @@
               (my/org-agenda-files-tags)
               (my/org-agenda-files-recent)))))
 
-    (my/update-org-agenda-files)
+    ;; (my/update-org-agenda-files)
     )
 
   (defun my/org-agenda-todo-next ()
@@ -2617,6 +2618,11 @@
 
   (defun my/org-agenda-sort-by-property-modified (a b)
     (my/org-agenda-sort-by-property "MODIFIED" a b))
+
+  (defun my/org-agenda-next-todo ()
+    (interactive)
+    (org-entry-get (point) "TODO")
+    )
 
   :bind
   (:map org-agenda-mode-map
