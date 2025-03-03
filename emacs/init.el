@@ -189,6 +189,12 @@
   ;; autosave
   (setq auto-save-timeout 10)
   (setq auto-save-interval 100)  ;; key typing count
+  (setq my/auto-save-directory "~/.cache/emacs/autosaves/")
+  (let ((dir my/auto-save-directory))
+    (unless (file-directory-p dir)
+      (make-directory dir :parents))
+    (setq auto-save-file-name-transforms
+          `((".*" ,dir t))))
 
   ;; startup
   (setq inhibit-startup-message t)
@@ -391,6 +397,7 @@
   (require-final-newline t)
   (safe-local-variable-values '((org-log-done)))
   (trash-directory "~/.Trash")
+  (backup-directory-alist '(("." . "~/.cache/emacs/backups")))
   :config
   (setq save-silently t)
   )
