@@ -738,18 +738,6 @@
   (recentf-mode 1)
   )
 
-(use-package backup :no-require
-  :config
-  ;; backup
-  ;; https://www.emacswiki.org/emacs/BackupDirectory#toc3
-  (defun make-backup-file-name (FILE)
-    (let ((dirname (concat "~/.cache/emacs/backup"
-                           (format-time-string "%y/%m/%d/"))))
-      (if (not (file-exists-p dirname))
-          (make-directory dirname t))
-      (concat dirname (file-name-nondirectory FILE))))
-  )
-
 (use-package undohist :ensure t :disabled  ; use undo-tree session
   :custom
   (undohist-ignored-files '("\\.git/COMMIT_EDITMSG$"))
@@ -2553,13 +2541,14 @@
       (with-temp-buffer
         (let* ((filters (append '("!**/archived/**/*.org") extra-filters))
                (cmd (string-join
-                     `("rg" "-lL"
+                     `("timeout" "0.5"
+                       "rg" "-lL"
                        ,(concat "'" regex "'")
                        ,(mapconcat
                          '(lambda (x) (concat "-g '" x "'"))
                          filters
                          " ")
-                       ,org-directory) " "))
+                       ,(concat org-directory "/*")) " "))
                (stat (shell-command cmd (current-buffer)))
                (res (s-split "\n" (s-trim (buffer-string)))))
           res)))
@@ -2590,7 +2579,7 @@
               (my/org-agenda-files-tags)
               (my/org-agenda-files-recent)))))
 
-    ;; (my/update-org-agenda-files)
+    (my/update-org-agenda-files)
     )
 
   (defun my/org-agenda-todo-next ()
