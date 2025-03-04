@@ -3187,7 +3187,8 @@
     "Japanese zenkaku space to hankaku"
     (interactive "r")
     (save-excursion
-      (replace-string "\u3000" " " nil begin end)))
+      (replace-string "\u3000" " " nil begin end)
+      (replace-string "\u00a0" " " nil begin end)))
 
   (defun my/whitespace-zerowidth-cleanup-region (begin end)
     "remove zero space width"
