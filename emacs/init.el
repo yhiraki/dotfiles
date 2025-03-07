@@ -1539,8 +1539,8 @@
   (use-package org-clock
     :hook
     ;; (kill-emacs . my:org-clock-out-and-save-when-exit) ;; use persistent clock instead
-    (org-after-todo-state-change . my:org-clock-in-if-starting)
-    (org-after-todo-state-change . my:org-clock-out-if-waiting)
+    ;; (org-after-todo-state-change . my:org-clock-in-if-starting)
+    ;; (org-after-todo-state-change . my:org-clock-out-if-waiting)
     (org-mode . org-clock-persistence-insinuate)
 
     :custom
