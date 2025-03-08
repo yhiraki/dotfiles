@@ -45,7 +45,7 @@
                  load-path))
 
 (require 'package)
-(setq package-user-dir (locate-user-emacs-file "elpa"))
+(setq package-user-dir (locate-user-emacs-file (format "elpa/emacs-%s" emacs-version)))
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
