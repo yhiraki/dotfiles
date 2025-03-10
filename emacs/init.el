@@ -1695,6 +1695,7 @@
       (async-start
        `(lambda ()
           (let ((now (current-time)))
+            (setq package-user-dir ,package-user-dir)
             (require 'package)
             (package-initialize)
             (require 'org)
