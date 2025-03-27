@@ -589,14 +589,7 @@
             )
   )
 
-(use-package flycheck :ensure t :disabled t
-  :hook
-  ((
-    markdown-mode
-    org-mode
-    prog-mode
-    yaml-mode
-    ) . flycheck-mode)
+(use-package flycheck :ensure t
   :custom
   (flycheck-python-flake8-executable "python")
   (flycheck-python-pycompile-executable "python")
