@@ -2535,16 +2535,17 @@
       (with-temp-buffer
         (let* ((filters (append '("!**/archived/**/*.org") extra-filters))
                (cmd (string-join
-                     `("timeout" "0.5"
+                     `("timeout" "2"
                        "rg" "-lL"
                        ,(concat "'" regex "'")
                        ,(mapconcat
                          '(lambda (x) (concat "-g '" x "'"))
                          filters
                          " ")
-                       ,(concat org-directory "/*")) " "))
+                       ,(concat (file-name-as-directory org-directory) "*")) " "))
                (stat (shell-command cmd (current-buffer)))
                (res (s-split "\n" (s-trim (buffer-string)))))
+          (message "%s" cmd)
           res)))
 
     (defun my/org-agenda-files-todo ()
