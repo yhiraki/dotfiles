@@ -736,7 +736,7 @@
   (undohist-ignored-files '("\\.git/COMMIT_EDITMSG$"))
   :config (undohist-initialize))
 
-(use-package pangu-spacing :ensure t
+(use-package pangu-spacing :ensure t :disabled  ;; org-table がズレるのでダメ
   :hook
   ((text-mode-hook) . pangu-spacing-mode)
 
@@ -1472,6 +1472,7 @@
     (kbd "<leader>/") 'consult-outline
 
     ;; localleader mapping
+    (kbd "<localleader>e") 'org-set-effort
     (kbd "<localleader>f") 'whitespace-cleanup
     (kbd "<localleader>i") 'org-clock-in
     (kbd "<localleader>nb") 'org-narrow-to-block
