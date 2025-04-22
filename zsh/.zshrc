@@ -12,6 +12,12 @@ fi
 # Tmux
 {
   configure_tmux() {
+    unset -f configure_tmux
+
+    [ -n "$(tty)" ] && return
+    [ -n "${TTY}" ] && return
+    [ "${TERM_PROGRAM}" = "vscode" ] && return
+
     if ! command -v tmux >/dev/null; then
       return
     fi
@@ -47,9 +53,8 @@ fi
 
     exec tmux new-session -A -s "${session}" -n "${window}"
   }
-  [ -n "${TTY}" ] || [ -n "${tty}" ] &&
-    configure_tmux
-  unset -f configure_tmux
+
+  configure_tmux
 }
 
 # Aliases
@@ -414,6 +419,10 @@ autoload -Uz compinit && compinit -i
   complete -C "$HOME/.local/aws-cli/aws_completer" aws
 
 }
+
+# for VSCode terminal integration
+# https://docs.roocode.com/features/shell-integration
+[ "${TERM_PROGRAM}" = "vscode" ] && . "$(code --locate-shell-integration-path zsh)"
 
 # uncomment to profile
 # zmodload zsh/zprof && zprof
