@@ -2503,6 +2503,9 @@ LANG はシンボル (例: python, emacs-lisp)。"
        (org-agenda-sorting-strategy '(user-defined-up))))
      ))
 
+  :hook
+  (after-init . my/update-org-agenda-files)
+
   :config
   (defvar my/true-org-directory (file-truename org-directory))
 
@@ -2526,7 +2529,10 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (when (executable-find "rg")
 
-    (defvar my/rg-org-directries '(org-directory my/private-org-directory))
+    (defvar my/rg-org-directries
+      '(org-directory
+        my/private-org-directory
+        my/private-org-roam-directory))
 
     (defun my/list-agenda-files (regex &optional extra-filters)
       (let* ((stdout (generate-new-buffer "*rg::stdout*"))
@@ -2540,7 +2546,12 @@ LANG はシンボル (例: python, emacs-lisp)。"
                        '(lambda (x) (concat "-g '" x "'"))
                        filters
                        " ")
-                     ,(mapconcat file-name-as-directory my/rg-org-directries)) " "))
+                     ,(mapconcat #'(lambda (symbol)
+                                     (let ((value (symbol-value symbol)))
+                                       (file-name-as-directory value)))
+                                 my/rg-org-directries
+                                 " ")
+                     ) " "))
              (stat (shell-command cmd stdout stderr))
              res)
         (message "%s" cmd)
@@ -2575,8 +2586,6 @@ LANG はシンボル (例: python, emacs-lisp)。"
               (my/org-agenda-files-todo)
               (my/org-agenda-files-tags)
               (my/org-agenda-files-recent)))))
-
-    (my/update-org-agenda-files)
     )
 
   (defun my/org-agenda-todo-next ()
