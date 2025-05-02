@@ -218,6 +218,9 @@
   ;; magitでの文字化け対策
   (prefer-coding-system 'utf-8)
 
+  ;; Completion
+  (setq completion-ignore-case t)
+
   :bind-keymap
   ("C-s" . ctl-x-map)
   )
@@ -1724,12 +1727,13 @@
     (org-roam-post-node-insert . my/org-roam-node-add-auto-category)
 
     :custom
+    (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
     (org-roam-directory (f-join org-directory "roam"))
     (org-roam-node-template-prefixes
      '(("tags" . "#")
        ("todo" . "")))
-    (org-roam-node-display-template "${todo:1} ${title:*} ${tags:10}")
+    (org-roam-node-display-template "${title:*} ${tags:10}")
     (org-roam-capture-templates
      '(("d" "default" plain "#+DATE:
 * ${title}
