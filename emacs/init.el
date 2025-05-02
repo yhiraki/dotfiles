@@ -2441,7 +2441,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
       ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
                    (org-agenda-skip-function
                     '(org-agenda-skip-entry-if 'todo 'done))))
-       (todo "TODO|STARTED|NEXT" ((org-agenda-skip-function
+       (todo 'todo ((org-agenda-skip-function
                                    '(org-agenda-skip-subtree-if
                                      'scheduled 'deadline
                                      'regexp my/org-sub-todo-progress-regexp))
@@ -2526,22 +2526,29 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (when (executable-find "rg")
 
+    (defvar my/rg-org-directries '(org-directory my/private-org-directory))
+
     (defun my/list-agenda-files (regex &optional extra-filters)
-      (with-temp-buffer
-        (let* ((filters (append '("!**/archived/**/*.org") extra-filters))
-               (cmd (string-join
-                     `("timeout" "2"
-                       "rg" "-lL"
-                       ,(concat "'" regex "'")
-                       ,(mapconcat
-                         '(lambda (x) (concat "-g '" x "'"))
-                         filters
-                         " ")
-                       ,(concat (file-name-as-directory org-directory) "*")) " "))
-               (stat (shell-command cmd (current-buffer)))
-               (res (s-split "\n" (s-trim (buffer-string)))))
-          (message "%s" cmd)
-          res)))
+      (let* ((stdout (generate-new-buffer "*rg::stdout*"))
+             (stderr (generate-new-buffer "*rg::stderr*"))
+             (filters (append '("!**/archived/**/*.org") extra-filters))
+             (cmd (string-join
+                   `("timeout" "2"
+                     "rg" "-lL"
+                     ,(concat "'" regex "'")
+                     ,(mapconcat
+                       '(lambda (x) (concat "-g '" x "'"))
+                       filters
+                       " ")
+                     ,(mapconcat file-name-as-directory my/rg-org-directries)) " "))
+             (stat (shell-command cmd stdout stderr))
+             res)
+        (message "%s" cmd)
+        (with-current-buffer stdout
+          (setq res (s-split "\n" (s-trim (buffer-string)))))
+        (kill-buffer stdout)
+        (kill-buffer stderr)
+        res))
 
     (defun my/org-agenda-files-todo ()
       (let* ((states "TODO|NEXT|STARTED|WAITING")
