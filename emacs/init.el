@@ -2887,6 +2887,10 @@ LANG はシンボル (例: python, emacs-lisp)。"
     (interactive)
     (find-file (locate-user-emacs-file "init.el")))
 
+  (defun my/insert-timestamp ()
+    (interactive)
+    (org-insert-time-stamp nil t t))
+
   (evil-define-key nil 'global
     (kbd "<leader>/") 'imenu
     (kbd "<leader>.") 'my/find-user-emacs-init-file
@@ -2915,6 +2919,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
     (kbd "<leader>g t") 'git-timemachine
     (kbd "<leader>g u") 'magit-unstage
     (kbd "<leader>h") 'help
+    (kbd "<leader>i t") 'my/insert-timestamp
     (kbd "<leader>l c") 'gptel
     (kbd "<leader>l t") 'my/llm-translate-region
     (kbd "<leader>l <tab>") 'my/llm-code-completion-at-point
