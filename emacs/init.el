@@ -775,48 +775,6 @@
   (lsp-response-timeout 1)
 
   :config
-  ;; https://github.com/seagle0128/.emacs.d/blob/50d9de85ba4ff2aa5daa2603d366cde2f3e89242/lisp/init-lsp.el#L426-L458
-  (defvar centaur-lsp 'lsp-mode)
-  (cl-defmacro lsp-org-babel-enable (lang)
-    "Support LANG in org source code block."
-    (cl-check-type lang stringp)
-    (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
-           (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
-      `(progn
-         (defun ,intern-pre (info)
-           (let ((filename (or (->> info caddr (alist-get :file))
-                               buffer-file-name
-                               "*org-src-lsp*")))
-             (unless filename
-               (user-error "LSP:: specify `:file' property to enable"))
-
-             (setq buffer-file-name filename)
-             (pcase centaur-lsp
-               ('eglot
-                (and (fboundp 'eglot) (eglot)))
-               ('lsp-mode
-                (and (fboundp 'lsp-deferred)
-                     ;; `lsp-auto-guess-root' MUST be non-nil.
-                     (setq lsp-buffer-uri (lsp--path-to-uri filename))
-                     (lsp-deferred))))))
-         (put ',intern-pre 'function-documentation
-              (format "Enable `%s' in the buffer of org source block (%s)."
-                      centaur-lsp (upcase ,lang)))
-
-         (if (fboundp ',edit-pre)
-             (advice-add ',edit-pre :after ',intern-pre)
-           (progn
-             (defun ,edit-pre (info)
-               (,intern-pre info))
-             (put ',edit-pre 'function-documentation
-                  (format "Prepare local buffer environment for org source block (%s)."
-                          (upcase ,lang))))))))
-
-  (lsp-org-babel-enable "python")
-  (lsp-org-babel-enable "cpp")
-  (lsp-org-babel-enable "js")
-  (lsp-org-babel-enable "typescript")
-
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
 
   :general
@@ -1394,6 +1352,7 @@
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
+  (org-src-preserve-indentation nil)
   (org-src-tab-acts-natively nil)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
@@ -2252,6 +2211,37 @@
   ;;                  "uml"
   ;;                  ))))
 
+  (defun my/yes-or-no (s)
+    (or (string= "yes" s) (string= "no" s)))
+
+  (defmacro my/define-org-babel-lsp-prep (lang)
+    "LANG で指定された言語に対して org-babel-edit-prep 関数を定義し、
+それを org-babel-edit-prep-completion-hook に追加する。
+LANG はシンボル (例: python, emacs-lisp)。"
+    (let* ((lang-name (symbol-name lang))
+           (func-name (intern (concat "org-babel-edit-prep:" lang-name))))
+      `(progn
+         (defun ,func-name (babel-info)
+           ,(concat "Prepare org-src buffer for " lang-name " with LSP, respecting :tangle and :dir arguments.")
+           (let* ((args (->> babel-info caddr))
+                  (tangle (alist-get :tangle args))
+                  (dir (alist-get :tangle args))
+                  (buf-name (if (my/yes-or-no tangle)
+                                (make-temp-file (concat "lsp-org-src-" ,lang-name "-"))
+                              tangle))
+                  (dir-name (if (my/yes-or-no dir)
+                                default-directory
+                              dir)))
+             (setq-local buffer-file-name buf-name)
+             (setq-local default-directory dir-name)
+             (lsp)))
+
+         (with-eval-after-load 'org
+           (add-hook 'org-babel-edit-prep-completion-hook #',func-name)))))
+
+  (my/define-org-babel-lsp-prep python)
+  (my/define-org-babel-lsp-prep typescript)
+
   (use-package ob-restclient :ensure t)
 
   (use-package ob-exp
@@ -2769,19 +2759,6 @@
   ("\\Pipfile\\'"))
 
 (use-package typescript-mode :ensure t
-  :hook
-  (typescript-mode
-   . (lambda ()
-       (if (my/find-up-directory "package.json" (buffer-file-name))
-           (progn
-             (setq-local lsp-enabled-clients '(ts-ls))
-             (evil-define-key '(normal visual) 'local
-               (kbd "<localleader>f") #'prettier-js))
-         (progn
-           (when (string-match "_test\\.ts$" (buffer-file-name))
-             (setq-local quickrun-option-cmdkey "typescript/deno-test"))
-           (setq-local lsp-enabled-clients '(deno-ls)))
-         )))
   :custom
   (typescript-indent-level 2)
   :mode
