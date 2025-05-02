@@ -1352,7 +1352,7 @@
   (org-startup-folded t)
   (org-startup-with-inline-images nil)
   (org-src-fontify-natively t)
-  (org-src-preserve-indentation nil)
+  (org-src-preserve-indentation t)
   (org-src-tab-acts-natively nil)
   (org-hide-leading-stars t) ; 見出しの余分な*を消す
   (org-todo-keywords
