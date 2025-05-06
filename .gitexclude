@@ -1,6 +1,8 @@
 .envrc
 .remoterc.json
 
+# AIder
+.aider*
 
 # Emacs: quickrun
 qr_*.*
