@@ -14,8 +14,8 @@ fi
   configure_tmux() {
     unset -f configure_tmux
 
-    [ -n "$(tty)" ] && return
-    [ -n "${TTY}" ] && return
+    [ -z "$(tty)" ] && return
+    [ -z "${TTY}" ] && return
     [ "${TERM_PROGRAM}" = "vscode" ] && return
 
     if ! command -v tmux >/dev/null; then
