@@ -1216,6 +1216,14 @@
   (require 'init-llm)
   )
 
+(use-package aidermacs :ensure t
+  :custom
+  (aidermacs-backend 'vterm)
+  :general
+  (:states '(normal visual)
+           "<leader> A" #'aidermacs-transient-menu
+           ))
+
 (use-package gptel :ensure t
   :custom
   (gptel-model 'gemini-2.0-flash-exp)
