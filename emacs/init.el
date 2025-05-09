@@ -1827,7 +1827,7 @@
 
        ("t" "Task"
         entry (file my/org-capture-inbox-file)
-        "* TODO %?
+        "* TODO %? :Task:
 :PROPERTIES:
 :ID: %(my/org-capture-inbox-new-id)
 :CATEGORY: Inbox
