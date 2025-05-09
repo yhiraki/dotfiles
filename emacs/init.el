@@ -1703,16 +1703,19 @@
     (org-roam-node-display-template "${title:*} ${tags:10}")
     (org-roam-capture-templates
      '(("d" "default" plain "#+DATE:
+#+CATEGORY: Node
 * ${title}
 %?"
         :target (file "nodes/%<%Y%m%d%H%M%S>-${slug}.org")
         :unnarrowed t)
        ("t" "term" plain "#+DATE:
+#+CATEGORY: Node
 * ${title}
 %?"
         :target (file "nodes/${slug}.org")
         :unnarrowed t)
        ("T" "term publish" plain "#+DATE:
+#+CATEGORY: Node
 * PUBLISH ${title}
 %?"
         :target (file "nodes/${slug}.org")
@@ -1762,10 +1765,7 @@
 
     (defun my/org-roam-find-only-node ()
       (interactive)
-      (org-roam-node-open
-       (org-roam-node-read
-        ""
-        #'my/org-roam-filter-is-not-journals-or-tasks)))
+      (org-roam-node-find nil nil #'my/org-roam-filter-is-not-journals-or-tasks))
 
     (defun my/org-roam-node-find-private (&rest func-with-args)
       (interactive)

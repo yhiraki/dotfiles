@@ -3,3 +3,4 @@ weak-model: gemini/gemini-2.5-flash-preview-04-17
 gitignore: false
 dark-mode: true
 auto-commits: false
+chat-language: Japanese
