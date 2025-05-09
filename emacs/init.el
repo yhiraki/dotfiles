@@ -1740,8 +1740,10 @@
              ;; "<leader> n" #'org-roam-dailies-map
              "<leader> nS" #'my/org-roam-async-db-sync
              "<leader> nb" #'org-roam-buffer-display-dedicated
-             "<leader> n/" #'my/org-roam-node-find-private
-             "<leader> n\\" #'org-roam-node-find
+             "<leader> n/" #'(lambda () (interactive) (my/org-roam-node-find-private #'my/org-roam-find-only-node))
+             "<leader> n\\" #'my/org-roam-find-only-node
+             "<leader> na/" #'my/org-roam-node-find-private
+             "<leader> na\\" #'org-roam-node-find
              "<leader> no" #'my/org-roam-node-open-ref
              "<leader> nF" #'my/org-roam-fix-exported-markdown)
     :config
@@ -1749,16 +1751,35 @@
 
     (defvar my/private-org-roam-directory org-roam-directory)
 
-    (defun my/org-roam-capture-private (old-func &rest args)
+    (defun my/org-roam-filter-is-not-journals-or-tasks (node)
+      (let* ((tags (org-roam-node-tags node))
+             (tags (mapcar #'upcase tags)))
+        (cond ((member "JOURNAL" tags)
+               nil)
+              ((member "TASK" tags)
+               nil)
+              (t t))))
+
+    (defun my/org-roam-find-only-node ()
+      (interactive)
+      (org-roam-node-open
+       (org-roam-node-read
+        ""
+        #'my/org-roam-filter-is-not-journals-or-tasks)))
+
+    (defun my/org-roam-node-find-private (&rest func-with-args)
+      (interactive)
       (let ((org-directory my/private-org-directory)
             (org-roam-directory my/private-org-roam-directory))
-        (apply old-func args)))
+        (if func-with-args
+            (apply func-with-args)
+          (org-roam-node-find))))
 
-    (defun my/org-roam-node-find-private ()
-      (interactive)
-      (advice-add #'org-roam-capture- :around #'my/org-roam-capture-private)
-      (org-roam-node-find)
-      (advice-remove #'org-roam-capture- #'my/org-roam-capture-private))
+    (defun my/org-roam-node-find-except-journals-tasks ()
+      (org-roam-node-open
+       (org-roam-node-read
+        ""
+        #'my/org-roam-filter-is-not-journals-or-tasks)))
 
     (defun my/unlink-all-markdown-file-links-region (begin end)
       "MarkdownFile link to normal text from BEGIN to END"
