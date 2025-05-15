@@ -1231,6 +1231,8 @@
   ;; (setopt gptel-backend (gptel-make-gemini "Gemini"
   ;;                         :key my/gemini-api-key
   ;;                         :stream t))
+  :bind
+  ("C-c C-<return>" . gptel-menu)
   )
 
 (use-package ellama :ensure t
