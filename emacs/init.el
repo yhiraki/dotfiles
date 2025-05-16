@@ -1732,7 +1732,7 @@
     (:map org-mode-map
           ("C-c n a" . org-roam-alias-add)
           ("C-c n b" . org-roam-buffer-display-dedicated)
-          ("C-c n i" . org-roam-node-insert)
+          ("C-c n i" . (lambda () (interactive) (org-roam-node-insert #'my/org-roam-filter-is-not-journals-or-tasks)))
           ("C-c n l" . org-roam-buffer-toggle)
           ("C-c n o" . org-id-get-create)
           ("C-c n p" . my/org-set-publish-current-file)
@@ -1757,17 +1757,47 @@
     (defvar my/private-org-roam-directory org-roam-directory)
 
     (defun my/org-roam-filter-is-not-journals-or-tasks (node)
+      "Return nil if NODE is a journal or task node, otherwise return t.
+A node is considered a journal if it has the category \"Journal\"
+or the tag \"JOURNAL\".
+A node is considered a task if it has the tag \"TASK\"."
       (let* ((tags (org-roam-node-tags node))
-             (tags (mapcar #'upcase tags)))
-        (cond ((member "JOURNAL" tags)
-               nil)
-              ((member "TASK" tags)
-               nil)
-              (t t))))
+             (tags (mapcar #'upcase tags))
+             (category (org-roam-node-category node)))
+        (cond
+         ((string-equal category "Journal")
+          nil)
+         ((string-equal category "Reference")
+          nil)
+         ((member "JOURNAL" tags)
+          nil)
+         ((member "TASK" tags)
+          nil)
+         (t t))))
 
     (defun my/org-roam-find-only-node ()
       (interactive)
       (org-roam-node-find nil nil #'my/org-roam-filter-is-not-journals-or-tasks))
+
+    (defun my/org-roam--get-titles-only-node (&optional filter-fn)
+      "Return a list of titles and aliases for nodes that pass FILTER-FN.
+FILTER-FN is a function that takes an `org-roam-node' and returns
+non-nil if the node should be included."
+      (let* ((all-nodes (org-roam-node-list)) ;; Get all nodes (potentially duplicated for aliases)
+             (filtered-nodes (if filter-fn
+                                 (cl-remove-if-not filter-fn all-nodes) ;; Filter the list of node structs
+                               all-nodes))
+             (result-strings (mapcar #'org-roam-node-title filtered-nodes))) ;; Collect the :title from each struct
+        (seq-uniq result-strings))) ;; Ensure uniqueness
+
+    (defun my/advice-org-roam-replace-titles (orig-fun &rest args)
+      "Advice to replace `org-roam--get-titles` call with a filtered list."
+      (cl-letf (((symbol-function 'org-roam--get-titles)
+                 (lambda () (my/org-roam--get-titles-only-node #'my/org-roam-filter-is-not-journals-or-tasks))))
+        (apply orig-fun args)))
+
+    (advice-add 'org-roam-complete-link-at-point :around #'my/advice-org-roam-replace-titles)
+    (advice-add 'org-roam-complete-everywhere :around #'my/advice-org-roam-replace-titles)
 
     (defun my/org-roam-node-find-private (&rest func-with-args)
       (interactive)
