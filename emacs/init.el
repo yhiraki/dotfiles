@@ -2168,6 +2168,13 @@ non-nil if the node should be included."
              "<localleader>d" #'org-download-map)
     )
 
+  (use-package org-http-inline-image
+    :vc (:url "https://github.com/misohena/org-inline-image-fix"
+              :rev :newest)
+    :config
+    (org-http-inline-image-activate)
+    )
+
   (use-package japanese-holidays :ensure t
     :hook
     (calendar-today-visible . japanese-holiday-mark-weekend)
