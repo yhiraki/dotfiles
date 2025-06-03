@@ -2961,6 +2961,9 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (evil-declare-change-repeat 'company-complete)
   (evil-add-command-properties #'find-file :jump t)
+  (evil-add-command-properties #'org-roam-node-visit :jump t)
+  (evil-add-command-properties #'org-agenda-switch-to :jump t)
+  (evil-add-command-properties #'org-open-at-point :jump t)
   (evil-add-command-properties #'xref-find-definitions :jump t)
   (evil-add-command-properties #'xref-find-references :jump t)
 
@@ -3007,6 +3010,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
     (kbd "<leader>l c") 'gptel
     (kbd "<leader>l t") 'my/llm-translate-region
     (kbd "<leader>l <tab>") 'my/llm-code-completion-at-point
+    (kbd "<leader>l TAB") 'my/llm-code-completion-at-point
     (kbd "<leader>o I") 'org-clock-in
     (kbd "<leader>o L") 'org-clock-in-last
     (kbd "<leader>o O") 'org-clock-out
@@ -3026,6 +3030,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (evil-define-key nil git-commit-mode-map
     (kbd "<leader>l <tab>") 'my/llm-generate-commit-message
+    (kbd "<leader>l TAB") 'my/llm-generate-commit-message
     )
 
   (evil-define-key nil org-mode-map
