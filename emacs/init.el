@@ -2501,10 +2501,10 @@ LANG はシンボル (例: python, emacs-lisp)。"
   ;; entry is not project        : 'regexp my/org-sub-todo-progress-regexp
   ;; entry is not project subtree: 'regexp my/org-sub-todo-progress-regexp
   (org-agenda-custom-commands
-   `(("a" "Agenda"
+   `(("A" "Agenda TODOs only"
       ((agenda "" ((org-agenda-skip-function
                    '(org-agenda-skip-entry-if 'todo 'done))))))
-     ("A" "Agenda with Done" ((agenda)))
+     ("a" "Agenda" ((agenda)))
      ("t" "Tasks"
       ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
                    (org-agenda-skip-function
