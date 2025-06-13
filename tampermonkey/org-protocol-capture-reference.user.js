@@ -13,18 +13,21 @@
   "use strict";
 
   function capturePageWithTemplateL() {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-
     const templateKey = "l";
-    const protocolUrl = `org-protocol://capture?url=${url}&title=${title}&template=${templateKey}`;
+    const protocolUrl =
+      "org-protocol://capture?" +
+      new URLSearchParams({
+        template: templateKey,
+        url: window.location.href,
+        title: document.title,
+        body: window.getSelection(),
+      });
 
     location.href = protocolUrl;
 
     console.log(`Org-protocol URL opened: ${protocolUrl}`);
   }
 
-  // キーボードイベントリスナーを設定
   document.addEventListener("keydown", function (e) {
     if (e.altKey && (e.key === "l" || e.key === "L" || e.code === "KeyL")) {
       e.preventDefault();
