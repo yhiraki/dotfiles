@@ -1765,6 +1765,8 @@ A node is considered a task if it has the tag \"TASK\"."
              (tags (mapcar #'upcase tags))
              (category (org-roam-node-category node)))
         (cond
+         ((string-equal category "Inbox")
+          nil)
          ((string-equal category "Journal")
           nil)
          ((string-equal category "Reference")
@@ -1856,6 +1858,10 @@ non-nil if the node should be included."
     ;;  )
     )
 
+  (use-package org-protocol
+    :custom
+    (org-protocol-default-template-key "i"))
+
   (use-package org-capture
     :commands org-capture
     :hook
@@ -1877,6 +1883,36 @@ non-nil if the node should be included."
        ("b" "Book"
         entry (file+headline "books.org" "Books")
         "** WISH %(my/book-templeate-from-url \"%c\")%?")
+
+       ("i" "Inbox"
+        entry (file my/org-capture-inbox-file)
+        "* %:description
+:PROPERTIES:
+:ID: %(my/org-capture-inbox-new-id)
+:ROAM_REFS: %:link
+:CATEGORY: Inbox
+:END:
+
+%i
+%U"
+        :kill-buffer t)
+
+       ("l" "Add Reference from org-protocol"
+        entry (file my/org-capture-ref-file)
+        "* %:description :Reference:
+:PROPERTIES:
+:ID: %(my/org-capture-inbox-new-id)
+:CATEGORY: Reference
+:ROAM_REFS: %:link
+:journal_link: %(org-link-make-string (format-time-string \"id:%Y-%m-%d\"))
+:END:
+%(when (my/org-roam-reference-alreadly-exists \"%:link\" t) (error \"Already exists Ref: %%s\" url))
+# %U
+%i
+%?
+"
+        :kill-buffer t
+        )
 
        ("t" "Task"
         entry (file my/org-capture-inbox-file)
@@ -2095,26 +2131,29 @@ non-nil if the node should be included."
              (url (string-trim url "\"" "\"")))
         (url-retrieve url 'my/switch-to-buffer-capture-new-reference)))
 
+    (defun my/org-roam-reference-alreadly-exists (url &rest visit)
+      (let* ((url (my/url-for-reference url))
+             (dup-node (my/org-find-reference url)))
+        (when (and dup-node visit)
+          (org-roam-node-visit dup-node t))
+        dup-node))
+
     (defun my/org-capture-new-reference ()
       (my/org-capture-journal-create-today-file)
-      (let* ((url (read-from-minibuffer "URL: "))
-             (url (my/url-for-reference url))
-             (dup-node (my/org-find-reference url)))
-        (if dup-node
-            (progn
-              (org-roam-node-visit dup-node t)
-              (error "Already exists Ref: %s" url))
-          (format "* %%? :Reference:
+      (let* ((url (read-from-minibuffer "URL: ")))
+        (when (my/org-roam-reference-alreadly-exists url t)
+          (error "Already exists Ref: %s" url))
+        (format "* %%? :Reference:
 :PROPERTIES:
 :ID: %s
 :CATEGORY: Reference
 :ROAM_REFS: \"%s\"
 :journal_link: %s
 :END:"
-                  (my/org-capture-ref-new-id)
-                  url
-                  (org-link-make-string (format-time-string "id:%Y-%m-%d")))
-          )))
+                (my/org-capture-ref-new-id)
+                url
+                (org-link-make-string (format-time-string "id:%Y-%m-%d")))
+        ))
 
     )
 
