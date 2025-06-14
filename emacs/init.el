@@ -1906,11 +1906,11 @@ non-nil if the node should be included."
 :ROAM_REFS: %:link
 :journal_link: %(org-link-make-string (format-time-string \"id:%Y-%m-%d\"))
 :END:
-%(when (my/org-roam-reference-alreadly-exists \"%:link\" t) (error \"Already exists Ref: %%s\" url))
 # %U
 %i
 %?
 "
+        :hook my/capture-new-reference-hook
         :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
         )
 
