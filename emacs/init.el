@@ -1901,7 +1901,7 @@ non-nil if the node should be included."
         entry (file my/org-capture-ref-file)
         "* %:description :Reference:
 :PROPERTIES:
-:ID: %(my/org-capture-inbox-new-id)
+:ID: %(org-id-new)
 :CATEGORY: Reference
 :ROAM_REFS: %:link
 :journal_link: %(org-link-make-string (format-time-string \"id:%Y-%m-%d\"))
@@ -1911,7 +1911,7 @@ non-nil if the node should be included."
 %i
 %?
 "
-        :kill-buffer t
+        :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
         )
 
        ("t" "Task"
@@ -1943,7 +1943,15 @@ non-nil if the node should be included."
 
        ("f" "Add Reference"
         entry (file my/org-capture-ref-file)
-        (function my/org-capture-new-reference)
+        "* %? :Reference:
+:PROPERTIES:
+:ID: %(org-id-new)
+:CATEGORY: Reference
+:journal_link: %(org-link-make-string (format-time-string \"id:%Y-%m-%d\"))
+:END:
+# %U
+%i %^{ROAM_REFS}p
+"
         :hook my/capture-new-reference-hook
         :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
         )
@@ -1987,25 +1995,13 @@ non-nil if the node should be included."
         (make-directory dir t)
         file))
 
-    (defvar my/-org-capture-inbox-new-id nil)
-
     (defun my/org-capture-inbox-file ()
-      (let ((id (org-id-new)))
-        (setq my/-org-capture-inbox-new-id id)
-        (my/org-new-random-file "inbox" (string-replace "-" "" id) 2)))
-
-    (defun my/org-capture-inbox-new-id ()
-      my/-org-capture-inbox-new-id)
-
-    (defvar my/-org-capture-ref-new-id nil)
+      (my/org-new-random-file
+       "inbox" (string-replace "-" "" (org-id-new)) 2))
 
     (defun my/org-capture-ref-file ()
-      (let ((id (org-id-new)))
-        (setq my/-org-capture-ref-new-id id)
-        (my/org-new-random-file "refs" (string-replace "-" "" id) 2)))
-
-    (defun my/org-capture-ref-new-id ()
-      my/-org-capture-ref-new-id)
+      (my/org-new-random-file
+       "refs" (string-replace "-" "" (org-id-new)) 2))
 
     (defun my/iso-today ()
       (format-time-string "%Y-%m-%d"))
@@ -2128,8 +2124,15 @@ non-nil if the node should be included."
 
     (defun my/capture-new-reference-hook ()
       (let* ((url (org-entry-get nil "ROAM_REFS"))
-             (url (string-trim url "\"" "\"")))
-        (url-retrieve url 'my/switch-to-buffer-capture-new-reference)))
+             (url (string-trim url "\"" "\""))
+             (dup-node (my/org-roam-reference-alreadly-exists url))
+             (capture-buffer (buffer-name)))
+        (if dup-node
+            (progn
+              (org-roam-node-visit dup-node)
+              (kill-buffer capture-buffer))
+          (url-retrieve url 'my/switch-to-buffer-capture-new-reference))
+        ))
 
     (defun my/org-roam-reference-alreadly-exists (url &rest visit)
       (let* ((url (my/url-for-reference url))
@@ -2137,23 +2140,6 @@ non-nil if the node should be included."
         (when (and dup-node visit)
           (org-roam-node-visit dup-node t))
         dup-node))
-
-    (defun my/org-capture-new-reference ()
-      (my/org-capture-journal-create-today-file)
-      (let* ((url (read-from-minibuffer "URL: ")))
-        (when (my/org-roam-reference-alreadly-exists url t)
-          (error "Already exists Ref: %s" url))
-        (format "* %%? :Reference:
-:PROPERTIES:
-:ID: %s
-:CATEGORY: Reference
-:ROAM_REFS: \"%s\"
-:journal_link: %s
-:END:"
-                (my/org-capture-ref-new-id)
-                url
-                (org-link-make-string (format-time-string "id:%Y-%m-%d")))
-        ))
 
     )
 
