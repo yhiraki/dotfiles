@@ -1910,7 +1910,7 @@ non-nil if the node should be included."
 %i
 %?
 "
-        :hook my/capture-new-reference-hook
+        :hook my/capture-new-reference-find-dup
         :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
         )
 
@@ -1952,7 +1952,7 @@ non-nil if the node should be included."
 # %U
 %i %^{ROAM_REFS}p
 "
-        :hook my/capture-new-reference-hook
+        :hook my/capture-new-reference-find-dup-update-title
         :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
         )
 
@@ -2122,17 +2122,19 @@ non-nil if the node should be included."
           (org-edit-headline title))
         ))
 
-    (defun my/capture-new-reference-hook ()
+    (defun my/capture-new-reference-find-dup ()
       (let* ((url (org-entry-get nil "ROAM_REFS"))
              (url (string-trim url "\"" "\""))
              (dup-node (my/org-roam-reference-alreadly-exists url))
              (capture-buffer (buffer-name)))
-        (if dup-node
-            (progn
-              (org-roam-node-visit dup-node)
-              (kill-buffer capture-buffer))
-          (url-retrieve url 'my/switch-to-buffer-capture-new-reference))
-        ))
+        (when dup-node
+          (org-roam-node-visit dup-node)
+          (kill-buffer capture-buffer))
+        dup-node))
+
+    (defun my/capture-new-reference-find-dup-update-title ()
+      (unless (my/capture-new-reference-find-dup)
+        (url-retrieve url 'my/switch-to-buffer-capture-new-reference)))
 
     (defun my/org-roam-reference-alreadly-exists (url &rest visit)
       (let* ((url (my/url-for-reference url))
