@@ -2226,28 +2226,28 @@ non-nil if the node should be included."
 
 ;; (use-package appt
 ;;   :after org-agenda
-;; 
+;;
 ;;   :hook
 ;;   (org-finalize-agenda . org-agenda-to-appt) ;; update appt list on agenda view
-;; 
+;;
 ;;   :custom
 ;;   (appt-time-msg-list nil)         ;; clear existing appt list
 ;;   (appt-display-interval '3)
 ;;   (appt-message-warning-time '10)  ;; send first warning 10 minutes before appointment
 ;;   (appt-display-mode-line nil)     ;; don't show in the modeline
 ;;   (appt-display-format 'window)    ;; pass warnings to the designated window function
-;; 
+;;
 ;;   :config
 ;;   (appt-activate 1)                ;; activate appointment notification
 ;;   (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
 ;;   (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
 ;;   )
-;; 
+;;
 ;; (use-package appt
 ;;   :if darwin-p
 ;;   :config
 ;;   (defvar my/notifier-path "terminal-notifier")
-;; 
+;;
 ;;   (defun my/appt-send-notification (title msg)
 ;;     (when (executable-find "terminal-notifier")
 ;;       (shell-command
@@ -2260,7 +2260,7 @@ non-nil if the node should be included."
 ;;           "-active" "org.gnu.Emacs"
 ;;           "-sound" "Funk")
 ;;         " "))))
-;; 
+;;
 ;;   (defun my/appt-display (min-to-app new-time appt-msg)
 ;;     (my/appt-send-notification
 ;;      (format "Appointment in %s minutes"
@@ -2272,7 +2272,7 @@ non-nil if the node should be included."
 ;;                  (mapconcat #'identity appt-msg "\n")
 ;;                appt-msg
 ;;                ))))
-;; 
+;;
 ;;   (advice-add 'appt-disp-window :before 'my/appt-display)
 ;;   )
 
