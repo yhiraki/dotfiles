@@ -1888,7 +1888,7 @@ non-nil if the node should be included."
         entry (file my/org-capture-inbox-file)
         "* %:description
 :PROPERTIES:
-:ID: %(my/org-capture-inbox-new-id)
+:ID: %(org-id-new)
 :ROAM_REFS: %:link
 :CATEGORY: Inbox
 :END:
@@ -1918,7 +1918,7 @@ non-nil if the node should be included."
         entry (file my/org-capture-inbox-file)
         "* TODO %? :Task:
 :PROPERTIES:
-:ID: %(my/org-capture-inbox-new-id)
+:ID: %(org-id-new)
 :CATEGORY: Inbox
 :END:
 ")
@@ -1927,7 +1927,7 @@ non-nil if the node should be included."
         entry (file my/org-capture-inbox-file)
         "* STARTED %?
 :PROPERTIES:
-:ID: %(my/org-capture-inbox-new-id)
+:ID: %(org-id-new)
 :CATEGORY: Inbox
 :END:"
         :clock-in t :clock-resume t
@@ -1963,7 +1963,7 @@ non-nil if the node should be included."
  [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (line-number-at-pos)))][%f]]\
  on %(with-current-buffer (org-capture-get :original-buffer) (format \"%s\" (magit-get-current-branch)))
 :PROPERTIES:
-:ID: %(my/org-capture-inbox-new-id)
+:ID: %(org-id-new)
 :ROAM_REFS: %(with-current-buffer (org-capture-get :original-buffer) (browse-at-remote-get-url))
 :CATEGORY: Inbox
 :END:
