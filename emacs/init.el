@@ -317,8 +317,6 @@
   )
 
 (use-package faces
-  :if darwin-p
-
   :hook
   (window-setup . my/reload-font)
   (window-setup . set-apple-color-emoji)
