@@ -1226,7 +1226,8 @@
 
 (use-package gptel :ensure t
   :custom
-  (gptel-model 'gemini-2.0-flash-exp)
+  (gptel-default-mode 'org-mode)
+  (gptel-model 'gemini-2.5-flash)
   ;; should be set in init.local.el
   ;; (setopt gptel-backend (gptel-make-gemini "Gemini"
   ;;                         :key my/gemini-api-key
