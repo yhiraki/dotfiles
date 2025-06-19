@@ -2631,8 +2631,14 @@ LANG はシンボル (例: python, emacs-lisp)。"
         my/private-org-roam-directory))
 
     (defun my/list-agenda-files (regex &optional extra-filters)
-      (let* ((stdout (generate-new-buffer "*rg::stdout*"))
-             (stderr (generate-new-buffer "*rg::stderr*"))
+      (let* ((stdout-bufname "*update-agenda-files::stdout*")
+             (stderr-bufname "*update-agenda-files::stderr*")
+             (display-buffer-alist
+              (append `((,stdout-bufname (display-buffer-no-window) (allow-no-window . t))
+                        (,stderr-bufname (display-buffer-no-window) (allow-no-window . t)))
+                      display-buffer-alist))
+             (stdout (generate-new-buffer stdout-bufname))
+             (stderr (generate-new-buffer stderr-bufname))
              (filters (append '("!**/archived/**/*.org") extra-filters))
              (cmd (string-join
                    `("timeout" "2"
