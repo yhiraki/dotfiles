@@ -4,23 +4,24 @@
   connection: local
   roles:
     - role: yhiraki.emacs
-      emacs_version: 29.3
+      emacs_version: 30.1
       install_prefix: /usr/local
       build_options: >-
-        --build=aarch64-apple-darwin
-        --disable-largefile
-        --with-gif=ifavailable
-        --with-imagemagick
-        --with-jpeg=ifavailable
-        --with-native-compilation
-        --with-ns
-        --with-rsvg
-        --with-tiff=ifavailable
-        --with-x-toolkit=no
-        --with-xpm=ifavailable
-        --without-scroll-bars
-        --without-sound
-        --without-x
+        # --build=aarch64-apple-darwin
+        --disable-largefile \
+        --with-gif=ifavailable \
+        --with-imagemagick \
+        --with-jpeg=ifavailable \
+        --with-native-compilation \
+        --with-rsvg \
+        --with-tiff=ifavailable \
+        --with-x-toolkit=no \
+        --with-xpm=ifavailable \
+        --without-scroll-bars \
+        --without-sound \
+        --without-x \
+        --with-json \
+        --with-tree-sitter
       sudo_install: no
     - role: yhiraki.python
       python_version: 3.10.2

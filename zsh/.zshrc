@@ -429,3 +429,11 @@ autoload -Uz compinit && compinit -i
 
 # Make status code '0'
 echo .zshrc loaded 1>&2
+
+# pnpm
+export PNPM_HOME="/home/yuta/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
