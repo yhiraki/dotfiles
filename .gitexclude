@@ -7,59 +7,6 @@
 # Emacs: quickrun
 qr_*.*
 
-
-### https://raw.github.com/github/gitignore/f9291de89f5f7dc0d3d87f9eb111b839f81d5dbc/Global/Emacs.gitignore
-
-# -*- mode: gitignore; -*-
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-auto-save-list
-tramp
-.\#*
-
-# Org-mode
-.org-id-locations
-# *_archive
-
-# flymake-mode
-*_flymake.*
-
-# eshell files
-/eshell/history
-/eshell/lastdir
-
-# elpa packages
-/elpa/
-
-# reftex files
-*.rel
-
-# AUCTeX auto folder
-/auto/
-
-# cask packages
-.cask/
-dist/
-
-# Flycheck
-flycheck_*.el
-
-# server auth directory
-/server/
-
-# projectiles files
-.projectile
-
-# directory configuration
-.dir-locals.el
-
-# network security
-/network-security.data
-
-
 ### https://raw.github.com/github/gitignore/b0012e4930d0a8c350254a3caeedf7441ea286a3/Global/macOS.gitignore
 
 # General
