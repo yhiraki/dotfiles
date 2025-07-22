@@ -1,6 +1,3 @@
-# Local .zshrc
-[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
-
 autoload -Uz add-zsh-hook
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]] &&
@@ -437,3 +434,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Local .zshrc
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
