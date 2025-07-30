@@ -1405,7 +1405,7 @@
     (let ((todo-state (org-get-todo-state)) beg end)
       (unless (not todo-state)
         (save-excursion
-          (ignore-error (org-back-to-heading t))
+          (org-back-to-heading t)
           (setq beg (point))
           (end-of-line)
           (setq end (point))
