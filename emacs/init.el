@@ -1674,6 +1674,7 @@
             (require 'org-roam)
             (setq org-roam-directory ,org-roam-directory)
             (setq org-todo-keywords ',org-todo-keywords)
+            (setq org-roam-db-location ,org-roam-db-location)
             (org-roam-db-sync)
             now))
        '(lambda (start-time)
@@ -1698,6 +1699,7 @@
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
     (org-roam-directory (f-join org-directory "roam"))
+    (org-roam-db-location (f-join org-directory "roam" "org-roam.db"))
     (org-roam-node-template-prefixes
      '(("tags" . "#")
        ("todo" . "")))
