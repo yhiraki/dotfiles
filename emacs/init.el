@@ -2427,6 +2427,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
    '(
      (emacs-lisp . t)
      (mermaid . t)
+     (org . t )
      (plantuml . t)
      (python . t)
      (shell . t)
