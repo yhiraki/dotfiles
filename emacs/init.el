@@ -1953,7 +1953,7 @@ non-nil if the node should be included."
 # %U
 %i %^{ROAM_REFS}p
 "
-        :hook my/capture-new-reference-find-dup-update-title
+        :hook my/capture-new-reference-find-dup
         :kill-buffer t :no-save t  ; Abort capture したときに作成した空のファイルを残さない
         )
 
