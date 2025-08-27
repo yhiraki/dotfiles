@@ -3085,6 +3085,16 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (advice-add #'evil-open-below :around #'my/advice-evil-open-below-at-heading)
 
+  (use-package evil-mac-eisuu :no-require t
+    :if darwin-p
+    :after evil
+    :config
+    (defun my/eisuu-key ()
+      (interactive)
+      (call-process "osascript" nil t nil "-e" "tell application \"System Events\" to key code 102"))
+    (add-hook 'evil-insert-state-exit-hook 'my/eisuu-key)
+    )
+
   (use-package evil-collection :ensure t
     :after evil
     :diminish evil-collection-unimpaired-mode
