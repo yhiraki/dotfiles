@@ -2979,6 +2979,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (:map evil-insert-state-map
         ("C-n" . 'completion-at-point)
         ("C-p" . 'completion-at-point)
+        ("C-@" . 'evil-normal-state)
         )
 
   :custom
