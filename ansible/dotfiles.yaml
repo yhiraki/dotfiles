@@ -4,7 +4,7 @@
   connection: local
   roles:
     - role: yhiraki.emacs
-      emacs_version: 30.1
+      emacs_version: 30.2
       install_prefix: /usr/local
       build_options: >-
         # --build=aarch64-apple-darwin
@@ -23,9 +23,6 @@
         --with-json \
         --with-tree-sitter
       sudo_install: no
-    - role: yhiraki.python
-      python_version: 3.10.2
-      install_prefix: /usr/local
     - role: git
     - role: go
     - role: tmux
