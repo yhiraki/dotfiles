@@ -2973,6 +2973,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
         ("C-l" . 'redraw-display)
         ("S-C-j" . 'evil-forward-section-begin)
         ("S-C-k" . 'evil-backward-section-begin)
+        ("+" . 'evil-ex)
         )
 
   (:map evil-insert-state-map
