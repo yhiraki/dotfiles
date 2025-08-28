@@ -317,6 +317,8 @@
   )
 
 (use-package faces
+  :if window-system
+
   :hook
   (window-setup . my/reload-font)
   (window-setup . set-apple-color-emoji)
