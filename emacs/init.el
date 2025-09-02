@@ -133,6 +133,22 @@
                lines
                "\n")))
 
+(defun my/mac-open-app-incrementally ()
+  "List macOS applications using 'find', select one incrementally, and open it.
+This version does not rely on mdfind (Spotlight)."
+  (interactive)
+  (unless (string-equal system-type "darwin")
+    (error "This function is only available on macOS"))
+
+  ;; findコマンドで代表的なパスから.appを探す
+  (let* ((command "find /Applications ~/Applications /System/Applications -name \"*.app\" -maxdepth 3 2>/dev/null")
+         (app-paths (split-string (shell-command-to-string command) "\n" t))
+         (selected-app (completing-read "Open Application: " app-paths nil t)))
+
+    (when selected-app
+      (start-process "open-app" nil "open" selected-app)
+      (message "Opening %s..." (file-name-nondirectory selected-app)))))
+
 (use-package general :ensure t)
 
 (use-package emacs
@@ -3025,6 +3041,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
     (kbd "<leader>b") 'bookmark-jump
     (kbd "<leader>c") 'my/org-capture-private
     (kbd "<leader>C") 'org-capture
+    (kbd "<leader>f a") 'my/mac-open-app-incrementally
     (kbd "<leader>f b") 'consult-buffer
     (kbd "<leader>f d") 'dired-sidebar-toggle-sidebar
     (kbd "<leader>f f") 'find-file
