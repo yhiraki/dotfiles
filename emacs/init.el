@@ -3114,6 +3114,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
       (interactive)
       (call-process "osascript" nil t nil "-e" "tell application \"System Events\" to key code 102"))
     (add-hook 'evil-insert-state-exit-hook 'my/eisuu-key)
+    (add-hook 'focus-in-hook 'my/eisuu-key)
     )
 
   (use-package evil-collection :ensure t
