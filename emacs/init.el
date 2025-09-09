@@ -330,6 +330,10 @@ This version does not rely on mdfind (Spotlight)."
   :if darwin-p
   :config
   (setq mac-option-modifier 'meta)
+
+  (when (fboundp 'mac-ime-toggle)
+    (add-hook 'evil-insert-state-exit-hook 'mac-ime-deactivate)
+    (add-hook 'focus-in-hook 'mac-ime-deactivate))
   )
 
 (use-package faces
@@ -3107,7 +3111,9 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (advice-add #'evil-open-below :around #'my/advice-evil-open-below-at-heading)
 
   (use-package evil-mac-eisuu :no-require t
-    :if darwin-p
+    :if (and
+         darwin-p
+         (not (fboundp 'mac-ime-toggle)))
     :after evil
     :config
     (defun my/eisuu-key ()
