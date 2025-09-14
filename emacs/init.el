@@ -1503,24 +1503,24 @@ This version does not rely on mdfind (Spotlight)."
     (org-cycle-level-faces nil)
     (org-n-level-faces 4)
 
-    :custom-face
-    ;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
-    (org-level-1 ((t (:inherit 'outline-1 :height 1.2)))) ;\LARGE
-    (org-level-2 ((t (:inherit 'outline-2 :height 1.1)))) ;\Large
-    (org-level-3 ((t (:inherit 'outline-3 :height 1.05)))) ;\large
-    ;; Document Title, (\huge)
-    (org-document-title ((t (:height 2.074 :inherit 'org-level-8))))
-
-    (org-block            ((t (:height 0.9    :background "gray5"))))
-    (org-code             ((t (:height 0.8    :background "gray8"))))
-    (org-block-begin-line ((t (:height 0.7    :foreground "gray40" :background nil :underline "gray20"))))
-    (org-block-end-line   ((t (:underline nil :overline "gray20"))))
-    (org-date             ((t (:height 0.7    :foreground "gold4"))))
-    (org-drawer           ((t (:height 0.7    :foreground "gray40"))))
-    (org-meta-line        ((t (:height 0.7    :foreground "gray40"))))
-    (org-property-value   ((t (:height 0.7))))
-    (org-sexp-date        ((t (:height 0.7    :foreground "gray40"))))
-    (org-table            ((t (:height 0.9))))
+    :hook
+    (org-mode
+     . (lambda ()
+         (progn
+           (set-face-attribute 'org-level-1 nil :height 1.2)
+           (set-face-attribute 'org-level-2 nil :inherit 'outline-2 :height 1.1)
+           (set-face-attribute 'org-level-3 nil :inherit 'outline-3 :height 1.05)
+           (set-face-attribute 'org-document-title nil :height 2.074 :inherit 'org-level-8)
+           (set-face-attribute 'org-block nil :height 0.9 :background "gray5")
+           (set-face-attribute 'org-code nil :height 0.8 :background "gray8")
+           (set-face-attribute 'org-block-begin-line nil :height 0.7 :foreground "gray40" :background nil :underline "gray20")
+           (set-face-attribute 'org-block-end-line nil :underline nil :overline "gray20")
+           (set-face-attribute 'org-date nil :height 0.7 :foreground "gold4")
+           (set-face-attribute 'org-drawer nil :height 0.7 :foreground "gray40")
+           (set-face-attribute 'org-meta-line nil :height 0.7 :foreground "gray40")
+           (set-face-attribute 'org-property-value nil :height 0.7)
+           (set-face-attribute 'org-sexp-date nil :height 0.7 :foreground "gray40")
+           (set-face-attribute 'org-table nil :height 0.9))))
     )
 
   (use-package org-clock
