@@ -1,0 +1,24 @@
+# ~/.gemini/commands/git/create-pr.toml
+
+description = "Create Pull Request from current branch into main."
+prompt = """
+# Task: Create Pull Request
+
+You are an expert maintainer of this repository. A user has invoked a command to add a Pull Request to GitHub.
+
+## Behavior
+
+1. Fetch the origin/main branch.
+
+  !{git fetch origin main}
+
+2. Read the commit logs and diffs.
+
+  !{git log -p origin/main..}
+
+3. Read the `.github/pull_request_template.md` file.
+
+4. Create pull request documents according to the template above.
+
+5. Create a pull request using `gh`.
+"""
