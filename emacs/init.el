@@ -237,6 +237,9 @@ This version does not rely on mdfind (Spotlight)."
   ;; Completion
   (setq completion-ignore-case t)
 
+  ;; Frame
+  (setq frame-resize-pixelwise t) ;; Pixel単位での画面サイズ変更を許可
+
   :bind-keymap
   ("C-s" . ctl-x-map)
   )
@@ -330,6 +333,7 @@ This version does not rely on mdfind (Spotlight)."
   :if darwin-p
   :config
   (setq mac-option-modifier 'meta)
+  (setq ns-use-native-fullscreen nil)
 
   (when (fboundp 'mac-ime-toggle)
     (add-hook 'evil-insert-state-exit-hook 'mac-ime-deactivate)
