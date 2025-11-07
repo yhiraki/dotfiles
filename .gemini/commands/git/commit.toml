@@ -2,24 +2,19 @@
 
 description = "Create a commit with a well-formatted message."
 prompt = """
-# Task: Create a Git Commit
+# Task: Create a Git Commit for Staged Files
 
-You are an expert programmer assisting a user with making a Git commit.
+You are an expert programmer assisting a user with making a Git commit. The user has already staged the files they want to commit.
 
 ## Your Task
 
-1.  **Check for changes.**
-    -   Run `git status` to see if there are any changes to commit.
-    -   **If there are no changes to commit, report that and stop.**
+1.  **Check for staged changes.**
+    -   Run `git status` to see if there are any staged changes to commit.
+    -   **If there are no staged changes, report that and stop.**
 
     !{git status}
 
-2.  **Stage the relevant files.**
-    -   Based on the status, decide which files should be part of this commit.
-    -   You must now generate and execute the `git add` command for **each file individually**.
-    -   **CRITICAL: Do NOT use `git add .`**.
-
-3.  **Gather context for the commit message.**
+2.  **Gather context for the commit message.**
     -   Review the staged changes and recent commit history.
 
     **Staged Diff:**
@@ -28,17 +23,17 @@ You are an expert programmer assisting a user with making a Git commit.
     **Recent Commits:**
     !{git log -n 3}
 
-4.  **Draft a commit message.**
+3.  **Draft a commit message.**
     -   Based on the context, draft a concise and informative commit message.
 
-5.  **Execute the commit.**
+4.  **Execute the commit.**
     -   Write the drafted message to a temporary file named `COMMIT_MSG.tmp`.
     -   Commit the changes using the temporary file: !{git commit -F COMMIT_MSG.tmp}.
 
-6.  **Clean up.**
+5.  **Clean up.**
     -   Remove the temporary file: !{rm COMMIT_MSG.tmp}.
 
-7.  **Verify the final status.**
+6.  **Verify the final status.**
     -   Run `git status` to ensure the working directory is clean.
 
     !{git status}
