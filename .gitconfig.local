@@ -3,6 +3,8 @@
 [core]
 	editor = $EDITOR
 	excludesfile = ~/.gitexclude
+[init]
+	defaultBranch = main
 [merge]
 	autostash = true
 [rebase]
