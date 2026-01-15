@@ -782,13 +782,6 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package lsp-mode :ensure t
-  :hook ((c++-mode
-          js-mode
-          terraform-mode
-          ;; sh-mode
-          typescript-mode
-          ) . lsp)
-
   :custom
   (lsp-auto-guess-root nil)
   (lsp-clients-go-server "gopls")
@@ -821,18 +814,9 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package lsp-pyright :ensure t
-  :hook
-  (python-mode
-   . (lambda ()
-       (require 'lsp-pyright)
-       (setq-local lsp-pyright-python-executable-cmd (my/find-venv-python-or-global))
-       (evil-local-set-key 'normal (kbd "<localleader>f") #'python-black-buffer)
-       (evil-local-set-key 'visual (kbd "<localleader>f") #'python-black-region)
-       (lsp)))
   )
 
 (use-package lsp-go
-  :hook (go-mode . lsp)
   :custom (lsp-go-use-gofumpt t)
   )
 
@@ -1063,10 +1047,6 @@ This version does not rely on mdfind (Spotlight)."
   :commands clang-format-buffer)
 
 (use-package go-mode :ensure t)
-
-(use-package go-eldoc :ensure t
-  :hook (go-mode . go-eldoc-setup)
-)
 
 (use-package protobuf-mode :ensure t)
 
@@ -3364,83 +3344,6 @@ LANG はシンボル (例: python, emacs-lisp)。"
            "<localleader>w" #'my/whitespace-cleanup)
   (:states 'visual
            "<localleader>w" #'my/whitespace-cleanup-region)
-  )
-
-(use-package yasnippet :ensure t
-  :diminish yas-minor-mode
-  :hook
-  (yas-minor-mode
-   . (lambda ()
-       (setq-local yas-prompt-functions '(yas-x-prompt yas-completing-prompt yas-no-prompt))
-       ))
-  (yas-before-expand-snippet . evil-insert-state)
-  :custom
-  (require-final-newline nil)
-  (yas-indent-line 'fixed)
-
-  :after evil
-  :config
-  (yas-global-mode)
-  (setq yas-snippet-dirs (list (locate-user-emacs-file "snippets")))
-
-  ;; YASnippet のスニペットを候補に表示するための設定
-  ;; https://emacs.stackexchange.com/questions/10431/get-company-to-show-suggestions-for-yasnippet-names
-  (defvar company-mode/enable-yas t
-    "Enable yasnippet for all backends.")
-  (defun company-mode/backend-with-yas (backend)
-    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-  (defun set-yas-as-company-backend ()
-    (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-    )
-  (add-hook 'company-mode-hook 'set-yas-as-company-backend)
-
-  (evil-set-initial-state 'snippet-mode 'insert)
-
-  :bind
-  (:map yas-keymap
-        ("<tab>" . nil)
-        ("RET" . yas-next-field-or-maybe-expand))
-  )
-
-(use-package google-this :ensure t
-  :commands google-this
-  )
-
-(use-package yasnippet-snippets :ensure t :disabled)
-
-(use-package autoinsert
-  :hook (find-file . auto-insert)
-
-  :custom
-  (auto-insert-query nil)
-  (auto-insert-directory (concat user-emacs-directory "templates/"))
-
-  :config
-  (defun my/autoinsert-yas-expand()
-    "Replace text in yasnippet template."
-    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
-
-  ;; http://emacs.rubikitch.com/sd1602-autoinsert-yatemplate-yasnippet/
-  (dolist (x auto-insert-alist)
-    (when (equal "\\.el\\'" (car-safe (car x)))
-      (setcar (car x) "/src/[^/]+\\.el\\'")))
-
-  (setq auto-insert-alist
-        (append '(
-                  (("test_.*\\.py\\'" "Python test") . ["test.py" my/autoinsert-yas-expand])
-                  (("setup.py\\'" "Python setup file") . "setup.py")
-                  (("setup.cfg\\'" "Python setup config") . ["setup.cfg" my/autoinsert-yas-expand])
-                  (("\\.cpp\\'" "C++ setup file") . ["template.cpp" my/autoinsert-yas-expand])
-                  (("\\.vue\\'" "Vue") . ["template.vue" my/autoinsert-yas-expand])
-                  ((plantuml-mode "Plantuml") . ["template.plantuml" my/autoinsert-yas-expand])
-                  ((sh-mode "Shell script") . ["template.sh" my/autoinsert-yas-expand])
-                  ((".github/workflows/.*\\.yml" "GitHub Actions") . ["actions.yml" my/autoinsert-yas-expand])
-                  )
-                auto-insert-alist)
-        )
   )
 
 (use-package oj :ensure t
