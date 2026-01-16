@@ -807,7 +807,6 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package lsp-vetur
-  :hook (vue . lsp)
   :custom
   (lsp-vetur-format-default-formatter-ts "eslint")
   (lsp-vetur-format-default-formatter-js "eslint")
@@ -871,81 +870,6 @@ This version does not rely on mdfind (Spotlight)."
   :after corfu
   :config
    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-(use-package company :ensure t :disabled
-  :diminish company-mode
-  :hook
-  (TeX-mode . edit-category-table-for-company-dabbrev)
-
-  :custom
-  (company-auto-commit nil)
-  (company-candidates-cache t)
-  (company-dabbrev-char-regexp "\\cs")
-  (company-dabbrev-code-ignore-case t)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-ignore-case t)
-  (company-etags-ignore-case t)
-  (company-idle-delay 0.2)
-  (company-minimum-prefix-length 2)
-  (company-selection-wrap-around t)
-  (company-tng-auto-configure nil) ; keymap(company-active-map)が変更されないようにoff
-  (company-tooltip-idle-delay 0.1)
-  (company-tooltip-limit 10)
-  (completion-ignore-case t)
-
-  :after evil
-  :config
-  ;; company-dabbrevで日本語を補完しない
-  ;; https://qiita.com/wktkshn/items/3ac46671d1c242a59f7e
-  (defun edit-category-table-for-company-dabbrev (&optional table)
-    (define-category ?s "word constituents for company-dabbrev" table)
-    (let ((i 0))
-      (while (< i 128)
-        (if (equal ?w (char-syntax i))
-            (modify-category-entry i ?s table)
-          (modify-category-entry i ?s table t))
-        (setq i (1+ i)))))
-  (edit-category-table-for-company-dabbrev)
-  ;; (add-to-list 'company-frontends 'company-tng-frontend)
-
-  (global-company-mode)
-  (company-tng-mode)
-
-  (evil-define-key 'insert 'global
-    (kbd "C-k") 'company-yasnippet)
-
-  :bind
-  (:map company-active-map
-        ("C-S-h" . 'company-show-doc-buffer) ;; ドキュメント表示はC-Shift-h
-        ("C-h" . nil) ;; C-hはバックスペース割当のため無効化
-        ("RET" . nil)
-        ("<return>" . nil)
-        ("C-n" . 'company-select-next)
-        ("C-p" . 'company-select-previous)
-        ("C-s" . 'company-filter-candidates)
-        ("<tab>" . 'yas-expand-from-trigger-key)
-        )
-  (:map company-search-map
-        ("C-n" . 'company-select-next)
-        ("C-p" . 'company-select-previous)
-        ("C-h" . 'company-search-delete-char)
-        ("<space>" . nil)
-        ("RET" . 'company-complete-selection)
-        ("<return>" . 'company-complete-selection)
-        )
-  )
-
-(use-package company-statistics :ensure t
-  :hook (company-mode . company-statistics-mode)
-  :custom
-  (company-statistics-file "~/.cache/emacs/company-statistics-cache.el")
-  (company-transformers '(company-sort-by-statistics company-sort-by-backend-importance))
-  )
-
-(use-package company-restclient :ensure t
-  :config
-  (add-to-list 'company-backends #'company-restclient)
-  )
 
 (use-package quickrun :ensure t
   :commands quickrun
@@ -1017,8 +941,6 @@ This version does not rely on mdfind (Spotlight)."
             :states 'visual
             (kbd "<localleader>r") #'quickrun-region)
   )
-
-(use-package annotate :ensure t)
 
 (use-package csharp-mode
   :if (version< emacs-version "29")
@@ -1219,14 +1141,6 @@ This version does not rely on mdfind (Spotlight)."
   :config
   (require 'init-llm)
   )
-
-(use-package aidermacs :ensure t
-  :custom
-  (aidermacs-backend 'vterm)
-  :general
-  (:states '(normal visual)
-           "<leader> A" #'aidermacs-transient-menu
-           ))
 
 (use-package gptel :ensure t
   :custom
@@ -2951,17 +2865,6 @@ LANG はシンボル (例: python, emacs-lisp)。"
               (">" . 'evil-window-increase-width)))
   )
 
-(use-package undo-fu :ensure t :disabled  ; use undo-tree instead
-  ;; for evil undo function
-  :if (not emacs28+))
-
-(use-package undo-tree :ensure t :disabled  ; use vundo instead
-  :hook (after-init . global-undo-tree-mode)
-  :bind
-  (:map evil-normal-state-map
-        ("C-S-r" . 'undo-tree-visualize))
-  )
-
 (use-package vundo :ensure t
   :after evil
   :bind
@@ -3094,7 +2997,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (advice-add #'evil-open-below :around #'my/advice-evil-open-below-at-heading)
 
-  (use-package evil-mac-eisuu :no-require t
+  (use-package evil-mac-eisuu :no-require t :disabled
     :if (and
          darwin-p
          (not (fboundp 'mac-ime-toggle)))
@@ -3192,24 +3095,9 @@ LANG はシンボル (例: python, emacs-lisp)。"
              "g C-a" #'evil-numbers/inc-at-pt-incremental
              "g C-x" #'evil-numbers/dec-at-pt-incremental)
     )
-
-  (use-package evil-goggles :ensure t
-    :after evil
-    :diminish
-    :custom
-    (evil-goggles-duration 0.050)
-    :config
-    (evil-goggles-use-diff-faces)
-    (evil-goggles-mode))
   )
 
 (use-package all-the-icons :ensure t)
-
-(use-package color-theme-sanityinc-tomorrow :ensure t :disabled)
-
-(use-package doom-themes :ensure t :disabled)
-
-(use-package doom-modeline :ensure t :disabled)
 
 (use-package modus-themes :ensure t
   :config
