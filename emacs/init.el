@@ -1189,54 +1189,12 @@ This version does not rely on mdfind (Spotlight)."
           (time-stamp-format " %Y-%02m-%02d"))
       (time-stamp)))
 
-  (defun my/org-mode-update-time-stamp-modified ()
-    (let ((time-stamp-start ":MODIFIED:[ \t]+\\\\?[\"<]+"))
-      (time-stamp)))
-
   (defun my/setup-org-mode-local-hooks ()
     (add-hook 'after-save-hook #'my/delete-empty-file nil t)
     (when (s-prefix? (file-truename org-directory) (buffer-file-name))
       (require 'time-stamp)
       (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
-      (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-modified nil t)
-      (require 'evil)
-      (add-hook 'evil-normal-state-entry-hook
-                #'(lambda () (when (eq 'insert evil-previous-state)
-                               (my/org-mode-insert-time-stamp-modified-heading)))
-                nil t)
       ))
-
-  (defun my/org-mode-set-prop-timestamp (prop &optional inactive overwrite)
-    "Set timestamp PROP if it does not exists."
-    (let* ((exists? (org-entry-get (point) prop))
-           (str (if inactive
-                    (format-time-string "[%Y-%m-%d %T]")
-                  (format-time-string "<%Y-%m-%d %T>"))))
-      (when (or overwrite (not exists?))
-        (org-set-property prop str))))
-
-  (defun my/org-mode-insert-time-stamp-created-heading ()
-    (interactive)
-    (save-excursion
-      (when (and (ignore-errors (org-back-to-heading))
-                 (org-at-heading-p))
-        (my/org-mode-set-prop-timestamp "CREATED" t))))
-
-  (defun my/org-mode-insert-time-stamp-modified-heading ()
-    (interactive)
-    (save-excursion
-      (when (and (ignore-errors (org-back-to-heading))
-                 (org-at-heading-p))
-        (my/org-mode-set-prop-timestamp "CREATED" t)
-        (my/org-mode-set-prop-timestamp "MODIFIED" t t))))
-
-  (defun my/org-mode-insert-time-stamp-file ()
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (unless (org-at-heading-p)
-        (my/org-mode-set-prop-timestamp "CREATED")
-        (my/org-mode-set-prop-timestamp "MODIFIED"))))
 
   (when window-system
     (add-hook 'org-mode-hook #'prettify-symbols-mode))
@@ -1272,7 +1230,6 @@ This version does not rely on mdfind (Spotlight)."
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
   (org-mode . my/setup-org-mode-local-hooks)
-  (org-insert-heading . my/org-mode-insert-time-stamp-created-heading)
 
   :custom
   (org-directory "~/org/")
@@ -1787,7 +1744,6 @@ non-nil if the node should be included."
     :commands org-capture
     :hook
     (org-capture-mode . (lambda () (evil-insert 0)))
-    (org-capture-before-finalize . my/org-mode-insert-time-stamp-created-heading)
 
     :custom
     (org-capture-templates
