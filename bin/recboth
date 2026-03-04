@@ -1,0 +1,51 @@
+# -*- mode: sh -*-
+#!/bin/bash
+
+if ! command -v sox &> /dev/null
+then
+    echo "Error: sox command not found. Please install sox."
+    exit 1
+fi
+
+# --- settings ---
+SYS_DEVICE="BlackHole 2ch"
+
+DIR=$(mktemp -d)
+
+FILE_MIC_WAV="$DIR/mic.wav"
+FILE_SYS_WAV="$DIR/sys.wav"
+FILE_MIC_MP3="$DIR/mic.mp3"
+FILE_SYS_MP3="$DIR/sys.mp3"
+FILE_OUT_MP3="$DIR/out.mp3"
+
+# --- Start rec ---
+echo "● 録音を開始します... (停止するには Ctrl+C を押してください)"
+
+# マイク録音 (バックグラウンド)
+sox -d "$FILE_MIC_WAV" &
+PID_MIC=$!
+
+# システム音録音 (バックグラウンド)
+sox -t coreaudio "$SYS_DEVICE" -c 2 "$FILE_SYS_WAV" &
+PID_SYS=$!
+
+# Ctrl+C (SIGINT) を受け取った時の処理
+cleanup() {
+    echo -e "\n■ 録音を停止しています..."
+    kill $PID_MIC
+    kill $PID_SYS
+    wait $PID_MIC $PID_SYS 2>/dev/null
+
+    echo "📦 ファイル結合/MP3に圧縮中..."
+    ffmpeg -i "$FILE_MIC_WAV" -i "$FILE_SYS_WAV" -filter_complex amix=inputs=2:duration=longest "$FILE_OUT_MP3"
+
+    open $DIR
+
+    exit
+}
+
+# Trapの設定
+trap cleanup SIGINT
+
+# プロセスが終了するまで待機
+wait
