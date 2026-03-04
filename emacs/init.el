@@ -1145,7 +1145,7 @@ This version does not rely on mdfind (Spotlight)."
 (use-package gptel :ensure t
   :custom
   (gptel-default-mode 'org-mode)
-  (gptel-model 'gemini-2.5-flash)
+  (gptel-model 'gemini-3-flash)
   ;; should be set in init.local.el
   ;; (setopt gptel-backend (gptel-make-gemini "Gemini"
   ;;                         :key my/gemini-api-key
