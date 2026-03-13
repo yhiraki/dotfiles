@@ -173,7 +173,7 @@ This version does not rely on mdfind (Spotlight)."
       (display-buffer-reuse-window display-buffer-in-side-window)
       (reusable-frames)
       (side . bottom))
-     ("\\*vterm\\*"
+     ("\\*vterm toggle\\*"
       (display-buffer-in-side-window))
 
      ;; Org agenda at top
@@ -573,48 +573,52 @@ This version does not rely on mdfind (Spotlight)."
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
 
-  :config
+  :init
+  ;; vterm-mode に入った時は Evil を Emacs 状態にする
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'vterm-mode 'emacs))
+
+  :preface
+  (defun my/vterm-toggle-window ()
+    (interactive)
+    (require 'vterm)
+    (let ((vterm-buffer-name "*vterm toggle*")
+          (vterm-buffer-name-string "*vterm toggle: %s*"))
+      (vterm-other-window)))
+
   (defun my/get-tmux-prefix ()
     (let* ((out (shell-command-to-string "tmux show-options -g prefix")))
-      (when out
-        (string-match "prefix \\(.*\\)" out)
-        (match-string 1 out))))
+      (if (and out (string-match "prefix \\(.*\\)" out))
+          (match-string 1 out)
+        "C-t")))
 
-  (defvar my/tmux-prefix "C-t")
+  :bind (("M-t" . my/vterm-toggle-window))
+
+  :config
+  ;; tmux prefixの設定
+  (defvar my/tmux-prefix (my/get-tmux-prefix))
 
   (defun my/vterm-insert-tmux-detach ()
     (interactive)
-    (unless my/tmux-prefix
-      (error "Set tmux prefix key"))
     (let ((buf (current-buffer)))
       (vterm-send (kbd my/tmux-prefix))
       (vterm-send (kbd "d"))
+      (run-at-time "0.1 sec" nil
+                   (lambda () (when (buffer-live-p buf) (quit-window))))))
 
-      ;; unless TMUX buffer
-      (sleep-for 0.2)
-      (when (buffer-live-p buf)
-        (quit-window))))
+  ;; --- ここで一括バインドを設定 ---
+  (dolist (key '("C-a" "C-c" "C-d" "C-e" "C-h" "C-k" "C-n" "C-p" "C-r" "C-x" "SPC"))
+    (general-define-key
+     :keymaps 'vterm-mode-map
+     :states '(emacs insert)
+     key #'vterm--self-insert))
 
-  :bind
-  ("M-t" . #'vterm-other-window)
-
-  :general
-  (:keymaps 'vterm-mode-map
-            :states '(insert emacs)
-            "C-a" #'vterm--self-insert
-            "C-c" #'vterm--self-insert
-            "C-d" #'vterm--self-insert
-            "C-e" #'vterm--self-insert
-            "C-h" #'vterm--self-insert
-            "C-k" #'vterm--self-insert
-            "C-n" #'vterm--self-insert
-            "C-p" #'vterm--self-insert
-            "C-r" #'vterm--self-insert
-            "C-x" #'vterm--self-insert
-            "M-t" #'my/vterm-insert-tmux-detach
-            "SPC" #'vterm--self-insert
-            )
-  )
+  ;; 個別の特殊バインド
+  (general-define-key
+   :keymaps 'vterm-mode-map
+   :states '(emacs insert)
+   "M-t" #'my/vterm-insert-tmux-detach)
+)
 
 (use-package flycheck :ensure t
   :custom
