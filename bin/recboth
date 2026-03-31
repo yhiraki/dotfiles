@@ -10,13 +10,15 @@ fi
 # --- settings ---
 SYS_DEVICE="BlackHole 2ch"
 
-DIR=$(mktemp -d)
+FILE="${FILE:-out.mp3}"
+DIR="${DIR:-$(mktemp -d)}"
+mkdir -p "${DIR}"
 
 FILE_MIC_WAV="$DIR/mic.wav"
 FILE_SYS_WAV="$DIR/sys.wav"
 FILE_MIC_MP3="$DIR/mic.mp3"
 FILE_SYS_MP3="$DIR/sys.mp3"
-FILE_OUT_MP3="$DIR/out.mp3"
+FILE_OUT_MP3="$DIR/$FILE"
 
 # --- Start rec ---
 echo "● 録音を開始します... (停止するには Ctrl+C を押してください)"
