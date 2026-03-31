@@ -1018,12 +1018,15 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package markdown-mode :ensure t
   :commands markdown-toggle-markup-hiding
+  :mode (("\\.md\\'" . markdown-view-mode))
 
   :hook
   ((markdown-mode gfm-mode)
    . (lambda () ()
        (setq-local indent-tabs-mode nil)
        (setq-local tab-width 4)))
+  (evil-insert-state-entry
+   . (lambda () (when (eq major-mode 'markdown-view-mode) (markdown-mode))))
 
   :custom
   (markdown-command "pandoc -s -t html5 -c ~/.emacs.d/css/github.css")
@@ -1185,8 +1188,6 @@ This version does not rely on mdfind (Spotlight)."
   :diminish org-indent-mode
 
   :init
-  (defvar my/private-org-directory org-directory)
-
   (defun my/org-mode-update-time-stamp-date ()
     (let ((time-stamp-start "DATE:")
           (time-stamp-end "$")
@@ -1627,16 +1628,12 @@ This version does not rely on mdfind (Spotlight)."
              ;; "<leader> n" #'org-roam-dailies-map
              "<leader> nS" #'my/org-roam-async-db-sync
              "<leader> nb" #'org-roam-buffer-display-dedicated
-             "<leader> n/" #'(lambda () (interactive) (my/org-roam-node-find-private #'my/org-roam-find-only-node))
-             "<leader> n\\" #'my/org-roam-find-only-node
-             "<leader> na/" #'my/org-roam-node-find-private
-             "<leader> na\\" #'org-roam-node-find
+             "<leader> n/" #'my/org-roam-find-only-node
+             "<leader> na/" #'org-roam-node-find
              "<leader> no" #'my/org-roam-node-open-ref
              "<leader> nF" #'my/org-roam-fix-exported-markdown)
     :config
     ;; (require 'org-roam-dailies)
-
-    (defvar my/private-org-roam-directory org-roam-directory)
 
     (defun my/org-roam-filter-is-not-journals-or-tasks (node)
       "Return nil if NODE is a journal or task node, otherwise return t.
@@ -1682,14 +1679,6 @@ non-nil if the node should be included."
 
     (advice-add 'org-roam-complete-link-at-point :around #'my/advice-org-roam-replace-titles)
     (advice-add 'org-roam-complete-everywhere :around #'my/advice-org-roam-replace-titles)
-
-    (defun my/org-roam-node-find-private (&rest func-with-args)
-      (interactive)
-      (let ((org-directory my/private-org-directory)
-            (org-roam-directory my/private-org-roam-directory))
-        (if func-with-args
-            (apply func-with-args)
-          (org-roam-node-find))))
 
     (defun my/org-roam-node-find-except-journals-tasks ()
       (org-roam-node-open
@@ -1860,11 +1849,6 @@ non-nil if the node should be included."
        ))
 
     :config
-    (defun my/org-capture-private ()
-      (interactive)
-      (let ((org-directory my/private-org-directory)
-            (org-roam-directory my/private-org-roam-directory))
-        (org-capture)))
 
     (defun my/org-new-random-file (parent-dir id num-subdir)
       (let* ((pref (substring id 0 num-subdir))
@@ -2506,10 +2490,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (when (executable-find "rg")
 
-    (defvar my/rg-org-directries
-      '(org-directory
-        my/private-org-directory
-        my/private-org-roam-directory))
+    (defvar my/rg-org-directries '(org-directory))
 
     (defun my/list-agenda-files (regex &optional extra-filters)
       (let* ((stdout-bufname "*update-agenda-files::stdout*")
@@ -2524,6 +2505,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
              (cmd (string-join
                    `("timeout" "2"
                      "rg" "-lL"
+                     "--no-ignore"
                      ,(concat "'" regex "'")
                      ,(mapconcat
                        '(lambda (x) (concat "-g '" x "'"))
@@ -2890,7 +2872,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
     (kbd "<leader>G g") 'google-this
     (kbd "<leader>a") 'org-agenda
     (kbd "<leader>b") 'bookmark-jump
-    (kbd "<leader>c") 'my/org-capture-private
+    (kbd "<leader>c") 'org-capture
     (kbd "<leader>C") 'org-capture
     (kbd "<leader>f a") 'my/mac-open-app-incrementally
     (kbd "<leader>f b") 'consult-buffer
