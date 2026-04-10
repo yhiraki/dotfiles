@@ -27,7 +27,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -54,7 +54,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -81,7 +81,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -108,7 +108,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -135,7 +135,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -165,7 +165,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -195,7 +195,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -222,7 +222,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -249,7 +249,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -286,7 +286,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
@@ -316,7 +316,7 @@
                 "^org\\.gnu\\.Emacs$",
                 "^com\\.googlecode\\.iterm2$",
                 "^com\\.apple\\.Terminal$",
-                "^io\\.ghostty\\.Ghostty$"
+                "^com\\.mitchellh\\.ghostty$"
               ]
             }
           ]
