@@ -41,8 +41,7 @@ cleanup() {
     echo "📦 ファイル結合/MP3に圧縮中..."
     ffmpeg -i "$FILE_MIC_WAV" -i "$FILE_SYS_WAV" -filter_complex amix=inputs=2:duration=longest "$FILE_OUT_MP3"
 
-    open $DIR
-
+    echo $FILE_OUT_MP3
     exit
 }
 

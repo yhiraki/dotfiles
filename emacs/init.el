@@ -719,6 +719,8 @@ This version does not rely on mdfind (Spotlight)."
             "]g" #'diff-hl-next-hunk)
   )
 
+(use-package git-auto-commit-mode :ensure t)
+
 (use-package browse-url
   :init
   (defun my/browse-url-wsl-browser (url &rest args)
@@ -2375,6 +2377,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
 
   :custom
+  (org-agenda-inhibit-startup t)
   (org-agenda-window-setup 'current-window)
   (org-agenda-restore-windows-after-quit t)
   (org-agenda-current-time-string "← now")
