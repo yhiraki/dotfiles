@@ -1618,6 +1618,7 @@ This version does not rely on mdfind (Spotlight)."
           ("C-c n a" . org-roam-alias-add)
           ("C-c n b" . org-roam-buffer-display-dedicated)
           ("C-c n i" . (lambda () (interactive) (org-roam-node-insert #'my/org-roam-filter-is-not-journals-or-tasks)))
+          ("C-c n j" . my/org-roam-find-recent-items)
           ("C-c n l" . org-roam-buffer-toggle)
           ("C-c n o" . org-id-get-create)
           ("C-c n p" . my/org-set-publish-current-file)
@@ -1630,6 +1631,7 @@ This version does not rely on mdfind (Spotlight)."
              ;; "<leader> n" #'org-roam-dailies-map
              "<leader> nS" #'my/org-roam-async-db-sync
              "<leader> nb" #'org-roam-buffer-display-dedicated
+             "<leader> nj" #'my/org-roam-find-recent-items
              "<leader> n/" #'my/org-roam-find-only-node
              "<leader> na/" #'org-roam-node-find
              "<leader> no" #'my/org-roam-node-open-ref
@@ -1729,6 +1731,61 @@ non-nil if the node should be included."
     ;;          (add-to-list 'org-agenda-files filename))))
     ;;  (number-sequence 0 13)  ; two weeks
     ;;  )
+
+    (defun my/org-roam-node-created-date (node)
+      "NODE の作成日（YYYY-MM-DD）を取得します。
+プロパティ CREATED があればそこから抽出し、なければファイルパスの日付パターンから抽出します。"
+      (let ((created (cdr (assoc "CREATED" (org-roam-node-properties node)))))
+        (cond
+         ((and created (string-match "\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\)" created))
+          (match-string 1 created))
+         (t
+          (let ((file (org-roam-node-file node)))
+            (cond
+             ((string-match "journal/\\([0-9]\\{4\\}\\)/\\([0-9]\\{2\\}\\)/\\([0-9]\\{2\\}\\)/" file)
+              (format "%s-%s-%s" (match-string 1 file) (match-string 2 file) (match-string 3 file)))
+             ((string-match "nodes/\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)" file)
+              (format "%s-%s-%s" (match-string 1 file) (match-string 2 file) (match-string 3 file)))
+             (t nil)))))))
+
+    (defun my/org-roam-find-recent-items ()
+      "過去2週間以内に作成された Journal または Reference のノードを抽出し、
+ミニバッファで選択して開きます。"
+      (interactive)
+      (let* ((two-weeks-ago (format-time-string "%Y-%m-%d" (time-add (current-time) (* -14 24 60 60))))
+             (nodes (org-roam-node-list))
+             (recent-nodes
+              (cl-remove-if-not
+               (lambda (node)
+                 (let* ((created (my/org-roam-node-created-date node))
+                        (tags (org-roam-node-tags node))
+                        (category (org-roam-node-category node))
+                        (is-target (or (member "Journal" tags)
+                                       (member "Reference" tags)
+                                       (string-equal category "Journal")
+                                       (string-equal category "Reference"))))
+                   (and is-target
+                        created
+                        (not (string< created two-weeks-ago)))))
+               nodes))
+             (sorted-nodes
+              (cl-sort recent-nodes
+                       (lambda (a b)
+                         (string> (or (my/org-roam-node-created-date a) "")
+                                  (or (my/org-roam-node-created-date b) "")))))
+             (choices (mapcar (lambda (node)
+                                (cons (format "[%s] %s (%s)"
+                                              (or (my/org-roam-node-created-date node) "N/A")
+                                              (org-roam-node-title node)
+                                              (org-roam-node-category node))
+                                      node))
+                              sorted-nodes)))
+        (if choices
+            (let* ((selected (completing-read "Recent items: " (mapcar #'car choices)))
+                   (node (cdr (assoc selected choices))))
+              (when node
+                (org-roam-node-visit node)))
+          (message "No recent Journal or Reference items found in the last 2 weeks."))))
     )
 
   (use-package org-protocol
@@ -2504,7 +2561,11 @@ LANG はシンボル (例: python, emacs-lisp)。"
                       display-buffer-alist))
              (stdout (generate-new-buffer stdout-bufname))
              (stderr (generate-new-buffer stderr-bufname))
-             (filters (append '("!**/archived/**/*.org") extra-filters))
+             (filters (append '("!**/archived/**/*.org"
+                                "!**/roam/refs/**/*.org"
+                                "!**/roam/journal/**/*.org"
+                                "!**/#*#"
+                                "!**/*~") extra-filters))
              (cmd (string-join
                    `("timeout" "2"
                      "rg" "-lL"
