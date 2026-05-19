@@ -636,6 +636,7 @@ This version does not rely on mdfind (Spotlight)."
 (use-package magit :ensure t
   :commands (magit-status magit-stage)
   :custom
+  (magit-refresh-status-buffer nil)
   (magit-save-repository-buffers nil)
   (magit-diff-refine-hunk 'all)
 
