@@ -25,6 +25,11 @@
 ;;; Code:
 (setq debug-on-error t)
 
+;; custom-file (自動生成設定) の分離と早期ロード
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
+
 (require 'cl-lib)
 
 (defvar my/profiler-enabled nil)
@@ -45,7 +50,6 @@
                  load-path))
 
 (require 'package)
-(setq package-user-dir (locate-user-emacs-file (format "elpa/emacs-%s" emacs-version)))
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
@@ -3415,9 +3419,6 @@ LANG はシンボル (例: python, emacs-lisp)。"
 (use-package cus-edit
   :hook
   (kill-emacs . (lambda () (delete-file custom-file)))
-  :custom
-  (custom-file (concat user-emacs-directory "custom.el"))
-  :config (load custom-file t)
   )
 
 (use-package init-candidate :no-require

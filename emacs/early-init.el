@@ -1,59 +1,30 @@
-;;; early-init.el --- Early Initialization. -*- lexical-binding: t -*-
+;;; early-init.el --- Early initialization.  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2026  yhiraki
+
+;; Author: yhiraki
+;; Keywords: init, performance
+
 ;;; Commentary:
-;;
-;; Emacs 27+ introduces early-init.el, which is run before init.el,
-;; before package and UI initialization happens.
-;;
+;; This file is loaded before init.el. It is used to tune startup performance
+;; and prevent early GUI flicker by disabling UI elements before the frame is created.
+
 ;;; Code:
 
-;; Disable GC when start-up
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.5)
+;; 1. 起動時の GC（ガベージコレクション）閾値を一時的に 100MB に引き上げ、I/O 速度を最大化
+(setq gc-cons-threshold (* 100 1024 1024))
+(setq gc-cons-percentage 0.6)
 
+;; 起動完了後に通常の 800KB に復元するフック
 (add-hook 'after-init-hook
-		  #'(lambda ()
-			  (setq gc-cons-threshold (* 128 1024 1024))))
+          (lambda ()
+            (setq gc-cons-threshold (* 800 1024))
+            (setq gc-cons-percentage 0.1)))
 
-;; Default coding system
-(set-language-environment "Japanese")
-(prefer-coding-system 'utf-8)
-
-;; For Emacs 27+
-(setq package-enable-at-startup nil)
-;; Always load newest byte code
-(setq load-prefer-newer t)
-
-;; GUI appearance
-(push '(vertical-scroll-bars . 0) default-frame-alist)
+;; 2. 画面初期化のちらつきを防ぐため、UI 要素を最速で非表示化
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
-(push '(ns-appearance . dark) default-frame-alist)
-(push '(ns-transparent-titlebar . t) default-frame-alist)
-(push '(internal-border-width . 0) default-frame-alist)
-
-;; Inhibit splash screen & resizing frame
-(setq inhibit-splash-screen t
-      frame-inhibit-implied-resize t
-      byte-compile-warnings '(cl-functions))
-
-;; fringe
-(custom-set-faces
- '(fringe ((t (:background nil)))))
-
-;; https://jeffkreeftmeijer.com/emacs-native-comp-log/
-(defvar native-comp-deferred-compilation-deny-list nil)
-
-;; Avoid loading old bytecode instead of newer source.
-;; Re: jka-compr: https://www.mattduck.com/2021-05-upgrading-to-emacs-28.html
-;;
-;; NOTE: uncomment the next 3 lines if seeing issues like:
-;;
-;;     Recursive load: "/Applications/Emacs.app/Contents/Resources/lisp/jka-compr.el.gz"
-(setq load-prefer-newer nil)
-(require 'jka-compr)
-(require 'cc-fonts) ; emacs 29+
-(setq load-prefer-newer t)
+(push '(vertical-scroll-bars . nil) default-frame-alist)
 
 (provide 'early-init)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; early-init.el ends here
