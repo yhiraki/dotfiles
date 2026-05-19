@@ -623,28 +623,6 @@ This version does not rely on mdfind (Spotlight)."
    "M-t" #'my/vterm-insert-tmux-detach)
 )
 
-(use-package flycheck :ensure t
-  :hook ((prog-mode text-mode) . flycheck-mode)
-  :custom
-  (flycheck-python-flake8-executable "python")
-  (flycheck-python-pycompile-executable "python")
-  (flycheck-python-pylint-executable "python")
-  (flycheck-deferred-syntax-check t)
-  (flycheck-emacs-lisp-load-path 'inherit)
-  :config
-  (flycheck-add-mode 'textlint 'org-mode)
-  (flycheck-add-next-checker 'markdown-markdownlint-cli 'textlint)
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (flycheck-add-mode 'javascript-eslint 'css-mode)
-  :general
-  (:keymaps 'flycheck-mode-map
-            :states '(normal visual)
-            "<localleader>e" #'flycheck-list-errors
-            "[e" #'flycheck-previous-error
-            "]e" #'flycheck-next-error
-            )
-  )
-
 (use-package posframe :ensure t
   :if window-system
   :defer t
