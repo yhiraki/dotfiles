@@ -308,6 +308,8 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package vc-hooks
   :custom
+  (vc-handled-backends nil) ; Macでのパフォーマンスに影響するのでVCを無効化。 magitを使うので問題ない
+
   (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
   (auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
   (large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
