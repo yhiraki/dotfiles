@@ -370,14 +370,8 @@ command -v mise >/dev/null && {
   eval "$(mise activate zsh)"
 }
 
-# Path sort by string length
-export PATH=$(echo "$PATH" |
-  tr : '\n' |
-  awk '{print length(), $0}' |
-  sort -nr |
-  cut -d ' ' -f 2- |
-  uniq |
-  tr '\n' :)
+# 重複パスを自動的に排除するzshの組み込み設定 (外部プロセスを起動しないため超高速)
+typeset -U path PATH
 
 command -v zprof >/dev/null &&
   zprof
@@ -387,7 +381,20 @@ command -v zprof >/dev/null &&
 fpath=($ZDOTDIR/completion $fpath)
 
 fpath=($HOME/.zfunc $fpath)
-autoload -Uz compinit && compinit -i
+# 補完関数の初期化 (1日以内のキャッシュがあればセキュリティチェックをスキップして高速起動)
+autoload -Uz compinit
+if [[ -s "${ZDOTDIR:-$HOME}/.zcompdump" ]]; then
+  # 24時間以内に更新されたキャッシュがあれば -C を指定して高速ロード
+  local -a dump_files
+  dump_files=("${ZDOTDIR:-$HOME}"/.zcompdump(N-m-1))
+  if (( ${#dump_files} )); then
+    compinit -C
+  else
+    compinit -i
+  fi
+else
+  compinit -i
+fi
 
 # emacs vterm
 {
@@ -416,10 +423,6 @@ autoload -Uz compinit && compinit -i
   complete -C "$HOME/.local/aws-cli/aws_completer" aws
 
 }
-
-# for VSCode terminal integration
-# https://docs.roocode.com/features/shell-integration
-[ "${TERM_PROGRAM}" = "vscode" ] && . "$(code --locate-shell-integration-path zsh)"
 
 # uncomment to profile
 # zmodload zsh/zprof && zprof

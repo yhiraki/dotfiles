@@ -74,9 +74,6 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 # 色を使う
 setopt prompt_subst
 
-# autoload -U promptinit && promptinit
-autoload -U compinit && compinit -C
-
 set -a
 
 XDG_CONFIG_HOME="$HOME/.config"
