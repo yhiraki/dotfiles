@@ -1,0 +1,7 @@
+local host
+host=$(sed -E 's/:[^:]+$//' ~/.pgpass | ff |
+  sed -e 's/^/-h /' \
+    -e 's/:/ -p /' \
+    -e 's/:/ -d /' \
+    -e 's/:/ -U /') || return
+psql "${host}"

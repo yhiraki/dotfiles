@@ -1,0 +1,6 @@
+local host
+host=$(grep ~/.ssh/config -i -e '^host' |
+  sed -e 's/host //i' \
+    -e '/*/d' |
+  ff) || return
+ssh "${host}"

@@ -1,10 +1,76 @@
-autoload -Uz add-zsh-hook
+# 自作関数の autoload 用パスを追加
+fpath=($ZDOTDIR/functions $fpath)
+autoload -Uz add-zsh-hook fsh fsql repo
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]] &&
   [[ -n ${EMACS_VTERM_PATH} ]] &&
   [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh ]]; then
   source ${EMACS_VTERM_PATH}/etc/emacs-vterm-zsh.sh
 fi
+
+# Viキーバインド
+bindkey -v
+
+# シェルオプション設定 (インタラクティブ用の設定は.zshrcで管理)
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt EXTENDED_HISTORY
+
+# 複数のzshを同時に使う時などhistoryファイルに上書きせず追加する
+setopt append_history
+
+# 同時に起動したzshの間でヒストリを共有する
+setopt share_history
+
+# ヒストリに保存するときに余分なスペースを削除する
+setopt hist_reduce_blanks
+
+# historyコマンドは履歴に登録しない
+setopt hist_no_store
+
+# 間違いを補完
+setopt correct
+setopt auto_param_keys
+setopt list_packed
+
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+
+setopt no_beep
+
+# フローコントロールを無効にする
+setopt no_flow_control
+
+# リダイレクトのマルチ化
+setopt multios
+
+# ディレクトリ名だけで cd
+setopt auto_cd
+
+# cd + / cd - で過去にいたディレクトリに移動
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+# '#'以降をコメントとして扱う
+setopt interactive_comments
+
+# <Tab> でパス名を選択
+# 候補を選ぶには <Tab> か Ctrl-N,B,F,P
+zstyle ':completion:*:default' menu select=1
+
+# 補完で小文字でも大文字にマッチさせる
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# sudo の後ろでコマンド名を補完する
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
+  /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+# 単語の一部として扱われる文字
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+# 色を使う
+setopt prompt_subst
 
 # Tmux
 {
@@ -133,29 +199,6 @@ fi
 
   cdroot() {
     cd "$(gitroot)" || return
-  }
-
-  fsh() {
-    local host
-    host=$(grep ~/.ssh/config -i -e '^host' |
-      sed -e 's/host //i' \
-        -e '/*/d' |
-      ff) || return
-    ssh "${host}"
-  }
-
-  fsql() {
-    local host
-    host=$(sed -E 's/:[^:]+$//' ~/.pgpass | ff |
-      sed -e 's/^/-h /' \
-        -e 's/:/ -p /' \
-        -e 's/:/ -d /' \
-        -e 's/:/ -U /') || return
-    psql "${host}"
-  }
-
-  repo() {
-    cd "$(ff-select-repo)" || return
   }
 
   gpip() {
@@ -355,6 +398,76 @@ fi
 
 }
 
+# Fzf / Fuzzy Finder configurations (Moved from .zshenv)
+command -v fzf >/dev/null && {
+
+  __fzf_preview_func() {
+    # is File
+    if [ -f "$1" ]; then
+      file "$1"
+      echo '-----'
+      cat "$1" | head -100
+      return
+    fi
+
+    # is Directory
+    if [ -d "$1" ]; then
+      (cd $1 && find . -maxdepth 1) | cut -d / -f 2-
+      return
+    fi
+
+    # is Command
+    local cmd
+    cmd=$(cut -d' ' -f1 <<<"$1")
+    if type "$cmd" >/dev/null; then
+      if man "$cmd"; then
+        return
+      fi
+      type -a "$cmd"
+      return
+    fi
+
+    command -v ghq >/dev/null || return
+
+    # is Git Project
+    local srcd readme
+    srcd="$(ghq root)/$1"
+    if [ -d "$srcd" ]; then
+      readme=$(find "$srcd" -maxdepth 1 -name 'README*' | head -1)
+      # has README
+      if [ -f "$readme" ]; then
+        cat "$readme"
+        return
+      fi
+      tree "$srcd" | head -100
+      return
+    fi
+  }
+
+  FZF_DEFAULT_CMD='fd --type f'
+  FZF_PREVIEW_CMD='__fzf_preview_func {}'
+  FZF_DEFAULT_OPTS="\
+--no-sort \
+-e --ansi --select-1 --exit-0 \
+--bind=ctrl-k:kill-line \
+--preview='$FZF_PREVIEW_CMD'"
+
+}
+
+FF_CMD='fzf'
+FF_OPTIONS="$FZF_DEFAULT_OPTS"
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+
+PY_TMUX_PANE_OPTIONS__GIT_CWD='fg=#bfbfbf'
+PY_TMUX_PANE_OPTIONS__GIT_STATUS_ICONS='fg=red'
+PY_TMUX_PANE_ICON__PYTHON=' '
+PY_TMUX_PANE_ICON__GITHUB=' '
+PY_TMUX_PANE_ICON__BITBUCKET=' '
+PY_TMUX_PANE_ICON__BRANCH=''
+
+SPL_PROMPT_NOTIFY_TIME_MIN=10000
+
 # Direnv setup
 command -v direnv >/dev/null &&
   eval "$(direnv hook zsh)"
@@ -371,29 +484,36 @@ command -v mise >/dev/null && {
 }
 
 # 重複パスを自動的に排除するzshの組み込み設定 (外部プロセスを起動しないため超高速)
-typeset -U path PATH
+typeset -U path PATH fpath manpath
 
-command -v zprof >/dev/null &&
-  zprof
+# 補完ダンプファイルの保存先を XDG Cache Directory 準拠へ変更し、ホームディレクトリを汚さないようにします
+local zcomp_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+[[ ! -d "$zcomp_dir" ]] && mkdir -p "$zcomp_dir"
+local zcomp_file="$zcomp_dir/zcompdump"
 
-# https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-# https://github.com/docker/compose/blob/master/contrib/completion/zsh/_docker-compose
 fpath=($ZDOTDIR/completion $fpath)
-
 fpath=($HOME/.zfunc $fpath)
+
 # 補完関数の初期化 (1日以内のキャッシュがあればセキュリティチェックをスキップして高速起動)
 autoload -Uz compinit
-if [[ -s "${ZDOTDIR:-$HOME}/.zcompdump" ]]; then
+if [[ -s "$zcomp_file" ]]; then
   # 24時間以内に更新されたキャッシュがあれば -C を指定して高速ロード
   local -a dump_files
-  dump_files=("${ZDOTDIR:-$HOME}"/.zcompdump(N-m-1))
+  dump_files=("$zcomp_file"(N-m-1))
   if (( ${#dump_files} )); then
-    compinit -C
+    compinit -C -d "$zcomp_file"
   else
-    compinit -i
+    compinit -i -d "$zcomp_file"
   fi
 else
-  compinit -i
+  compinit -i -d "$zcomp_file"
+fi
+
+# 補完ダンプが更新されていたら、バックグラウンドで zcompile してバイトコード化 (.zwc化してさらに高速化)
+if [[ -s "$zcomp_file" ]]; then
+  if [[ ! -s "${zcomp_file}.zwc" || "$zcomp_file" -nt "${zcomp_file}.zwc" ]]; then
+    zcompile "$zcomp_file"
+  fi
 fi
 
 # emacs vterm
@@ -429,14 +549,6 @@ fi
 
 # Make status code '0'
 echo .zshrc loaded 1>&2
-
-# pnpm
-export PNPM_HOME="/home/yuta/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
 
 # Local .zshrc
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
