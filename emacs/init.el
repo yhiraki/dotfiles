@@ -1196,6 +1196,14 @@ This version does not rely on mdfind (Spotlight)."
   (when window-system
     (add-hook 'org-mode-hook #'prettify-symbols-mode))
 
+  (defun my/org-add-to-agenda-files-if-file ()
+    "Add current buffer's file to `org-agenda-files` if it is visiting a file."
+    (when (and (buffer-file-name)
+               (derived-mode-p 'org-mode))
+      (org-agenda-file-to-front)))
+
+  (add-hook 'org-mode-hook #'my/org-add-to-agenda-files-if-file)
+
   (defmacro my/with-org-1st-heading (&rest body)
     `(save-excursion
        (goto-char (point-min))
