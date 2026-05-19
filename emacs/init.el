@@ -2560,8 +2560,6 @@ LANG はシンボル (例: python, emacs-lisp)。"
              (stdout (generate-new-buffer stdout-bufname))
              (stderr (generate-new-buffer stderr-bufname))
              (filters (append '("!**/archived/**/*.org"
-                                "!**/roam/refs/**/*.org"
-                                "!**/roam/journal/**/*.org"
                                 "!**/#*#"
                                 "!**/*~") extra-filters))
              (cmd (string-join
