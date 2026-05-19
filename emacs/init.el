@@ -486,6 +486,7 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package smartparens :ensure t
   :diminish smartparens-mode
+  :hook (after-init . smartparens-global-mode)
 
   :config
   ;; (sp-pair "\{ " " \}")
@@ -526,8 +527,6 @@ This version does not rely on mdfind (Spotlight)."
   ;; (sp-with-modes '(prog-mode vue-mode)
   ;;   (sp-local-pair  "{" nil :post-handlers '((my/open-block-c-mode "RET")))
   ;;   )
-
-  (smartparens-global-mode)
   )
 
 (use-package restart-emacs :ensure t
@@ -625,6 +624,7 @@ This version does not rely on mdfind (Spotlight)."
 )
 
 (use-package flycheck :ensure t
+  :hook ((prog-mode text-mode) . flycheck-mode)
   :custom
   (flycheck-python-flake8-executable "python")
   (flycheck-python-pycompile-executable "python")
@@ -647,6 +647,7 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package posframe :ensure t
   :if window-system
+  :defer t
   :config
   (use-package flycheck-posframe :ensure t
     :hook (flycheck-mode . flycheck-posframe-mode))
@@ -669,6 +670,7 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package blamer :ensure t
+  :defer t
   :config
   (defvar my/blamer-enabled nil)
   (defun my/toggle-blamer ()
@@ -712,6 +714,8 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package diff-hl :ensure t
+  :defer t
+  :hook (prog-mode . diff-hl-mode)
   :general
   (:states '(normal visual)
            "<localleader>gg" #'diff-hl-mode
@@ -723,7 +727,8 @@ This version does not rely on mdfind (Spotlight)."
             "]g" #'diff-hl-next-hunk)
   )
 
-(use-package git-auto-commit-mode :ensure t)
+(use-package git-auto-commit-mode :ensure t
+  :defer t)
 
 (use-package browse-url
   :init
