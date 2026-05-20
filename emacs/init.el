@@ -67,8 +67,6 @@
 
 (defvar darwin-p (eq system-type 'darwin))
 (defvar linux-p (eq system-type 'gnu/linux))
-(defvar carbon-p (eq system-type 'mac))
-(defvar meadow-p (featurep 'meadow))
 (defvar wsl-p
   (let* ((ver-file "/proc/version")
          (exists? (file-exists-p ver-file)))
@@ -77,10 +75,6 @@
         (insert-file-contents ver-file)
         (when (string-match "WSL" (buffer-string)) t)))))
 
-(defvar emacs24+ (version<= "24" emacs-version))
-(defvar emacs25+ (version<= "25" emacs-version))
-(defvar emacs26+ (version<= "26" emacs-version))
-(defvar emacs27+ (version<= "27" emacs-version))
 (defvar emacs28+ (version<= "28" emacs-version))
 
 (defvar use-package-enable-imenu-support t)  ; Must be set before (require 'use-package)
@@ -88,13 +82,11 @@
 
 (defun my/open-file-darwin (file-or-directory)
   "Open FILE-OR-DIRECTORY in darwin."
-  (let* ((cmd (format "open %s" file-or-directory)))
-    (shell-command cmd)))
+  (shell-command (format "open %s" (shell-quote-argument file-or-directory))))
 
 (defun my/open-file-wsl (file-or-directory)
   "Open FILE-OR-DIRECTORY in wsl."
-  (let* ((cmd (format "explorer.exe $(wslpath -w %s)" file-or-directory)))
-    (shell-command cmd)))
+  (shell-command (format "explorer.exe $(wslpath -w %s)" (shell-quote-argument file-or-directory))))
 
 (defvar my/open-file-function
   (or
@@ -412,15 +404,6 @@ This version does not rely on mdfind (Spotlight)."
   ;; |1234567890|1234567890|
   )
 
-(use-package fira-code-mode :disabled
-  :hook ((prog-mode
-         gfm-mode
-         markdown-mode
-         org-mode)
-         . (lambda ()
-               (when window-system
-                 (fira-code-mode))))
-  )
 
 (use-package files
   :init
@@ -729,7 +712,7 @@ This version does not rely on mdfind (Spotlight)."
   :init
   (defun my/browse-url-wsl-browser (url &rest args)
     (with-temp-buffer
-      (shell-command (format "cmd.exe /c start '%s'" url) (current-buffer))))
+      (shell-command (format "cmd.exe /c start %s" (shell-quote-argument url)) (current-buffer))))
   :custom
   (browse-url-browser-function
    (if wsl-p
@@ -768,23 +751,6 @@ This version does not rely on mdfind (Spotlight)."
   (recentf-mode 1)
   )
 
-(use-package pangu-spacing :ensure t :disabled  ;; org-table がズレるのでダメ
-  :hook
-  ((text-mode-hook) . pangu-spacing-mode)
-
-  :custom
-  ;; http://onemoreduoa.phpapps.jp/emacs/org-mode
-  ;; chinse-two-byte → japanese に置き換えるだけで日本語でも使える
-  (pangu-spacing-chinese-before-english-regexp
-        (rx (group-n 1 (category japanese))
-            (group-n 2 (in "a-zA-Z0-9"))))
-  (pangu-spacing-chinese-after-english-regexp
-        (rx (group-n 1 (in "a-zA-Z0-9"))
-            (group-n 2 (category japanese))))
-
-  ;; 見た目ではなくて実際にスペースを入れる
-  ;; (pangu-spacing-real-insert-separtor t)
-  )
 
 (use-package lsp-mode :ensure t
   :custom
@@ -3082,40 +3048,10 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (modus-themes-mode-line '(borderless))
   )
 
-(use-package mini-modeline :ensure t :disabled t
-  :diminish mini-modeline-mode
-  :custom
-  (mini-modeline-face-attr `(:background nil))
-  :custom-face
-  (mini-modeline-mode-line
-   ((t (:background ,(face-attribute 'window-divider :foreground) :height 0.14 :box nil)))))
-
-(use-package nano-modeline :ensure t :disabled)
-
 (use-package mood-line :ensure t
   :config
   (mood-line-mode))
 
-(use-package hide-mode-line :ensure t :disabled
-  :hook ((
-          dired-mode
-          dired-sidebar-mode
-          gist-list-mode
-          git-commit-mode
-          image-mode
-          inferior-python-mode
-          lisp-interaction-mode
-          magit-mode
-          org-agenda-mode
-          org-capture-mode
-          org-export-stack-mode
-          quickrun--mode
-          )
-         . hide-mode-line-mode)
-  )
-
-(use-package mini-echo :ensure t :disabled
-  :config (mini-echo-mode))
 
 (use-package clipetty :ensure t
   :diminish clipetty-mode
