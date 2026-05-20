@@ -32,6 +32,9 @@
 
 (require 'cl-lib)
 
+(use-package f :ensure t)
+(use-package s :ensure t)
+
 (defvar my/profiler-enabled nil)
 (when my/profiler-enabled
   (require 'profiler)
@@ -108,14 +111,18 @@
 
 (defun my/find-up-directory (filename basedir)
   "Find a FILENAME in upper level directories from BASEDIR."
-  (let ((dir basedir)
+  (let ((dir (file-truename basedir))
         (file nil)
-        (found-file nil))
-    (while dir
+        (found-file nil)
+        (prev-dir nil))
+    (while (and dir (not (equal dir prev-dir)))
       (setq file (f-join dir filename))
-      (when (and (not found-file) (file-exists-p file))
-        (setq found-file file))
-      (setq dir (f-dirname dir)))
+      (when (file-exists-p file)
+        (setq found-file file)
+        (setq dir nil))
+      (when (not found-file)
+        (setq prev-dir dir)
+        (setq dir (f-dirname dir))))
     found-file))
 
 (defun my/dedent-string (text)
@@ -220,7 +227,9 @@ This version does not rely on mdfind (Spotlight)."
   (setq inhibit-startup-message t)
 
   ;; subr
-  (fset 'yes-or-no-p 'y-or-n-p)
+  (if emacs28+
+      (setq use-short-answers t)
+    (fset 'yes-or-no-p 'y-or-n-p))
 
   ;; bell
   (setq ring-bell-function 'ignore)
@@ -393,7 +402,7 @@ This version does not rely on mdfind (Spotlight)."
   (defun set-apple-color-emoji ()
     "set apple color emoji"
     (set-fontset-font nil '(#x1F000 . #x1FAFF) "Apple Color Emoji")
-    (remove-hook 'find-file-hook #'set-apple-color-emoji))
+    (remove-hook 'window-setup-hook #'set-apple-color-emoji))
 
   ;; |あいうえお|かきくけこ|
   ;; |１２３４５|一二三四五|
@@ -475,7 +484,8 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package eldoc
   :diminish eldoc-mode
-  :hook ((emacs-lisp-mode-hook lisp-mode-hook) . eldoc-mode)
+  :hook ((emacs-lisp-mode . eldoc-mode)
+         (lisp-mode . eldoc-mode))
   )
 
 (use-package which-key :ensure t
@@ -757,11 +767,6 @@ This version does not rely on mdfind (Spotlight)."
 
   (recentf-mode 1)
   )
-
-(use-package undohist :ensure t :disabled  ; use undo-tree session
-  :custom
-  (undohist-ignored-files '("\\.git/COMMIT_EDITMSG$"))
-  :config (undohist-initialize))
 
 (use-package pangu-spacing :ensure t :disabled  ;; org-table がズレるのでダメ
   :hook
@@ -1077,7 +1082,7 @@ This version does not rely on mdfind (Spotlight)."
       (replace-regexp "!\\[img\\](.*/+\\(.*\\))" "![img][\\1]" nil begin end)))
   (defun my/markdown-convert-backlog-img-link ()
     (interactive)
-    (my/img-embed-convert-for-backlog-style-region (point-min) (point-max)))
+    (my/markdown-convert-backlog-img-link-region (point-min) (point-max)))
   (defun my/markdown-convert-backlog-all ()
     (interactive)
     (my/remove-all-backslashes)
@@ -1389,9 +1394,9 @@ This version does not rely on mdfind (Spotlight)."
 
   (use-package org-clock
     :hook
-    ;; (kill-emacs . my:org-clock-out-and-save-when-exit) ;; use persistent clock instead
-    ;; (org-after-todo-state-change . my:org-clock-in-if-starting)
-    ;; (org-after-todo-state-change . my:org-clock-out-if-waiting)
+    ;; (kill-emacs . my/org-clock-out-and-save-when-exit) ;; use persistent clock instead
+    ;; (org-after-todo-state-change . my/org-clock-in-if-starting)
+    ;; (org-after-todo-state-change . my/org-clock-out-if-waiting)
     (org-mode . org-clock-persistence-insinuate)
 
     :custom
@@ -1402,21 +1407,21 @@ This version does not rely on mdfind (Spotlight)."
 
     :config
     ;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
-    (defun my:org-clock-out-and-save-when-exit ()
+    (defun my/org-clock-out-and-save-when-exit ()
       "Save buffers and stop clocking when kill emacs."
       (when (org-clocking-p)
         (org-clock-out)
         (save-some-buffers t)))
 
     ;; https://passingloop.tumblr.com/post/10150860851/org-clock-in-if-starting
-    (defun my:org-clock-in-if-starting ()
+    (defun my/org-clock-in-if-starting ()
       "Clock in when the task is marked STARTED."
       (when (and (string= org-state "STARTED")
                  (not (string= org-last-state org-state))
                  (not (org-clocking-p)))
         (org-clock-in)))
 
-    (defun my:org-clock-out-if-waiting ()
+    (defun my/org-clock-out-if-waiting ()
       "Clock out when the task is not marked STARTED."
       (when (and
              (and (not (string= org-state "STARTED"))
@@ -1485,14 +1490,14 @@ This version does not rely on mdfind (Spotlight)."
             (org-back-to-heading)
             (org-set-property "CATEGORY" category)))))
 
-    (defun my/org-roam-link-repalce-auto-tags-and-category (old-func &rest args)
+    (defun my/org-roam-link-replace-auto-tags-and-category (old-func &rest args)
       (apply old-func args)
       (let* ((link (org-element-context))
              (id (org-element-property :path link)))
         (my/org-roam-node-add-auto-category id nil)
         (my/org-roam-node-add-auto-tag id nil)))
 
-    (advice-add #'org-roam-link-replace-at-point :around #'my/org-roam-link-repalce-auto-tags-and-category)
+    (advice-add #'org-roam-link-replace-at-point :around #'my/org-roam-link-replace-auto-tags-and-category)
 
     (defun my/filename-is-valid-for-publish (filename)
       (let ((case-fold-search nil))
@@ -2011,7 +2016,7 @@ non-nil if the node should be included."
           (with-current-buffer (find-file-noselect ftoday)
             (insert (format "#+DATE: \n* PUBLISH %s" today))
             (org-set-property "ID" today)
-            (org-set-tags (format-time-string ":Journal:"))
+            (org-set-tags (list "Journal"))
             (save-buffer)
             (kill-current-buffer)))))
 
@@ -2051,7 +2056,7 @@ non-nil if the node should be included."
     (defun my/capture-new-reference-find-dup ()
       (let* ((url (org-entry-get nil "ROAM_REFS"))
              (url (string-trim url "\"" "\""))
-             (dup-node (my/org-roam-reference-alreadly-exists url))
+             (dup-node (my/org-roam-reference-already-exists url))
              (capture-buffer (buffer-name)))
         (when dup-node
           (org-roam-node-visit dup-node)
@@ -2059,10 +2064,12 @@ non-nil if the node should be included."
         dup-node))
 
     (defun my/capture-new-reference-find-dup-update-title ()
-      (unless (my/capture-new-reference-find-dup)
-        (url-retrieve url 'my/switch-to-buffer-capture-new-reference)))
+      (let ((url (org-entry-get nil "ROAM_REFS")))
+        (unless (my/capture-new-reference-find-dup)
+          (when url
+            (url-retrieve url 'my/switch-to-buffer-capture-new-reference)))))
 
-    (defun my/org-roam-reference-alreadly-exists (url &rest visit)
+    (defun my/org-roam-reference-already-exists (url &rest visit)
       (let* ((url (my/url-for-reference url))
              (dup-node (my/org-find-reference url)))
         (when (and dup-node visit)
@@ -2150,57 +2157,6 @@ non-nil if the node should be included."
 
   )
 
-;; (use-package appt
-;;   :after org-agenda
-;;
-;;   :hook
-;;   (org-finalize-agenda . org-agenda-to-appt) ;; update appt list on agenda view
-;;
-;;   :custom
-;;   (appt-time-msg-list nil)         ;; clear existing appt list
-;;   (appt-display-interval '3)
-;;   (appt-message-warning-time '10)  ;; send first warning 10 minutes before appointment
-;;   (appt-display-mode-line nil)     ;; don't show in the modeline
-;;   (appt-display-format 'window)    ;; pass warnings to the designated window function
-;;
-;;   :config
-;;   (appt-activate 1)                ;; activate appointment notification
-;;   (org-agenda-to-appt)             ;; generate the appt list from org agenda files on emacs launch
-;;   (run-at-time "24:01" 3600 'org-agenda-to-appt)           ;; update appt list hourly
-;;   )
-;;
-;; (use-package appt
-;;   :if darwin-p
-;;   :config
-;;   (defvar my/notifier-path "terminal-notifier")
-;;
-;;   (defun my/appt-send-notification (title msg)
-;;     (when (executable-find "terminal-notifier")
-;;       (shell-command
-;;        (mapconcat
-;;         #'shell-quote-argument
-;;         `(,my/notifier-path
-;;           "-message" ,(string-trim-right msg " +:.*:") ;; remove tags from heading text
-;;           "-title" ,title
-;;           "-sender" "org.gnu.Emacs"
-;;           "-active" "org.gnu.Emacs"
-;;           "-sound" "Funk")
-;;         " "))))
-;;
-;;   (defun my/appt-display (min-to-app new-time appt-msg)
-;;     (my/appt-send-notification
-;;      (format "Appointment in %s minutes"
-;;              (if (listp min-to-app)
-;;                  (car min-to-app)
-;;                min-to-app))
-;;      (format "%s"
-;;              (if (listp appt-msg)
-;;                  (mapconcat #'identity appt-msg "\n")
-;;                appt-msg
-;;                ))))
-;;
-;;   (advice-add 'appt-disp-window :before 'my/appt-display)
-;;   )
 
 (use-package ob
   :after org
@@ -2531,6 +2487,14 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   :config
   (defvar my/true-org-directory (file-truename org-directory))
+
+  (defun my/org-agenda-skip-entry-is-project ()
+    "Skip entry if it is a project (has sub-todo progress)."
+    (when (org-entry-get (point) "TODO")
+      (if (string-match my/org-sub-todo-progress-regexp
+                        (or (org-entry-get (point) "TODO") ""))
+        (org-agenda-skip-entry-if 'todo 'done)
+        nil)))
 
   (defun my/make-sequence (end &optional beg)
     (let ((l '())
@@ -2999,11 +2963,11 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (defun my/advice-evil-open-below-at-heading (old-func count)
     (my/evil-move-to-end-of-drawer)
-      (funcall old-func count))
+    (funcall old-func count))
 
   (advice-add #'evil-open-below :around #'my/advice-evil-open-below-at-heading)
 
-  (use-package evil-mac-eisuu :no-require t :disabled
+  (use-package evil-mac-eisuu :no-require t
     :if (and
          darwin-p
          (not (fboundp 'mac-ime-toggle)))
