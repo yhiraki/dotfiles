@@ -581,7 +581,8 @@ This version does not rely on mdfind (Spotlight)."
   :init
   ;; vterm-mode に入った時は Evil を Emacs 状態にする
   (with-eval-after-load 'evil
-    (evil-set-initial-state 'vterm-mode 'emacs))
+    (evil-set-initial-state 'vterm-mode 'emacs)
+    (evil-set-initial-state 'ghostel-mode 'emacs))
 
   :preface
   (defun my/vterm-toggle-window ()
@@ -624,6 +625,9 @@ This version does not rely on mdfind (Spotlight)."
    :states '(emacs insert)
    "M-t" #'my/vterm-insert-tmux-detach)
 )
+
+(use-package ghostel
+  :ensure t)
 
 (use-package posframe :ensure t
   :if window-system
@@ -2915,7 +2919,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (evil-add-command-properties #'xref-find-definitions :jump t)
   (evil-add-command-properties #'xref-find-references :jump t)
 
-  (evil-set-leader '(normal visual emacs) (kbd "SPC"))
+  (evil-set-leader '(normal visual) (kbd "SPC"))
   (evil-set-leader '(normal visual) (kbd "\\") t) ; localleader
 
   (defun my/find-user-emacs-init-file ()
