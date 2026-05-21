@@ -423,7 +423,7 @@ This version does not rely on mdfind (Spotlight)."
         (delete-file fname))))
   :custom
   (confirm-kill-emacs nil)
-  (find-file-visit-truename nil)
+  (find-file-visit-truename t)
   (require-final-newline t)
   (safe-local-variable-values '((org-log-done)))
   (trash-directory "~/.Trash")
@@ -2588,10 +2588,11 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (defun my/add-org-roam-to-agenda ()
     (when-let* ((fname (buffer-file-name))
-                (prefix? (string-prefix-p org-roam-directory fname))
-                (fname (string-trim-left fname org-roam-directory))
+                (roam-dir (file-truename org-roam-directory))
+                (prefix? (string-prefix-p roam-dir fname))
+                (fname (string-trim-left fname roam-dir))
                 (fname (string-trim-left fname "/"))
-                (fname (f-join org-roam-directory fname)))
+                (fname (f-join roam-dir fname)))
       (add-to-list 'org-agenda-files fname)
       (setq org-agenda-files (delete-dups org-agenda-files))))
 
