@@ -59,6 +59,11 @@
         ("melpa" . "https://melpa.org/packages/")
         ))
 (package-initialize)
+(dolist (fn '(package-refresh-contents package-menu-execute))
+  (advice-add fn :around
+              (lambda (orig-fun &rest args)
+                (let ((vc-handled-backends '(Git)))
+                  (apply orig-fun args)))))
 (unless package-archive-contents
   (package-refresh-contents))
 
@@ -574,8 +579,7 @@ This version does not rely on mdfind (Spotlight)."
   :init
   ;; vterm-mode に入った時は Evil を Emacs 状態にする
   (with-eval-after-load 'evil
-    (evil-set-initial-state 'vterm-mode 'emacs)
-    (evil-set-initial-state 'ghostel-mode 'emacs))
+    (evil-set-initial-state 'vterm-mode 'emacs))
 
   :preface
   (defun my/vterm-toggle-window ()
@@ -591,7 +595,7 @@ This version does not rely on mdfind (Spotlight)."
           (match-string 1 out)
         "C-t")))
 
-  :bind (("M-t" . my/vterm-toggle-window))
+  ;; :bind (("M-t" . my/vterm-toggle-window))
 
   :config
   ;; tmux prefixの設定
@@ -619,8 +623,31 @@ This version does not rely on mdfind (Spotlight)."
    "M-t" #'my/vterm-insert-tmux-detach)
 )
 
-(use-package ghostel
-  :ensure t)
+(use-package ghostel :ensure t
+  :custom
+  (ghostel-keymap-exceptions '("C-u" "M-x" "M-o" "M-:" "C-\\")) ; vterm と同様に C-c, C-x, C-h をターミナルへ送る
+
+  :init
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'ghostel-mode 'emacs))
+
+  :preface
+  (defun my/ghostel-insert-tmux-detach ()
+    (interactive)
+    (let ((buf (current-buffer)))
+      (ghostel-send-string (kbd my/tmux-prefix))
+      (ghostel-send-string "d")
+      (run-at-time "0.1 sec" nil
+                   (lambda () (when (buffer-live-p buf) (quit-window))))))
+
+  :bind (("M-t" . 'ghostel-project))
+
+  :config
+  (general-define-key
+   :keymaps 'ghostel-mode-map
+   :states '(emacs insert)
+   "M-t" #'my/ghostel-insert-tmux-detach)
+  )
 
 (use-package posframe :ensure t
   :if window-system
