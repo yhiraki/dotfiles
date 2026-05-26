@@ -1206,6 +1206,13 @@ This version does not rely on mdfind (Spotlight)."
 
   (add-hook 'org-mode-hook #'my/org-add-to-agenda-files-if-file)
 
+  (advice-add 'org-agenda :around
+              (lambda (orig-fun &rest args)
+                (remove-hook 'org-mode-hook #'my/org-add-to-agenda-files-if-file)
+                (unwind-protect
+                    (apply orig-fun args)
+                  (add-hook 'org-mode-hook #'my/org-add-to-agenda-files-if-file))))
+
   (defmacro my/with-org-1st-heading (&rest body)
     `(save-excursion
        (goto-char (point-min))
@@ -1375,7 +1382,7 @@ This version does not rely on mdfind (Spotlight)."
            (set-face-attribute 'org-document-title nil :height 2.074 :inherit 'org-level-8)
            (set-face-attribute 'org-block nil :height 0.9 :background "gray5")
            (set-face-attribute 'org-code nil :height 0.8 :background "gray8")
-           (set-face-attribute 'org-block-begin-line nil :height 0.7 :foreground "gray40" :background nil :underline "gray20")
+           (set-face-attribute 'org-block-begin-line nil :height 0.7 :foreground "gray40" :background 'unspecified :underline "gray20")
            (set-face-attribute 'org-block-end-line nil :underline nil :overline "gray20")
            (set-face-attribute 'org-date nil :height 0.7 :foreground "gold4")
            (set-face-attribute 'org-drawer nil :height 0.7 :foreground "gray40")
