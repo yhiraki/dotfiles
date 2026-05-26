@@ -2881,7 +2881,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (defun my/find-user-emacs-init-file ()
     (interactive)
-    (find-file (locate-user-emacs-file "init.el")))
+    (find-file (file-truename (locate-user-emacs-file "init.el"))))
 
   (defun my/insert-timestamp ()
     (interactive)
