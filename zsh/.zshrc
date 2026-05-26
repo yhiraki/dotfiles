@@ -130,6 +130,10 @@ setopt prompt_subst
   alias e='emacsclient -nw -a ""'
   alias ge=emacsclient-gui
 
+  if [[ "$OSTYPE" == darwin* ]]; then
+    alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
+  fi
+
   alias ...='cd ../..'
   alias ....='cd ../../..'
 
