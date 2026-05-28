@@ -1589,8 +1589,8 @@ This version does not rely on mdfind (Spotlight)."
     :custom
     (org-roam-completion-everywhere t)
     (org-roam-db-update-on-save t)
-    (org-roam-directory (f-join org-directory "roam"))
-    (org-roam-db-location (f-join org-directory "roam" "org-roam.db"))
+    (org-roam-directory (file-truename (f-join org-directory "roam")))
+    (org-roam-db-location (f-join org-roam-directory "org-roam.db"))
     (org-roam-node-template-prefixes
      '(("tags" . "#")
        ("todo" . "")))
