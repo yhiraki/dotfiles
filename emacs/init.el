@@ -1812,7 +1812,6 @@ non-nil if the node should be included."
         "* %? :Journal:
 :PROPERTIES:
 :ID: %(org-id-new)
-:journal_link: [[id:%(format-time-string \"%Y-%m-%d\")]]
 :CATEGORY: Journal
 :END:")
 
@@ -1840,7 +1839,6 @@ non-nil if the node should be included."
 :ID: %(org-id-new)
 :CATEGORY: Reference
 :ROAM_REFS: %:link
-:journal_link: %(org-link-make-string (format-time-string \"id:%Y-%m-%d\"))
 :END:
 # %U
 %i
@@ -1883,7 +1881,6 @@ non-nil if the node should be included."
 :PROPERTIES:
 :ID: %(org-id-new)
 :CATEGORY: Reference
-:journal_link: %(org-link-make-string (format-time-string \"id:%Y-%m-%d\"))
 :END:
 # %U
 %i %^{ROAM_REFS}p
@@ -2008,20 +2005,7 @@ non-nil if the node should be included."
         (make-directory d t)
         d))
 
-    (defun my/org-capture-journal-create-today-file ()
-      (let* ((d (my/org-capture-journal-today-directory))
-             (today (format-time-string "%Y-%m-%d"))
-             (ftoday (f-join d "index.org")))
-        (unless (file-exists-p ftoday)
-          (with-current-buffer (find-file-noselect ftoday)
-            (insert (format "#+DATE: \n* PUBLISH %s" today))
-            (org-set-property "ID" today)
-            (org-set-tags (list "Journal"))
-            (save-buffer)
-            (kill-current-buffer)))))
-
     (defun my/org-capture-file-journal ()
-      (my/org-capture-journal-create-today-file)
       (let* ((d (my/org-capture-journal-today-directory))
              (fnow (f-join d (format-time-string "%H%M%S.org"))))
         fnow))
@@ -2478,7 +2462,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
        (tags "+LEVEL=1+Reference+CREATED>=\"<-2w>\""
              ((org-agenda-overriding-header "References:"))))
       ((org-agenda-view-columns-initially t)
-       (org-overriding-columns-format "%JOURNAL_LINK %TODO %ITEM")
+       (org-overriding-columns-format "%TODO %ITEM")
        (org-agenda-sorting-strategy '(user-defined-up))))
      ))
 
