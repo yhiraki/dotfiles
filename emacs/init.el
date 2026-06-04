@@ -2414,6 +2414,8 @@ LANG はシンボル (例: python, emacs-lisp)。"
                        'notregexp my/org-sub-todo-progress-regexp)
                      my/org-agenda-skip-entry-is-project)
                     (org-agenda-overriding-header "Projects: "))))
+      ;; 期間を限定せず、TODO を含む全ファイルを対象にする
+      ((org-agenda-files (my/org-agenda-files-todo)))
       ;; ((org-agenda-view-columns-initially t)
       ;;  (org-overriding-columns-format "%40ITEM %TODO %1PRIORITY %10CATEGORY %EFFORT{:} %CLOCKSUM{:} %TAGS"))
       )
@@ -2500,47 +2502,38 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (when (executable-find "rg")
 
-    (defvar my/rg-org-directries '(org-directory))
+    (defvar my/rg-org-directories '(org-directory))
 
     (defun my/list-agenda-files (regex &optional extra-filters)
-      (let* ((stdout-bufname "*update-agenda-files::stdout*")
-             (stderr-bufname "*update-agenda-files::stderr*")
-             (display-buffer-alist
-              (append `((,stdout-bufname (display-buffer-no-window) (allow-no-window . t))
-                        (,stderr-bufname (display-buffer-no-window) (allow-no-window . t)))
-                      display-buffer-alist))
-             (stdout (generate-new-buffer stdout-bufname))
-             (stderr (generate-new-buffer stderr-bufname))
-             (filters (append '("!**/archived/**/*.org"
+      "List org files matching rg REGEX under `my/rg-org-directories'.
+EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
+      (let* ((filters (append '("!**/archived/**/*.org"
                                 "!**/#*#"
-                                "!**/*~") extra-filters))
-             (cmd (string-join
-                   `("timeout" "2"
-                     "rg" "-lL"
-                     "--no-ignore"
-                     ,(concat "'" regex "'")
-                     ,(mapconcat
-                       '(lambda (x) (concat "-g '" x "'"))
-                       filters
-                       " ")
-                     ,(mapconcat #'(lambda (symbol)
-                                     (let ((value (symbol-value symbol)))
-                                       (file-name-as-directory value)))
-                                 my/rg-org-directries
-                                 " ")
-                     ) " "))
-             (stat (shell-command cmd stdout stderr))
-             res)
-        (message "%s" cmd)
-        (with-current-buffer stdout
-          (setq res (s-split "\n" (s-trim (buffer-string)))))
-        (kill-buffer stdout)
-        (kill-buffer stderr)
-        res))
+                                "!**/*~")
+                              extra-filters))
+             (dirs (mapcar (lambda (symbol)
+                             (expand-file-name
+                              (file-name-as-directory (symbol-value symbol))))
+                           my/rg-org-directories))
+             (rg-args (append '("-lL" "--no-ignore" "--no-messages")
+                              (mapcan (lambda (g) (list "-g" g)) filters)
+                              (list "-e" regex "--")
+                              dirs))
+             ;; rg が暴走しないように timeout があれば 2 秒で打ち切る
+             (timeout (or (executable-find "timeout")
+                          (executable-find "gtimeout")))
+             (program (or timeout "rg"))
+             (args (if timeout (append (list "2" "rg") rg-args) rg-args)))
+        (with-temp-buffer
+          (let ((status (apply #'call-process program nil '(t nil) nil args)))
+            (unless (memq status '(0 1)) ; 1 = no matches
+              (message "my/list-agenda-files: rg exited with %s (results may be incomplete)"
+                       status))
+            (split-string (buffer-string) "\n" t)))))
 
     (defun my/org-agenda-files-todo ()
       (let* ((states "TODO|NEXT|STARTED|WAITING")
-             (regex (concat "^\\*+ (" states ")")))
+             (regex (concat "^\\*+ (" states ")\\b")))
         (my/list-agenda-files regex)))
 
     (defun my/org-agenda-files-tags ()
