@@ -3,6 +3,14 @@ let
   # repo の実体パス。Mac/WSL とも GOPATH=$HOME 配下に置いている前提。
   # 設定本体はここを直接 source して「編集→即反映」を維持する（out-of-store）。
   repoDir = "${config.home.homeDirectory}/src/github.com/yhiraki/dotfiles";
+
+  # `mise activate zsh` の出力をビルド時に焼き込み、起動時は静的 source のみ
+  # にして実行時フォークを撲滅する。ディレクトリ毎の .tool-versions 自動切替は
+  # 出力内の precmd/chpwd フック(_mise_hook→hook-env)がランタイムで担うので維持。
+  miseActivate = pkgs.runCommand "mise-activate.zsh" { } ''
+    export HOME="$TMPDIR"
+    ${pkgs.mise}/bin/mise activate zsh > $out
+  '';
 in
 {
   # Mac / WSL 共通の home-manager 設定。
@@ -26,6 +34,7 @@ in
     ghq
     wget
     gibo
+    mise
   ];
 
   # direnv hook を nix が生成（旧 .zshrc の `eval "$(direnv hook zsh)"` を置換）
@@ -81,8 +90,10 @@ in
       export PATH="${config.home.profileDirectory}/bin:$PATH"
     '';
 
-    # 手書きの対話設定を repo 実体から source（プラグイン読込後に走る）
+    # mise はビルド時焼き込み版を source（起動フォーク無し）→ 手書き設定を source。
+    # PATH 確定後(envExtra の後)に走るので __MISE_ORIG_PATH も正しく取れる。
     initContent = ''
+      source ${miseActivate}
       source ${repoDir}/zsh/rc.local.zsh
     '';
   };

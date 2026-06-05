@@ -454,10 +454,8 @@ PY_TMUX_PANE_ICON__BRANCH=''
 
 SPL_PROMPT_NOTIFY_TIME_MIN=10000
 
-# mise setup (TODO: nix のビルド時焼き込みで fork を撲滅する)
-command -v mise >/dev/null && {
-  eval "$(mise activate zsh)"
-}
+# mise は home-manager 側でビルド時焼き込み版を source 済み（起動フォーク無し）。
+# 旧: command -v mise && eval "$(mise activate zsh)"
 
 # 重複パスを自動的に排除するzshの組み込み設定 (外部プロセスを起動しないため超高速)
 typeset -U path PATH fpath manpath
