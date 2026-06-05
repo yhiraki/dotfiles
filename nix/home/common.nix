@@ -42,7 +42,27 @@ in
     wget
     gibo
     mise
+    # git role 由来（apt は git+gh、homebrew は git）
+    git
+    gh
+    # go role 由来（旧: /usr/local/go へ tarball 展開、1.20.4 固定）。
+    # nix 版を baseline に。プロジェクト毎のバージョンは mise 側で上書き可能。
+    go
   ];
+
+  # git role の dotfile 管理を home-manager へ。
+  # ~/.gitconfig は ~/.gitconfig.local を include するだけ（内容は手書き側に集約）。
+  # 手書き本体(.gitconfig.local)と .gitexclude は repo 実体を out-of-store symlink。
+  home.file = {
+    ".gitconfig".text = ''
+      [include]
+      	path = ~/.gitconfig.local
+    '';
+    ".gitconfig.local".source =
+      config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitconfig.local";
+    ".gitexclude".source =
+      config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitexclude";
+  };
 
   # direnv: nix-direnv の direnvrc は使うが、シェル統合(eval hook)は HM に
   # 注入させず、起動フォークを避けるためビルド時焼き込み版(direnvHook)を source。
