@@ -11,6 +11,13 @@ let
     export HOME="$TMPDIR"
     ${pkgs.mise}/bin/mise activate zsh > $out
   '';
+
+  # direnv hook も同様にビルド時焼き込み（起動時 `eval "$(direnv hook zsh)"` の
+  # フォークを撲滅）。.envrc 評価の precmd フック(_direnv_hook)はランタイムで動く。
+  direnvHook = pkgs.runCommand "direnv-hook.zsh" { } ''
+    export HOME="$TMPDIR"
+    ${pkgs.direnv}/bin/direnv hook zsh > $out
+  '';
 in
 {
   # Mac / WSL 共通の home-manager 設定。
@@ -37,10 +44,12 @@ in
     mise
   ];
 
-  # direnv hook を nix が生成（旧 .zshrc の `eval "$(direnv hook zsh)"` を置換）
+  # direnv: nix-direnv の direnvrc は使うが、シェル統合(eval hook)は HM に
+  # 注入させず、起動フォークを避けるためビルド時焼き込み版(direnvHook)を source。
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    enableZshIntegration = false;
   };
 
   programs.zsh = {
@@ -94,6 +103,7 @@ in
     # PATH 確定後(envExtra の後)に走るので __MISE_ORIG_PATH も正しく取れる。
     initContent = ''
       source ${miseActivate}
+      source ${direnvHook}
       source ${repoDir}/zsh/rc.local.zsh
     '';
   };
