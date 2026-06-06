@@ -18,6 +18,29 @@ let
     export HOME="$TMPDIR"
     ${pkgs.direnv}/bin/direnv hook zsh > $out
   '';
+
+  # emacs role: emacs/ 直下の「設定」項目だけを ~/.emacs.d/ へ個別 out-of-store
+  # symlink（ansible の filetree ループと同じ粒度）。elpa/eln-cache/custom.el/
+  # org-roam.db 等のランタイム生成物は ~/.emacs.d に実体として残し汚さない。
+  # 新規 top-level 設定を emacs/ に足したらここにも追記する。
+  emacsConfigItems = [
+    "early-init.el"
+    "init.el"
+    "elisp"
+    "image"
+    "org-protocol"
+    "org-templates"
+    "snippets"
+    "templates"
+    "tests"
+  ];
+  emacsFiles = builtins.listToAttrs (map
+    (item: {
+      name = ".emacs.d/${item}";
+      value.source =
+        config.lib.file.mkOutOfStoreSymlink "${repoDir}/emacs/${item}";
+    })
+    emacsConfigItems);
 in
 {
   # Mac / WSL 共通の home-manager 設定。
@@ -50,6 +73,10 @@ in
     go
     # tmux role 由来（旧: apt/brew で導入）
     tmux
+    # emacs role 由来（旧: galaxy yhiraki.emacs がソースビルド、30.2）。
+    # 素の nixpkgs 30.2(native-comp+tree-sitter 標準)。WSL=端末版(--without-x)、
+    # Mac=NS(--with-ns)。imagemagick が要れば emacs30.override で（ソースビルド化）。
+    (if stdenv.isDarwin then emacs30 else emacs30-nox)
   ];
 
   # git role の dotfile 管理を home-manager へ。
@@ -68,7 +95,7 @@ in
     # tmux role: 手書き .tmux.conf を repo 実体から out-of-store symlink（編集即反映）
     ".tmux.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.tmux.conf";
-  };
+  } // emacsFiles;
 
   # direnv: nix-direnv の direnvrc は使うが、シェル統合(eval hook)は HM に
   # 注入させず、起動フォークを避けるためビルド時焼き込み版(direnvHook)を source。
