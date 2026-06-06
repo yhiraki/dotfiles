@@ -1587,8 +1587,7 @@ This version does not rely on mdfind (Spotlight)."
          (when (org-roam-file-p)
            (org-roam--register-completion-functions-h)
            (org-roam--replace-roam-links-on-save-h)
-           (org-roam-db-autosync--setup-update-on-save-h)
-           (add-hook 'after-save-hook #'my/add-org-roam-to-agenda nil t))
+           (org-roam-db-autosync--setup-update-on-save-h))
          ))
     (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
     (org-roam-post-node-insert . my/org-roam-node-add-auto-tag)
@@ -2570,11 +2569,6 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
     "Org agenda todo next cycle"
     (interactive) (org-call-with-arg 'org-agenda-todo 'right)
     )
-
-  (defun my/add-org-roam-to-agenda ()
-    (when (and (buffer-file-name) (org-roam-file-p))
-      (add-to-list 'org-agenda-files (file-truename (buffer-file-name)))
-      (setq org-agenda-files (delete-dups org-agenda-files))))
 
   (defun my/org-agenda-sort-by-property (prop a b)
     "Compare two agenda entries A and B based on custom property PROP
