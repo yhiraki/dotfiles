@@ -1195,7 +1195,9 @@ This version does not rely on mdfind (Spotlight)."
 
   (defun my/setup-org-mode-local-hooks ()
     (add-hook 'after-save-hook #'my/delete-empty-file nil t)
-    (when (s-prefix? (file-truename org-directory) (buffer-file-name))
+    (when (and (buffer-file-name)
+               (require 'org-roam nil t)
+               (org-roam-file-p))
       ;; #+DATE: は作成日として固定（自動更新しない）。更新日は :MODIFIED: が担う
       (add-hook 'before-save-hook #'my/org-update-modified-property nil t)
       ))
@@ -2570,13 +2572,8 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
     )
 
   (defun my/add-org-roam-to-agenda ()
-    (when-let* ((fname (buffer-file-name))
-                (roam-dir (file-truename org-roam-directory))
-                (prefix? (string-prefix-p roam-dir fname))
-                (fname (string-trim-left fname roam-dir))
-                (fname (string-trim-left fname "/"))
-                (fname (f-join roam-dir fname)))
-      (add-to-list 'org-agenda-files fname)
+    (when (and (buffer-file-name) (org-roam-file-p))
+      (add-to-list 'org-agenda-files (file-truename (buffer-file-name)))
       (setq org-agenda-files (delete-dups org-agenda-files))))
 
   (defun my/org-agenda-sort-by-property (prop a b)
