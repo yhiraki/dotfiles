@@ -34,34 +34,55 @@
     let
       # 共通の home-manager モジュール群（プラットフォーム別を末尾に足す）
       homeModules = extra: [ ./home/common.nix ] ++ extra;
+
+      # 実行ユーザー名（--impure 必須）。公開 repo にユーザー名をハードコードしないため、
+      # 環境変数 SUDO_USER（sudo 経由）→ USER の順で実行時に取得する。
+      username =
+        let
+          sudoUser = builtins.getEnv "SUDO_USER";
+          user = if sudoUser != "" then sudoUser else builtins.getEnv "USER";
+        in
+        if user == "" then
+          throw "ユーザー名を取得できません。--impure 付きで実行してください（make switch 推奨）"
+        else
+          user;
     in
     {
       # ---- WSL(Linux): home-manager standalone ----
-      homeConfigurations."yuta@yuta-pc" = home-manager.lib.homeManagerConfiguration {
+      # 適用: make switch（--impure でユーザー名を環境変数から取得）
+      homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
-        extraSpecialArgs = { inherit inputs; };
+        extraSpecialArgs = { inherit inputs username; };
         modules = homeModules [ ./home/wsl.nix ];
       };
 
       # ---- Mac: nix-darwin + home-manager(module) ----
-      # 適用: darwin-rebuild switch --flake ./nix#macbook
-      # （"macbook" は任意名。`scutil --get LocalHostName` のホスト名に合わせると
-      #   darwin-rebuild が自動選択しやすい。リネーム可。）
-      darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./darwin/configuration.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            # Mac には ansible の symlink(~/.zshenv 等)が存在し衝突するため、
-            # 初回 switch で .bak に自動退避させる（rm 手作業を不要に）。
-            home-manager.backupFileExtension = "bak";
-            home-manager.users.yuta.imports = homeModules [ ./home/darwin.nix ];
-          }
-        ];
-      };
+      # 適用: make switch（--impure 付きで実行され、ユーザー名は環境変数から取得）
+      # ユーザー名を repo にハードコードしない（公開 dotfiles のため隠蔽）。
+      # 私用/仕事どちらの Mac でも実行ユーザーに自動で一致する。
+      darwinConfigurations =
+        let
+          mkMac =
+            username:
+            nix-darwin.lib.darwinSystem {
+              specialArgs = { inherit inputs username; };
+              modules = [
+                ./darwin/configuration.nix
+                home-manager.darwinModules.home-manager
+                {
+                  home-manager.useGlobalPkgs = true;
+                  home-manager.useUserPackages = true;
+                  home-manager.extraSpecialArgs = { inherit inputs username; };
+                  # Mac には ansible の symlink(~/.zshenv 等)が存在し衝突するため、
+                  # 初回 switch で .bak に自動退避させる（rm 手作業を不要に）。
+                  home-manager.backupFileExtension = "bak";
+                  home-manager.users.${username}.imports = homeModules [ ./home/darwin.nix ];
+                }
+              ];
+            };
+        in
+        {
+          "macbook" = mkMac username;
+        };
     };
 }

@@ -1,10 +1,10 @@
-{ ... }:
+{ username, ... }:
 {
-  # WSL(Linux) 固有設定。Mac 側は将来 darwin.nix を別に用意し、
-  # 共通部分は common.nix に集約して isDarwin で分岐する。
+  # WSL(Linux) 固有設定。共通部分は common.nix に集約。
+  # username は flake.nix から extraSpecialArgs で渡る（実行時に環境変数から取得）。
 
-  home.username = "yuta";
-  home.homeDirectory = "/home/yuta";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 
   # WSLg + systemd 環境では /run/user/$UID 内の wayland ソケット symlink が
   # 用意されず、pgtk(GTK)ビルドの Emacs などが Wayland に繋げず X11 へ

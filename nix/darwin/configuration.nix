@@ -1,19 +1,41 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  username,
+  ...
+}:
 {
   # ===== nix-darwin システム設定（Mac） =====
-  # 適用: darwin-rebuild switch --flake ./nix#macbook
+  # 適用: make switch（username は flake.nix の mkMac から渡る）
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  # Determinate Nix で nix を導入している場合、nix-darwin に nix デーモンを
-  # 二重管理させると衝突する。Determinate に委ねるため nix.enable = false。
-  # （vanilla nix なら true に戻してよい）
-  nix.enable = false;
+  # vanilla(公式インストーラ) Nix なので nix デーモンは nix-darwin に管理させる。
+  # （Determinate Nix を使う場合は二重管理が衝突するため false にすること）
+  nix.enable = true;
+
+  nix.settings = {
+    # flake 運用（nix run / darwin-rebuild --flake / nix flake update）に必須
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  }
+  # 企業プロキシ(TLS インスペクション)環境向け: Keychain の CA を合成した
+  # バンドルが用意されていればそれを使う。無い環境では何もしない。
+  # バンドルの作り方:
+  #   security find-certificate -a -p /Library/Keychains/System.keychain \
+  #     | cat /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt - \
+  #     | sudo tee /etc/nix/ca-bundle.crt
+  # （--impure 前提。pathExists が flake の純粋評価では使えないため）
+  // lib.optionalAttrs (builtins.pathExists "/etc/nix/ca-bundle.crt") {
+    ssl-cert-file = "/etc/nix/ca-bundle.crt";
+  };
 
   # 一部 system.defaults / homebrew 等が要求する主ユーザ指定
-  system.primaryUser = "yuta";
-  users.users.yuta = {
-    home = "/Users/yuta";
+  system.primaryUser = username;
+  users.users.${username} = {
+    home = "/Users/${username}";
   };
 
   # ログインシェル zsh が nix のパスを拾えるよう /etc/zshrc を整える
