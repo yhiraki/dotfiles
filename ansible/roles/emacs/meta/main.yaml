@@ -1,4 +1,0 @@
----
-dependencies:
-  - role: yhiraki.emacs
-  - role: git

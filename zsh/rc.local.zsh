@@ -1,11 +1,8 @@
 # =============================================================================
 # rc.local.zsh — 手書きの対話設定（home-manager 生成 .zshrc から source される）
-#
-# 移行メモ (ansible -> nix):
-#   - プラグイン読込 / compinit / asdf / direnv hook は home-manager(programs.zsh
-#     / programs.direnv / completionInit) が担当するため、ここからは除外した。
-#   - このファイルは out-of-store（repo 実体を直接 source）なので編集は即反映。
-#   - mise は当面ここで activate（fork 撲滅=ビルド時焼き込みは次ステップ）。
+#   - プラグイン読込 / compinit / direnv hook は home-manager が担当（除外済み）。
+#   - out-of-store（repo 実体を直接 source）なので編集は即反映。
+#   - mise はここで activate。
 # =============================================================================
 
 # 自作関数の autoload 用パスを追加

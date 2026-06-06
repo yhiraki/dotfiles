@@ -19,8 +19,8 @@ let
     ${pkgs.direnv}/bin/direnv hook zsh > $out
   '';
 
-  # emacs role: emacs/ 直下の「設定」項目だけを ~/.emacs.d/ へ個別 out-of-store
-  # symlink（ansible の filetree ループと同じ粒度）。elpa/eln-cache/custom.el/
+  # emacs: emacs/ 直下の「設定」項目だけを ~/.emacs.d/ へ個別 out-of-store
+  # symlink する。elpa/eln-cache/custom.el/
   # org-roam.db 等のランタイム生成物は ~/.emacs.d に実体として残し汚さない。
   # 新規 top-level 設定を emacs/ に足したらここにも追記する。
   emacsConfigItems = [
@@ -49,7 +49,7 @@ in
 
   programs.home-manager.enable = true;
 
-  # ansible packages role の CLI 群を nixpkgs へ。
+  # CLI 群を nixpkgs へ。
   # （karabiner は手動。GUI/system 拡張は nix 管理外）
   home.packages = with pkgs; [
     coreutils

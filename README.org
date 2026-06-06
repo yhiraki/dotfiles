@@ -1,5 +1,8 @@
 * Dotfiles
 ** Installation
    #+begin_src bash
-   cd ansible; make
+   make switch
    #+end_src
+
+   OS を判定して home-manager(WSL/Linux) / nix-darwin(macOS) を適用する。
+   Mac 初回は darwin-rebuild が無ければ nix run で自動ブートストラップする。

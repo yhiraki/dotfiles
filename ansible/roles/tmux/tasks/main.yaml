@@ -1,8 +1,0 @@
-- include_tasks: "install_{{ ansible_pkg_mgr }}.yaml"
-
-- file:
-    src: "{{ dotfiles_dir }}/{{ item }}"
-    path: "~/{{ item }}"
-    state: link
-  with_items:
-    - .tmux.conf

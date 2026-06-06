@@ -41,11 +41,11 @@
   # ログインシェル zsh が nix のパスを拾えるよう /etc/zshrc を整える
   programs.zsh.enable = true;
 
-  # ===== mac-defaults role の移植 =====
+  # ===== mac-defaults =====
   system.defaults = {
     finder.AppleShowAllFiles = true;
 
-    # 旧 ansible の com.apple.trackpad.scaling=5 を NSGlobalDomain 経由で再現。
+    # トラックパッド速度を NSGlobalDomain 経由で設定（com.apple.trackpad.scaling=5）。
     # （CustomUserPreferences は任意 defaults を書ける escape hatch。
     #   値は好みで調整可。標準のトラックパッド速度上限は 3.0 前後）
     CustomUserPreferences = {

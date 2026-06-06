@@ -1,4 +1,0 @@
-- name: install zsh
-  homebrew:
-    name: zsh
-    state: present

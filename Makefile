@@ -1,4 +1,4 @@
-# dotfiles エントリポイント（旧 ansible/Makefile の後継）。
+# dotfiles エントリポイント。
 # 適用は OS を見て home-manager(WSL/Linux) / darwin-rebuild(macOS) を出し分ける。
 
 NIX := ./nix

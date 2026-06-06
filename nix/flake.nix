@@ -1,5 +1,5 @@
 {
-  description = "yhiraki dotfiles (ansible -> nix migration)";
+  description = "yhiraki dotfiles";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -73,8 +73,8 @@
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
                   home-manager.extraSpecialArgs = { inherit inputs username; };
-                  # Mac には ansible の symlink(~/.zshenv 等)が存在し衝突するため、
-                  # 初回 switch で .bak に自動退避させる（rm 手作業を不要に）。
+                  # 既存の dotfile(~/.zshenv 等)と衝突した場合、初回 switch で
+                  # .bak に自動退避させる（rm 手作業を不要に）。
                   home-manager.backupFileExtension = "bak";
                   home-manager.users.${username}.imports = homeModules [ ./home/darwin.nix ];
                 }
