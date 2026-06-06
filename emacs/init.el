@@ -322,6 +322,14 @@ This version does not rely on mdfind (Spotlight)."
   (tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
   )
 
+(use-package project
+  :custom
+  ;; vc-handled-backends が nil だと project-try-vc が git リポジトリを検出できず、
+  ;; consult-ripgrep 等がカレントディレクトリにフォールバックしてしまう。
+  ;; .git をルートマーカーとして明示することで VC 無効のままルート検出を復活させる。
+  (project-vc-extra-root-markers '(".git"))
+  )
+
 (use-package autorevert
   :config (global-auto-revert-mode t)
   )
@@ -3254,7 +3262,6 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
   ([remap vc-git-grep] .#'consult-git-grep)
 
   :custom
-  (consult-project-root-function #'vc-root-dir)
   (consult-find-args "find . -not ( -name .venv -prune -o -name node_modules -prune -o -name .git -prune )")
   (consult-ripgrep-args
   "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /\
