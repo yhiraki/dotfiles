@@ -1182,16 +1182,28 @@ This version does not rely on mdfind (Spotlight)."
   :diminish org-indent-mode
 
   :init
+  (defun my/buffer-differs-from-file-p ()
+    "バッファ内容がディスク上のファイルと実際に異なるか。
+編集後に undo で元に戻したバッファは modified フラグが立ったままでも
+内容は同一なので nil を返す。"
+    (let ((file (buffer-file-name)))
+      (or (not (file-exists-p file))
+          (not (equal (buffer-hash)
+                      (with-temp-buffer
+                        (insert-file-contents file)
+                        (buffer-hash)))))))
+
   (defun my/org-update-modified-property ()
     "ファイル先頭の :ID: ノードの :MODIFIED: を現在日時に更新する。
-サイトの recent リストのソートキー。before-save-hook は差分があって
-実際に保存されるときしか走らないため、無変更保存では更新されない。"
-    (save-excursion
-      (goto-char (point-min))
-      (when (re-search-forward "^[ \t]*:ID:" nil t)
-        (org-back-to-heading-or-point-min t)
-        (org-entry-put (point) "MODIFIED"
-                       (format-time-string "[%Y-%m-%d %H:%M:%S]")))))
+サイトの recent リストのソートキー。ディスクと内容が同一の保存
+（undo で元に戻した後の保存など）では更新しない。"
+    (when (my/buffer-differs-from-file-p)
+      (save-excursion
+        (goto-char (point-min))
+        (when (re-search-forward "^[ \t]*:ID:" nil t)
+          (org-back-to-heading-or-point-min t)
+          (org-entry-put (point) "MODIFIED"
+                         (format-time-string "[%Y-%m-%d %H:%M:%S]"))))))
 
   (defun my/setup-org-mode-local-hooks ()
     (add-hook 'after-save-hook #'my/delete-empty-file nil t)
