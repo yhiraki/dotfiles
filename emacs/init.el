@@ -2557,12 +2557,15 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
 
     (defun my/update-org-agenda-files ()
       (interactive)
+      ;; org-agenda-file-to-front が格納する表記（abbreviate + truename）に
+      ;; 正規化して揃える。表記ゆれは文字列比較ベースの重複の温床になる
       (setq org-agenda-files
             (delete-dups
-             (append
-              (my/org-agenda-files-todo)
-              (my/org-agenda-files-tags)
-              (my/org-agenda-files-recent)))))
+             (mapcar (lambda (f) (abbreviate-file-name (file-truename f)))
+                     (append
+                      (my/org-agenda-files-todo)
+                      (my/org-agenda-files-tags)
+                      (my/org-agenda-files-recent))))))
     )
 
   (defun my/org-agenda-todo-next ()
