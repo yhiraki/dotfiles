@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# 蓋を閉じてもスリープさせない（lid sleep 無効化）
+#
+# usage:
+#   nosleep 2h            # 2時間後に自動で元に戻す
+#   nosleep 30m           # 30分
+#   nosleep 600           # 秒数指定
+#   nosleep -- cmd ...    # コマンドが終わったら元に戻す
+#   nosleep off           # 手動で元に戻す
+#   nosleep status        # 現在の状態を表示
+set -euo pipefail
+
+usage() {
+    sed -n 's/^# \{0,1\}//p' "$0" | sed -n '/usage:/,$p'
+    exit 1
+}
+
+to_seconds() {
+    local d="$1"
+    [[ "$d" =~ ^[0-9]+[hms]?$ ]] || return 1
+    case "$d" in
+        *h) echo $(( ${d%h} * 3600 )) ;;
+        *m) echo $(( ${d%m} * 60 )) ;;
+        *s) echo "${d%s}" ;;
+        *)  echo "$d" ;;
+    esac
+}
+
+disablesleep_status() {
+    # SleepDisabled は有効時のみ pmset -g に現れる（無効時は行ごと無い）
+    if pmset -g | grep -Eq 'SleepDisabled[[:space:]]+1'; then
+        echo "on (スリープ無効)"
+    else
+        echo "off (通常)"
+    fi
+}
+
+[ $# -ge 1 ] || usage
+
+case "$1" in
+    -h|--help)
+        usage
+        ;;
+    status)
+        echo "disablesleep: $(disablesleep_status)"
+        ;;
+    off)
+        sudo pmset -a disablesleep 0
+        echo "disablesleep: off に戻しました"
+        ;;
+    --)
+        # コマンドが終わるまでスリープ無効
+        shift
+        [ $# -ge 1 ] || usage
+        sudo pmset -a disablesleep 1
+        trap 'sudo pmset -a disablesleep 0; echo "disablesleep: off に戻しました" >&2' EXIT INT TERM
+        "$@"
+        ;;
+    *)
+        # 時間指定。タイマーは nohup でターミナルを閉じても生き残る
+        secs=$(to_seconds "$1") || usage
+        sudo -v
+        sudo nohup sh -c "
+            trap 'pmset -a disablesleep 0' EXIT INT TERM
+            pmset -a disablesleep 1
+            sleep $secs
+        " >/dev/null 2>&1 &
+        disown
+        echo "disablesleep: on（$1 後に自動で off に戻ります）"
+        echo "途中でやめる場合: nosleep off"
+        ;;
+esac
