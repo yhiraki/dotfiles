@@ -1582,10 +1582,11 @@ This version does not rely on mdfind (Spotlight)."
     :hook
     (org-mode
      . (lambda ()
-         (org-roam--register-completion-functions-h)
-         (org-roam--replace-roam-links-on-save-h)
-         (org-roam-db-autosync--setup-update-on-save-h)
-         (add-hook 'after-save-hook #'my/add-org-roam-to-agenda nil t)
+         (when (org-roam-file-p)
+           (org-roam--register-completion-functions-h)
+           (org-roam--replace-roam-links-on-save-h)
+           (org-roam-db-autosync--setup-update-on-save-h)
+           (add-hook 'after-save-hook #'my/add-org-roam-to-agenda nil t))
          ))
     (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
     (org-roam-post-node-insert . my/org-roam-node-add-auto-tag)
