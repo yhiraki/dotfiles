@@ -48,6 +48,8 @@ in
     # go role 由来（旧: /usr/local/go へ tarball 展開、1.20.4 固定）。
     # nix 版を baseline に。プロジェクト毎のバージョンは mise 側で上書き可能。
     go
+    # tmux role 由来（旧: apt/brew で導入）
+    tmux
   ];
 
   # git role の dotfile 管理を home-manager へ。
@@ -62,6 +64,10 @@ in
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitconfig.local";
     ".gitexclude".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitexclude";
+
+    # tmux role: 手書き .tmux.conf を repo 実体から out-of-store symlink（編集即反映）
+    ".tmux.conf".source =
+      config.lib.file.mkOutOfStoreSymlink "${repoDir}/.tmux.conf";
   };
 
   # direnv: nix-direnv の direnvrc は使うが、シェル統合(eval hook)は HM に
