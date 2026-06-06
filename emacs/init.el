@@ -1287,7 +1287,7 @@ This version does not rely on mdfind (Spotlight)."
   (advice-add #'org-babel-get-src-block-info :around #'my/update-tangle-dir)
 
   :hook
-  (org-after-todo-statistics . my/org-summary-todo)
+  (org-after-todo-statistics . my/org-sync-todo-with-progress)
   (org-after-todo-state-change . my/org-add-date-for-book-state)
   (org-checkbox-statistics . my/org-checkbox-todo)
   (org-mode . org-indent-mode)
@@ -1334,35 +1334,39 @@ This version does not rely on mdfind (Spotlight)."
 
   :after evil
   :config
-  (defun my/org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (org-todo (if (= n-not-done 0) "DONE" "TODO")))
+  (defun my/org-sync-todo-with-progress (n-done n-not-done)
+    "Sync heading TODO state with subtask/checkbox progress.
+All done -> DONE, partially done -> STARTED, none done -> TODO.
+Do nothing if the heading has no TODO keyword."
+    (let ((todo-state (org-get-todo-state)))
+      (when todo-state
+        (cond
+         ((and (> n-done 0) (= n-not-done 0))
+          (unless (string-equal todo-state "DONE")
+            (org-todo 'done)))
+         ((> n-done 0)
+          (when (member todo-state '("TODO" "NEXT" "DONE"))
+            (org-todo "STARTED")))
+         ((> n-not-done 0)
+          (when (member todo-state '("STARTED" "DONE"))
+            (org-todo 'todo)))))))
 
-  ;; https://emacs.stackexchange.com/questions/19843/how-to-automatically-adjust-an-org-task-state-with-its-children-checkboxes
   (defun my/org-checkbox-todo ()
-    "Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
-    (let ((todo-state (org-get-todo-state)) beg end)
-      (unless (not todo-state)
-        (save-excursion
-          (org-back-to-heading t)
-          (setq beg (point))
-          (end-of-line)
-          (setq end (point))
-          (goto-char beg)
-          (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-                                 end t)
-              (if (match-end 1)
-                  (if (equal (match-string 1) "100%")
-                      (unless (string-equal todo-state "DONE")
-                        (org-todo 'done))
-                    (when (string-equal todo-state "DONE")
-                      (org-todo 'todo)))
-                (if (and (> (match-end 2) (match-beginning 2))
-                         (equal (match-string 2) (match-string 3)))
-                    (unless (string-equal todo-state "DONE")
-                      (org-todo 'done))
-                  (when (string-equal todo-state "DONE")
-                    (org-todo 'todo)))))))))
+    "Sync heading TODO state with its checkbox statistics cookie."
+    (when (org-get-todo-state)
+      (save-excursion
+        (org-back-to-heading t)
+        (when (re-search-forward
+               "\\[\\([0-9]*\\)%\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+               (line-end-position) t)
+          (if (match-end 1)
+              (let ((percent (string-to-number (match-string 1))))
+                (my/org-sync-todo-with-progress
+                 (if (> percent 0) 1 0)
+                 (if (< percent 100) 1 0)))
+            (let ((done (string-to-number (match-string 2)))
+                  (total (string-to-number (match-string 3))))
+              (my/org-sync-todo-with-progress done (- total done))))))))
 
   (defun my/org-add-date-for-book-state ()
     "Set date string when book state changed."
