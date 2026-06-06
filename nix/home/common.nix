@@ -74,9 +74,10 @@ in
     # tmux role 由来（旧: apt/brew で導入）
     tmux
     # emacs role 由来（旧: galaxy yhiraki.emacs がソースビルド、30.2）。
-    # 素の nixpkgs 30.2(native-comp+tree-sitter 標準)。WSL=端末版(--without-x)、
-    # Mac=NS(--with-ns)。imagemagick が要れば emacs30.override で（ソースビルド化）。
-    (if stdenv.isDarwin then emacs30 else emacs30-nox)
+    # 素の nixpkgs 30.2(native-comp+tree-sitter 標準)。
+    # WSL=pgtk(GUI+端末両対応・WSLg/Wayland)、Mac=NS(--with-ns)。
+    # imagemagick が要れば emacs30.override で（ソースビルド化）。
+    (if stdenv.isDarwin then emacs30 else emacs30-pgtk)
   ];
 
   # git role の dotfile 管理を home-manager へ。
