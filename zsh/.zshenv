@@ -31,6 +31,12 @@ PATH="$PATH:$DOTDIR/bin"
 PATH="$PATH:$HOME/.local/bin:$PATH"
 PATH="$PATH:/mnt/c/Windows/System32:$PATH"
 
+# nix (no_global_rcs で /etc/zshrc が読まれないため自前で読み込む)
+[ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ] &&
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+# nix-darwin / NixOS のシステムプロファイル
+[ -d /run/current-system/sw/bin ] && PATH="/run/current-system/sw/bin:$PATH"
+
 # brew
 [ -d /opt/homebrew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 [ -d "${HOME}/.local/homebrew" ] && eval "$(${HOME}/.local/homebrew/bin/brew shellenv)"
