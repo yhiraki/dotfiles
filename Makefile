@@ -2,6 +2,8 @@
 # 適用は OS を見て home-manager(WSL/Linux) / darwin-rebuild(macOS) を出し分ける。
 
 NIX := ./nix
+# nix-darwin のブートストラップ用 rev（flake input と揃える）
+DARWIN_REV := nix-darwin-25.05
 
 .PHONY: help switch update gc
 
@@ -10,9 +12,14 @@ help: ## このヘルプを表示
 		| sort \
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
-switch: ## 構成を適用（OS 判定で home-manager / darwin-rebuild）
+switch: ## 構成を適用（OS 判定で home-manager / darwin-rebuild。Mac 初回は nix run で自動ブートストラップ）
 ifeq ($(shell uname),Darwin)
-	sudo darwin-rebuild switch --flake $(NIX)#macbook
+	@if command -v darwin-rebuild >/dev/null 2>&1; then \
+		sudo darwin-rebuild switch --flake $(NIX)#macbook; \
+	else \
+		echo "==> darwin-rebuild 未導入。nix run で nix-darwin をブートストラップします"; \
+		sudo nix run nix-darwin/$(DARWIN_REV)#darwin-rebuild -- switch --flake $(NIX)#macbook; \
+	fi
 else
 	home-manager switch --flake $(NIX)#yuta@yuta-pc
 endif
