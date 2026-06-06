@@ -2872,7 +2872,7 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
 
   (defun my/find-user-emacs-init-file ()
     (interactive)
-    (find-file (file-truename (locate-user-emacs-file "init.el"))))
+    (find-file (file-truename user-init-file)))
 
   (defun my/insert-timestamp ()
     (interactive)
