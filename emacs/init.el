@@ -1182,17 +1182,22 @@ This version does not rely on mdfind (Spotlight)."
   :diminish org-indent-mode
 
   :init
-  (defun my/org-mode-update-time-stamp-date ()
-    (let ((time-stamp-start "DATE:")
-          (time-stamp-end "$")
-          (time-stamp-format " %Y-%02m-%02d"))
-      (time-stamp)))
+  (defun my/org-update-modified-property ()
+    "ファイル先頭の :ID: ノードの :MODIFIED: を現在日時に更新する。
+サイトの recent リストのソートキー。before-save-hook は差分があって
+実際に保存されるときしか走らないため、無変更保存では更新されない。"
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^[ \t]*:ID:" nil t)
+        (org-back-to-heading-or-point-min t)
+        (org-entry-put (point) "MODIFIED"
+                       (format-time-string "[%Y-%m-%d %H:%M:%S]")))))
 
   (defun my/setup-org-mode-local-hooks ()
     (add-hook 'after-save-hook #'my/delete-empty-file nil t)
     (when (s-prefix? (file-truename org-directory) (buffer-file-name))
-      (require 'time-stamp)
-      (add-hook 'before-save-hook #'my/org-mode-update-time-stamp-date nil t)
+      ;; #+DATE: は作成日として固定（自動更新しない）。更新日は :MODIFIED: が担う
+      (add-hook 'before-save-hook #'my/org-update-modified-property nil t)
       ))
 
   (when window-system
