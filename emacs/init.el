@@ -1193,17 +1193,46 @@ This version does not rely on mdfind (Spotlight)."
                         (insert-file-contents file)
                         (buffer-hash)))))))
 
-  (defun my/org-update-modified-property ()
-    "ファイル先頭の :ID: ノードの :MODIFIED: を現在日時に更新する。
-サイトの recent リストのソートキー。ディスクと内容が同一の保存
-（undo で元に戻した後の保存など）では更新しない。"
-    (when (my/buffer-differs-from-file-p)
-      (save-excursion
+  (defun my/git-head-content (file)
+    "FILE の git HEAD 版の内容。git 管理外なら nil。"
+    (let ((default-directory (file-name-directory file)))
+      (with-temp-buffer
+        (when (eq 0 (call-process "git" nil '(t nil) nil "show"
+                                  (concat "HEAD:./" (file-name-nondirectory file))))
+          (buffer-string)))))
+
+  (defun my/org--sans-modified (s)
+    (replace-regexp-in-string "^[ \t]*:MODIFIED:.*\n?" "" s))
+
+  (defun my/org--set-modified (value)
+    "ファイル先頭の :ID: ノードの :MODIFIED: を VALUE にする。nil なら削除。"
+    (save-excursion
+      (save-restriction
+        (widen)
         (goto-char (point-min))
         (when (re-search-forward "^[ \t]*:ID:" nil t)
           (org-back-to-heading-or-point-min t)
-          (org-entry-put (point) "MODIFIED"
-                         (format-time-string "[%Y-%m-%d %H:%M:%S]"))))))
+          (if value
+              (org-entry-put (point) "MODIFIED" value)
+            (org-entry-delete (point) "MODIFIED"))))))
+
+  (defun my/org-update-modified-property ()
+    "ファイル先頭の :ID: ノードの :MODIFIED: を内容の実変更に追従させる。
+サイトの recent リストのソートキー。
+- ディスクと同一内容の保存（undo 直後など）→ 何もしない
+- MODIFIED 行を除き git HEAD と同一 → HEAD の MODIFIED を復元（差分が消える）
+- 実差分あり / git 管理外 → 現在時刻でスタンプ"
+    (when (my/buffer-differs-from-file-p)
+      (let* ((head (my/git-head-content (buffer-file-name)))
+             (buf (save-restriction
+                    (widen)
+                    (buffer-substring-no-properties (point-min) (point-max)))))
+        (if (and head (equal (my/org--sans-modified buf)
+                             (my/org--sans-modified head)))
+            (my/org--set-modified
+             (and (string-match "^[ \t]*:MODIFIED:[ \t]*\\(.+?\\)[ \t]*$" head)
+                  (match-string 1 head)))
+          (my/org--set-modified (format-time-string "[%Y-%m-%d %H:%M:%S]"))))))
 
   (defun my/setup-org-mode-local-hooks ()
     (add-hook 'after-save-hook #'my/delete-empty-file nil t)
