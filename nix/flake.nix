@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nixpkgs に無い zsh プラグインは flake input(flake=false)で取り込み、
     # flake.lock でバージョン固定する（git clone をやめて再現性を得る）。
     git-open = {
@@ -20,27 +25,43 @@
       flake = false;
     };
 
-    # NOTE: nix-darwin / emacs-overlay は Mac 移行・emacs 最終ステップで追加する
-    # nix-darwin = { url = "github:LnL7/nix-darwin"; inputs.nixpkgs.follows = "nixpkgs"; };
+    # NOTE: emacs-overlay は emacs 最終ステップで追加する
     # emacs-overlay = { url = "github:nix-community/emacs-overlay"; inputs.nixpkgs.follows = "nixpkgs"; };
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }@inputs:
+    { nixpkgs, home-manager, nix-darwin, ... }@inputs:
     let
-      mkHome =
-        system: modules:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = { inherit inputs; };
-          inherit modules;
-        };
+      # 共通の home-manager モジュール群（プラットフォーム別を末尾に足す）
+      homeModules = extra: [ ./home/common.nix ] ++ extra;
     in
     {
-      # WSL 先行・最小スコープ。Mac は後で darwinConfigurations を追加。
-      homeConfigurations."yuta@yuta-pc" = mkHome "x86_64-linux" [
-        ./home/common.nix
-        ./home/wsl.nix
-      ];
+      # ---- WSL(Linux): home-manager standalone ----
+      homeConfigurations."yuta@yuta-pc" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        extraSpecialArgs = { inherit inputs; };
+        modules = homeModules [ ./home/wsl.nix ];
+      };
+
+      # ---- Mac: nix-darwin + home-manager(module) ----
+      # 適用: darwin-rebuild switch --flake ./nix#macbook
+      # （"macbook" は任意名。`scutil --get LocalHostName` のホスト名に合わせると
+      #   darwin-rebuild が自動選択しやすい。リネーム可。）
+      darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./darwin/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            # Mac には ansible の symlink(~/.zshenv 等)が存在し衝突するため、
+            # 初回 switch で .bak に自動退避させる（rm 手作業を不要に）。
+            home-manager.backupFileExtension = "bak";
+            home-manager.users.yuta.imports = homeModules [ ./home/darwin.nix ];
+          }
+        ];
+      };
     };
 }
