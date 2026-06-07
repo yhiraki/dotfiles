@@ -49,6 +49,10 @@ in
 
   programs.home-manager.enable = true;
 
+  # switch のたびに出る「未読のお知らせが N 件」ナグを抑制（changelog 通知）。
+  # 読みたいときは `home-manager news --flake ./nix#wsl`。
+  news.display = "silent";
+
   # CLI 群を nixpkgs へ。
   # （karabiner は手動。GUI/system 拡張は nix 管理外）
   home.packages = with pkgs; [
