@@ -3369,6 +3369,11 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
   (mozc-candidate-style 'echo-area)
   (default-input-method "japanese-mozc"))
 
+(use-package mozc-modeless :ensure t
+  :after mozc
+  :config
+  (global-mozc-modeless-mode 1))
+
 (use-package rocket-chat-post
   :commands rocket-chat-edit
   :after evil
