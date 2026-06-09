@@ -90,6 +90,8 @@ in
     poppler_utils
     # librsvg: org/emacs のインライン SVG 描画
     librsvg
+    # postgresql: psql/pg_dump 等のクライアント目的（サーバは起動しない）
+    postgresql_17
   ];
 
   # ~/.gitconfig は ~/.gitconfig.local を include するだけ（内容は手書き側に集約）。
