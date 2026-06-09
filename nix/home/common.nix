@@ -71,6 +71,7 @@ in
     mise
     # git role 由来（apt は git+gh、homebrew は git）
     git
+    git-filter-repo
     gh
     # go role 由来（旧: /usr/local/go へ tarball 展開、1.20.4 固定）。
     # nix 版を baseline に。プロジェクト毎のバージョンは mise 側で上書き可能。
