@@ -53,8 +53,8 @@ in
   # 読みたいときは `home-manager news --flake ./nix#wsl`。
   news.display = "silent";
 
-  # CLI 群を nixpkgs へ。
-  # （karabiner は手動。GUI/system 拡張は nix 管理外）
+  # Mac/WSL 共通の CLI 群。Mac 専用(pngpaste 等)は darwin.nix に置く。
+  # GUI/システム拡張(karabiner 等)は nix 管理外で手動導入。
   home.packages = with pkgs; [
     coreutils
     findutils
@@ -69,23 +69,29 @@ in
     wget
     gibo
     mise
-    # git role 由来（apt は git+gh、homebrew は git）
     git
     git-filter-repo
     gh
-    # go role 由来（旧: /usr/local/go へ tarball 展開、1.20.4 固定）。
-    # nix 版を baseline に。プロジェクト毎のバージョンは mise 側で上書き可能。
+    # go は nix 版を baseline に。プロジェクト毎のバージョンは mise 側で上書き。
     go
-    # tmux role 由来（旧: apt/brew で導入）
     tmux
-    # emacs role 由来（旧: galaxy yhiraki.emacs がソースビルド、30.2）。
-    # 素の nixpkgs 30.2(native-comp+tree-sitter 標準)。
-    # WSL=pgtk(GUI+端末両対応・WSLg/Wayland)、Mac=NS(--with-ns)。
-    # imagemagick が要れば emacs30.override で（ソースビルド化）。
+    # emacs 30.2(native-comp+tree-sitter 標準)。
+    # WSL=pgtk(GUI+端末両対応・WSLg/Wayland)、Mac=NS。
     (if stdenv.isDarwin then emacs30 else emacs30-pgtk)
+    ffmpeg
+    imagemagick
+    pandoc
+    shellcheck
+    shfmt
+    yq
+    # cmigemo: emacs migemo 検索用の C/Migemo 実装
+    cmigemo
+    # poppler_utils: pdftotext/pdftoppm 等。文字起こし/PDF 処理で利用
+    poppler_utils
+    # librsvg: org/emacs のインライン SVG 描画
+    librsvg
   ];
 
-  # git role の dotfile 管理を home-manager へ。
   # ~/.gitconfig は ~/.gitconfig.local を include するだけ（内容は手書き側に集約）。
   # 手書き本体(.gitconfig.local)と .gitexclude は repo 実体を out-of-store symlink。
   home.file = {
@@ -98,7 +104,7 @@ in
     ".gitexclude".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitexclude";
 
-    # tmux role: 手書き .tmux.conf を repo 実体から out-of-store symlink（編集即反映）
+    # 手書き .tmux.conf を repo 実体から out-of-store symlink（編集即反映）
     ".tmux.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.tmux.conf";
   } // emacsFiles;
@@ -115,10 +121,9 @@ in
     enable = true;
     dotDir = ".config/zsh";
 
-    # zsh-autosuggestions（旧 plugins_repo の clone を置換）
     autosuggestion.enable = true;
 
-    # nixpkgs に無いプラグインは flake input から（git clone をやめ再現性を確保）
+    # nixpkgs に無いプラグインは flake input から取り込み（flake.lock で固定）
     plugins = [
       {
         name = "fast-syntax-highlighting";
@@ -135,7 +140,6 @@ in
       }
     ];
 
-    # 補完初期化（旧 .zshrc 末尾の compinit ブロックを置換）。
     # zsh-completions と自前補完を fpath に積んでから compinit。
     completionInit = ''
       fpath=(
@@ -150,8 +154,8 @@ in
       compinit -d "$zcd/zcompdump"
     '';
 
-    # 旧 .zshenv（PATH 構築など）を repo 実体から source（live edit 維持）。
-    # repo .zshenv が system パスを最前列に前置するため、source 後に
+    # PATH 構築等の .zshenv を repo 実体から source（live edit 維持）。
+    # .zshenv が system パスを最前列に前置するため、source 後に
     # nix profile を再優先化する（typeset -U で重複は除去済み）。
     envExtra = ''
       source ${repoDir}/zsh/.zshenv

@@ -58,12 +58,22 @@
   # ===== brew-free =====
   # CLI は nixpkgs(home-manager 側 home.packages)で導入。
   # karabiner-elements は DriverKit システム拡張のため手動インストール（nix 管理外）。
+  # blackhole-2ch(audio driver)/voiceink(GUI) も同様に手動（nix 管理外）。
   # → homebrew モジュールは意図的に未使用。
 
-  # Mac 固有 CLI（必要に応じて追加）。skhd はホットキー常駐なので将来 services.skhd 化。
+  # Mac 固有 CLI（必要に応じて追加）。
   environment.systemPackages = with pkgs; [
     terminal-notifier
   ];
+
+  # skhd: ホットキー常駐デーモン。launchd サービスとして nix-darwin が管理。
+  # 設定はリポジトリ実体 skhdrc を readFile で焼き込む（変更時は rebuild で反映）。
+  # skhd には「アクセシビリティ」権限が必要。
+  services.skhd = {
+    enable = true;
+    package = pkgs.skhd;
+    skhdConfig = builtins.readFile ../../skhdrc;
+  };
 
   # nix-darwin の状態バージョン（初回構築時の値で固定）
   system.stateVersion = 5;
