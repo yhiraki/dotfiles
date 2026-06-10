@@ -1316,7 +1316,7 @@ This version does not rely on mdfind (Spotlight)."
      (sequence "NEXT(n)" "STARTED" "|")
      (sequence "WAITING(w@)" "STARTED" "|")
      (sequence "SOMEDAY(S)" "|")
-     (sequence "ASK(k)" "|" "ANSWERED(a)")
+     (sequence "ASK(k)" "ANSWERED(a)" "|")
      (sequence "|" "CANCELLED(c@)")
      (sequence "|" "MEETING(m)")
      (sequence "DRAFT" "|" "PUBLISH")
