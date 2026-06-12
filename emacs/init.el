@@ -2566,34 +2566,39 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
   (when (executable-find "rg")
 
-    (defvar my/rg-org-directories '(org-directory))
+    ;; secret は独立 git リポジトリで親の .gitignore に無視されるため明示的に加える
+    (defvar my/rg-org-directories
+      (list org-directory
+            (f-join org-directory "roam" "secret")))
 
     (defun my/list-agenda-files (regex &optional extra-filters)
       "List org files matching rg REGEX under `my/rg-org-directories'.
 EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
-      (let* ((filters (append '("!**/archived/**/*.org"
-                                "!**/#*#"
-                                "!**/*~")
+      (let* ((filters (append '("!**/archived/**/*.org") ; archived は .gitignore 対象外
                               extra-filters))
-             (dirs (mapcar (lambda (symbol)
-                             (expand-file-name
-                              (file-name-as-directory (symbol-value symbol))))
+             (dirs (mapcar (lambda (d)
+                             (expand-file-name (file-name-as-directory d)))
                            my/rg-org-directories))
-             (rg-args (append '("-lL" "--no-ignore" "--no-messages")
+             ;; -L は付けない: Emacs ロックファイル(.#*)の dangling symlink を追従して os error 2 になる
+             (rg-args (append '("-l" "--no-messages")
                               (mapcan (lambda (g) (list "-g" g)) filters)
                               (list "-e" regex "--")
                               dirs))
-             ;; rg が暴走しないように timeout があれば 2 秒で打ち切る
+             ;; 暴走時の安全弁。同期呼び出しなのでフリーズ上限にもなる
              (timeout (or (executable-find "timeout")
                           (executable-find "gtimeout")))
              (program (or timeout "rg"))
-             (args (if timeout (append (list "2" "rg") rg-args) rg-args)))
+             (args (if timeout (append (list "5" "rg") rg-args) rg-args)))
         (with-temp-buffer
-          (let ((status (apply #'call-process program nil '(t nil) nil args)))
-            (unless (memq status '(0 1)) ; 1 = no matches
-              (message "my/list-agenda-files: rg exited with %s (results may be incomplete)"
-                       status))
-            (split-string (buffer-string) "\n" t)))))
+          (let ((status (apply #'call-process program nil '(t nil) nil args))
+                (out (split-string (buffer-string) "\n" t)))
+            (cond
+             ((memq status '(0 1)))     ; 0=マッチ, 1=マッチなし
+             ((and timeout (eq status 124)) ; timeout: 出力が途中で欠ける
+              (warn "my/list-agenda-files: rg timed out; agenda files may be incomplete"))
+             ;; その他(2=走査中の一時 I/O エラー等)はマッチ自体は出力済みなので出力を使う
+             (t (message "my/list-agenda-files: rg exited with %s (using partial results)" status)))
+            out))))
 
     (defun my/org-agenda-files-todo ()
       (let* ((states "TODO|NEXT|STARTED|WAITING")
