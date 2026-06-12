@@ -3354,10 +3354,10 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
   (migemo-regex-dictionary nil)
   (migemo-coding-system 'utf-8-unix)
   :config
-  (when linux-p
-    (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
-  (when darwin-p
-    (setq migemo-dictionary "/opt/homebrew/share/migemo/utf-8/migemo-dict"))
+  (setq migemo-dictionary
+        (expand-file-name
+         "../../share/migemo/utf-8/migemo-dict"
+         (file-truename (executable-find "cmigemo"))))
   (migemo-init)
   )
 
