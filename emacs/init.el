@@ -2436,8 +2436,39 @@ LANG はシンボル (例: python, emacs-lisp)。"
   :commands (org-agenda org-refile)
   :demand t
 
-  :init
+  :preface
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
+
+  ;; "t"/"w" の Tasks 系コマンドで共有するブロック
+  (defvar my/org-agenda-block-deadline-scheduled
+    '(agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
+                 (org-agenda-skip-function
+                  '(org-agenda-skip-entry-if 'todo 'done)))))
+
+  (defvar my/org-agenda-todos-skip-function
+    '(or (org-agenda-skip-subtree-if
+          'scheduled 'deadline
+          'regexp my/org-sub-todo-progress-regexp)
+         (org-agenda-skip-entry-if
+          'todo '("SOMEDAY" "NEXT"))))
+
+  (defvar my/org-agenda-block-next
+    '(todo "NEXT" ((org-agenda-overriding-header "Next Actions: "))))
+
+  (defvar my/org-agenda-block-deadlines
+    '(todo 'todo ((org-agenda-skip-function
+                   '(org-agenda-skip-entry-if 'notdeadline 'todo '("SOMEDAY")))
+                  (org-agenda-sorting-strategy '(deadline-up))
+                  (org-agenda-overriding-header "Deadlines: "))))
+
+  (defvar my/org-agenda-block-projects
+    '(todo 'todo ((org-agenda-skip-function
+                   '(org-agenda-skip-entry-if
+                     'notregexp my/org-sub-todo-progress-regexp))
+                  (org-agenda-overriding-header "Projects: "))))
+
+  (defvar my/org-agenda-block-someday
+    '(todo "SOMEDAY" ((org-agenda-overriding-header "Someday: "))))
 
   :custom
   (org-agenda-inhibit-startup t)
@@ -2465,41 +2496,23 @@ LANG はシンボル (例: python, emacs-lisp)。"
                    '(org-agenda-skip-entry-if 'todo 'done))))))
      ("a" "Agenda" ((agenda)))
      ("t" "Tasks"
-      ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'todo 'done))))
-       (todo 'todo ((org-agenda-skip-function
-                                   '(org-agenda-skip-subtree-if
-                                     'scheduled 'deadline
-                                     'regexp my/org-sub-todo-progress-regexp))
-                                  (org-agenda-overriding-header "TODOs: ")))
-       (todo 'todo ((org-agenda-skip-function
-                     '(org-agenda-skip-entry-if
-                       'notregexp my/org-sub-todo-progress-regexp)
-                     my/org-agenda-skip-entry-is-project)
-                    (org-agenda-overriding-header "Projects: "))))
+      (,my/org-agenda-block-deadline-scheduled
+       ,my/org-agenda-block-next
+       (todo 'todo ((org-agenda-skip-function my/org-agenda-todos-skip-function)
+                    (org-agenda-overriding-header "TODOs: ")))
+       ,my/org-agenda-block-deadlines
+       ,my/org-agenda-block-projects
+       ,my/org-agenda-block-someday)
       ;; 期間を限定せず、TODO を含む全ファイルを対象にする
-      ((org-agenda-files (my/org-agenda-files-todo)))
-      ;; ((org-agenda-view-columns-initially t)
-      ;;  (org-overriding-columns-format "%40ITEM %TODO %1PRIORITY %10CATEGORY %EFFORT{:} %CLOCKSUM{:} %TAGS"))
-      )
+      ((org-agenda-files (my/org-agenda-files-todo))))
      ("w" "Tasks for Work"
-      ((agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
-                   (org-agenda-skip-function
-                    '(org-agenda-skip-entry-if 'todo 'done))))
-       (tags-todo "Work" ((org-agenda-skip-function
-                                   '(org-agenda-skip-subtree-if
-                                     'scheduled 'deadline
-                                     'regexp my/org-sub-todo-progress-regexp))
-                                  (org-agenda-overriding-header "TODOs: ")))
-       (todo 'todo ((org-agenda-skip-function
-                     '(org-agenda-skip-entry-if
-                       'notregexp my/org-sub-todo-progress-regexp)
-                     my/org-agenda-skip-entry-is-project)
-                    (org-agenda-overriding-header "Projects: "))))
-      ;; ((org-agenda-view-columns-initially t)
-      ;;  (org-overriding-columns-format "%40ITEM %TODO %1PRIORITY %10CATEGORY %EFFORT{:} %CLOCKSUM{:} %TAGS"))
-      )
+      (,my/org-agenda-block-deadline-scheduled
+       ,my/org-agenda-block-next
+       (tags-todo "Work" ((org-agenda-skip-function my/org-agenda-todos-skip-function)
+                          (org-agenda-overriding-header "TODOs: ")))
+       ,my/org-agenda-block-deadlines
+       ,my/org-agenda-block-projects
+       ,my/org-agenda-block-someday))
      ("n" "Next Tasks"
       ((todo "NEXT" ((org-agenda-overriding-header "Next Actions: ")))))
      ("r" "GTD review"
@@ -2601,7 +2614,7 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
             out))))
 
     (defun my/org-agenda-files-todo ()
-      (let* ((states "TODO|NEXT|STARTED|WAITING")
+      (let* ((states "TODO|NEXT|STARTED|WAITING|SOMEDAY")
              (regex (concat "^\\*+ (" states ")\\b")))
         (my/list-agenda-files regex)))
 
