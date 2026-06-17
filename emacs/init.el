@@ -1616,6 +1616,24 @@ Do nothing if the heading has no TODO keyword."
                 ""
                 #'my/org-roam-filter-has-refs))))))
 
+    (defvar my/roambuild-base-url "http://localhost:8000"
+      "Base URL where the roambuild dist/ is served (`make serve').")
+
+    (defun my/org-roam-browse-built-file ()
+      "Open the roambuild web page for the current buffer's org file."
+      (interactive)
+      (let ((file (buffer-file-name)))
+        (unless file
+          (user-error "Current buffer is not visiting a file"))
+        (let* ((file (file-truename file))
+               (root (file-truename org-roam-directory))
+               (rel (file-relative-name file root)))
+          (when (or (string-prefix-p ".." rel) (file-name-absolute-p rel))
+            (user-error "Not under org-roam-directory: %s" file))
+          (browse-url
+           (concat my/roambuild-base-url "/"
+                   (concat (file-name-sans-extension rel) ".html"))))))
+
     (defun my/org-roam-async-db-sync ()
       (interactive)
       (my/update-org-agenda-files)
@@ -1694,6 +1712,7 @@ Do nothing if the heading has no TODO keyword."
           ("C-c n o" . org-id-get-create)
           ("C-c n p" . my/org-set-publish-current-file)
           ("C-c n t" . org-roam-tag-add)
+          ("C-c n w" . my/org-roam-browse-built-file)
           ("C-c n I t" . my/org-roam-set-insert-with-tags)
           ("C-c n I c" . my/org-roam-set-insert-with-category)
           ("C-M-i" . completion-at-point))
