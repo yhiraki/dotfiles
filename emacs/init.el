@@ -1617,11 +1617,15 @@ Do nothing if the heading has no TODO keyword."
                 #'my/org-roam-filter-has-refs))))))
 
     (defvar my/roambuild-base-url "http://localhost:8000"
-      "Base URL where the roambuild dist/ is served (`make serve').")
+      "Base URL where the local roambuild dist/ is served (`make serve').")
 
-    (defun my/org-roam-browse-built-file ()
-      "Open the roambuild web page for the current buffer's org file."
-      (interactive)
+    (defvar my/roambuild-public-base-url nil
+      "Base URL of the deployed (production) roambuild site.
+Set this to the production domain (e.g. \"https://notes.example.com\");
+include a path prefix if the site is not served from the host root.")
+
+    (defun my/org-roam--built-url (base)
+      "Return the roambuild URL of the current org file under BASE."
       (let ((file (buffer-file-name)))
         (unless file
           (user-error "Current buffer is not visiting a file"))
@@ -1630,9 +1634,35 @@ Do nothing if the heading has no TODO keyword."
                (rel (file-relative-name file root)))
           (when (or (string-prefix-p ".." rel) (file-name-absolute-p rel))
             (user-error "Not under org-roam-directory: %s" file))
-          (browse-url
-           (concat my/roambuild-base-url "/"
-                   (concat (file-name-sans-extension rel) ".html"))))))
+          (concat base "/" (file-name-sans-extension rel) ".html"))))
+
+    (defun my/org-roam-file-public-p ()
+      "Return non-nil if the current org buffer would appear in the --public build.
+Matches `isPublicNode' in builder/ssg/db.go: PUBLISH todo, a \"public\"
+tag (including filetags), or a PUBLISH property set to t."
+      (org-with-wide-buffer
+       (seq-some
+        #'identity
+        (org-map-entries
+         (lambda ()
+           (or (equal (org-get-todo-state) "PUBLISH")
+               (member "public" (org-get-tags))
+               (equal (org-entry-get nil "PUBLISH") "t")))
+         t 'file))))
+
+    (defun my/org-roam-browse-built-file ()
+      "Open the local roambuild web page for the current org file."
+      (interactive)
+      (browse-url (my/org-roam--built-url my/roambuild-base-url)))
+
+    (defun my/org-roam-browse-published-file ()
+      "Open the deployed (production) roambuild page for the current org file."
+      (interactive)
+      (unless my/roambuild-public-base-url
+        (user-error "Set `my/roambuild-public-base-url' to the production domain first"))
+      (when (or (my/org-roam-file-public-p)
+                (y-or-n-p "This file is not public and may 404.  Open anyway? "))
+        (browse-url (my/org-roam--built-url my/roambuild-public-base-url))))
 
     (defun my/org-roam-async-db-sync ()
       (interactive)
@@ -1713,6 +1743,7 @@ Do nothing if the heading has no TODO keyword."
           ("C-c n p" . my/org-set-publish-current-file)
           ("C-c n t" . org-roam-tag-add)
           ("C-c n w" . my/org-roam-browse-built-file)
+          ("C-c n W" . my/org-roam-browse-published-file)
           ("C-c n I t" . my/org-roam-set-insert-with-tags)
           ("C-c n I c" . my/org-roam-set-insert-with-category)
           ("C-M-i" . completion-at-point))
