@@ -67,6 +67,7 @@ in
     fzf
     ghq
     wget
+    rclone
     gibo
     mise
     git
