@@ -95,15 +95,11 @@ in
     postgresql_17
   ];
 
-  # ~/.gitconfig は ~/.gitconfig.local を include するだけ（内容は手書き側に集約）。
-  # 手書き本体(.gitconfig.local)と .gitexclude は repo 実体を out-of-store symlink。
+  # ~/.gitconfig に共通設定を集約（nix store へコピー、更新は rebuild）。
+  # マシン依存(email・bp の includeIf)は ~/.gitconfig.local に分離し、
+  # これは dotfiles.bp で管理する手動 symlink。
   home.file = {
-    ".gitconfig".text = ''
-      [include]
-      	path = ~/.gitconfig.local
-    '';
-    ".gitconfig.local".source =
-      config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitconfig.local";
+    ".gitconfig".source = ../../.gitconfig;
     ".gitexclude".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.gitexclude";
 

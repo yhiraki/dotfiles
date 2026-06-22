@@ -19,3 +19,7 @@
 	user = yhiraki
 [user]
 	name = yhiraki
+[user]
+	email = coffexpr@gmail.com
+[include]
+	path = ~/.gitconfig.local
