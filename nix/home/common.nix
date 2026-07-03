@@ -106,6 +106,10 @@ in
     # 手書き .tmux.conf を repo 実体から out-of-store symlink（編集即反映）
     ".tmux.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/.tmux.conf";
+
+    # ghostty 設定も同様に out-of-store symlink（編集即反映）
+    ".config/ghostty/config".source =
+      config.lib.file.mkOutOfStoreSymlink "${repoDir}/ghostty/config";
   } // emacsFiles;
 
   # direnv: nix-direnv の direnvrc は使うが、シェル統合(eval hook)は HM に
