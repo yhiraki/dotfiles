@@ -154,7 +154,13 @@ in
       local zcd="''${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
       [[ -d "$zcd" ]] || mkdir -p "$zcd"
       autoload -Uz compinit
-      compinit -d "$zcd/zcompdump"
+      # zcompdump が 24h 以内なら compaudit を省く高速パス（-C）。
+      # 古い/無い場合のみフル compinit で再生成・監査する。
+      if [[ -n $zcd/zcompdump(#qN.mh-24) ]]; then
+        compinit -C -d "$zcd/zcompdump"
+      else
+        compinit -d "$zcd/zcompdump"
+      fi
     '';
 
     # PATH 構築等の .zshenv を repo 実体から source（live edit 維持）。
