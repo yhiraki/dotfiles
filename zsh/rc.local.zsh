@@ -7,7 +7,7 @@
 
 # 自作関数の autoload 用パスを追加
 fpath=($ZDOTDIR/functions $fpath)
-autoload -Uz add-zsh-hook fsh fsql repo
+autoload -Uz add-zsh-hook fsh fsql repo cl
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]] &&
   [[ -n ${EMACS_VTERM_PATH} ]] &&
@@ -145,6 +145,8 @@ setopt prompt_subst
   alias ....='cd ../../..'
 
   alias ls="ls -FG"
+
+  alias claude='claude --chrome'
 
   alias -g F='| ff'
   alias -g O='| xargs open'

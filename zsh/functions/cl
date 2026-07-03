@@ -1,0 +1,4 @@
+local repo
+repo=$(ff-select-repo) || return
+[[ -n $repo ]] || return
+cd "$repo" && claude "$@"
