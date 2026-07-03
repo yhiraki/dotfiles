@@ -2676,7 +2676,7 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
     (defun my/org-agenda-files-recent ()
       (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
                   (dates (s-join "|" d)) ;; 2 weeks
-                  (regex (concat "<(" dates ")")))
+                  (regex (concat "[\\[<](" dates ")")))
         (my/list-agenda-files regex '())  ; referenceを除外したければ '("!**/roam/refs/**/*.org")
         ))
 
