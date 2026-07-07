@@ -2598,6 +2598,13 @@ LANG はシンボル (例: python, emacs-lisp)。"
       ((org-agenda-view-columns-initially t)
        (org-overriding-columns-format "%TODO %ITEM")
        (org-agenda-sorting-strategy '(user-defined-up))))
+     ("s" "Claude sessions"
+      ((tags "+LEVEL=1+SessionBrief"
+             ((org-agenda-overriding-header "Sessions:"))))
+      ;; 直近2週間に更新の無い古いセッションも一覧に出すため、
+      ;; org-agenda-files を :SessionBrief: を含む全ファイルに差し替える
+      ((org-agenda-files (my/org-agenda-files-sessions))
+       (org-agenda-sorting-strategy '(timestamp-down))))
      ))
 
   :hook
@@ -2677,6 +2684,9 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
       (let* ((tags ":Meeting:")
              (regex (concat "^\\*+.*(" tags ")")))
         (my/list-agenda-files regex)))
+
+    (defun my/org-agenda-files-sessions ()
+      (my/list-agenda-files "^\\*+.*:SessionBrief:"))
 
     (defun my/org-agenda-files-recent ()
       (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
