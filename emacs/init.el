@@ -2500,10 +2500,13 @@ LANG はシンボル (例: python, emacs-lisp)。"
           'scheduled 'deadline
           'regexp my/org-sub-todo-progress-regexp)
          (org-agenda-skip-entry-if
-          'todo '("SOMEDAY" "NEXT"))))
+          'todo '("SOMEDAY" "NEXT" "ASK"))))
 
   (defvar my/org-agenda-block-next
     '(todo "NEXT" ((org-agenda-overriding-header "Next Actions: "))))
+
+  (defvar my/org-agenda-block-ask
+    '(todo "ASK" ((org-agenda-overriding-header "Ask: "))))
 
   (defvar my/org-agenda-block-deadlines
     '(todo 'todo ((org-agenda-skip-function
@@ -2548,6 +2551,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
      ("t" "Tasks"
       (,my/org-agenda-block-deadline-scheduled
        ,my/org-agenda-block-next
+       ,my/org-agenda-block-ask
        (todo 'todo ((org-agenda-skip-function my/org-agenda-todos-skip-function)
                     (org-agenda-overriding-header "TODOs: ")))
        ,my/org-agenda-block-deadlines
@@ -2558,6 +2562,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
      ("w" "Tasks for Work"
       (,my/org-agenda-block-deadline-scheduled
        ,my/org-agenda-block-next
+       ,my/org-agenda-block-ask
        (tags-todo "Work" ((org-agenda-skip-function my/org-agenda-todos-skip-function)
                           (org-agenda-overriding-header "TODOs: ")))
        ,my/org-agenda-block-deadlines
@@ -2664,7 +2669,7 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
             out))))
 
     (defun my/org-agenda-files-todo ()
-      (let* ((states "TODO|NEXT|STARTED|WAITING|SOMEDAY")
+      (let* ((states "TODO|NEXT|STARTED|WAITING|SOMEDAY|ASK")
              (regex (concat "^\\*+ (" states ")\\b")))
         (my/list-agenda-files regex)))
 
