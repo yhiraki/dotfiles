@@ -2599,10 +2599,10 @@ LANG はシンボル (例: python, emacs-lisp)。"
        (org-overriding-columns-format "%TODO %ITEM")
        (org-agenda-sorting-strategy '(user-defined-up))))
      ("s" "Claude sessions"
-      ((tags "+LEVEL=1+SessionBrief"
+      ((tags "+LEVEL=1+SessionBrief+MODIFIED>=\"<-2w>\""
              ((org-agenda-overriding-header "Sessions:"))))
-      ;; 直近2週間に更新の無い古いセッションも一覧に出すため、
-      ;; org-agenda-files を :SessionBrief: を含む全ファイルに差し替える
+      ;; org-agenda-files を :SessionBrief: を含む全ファイルに差し替えた上で、
+      ;; MODIFIED が直近2週間のセッションだけを一覧に出す
       ((org-agenda-files (my/org-agenda-files-sessions))
        (org-agenda-sorting-strategy '(timestamp-down))))
      ))
