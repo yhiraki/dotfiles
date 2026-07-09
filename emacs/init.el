@@ -1051,6 +1051,40 @@ This version does not rely on mdfind (Spotlight)."
             "<localleader>f" #'prettier-js)
 
   :config
+  (defun my/markdown--blockquote-bounds ()
+    "Return (BEG . END) of the contiguous blockquote lines at point, or nil."
+    (save-excursion
+      (beginning-of-line)
+      (when (looking-at-p "[ \t]*>")
+        (let ((beg (point)) (end (point)))
+          (while (and (zerop (forward-line -1)) (looking-at-p "[ \t]*>"))
+            (setq beg (point)))
+          (goto-char end)
+          (while (and (zerop (forward-line 1)) (looking-at-p "[ \t]*>"))
+            (setq end (point)))
+          (goto-char end)
+          (cons beg (line-end-position))))))
+
+  (evil-define-text-object my/evil-markdown-quote-inner (count &optional _beg _end _type)
+    "Markdown blockquote: the contiguous `> ' lines at point."
+    (let ((b (or (my/markdown--blockquote-bounds)
+                 (user-error "Not in a blockquote"))))
+      (evil-range (car b) (cdr b) 'line)))
+
+  (defalias 'my/evil-markdown-quote-outer 'my/evil-markdown-quote-inner)
+
+  (evil-define-operator my/evil-markdown-quote (beg end _type)
+    "Prefix the lines of the motion/region with `> ' (Markdown blockquote)."
+    :type line
+    (markdown-blockquote-region beg end))
+
+  (dolist (map (list markdown-mode-map gfm-mode-map))
+    (evil-define-key '(operator visual) map
+      (kbd "iq") 'my/evil-markdown-quote-inner
+      (kbd "aq") 'my/evil-markdown-quote-outer)
+    (evil-define-key '(normal visual) map
+      (kbd "<localleader>Q") 'my/evil-markdown-quote))
+
   (defun my/markdown-convert-backlog-wiki-link-region (begin end)
     (interactive "r")
     (save-excursion
@@ -1389,6 +1423,63 @@ Do nothing if the heading has no TODO keyword."
     "Org todo next cycle"
     (interactive) (org-call-with-arg 'org-todo 'right)
     )
+
+  (defun my/org--quote-block-at-point ()
+    "Return the innermost Org quote block containing point, or nil."
+    (org-element-lineage (org-element-context) '(quote-block) t))
+
+  (evil-define-text-object my/evil-org-quote-inner (count &optional _beg _end _type)
+    "Inner Org quote block: the contents between the delimiters."
+    (let ((el (or (my/org--quote-block-at-point)
+                  (user-error "Not in a quote block"))))
+      (evil-range (org-element-property :contents-begin el)
+                  (org-element-property :contents-end el)
+                  'line)))
+
+  (evil-define-text-object my/evil-org-quote-outer (count &optional _beg _end _type)
+    "Outer Org quote block: contents plus the #+begin_quote/#+end_quote lines."
+    (let* ((el (or (my/org--quote-block-at-point)
+                   (user-error "Not in a quote block")))
+           (post-blank (or (org-element-property :post-blank el) 0)))
+      (evil-range (org-element-property :begin el)
+                  (save-excursion
+                    (goto-char (org-element-property :end el))
+                    (forward-line (- post-blank))
+                    (point))
+                  'line)))
+
+  (defun my/org-quote-region (beg end)
+    "Wrap the region between BEG and END in an Org quote block.
+Leading/trailing blank lines in the region are excluded so no extra
+blank lines end up inside the block."
+    (interactive "r")
+    (save-excursion
+      (goto-char end)
+      (skip-chars-backward " \t\n")
+      (end-of-line)
+      (insert "\n#+end_quote")
+      (goto-char beg)
+      (skip-chars-forward " \t\n")
+      (beginning-of-line)
+      (insert "#+begin_quote\n")))
+
+  (evil-define-operator my/evil-org-quote (beg end _type)
+    "Wrap the lines of the motion/region in an Org quote block."
+    :type line
+    (my/org-quote-region beg end))
+
+  (evil-define-key '(operator visual) org-mode-map
+    (kbd "iq") 'my/evil-org-quote-inner
+    (kbd "aq") 'my/evil-org-quote-outer)
+  (evil-define-key '(normal visual) org-mode-map
+    (kbd "<localleader>Q") 'my/evil-org-quote)
+
+  (defun my/org-setup-evil-surround-quote ()
+    "Register a `q' surround pair for Org quote blocks."
+    (setq-local evil-surround-pairs-alist
+                (cons '(?q . ("#+begin_quote\n" . "\n#+end_quote"))
+                      evil-surround-pairs-alist)))
+  (add-hook 'org-mode-hook #'my/org-setup-evil-surround-quote)
 
   (evil-define-key '(normal visual) org-mode-map
     ;; leader mapping
