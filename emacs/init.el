@@ -1506,7 +1506,11 @@ blank lines end up inside the block."
     )
 
   (use-package org-tempo
-    :after org)
+    :after org
+    :config
+    ;; <np TAB で #+begin_noprint ブロックに展開（印刷から外す領域）。
+    ;; "n" は org-re-reveal がスピーカーノート用に使うため避ける。
+    (add-to-list 'org-structure-template-alist '("np" . "noprint")))
 
   (use-package org-faces
     :after org
