@@ -2587,6 +2587,17 @@ LANG はシンボル (例: python, emacs-lisp)。"
   :preface
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
 
+  (defun my/org-in-project-p ()
+    "いずれかの祖先見出しが進捗クッキー付き（プロジェクト配下）なら non-nil。"
+    (save-excursion
+      (org-back-to-heading t)
+      (let ((found nil))
+        (while (and (not found) (org-up-heading-safe))
+          (when (string-match-p my/org-sub-todo-progress-regexp
+                                (or (nth 4 (org-heading-components)) ""))
+            (setq found t)))
+        found)))
+
   ;; "t"/"w" の Tasks 系コマンドで共有するブロック
   (defvar my/org-agenda-block-deadline-scheduled
     '(agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
@@ -2598,7 +2609,9 @@ LANG はシンボル (例: python, emacs-lisp)。"
           'scheduled 'deadline
           'regexp my/org-sub-todo-progress-regexp)
          (org-agenda-skip-entry-if
-          'todo '("SOMEDAY" "NEXT" "ASK"))))
+          'todo '("SOMEDAY" "NEXT" "ASK"))
+         ;; プロジェクト配下の子 TODO は隠す。次の一手は NEXT で明示し Next Actions に出す
+         (and (my/org-in-project-p) (save-excursion (org-end-of-subtree t)))))
 
   (defvar my/org-agenda-block-next
     '(todo "NEXT" ((org-agenda-overriding-header "Next Actions: "))))
