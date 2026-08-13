@@ -2609,12 +2609,12 @@ LANG はシンボル (例: python, emacs-lisp)。"
           'scheduled 'deadline
           'regexp my/org-sub-todo-progress-regexp)
          (org-agenda-skip-entry-if
-          'todo '("SOMEDAY" "NEXT" "ASK"))
-         ;; プロジェクト配下の子 TODO は隠す。次の一手は NEXT で明示し Next Actions に出す
+          'todo '("SOMEDAY" "NEXT" "STARTED" "ASK"))
+         ;; プロジェクト配下の子 TODO は隠す。次の一手は NEXT/STARTED で明示し Next Actions に出す
          (and (my/org-in-project-p) (save-excursion (org-end-of-subtree t)))))
 
   (defvar my/org-agenda-block-next
-    '(todo "NEXT" ((org-agenda-overriding-header "Next Actions: "))))
+    '(todo "NEXT|STARTED" ((org-agenda-overriding-header "Next Actions: "))))
 
   (defvar my/org-agenda-block-ask
     '(todo "ASK" ((org-agenda-overriding-header "Ask: "))))
@@ -2680,7 +2680,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
        ,my/org-agenda-block-projects
        ,my/org-agenda-block-someday))
      ("n" "Next Tasks"
-      ((todo "NEXT" ((org-agenda-overriding-header "Next Actions: ")))))
+      (,my/org-agenda-block-next))
      ("r" "GTD review"
       ((tags-todo "CATEGORY=\"Inbox\"" ((org-agenda-overriding-header "Inbox: ")))
        (todo "SOMEDAY" ((org-agenda-overriding-header "SOMEDAY: ")))
