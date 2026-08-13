@@ -2614,7 +2614,10 @@ LANG はシンボル (例: python, emacs-lisp)。"
          (and (my/org-in-project-p) (save-excursion (org-end-of-subtree t)))))
 
   (defvar my/org-agenda-block-next
-    '(todo "NEXT|STARTED" ((org-agenda-overriding-header "Next Actions: "))))
+    '(todo "NEXT|STARTED"
+           ((org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'regexp my/org-sub-todo-progress-regexp))
+            (org-agenda-overriding-header "Next Actions: "))))
 
   (defvar my/org-agenda-block-ask
     '(todo "ASK" ((org-agenda-overriding-header "Ask: "))))
