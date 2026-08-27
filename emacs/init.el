@@ -2722,7 +2722,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
      ))
 
   :hook
-  (after-init . my/update-org-agenda-files)
+  (after-init . my/init-org-agenda-files)
 
   :config
   (defvar my/true-org-directory (file-truename org-directory))
@@ -2757,69 +2757,137 @@ LANG はシンボル (例: python, emacs-lisp)。"
 
     ;; secret は独立 git リポジトリで親の .gitignore に無視されるため明示的に加える
     (defvar my/rg-org-directories
+      ;; secret は独立 git リポジトリで親の .gitignore に無視されるため明示的に加える
       (list org-directory
             (f-join org-directory "roam" "secret")))
 
-    (defun my/list-agenda-files (regex &optional extra-filters)
-      "List org files matching rg REGEX under `my/rg-org-directories'.
+    (defvar my/rg-agenda-exclude-globs
+      ;; archived は .gitignore 対象外。refs/data には agenda 対象が 1 件も無いのに
+      ;; 走査エントリの 3 割を占める
+      '("!**/archived/**/*.org"
+        "!**/refs/**"
+        "!**/data/**"))
+
+    (defvar my/org-agenda-files-cache-file
+      (expand-file-name "org-agenda-files.eld" "~/.cache/emacs/")
+      "前回の `org-agenda-files' の保存先。起動時はまずこれを読む。")
+
+    (defun my/list-agenda-files--command (regexes extra-filters timeout-seconds)
+      "rg を起動するコマンド (PROGRAM ARGS...) を組み立てる。
+REGEXES is a regex string, or a list of them searched in a single rg pass
+as an alternation. ディレクトリ走査が支配的なので、まとめるほど速い。
 EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
-      (let* ((filters (append '("!**/archived/**/*.org") ; archived は .gitignore 対象外
-                              extra-filters))
+      (let* ((regex (mapconcat (lambda (r) (concat "(?:" r ")"))
+                               (if (listp regexes) regexes (list regexes))
+                               "|"))
+             (filters (append my/rg-agenda-exclude-globs extra-filters))
              (dirs (mapcar (lambda (d)
                              (expand-file-name (file-name-as-directory d)))
                            my/rg-org-directories))
              ;; -L は付けない: Emacs ロックファイル(.#*)の dangling symlink を追従して os error 2 になる
+             ;; --no-messages は stderr も空にするので、出力にエラー行は混ざらない
              (rg-args (append '("-l" "--no-messages")
                               (mapcan (lambda (g) (list "-g" g)) filters)
                               (list "-e" regex "--")
                               dirs))
-             ;; 暴走時の安全弁。同期呼び出しなのでフリーズ上限にもなる
+             ;; 暴走時の安全弁
              (timeout (or (executable-find "timeout")
-                          (executable-find "gtimeout")))
-             (program (or timeout "rg"))
-             (args (if timeout (append (list "5" "rg") rg-args) rg-args)))
+                          (executable-find "gtimeout"))))
+        (if timeout
+            (append (list timeout (number-to-string timeout-seconds) "rg") rg-args)
+          (cons "rg" rg-args))))
+
+    (defun my/list-agenda-files--report (status label)
+      (cond
+       ((memq status '(0 1)) nil)       ; 0=マッチ, 1=マッチなし
+       ((eq status 124)                 ; timeout: 出力が途中で欠ける
+        (warn "%s: rg timed out; agenda files may be incomplete" label))
+       ;; その他(2=走査中の一時 I/O エラー等)はマッチ自体は出力済みなので出力を使う
+       (t (message "%s: rg exited with %s (using partial results)" label status))))
+
+    (defun my/list-agenda-files (regexes &optional extra-filters)
+      "REGEXES に一致する org ファイルを同期的に列挙する。
+呼び出し元をブロックするので、起動時は `my/list-agenda-files-async' を使う。"
+      (let ((cmd (my/list-agenda-files--command regexes extra-filters 15)))
         (with-temp-buffer
-          (let ((status (apply #'call-process program nil '(t nil) nil args))
+          (let ((status (apply #'call-process (car cmd) nil '(t nil) nil (cdr cmd)))
                 (out (split-string (buffer-string) "\n" t)))
-            (cond
-             ((memq status '(0 1)))     ; 0=マッチ, 1=マッチなし
-             ((and timeout (eq status 124)) ; timeout: 出力が途中で欠ける
-              (warn "my/list-agenda-files: rg timed out; agenda files may be incomplete"))
-             ;; その他(2=走査中の一時 I/O エラー等)はマッチ自体は出力済みなので出力を使う
-             (t (message "my/list-agenda-files: rg exited with %s (using partial results)" status)))
+            (my/list-agenda-files--report status "my/list-agenda-files")
             out))))
 
-    (defun my/org-agenda-files-todo ()
-      (let* ((states "TODO|NEXT|STARTED|WAITING|SOMEDAY|ASK")
-             (regex (concat "^\\*+ (" states ")\\b")))
-        (my/list-agenda-files regex)))
+    (defun my/list-agenda-files-async (regexes callback &optional extra-filters)
+      "REGEXES に一致する org ファイルを非同期に列挙し、そのリストで CALLBACK を呼ぶ。"
+      (let* ((cmd (my/list-agenda-files--command regexes extra-filters 60))
+             (chunks nil))
+        (make-process
+         :name "my-list-agenda-files"
+         :buffer nil
+         :noquery t
+         :connection-type 'pipe
+         :command cmd
+         :filter (lambda (_proc chunk) (push chunk chunks))
+         :sentinel
+         (lambda (proc _event)
+           (when (memq (process-status proc) '(exit signal))
+             (my/list-agenda-files--report (process-exit-status proc)
+                                           "my/list-agenda-files-async")
+             (funcall callback
+                      (split-string (apply #'concat (nreverse chunks)) "\n" t)))))))
 
-    (defun my/org-agenda-files-tags ()
-      (let* ((tags ":Meeting:")
-             (regex (concat "^\\*+.*(" tags ")")))
-        (my/list-agenda-files regex)))
+    (defun my/org-agenda-files--write-cache (files)
+      (make-directory (file-name-directory my/org-agenda-files-cache-file) t)
+      (with-temp-file my/org-agenda-files-cache-file
+        (prin1 files (current-buffer))))
+
+    (defun my/org-agenda-files--read-cache ()
+      (when (file-readable-p my/org-agenda-files-cache-file)
+        (ignore-errors
+          (with-temp-buffer
+            (insert-file-contents my/org-agenda-files-cache-file)
+            (read (current-buffer))))))
+
+    (defun my/org-agenda-files-regexp-todo ()
+      (let ((states "TODO|NEXT|STARTED|WAITING|SOMEDAY|ASK"))
+        (concat "^\\*+ (" states ")\\b")))
+
+    (defun my/org-agenda-files-regexp-tags ()
+      (let ((tags ":Meeting:"))
+        (concat "^\\*+.*(" tags ")")))
+
+    (defun my/org-agenda-files-regexp-recent ()
+      (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
+                  (dates (s-join "|" d))) ;; 2 weeks
+        (concat "[\\[<](" dates ")")))
+
+    (defun my/org-agenda-files-todo ()
+      (my/list-agenda-files (my/org-agenda-files-regexp-todo)))
 
     (defun my/org-agenda-files-sessions ()
       (my/list-agenda-files "^\\*+.*:SessionBrief:"))
 
-    (defun my/org-agenda-files-recent ()
-      (when-let* ((d (my/timestamps-days-offsets (my/make-sequence 8 -6)))
-                  (dates (s-join "|" d)) ;; 2 weeks
-                  (regex (concat "[\\[<](" dates ")")))
-        (my/list-agenda-files regex '())  ; referenceを除外したければ '("!**/roam/refs/**/*.org")
-        ))
-
-    (defun my/update-org-agenda-files ()
-      (interactive)
+    (defun my/org-agenda-files--normalize (files)
       ;; org-agenda-file-to-front が格納する表記（abbreviate + truename）に
       ;; 正規化して揃える。表記ゆれは文字列比較ベースの重複の温床になる
-      (setq org-agenda-files
-            (delete-dups
-             (mapcar (lambda (f) (abbreviate-file-name (file-truename f)))
-                     (append
-                      (my/org-agenda-files-todo)
-                      (my/org-agenda-files-tags)
-                      (my/org-agenda-files-recent))))))
+      (delete-dups
+       (mapcar (lambda (f) (abbreviate-file-name (file-truename f))) files)))
+
+    (defun my/update-org-agenda-files ()
+      "agenda 対象を非同期に集め直して `org-agenda-files' とキャッシュを更新する。"
+      (interactive)
+      (my/list-agenda-files-async
+       ;; 3 条件を 1 回の rg にまとめる
+       (delq nil (list (my/org-agenda-files-regexp-todo)
+                       (my/org-agenda-files-regexp-tags)
+                       (my/org-agenda-files-regexp-recent)))
+       (lambda (files)
+         (setq org-agenda-files (my/org-agenda-files--normalize files))
+         (my/org-agenda-files--write-cache org-agenda-files))))
+
+    (defun my/init-org-agenda-files ()
+      "キャッシュを即座に読み込んでから、裏で `org-agenda-files' を最新化する。"
+      (when-let* ((cached (my/org-agenda-files--read-cache)))
+        (setq org-agenda-files cached))
+      (my/update-org-agenda-files))
     )
 
   (defun my/org-agenda-todo-next ()
