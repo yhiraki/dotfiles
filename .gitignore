@@ -121,3 +121,15 @@ $RECYCLE.BIN/
 *.lnk
 
 
+
+
+### このリポジトリ固有
+
+# nix build / darwin-rebuild の成果物 symlink
+/result
+
+# chatgpt-shell が user-emacs-directory 直下に書く状態ファイル
+emacs/.chatgpt-shell.el
+
+# Python のバイトコードキャッシュ
+__pycache__/
