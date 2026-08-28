@@ -1502,7 +1502,7 @@ blank lines end up inside the block."
     (kbd "<localleader>s") 'org-schedule
     (kbd "<localleader>t") 'org-todo
     (kbd "<localleader>v") 'org-toggle-inline-images
-    (kbd "<localleader>xp") 'org-set-property
+    (kbd "<localleader>x") 'org-toggle-checkbox
     )
 
   (use-package org-tempo
