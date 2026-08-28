@@ -2588,14 +2588,16 @@ LANG はシンボル (例: python, emacs-lisp)。"
   (defvar my/org-sub-todo-progress-regexp "\\[\\([0-9]+/[0-9]+\\|[0-9]+%\\)\\]")
 
   (defun my/org-in-project-p ()
-    "いずれかの祖先見出しが進捗クッキー付き（プロジェクト配下）なら non-nil。"
+    "いずれかの祖先見出しが未完了 TODO かつ進捗クッキー付き（プロジェクト配下）なら non-nil。"
     (save-excursion
       (org-back-to-heading t)
       (let ((found nil))
         (while (and (not found) (org-up-heading-safe))
-          (when (string-match-p my/org-sub-todo-progress-regexp
-                                (or (nth 4 (org-heading-components)) ""))
-            (setq found t)))
+          (let ((comps (org-heading-components)))
+            (when (and (member (nth 2 comps) org-not-done-keywords)
+                       (string-match-p my/org-sub-todo-progress-regexp
+                                       (or (nth 4 comps) "")))
+              (setq found t))))
         found)))
 
   ;; "t"/"w" の Tasks 系コマンドで共有するブロック
