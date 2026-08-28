@@ -1,0 +1,682 @@
+#!/usr/bin/python3
+"""tmux のウィンドウ構成と各ペインの Claude Code セッションを保存・復元する。
+
+usage:
+  tmux-claude-sessions save [--quiet]
+  tmux-claude-sessions list [--file PATH]
+  tmux-claude-sessions restore [--file PATH] [--session NAME] [--start] [--dry-run]
+"""
+
+import argparse
+import calendar
+import glob
+import json
+import os
+import re
+import shlex
+import subprocess
+import sys
+import time
+
+CLAUDE_SESSIONS_DIR = os.path.expanduser("~/.claude/sessions")
+STATE_DIR = os.path.join(
+    os.environ.get("XDG_STATE_HOME", os.path.expanduser("~/.local/state")),
+    "tmux-claude-sessions",
+)
+SNAPSHOT_PATH = os.path.join(STATE_DIR, "snapshot.json")
+LAST_RESTORED_PATH = os.path.join(STATE_DIR, "last-restored.json")
+HISTORY_DIR = os.path.join(STATE_DIR, "history")
+HISTORY_KEEP = 20
+
+# 復元時に付け直すフラグ。保存済みの起動引数からは取り除く。
+_RESUME_FLAGS = {"--resume", "-r", "--continue", "-c", "--session-id", "--fork-session",
+                 "--teleport", "--from-pr"}
+_FLAGS_WITH_VALUE = {"--resume", "-r", "--session-id", "-p", "--print", "--teleport",
+                     "--from-pr"}
+_DROP_FLAGS = _RESUME_FLAGS | {"-p", "--print"}
+
+PANE_FORMAT = "\t".join([
+    "#{session_name}", "#{window_id}", "#{window_index}", "#{window_name}",
+    "#{window_active}", "#{window_layout}", "#{pane_id}", "#{pane_index}",
+    "#{pane_active}", "#{pane_current_path}", "#{pane_current_command}",
+    "#{pane_title}",
+])
+PANE_FIELDS = ["session", "window_id", "window_index", "window_name", "window_active",
+               "window_layout", "pane_id", "pane_index", "pane_active", "cwd",
+               "command", "title"]
+
+
+def parse_tmux_ref(ref):
+    """`default:@22.%28` を (session, window_id, pane_id) に分解する。"""
+    if not ref or ":" not in ref or "." not in ref:
+        return None
+    session, rest = ref.rsplit(":", 1)
+    window_id, _, pane_id = rest.partition(".")
+    if not session or not window_id.startswith("@") or not pane_id.startswith("%"):
+        return None
+    return (session, window_id, pane_id)
+
+
+def pane_key(session, window_id, pane_id):
+    """ペインの照合キー。ペイン ID だけだと別の tmux サーバの同番ペインに当たる。"""
+    return "%s:%s.%s" % (session, window_id, pane_id)
+
+
+def sanitize_claude_args(argv):
+    """claude の起動引数から復元時に付け直す／再現してはいけないものを落とす。"""
+    kept = []
+    skip_next = False
+    for arg in argv:
+        if skip_next:
+            skip_next = False
+            continue
+        if arg in _DROP_FLAGS:
+            skip_next = arg in _FLAGS_WITH_VALUE
+            continue
+        if arg.startswith("--resume=") or arg.startswith("--session-id="):
+            continue
+        kept.append(arg)
+    return kept
+
+
+def build_resume_command(claude):
+    parts = ["claude"] + list(claude.get("args") or []) + ["--resume", claude["sessionId"]]
+    return " ".join(shlex.quote(p) if " " in p else p for p in parts)
+
+
+_PROC_TIME_FORMAT = "%a %b %d %H:%M:%S %Y"
+
+
+def proc_start_matches(rec_start, ps_lstart):
+    """セッション記録のプロセス開始時刻が ps の lstart と同じプロセスを指すか。
+
+    ~/.claude/sessions は procStart を UTC で、ps は lstart をローカル時刻で書くため、
+    どちらの解釈でも突き合わせて片方でも一致すれば同じプロセスとみなす。
+    """
+    if not rec_start or not ps_lstart:
+        return False
+    try:
+        rec = time.strptime(rec_start.strip(), _PROC_TIME_FORMAT)
+        ps = time.strptime(ps_lstart.strip(), _PROC_TIME_FORMAT)
+    except ValueError:
+        return False
+    ps_epoch = time.mktime(ps)
+    for rec_epoch in (calendar.timegm(rec), time.mktime(rec)):
+        if abs(rec_epoch - ps_epoch) <= 2:
+            return True
+    return False
+
+
+_UUID_RE = re.compile(r"^[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$")
+
+
+def last_nonempty_line(text):
+    for line in reversed((text or "").splitlines()):
+        if line.strip():
+            return line.strip()
+    return ""
+
+
+def extract_pending_resume(pane_text):
+    """復元済みでまだ Enter を押していないペインから sessionId を拾う。
+
+    起動前は claude プロセスが無く ~/.claude/sessions にも載らないため、
+    ペインに入力されたコマンドを読まないとスナップショットから消えてしまう。
+    最後の非空行だけを見て、履歴に流れた古い行は拾わない。
+    """
+    line = last_nonempty_line(pane_text)
+    at = line.find("claude ")
+    if at < 0:
+        return None
+    try:
+        tokens = shlex.split(line[at:])
+    except ValueError:
+        return None
+    if "--resume" not in tokens:
+        return None
+    index = tokens.index("--resume")
+    if index + 1 >= len(tokens) or not _UUID_RE.match(tokens[index + 1]):
+        return None
+    return {"sessionId": tokens[index + 1],
+            "args": sanitize_claude_args(tokens[1:])}
+
+
+def _tmux(args, check=True):
+    return subprocess.run(["tmux"] + args, capture_output=True, text=True,
+                          check=check).stdout
+
+
+def list_panes():
+    try:
+        out = _tmux(["list-panes", "-a", "-F", PANE_FORMAT])
+    except subprocess.CalledProcessError:
+        return []
+    panes = []
+    for line in out.splitlines():
+        cols = line.split("\t")
+        if len(cols) < len(PANE_FIELDS):
+            cols += [""] * (len(PANE_FIELDS) - len(cols))
+        panes.append(dict(zip(PANE_FIELDS, cols)))
+    return panes
+
+
+def ps_snapshot():
+    """pid -> {lstart, command}。lstart は procStart と比較するため C ロケールで取る。"""
+    env = dict(os.environ, LC_ALL="C", LANG="C")
+    out = subprocess.run(["ps", "-eo", "pid=,lstart=,command="],
+                         capture_output=True, text=True, env=env).stdout
+    procs = {}
+    for line in out.splitlines():
+        parts = line.split(None, 1)
+        if len(parts) != 2 or not parts[0].isdigit():
+            continue
+        pid, rest = int(parts[0]), parts[1]
+        # lstart は "Tue Aug 18 10:22:25 2026" の 5 語固定
+        words = rest.split(None, 5)
+        if len(words) < 6:
+            continue
+        procs[pid] = {"lstart": " ".join(words[:5]), "command": words[5]}
+    return procs
+
+
+def read_claude_session_records():
+    records = []
+    for path in glob.glob(os.path.join(CLAUDE_SESSIONS_DIR, "*.json")):
+        try:
+            with open(path) as fh:
+                records.append(json.load(fh))
+        except (ValueError, OSError):
+            continue
+    return records
+
+
+def select_live_claude_sessions(records, procs, live_pane_keys):
+    """生存中の対話セッションだけを pane_id -> {sessionId, args, ...} に畳む。"""
+    by_pane = {}
+    for rec in records:
+        if rec.get("kind") != "interactive" or not rec.get("sessionId"):
+            continue
+        proc = procs.get(rec.get("pid"))
+        if not proc:
+            continue
+        # pid の使い回しを起動時刻で弾く
+        if rec.get("procStart") and not proc_start_matches(
+                rec["procStart"], proc["lstart"]):
+            continue
+        if "claude" not in proc["command"]:
+            continue
+        ref = parse_tmux_ref(rec.get("tmux"))
+        if not ref or pane_key(*ref) not in live_pane_keys:
+            continue
+        pane_id = ref[2]
+        entry = {
+            "sessionId": rec["sessionId"],
+            "args": sanitize_claude_args(proc["command"].split()[1:]),
+            "cwd": rec.get("cwd"),
+            "name": rec.get("name"),
+            "startedAt": rec.get("startedAt") or 0,
+            "version": rec.get("version"),
+        }
+        prev = by_pane.get(pane_id)
+        if prev is None or entry["startedAt"] >= prev["startedAt"]:
+            by_pane[pane_id] = entry
+    return by_pane
+
+
+def build_snapshot(panes, claude_by_pane):
+    sessions = {}
+    for pane in panes:
+        sess = sessions.setdefault(pane["session"], {})
+        win = sess.setdefault(pane["window_id"], {
+            "index": int(pane["window_index"] or 0),
+            "name": pane["window_name"],
+            "layout": pane["window_layout"],
+            "active": pane["window_active"] == "1",
+            "panes": [],
+        })
+        win["panes"].append({
+            "index": int(pane["pane_index"] or 0),
+            "cwd": pane["cwd"],
+            "command": pane["command"],
+            "title": pane["title"],
+            "active": pane["pane_active"] == "1",
+            "claude": claude_by_pane.get(pane["pane_id"]),
+        })
+    out_sessions = []
+    for name in sessions:
+        windows = sorted(sessions[name].values(), key=lambda w: w["index"])
+        for win in windows:
+            win["panes"].sort(key=lambda p: p["index"])
+        out_sessions.append({"name": name, "windows": windows})
+    return {
+        "version": 1,
+        "savedAt": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "claudeSessionCount": sum(1 for c in claude_by_pane.values() if c),
+        "sessions": out_sessions,
+    }
+
+
+def snapshot_signature(snap):
+    """復元に効く構成だけを取り出す。
+
+    ペインタイトルは claude のスピナーで数秒ごとに変わるので署名に含めない。
+    """
+    return [
+        (sess["name"], [
+            (win["index"], win["layout"], [
+                (pane["index"], pane["cwd"],
+                 (pane["claude"] or {}).get("sessionId"))
+                for pane in win["panes"]
+            ])
+            for win in sess["windows"]
+        ])
+        for sess in snap.get("sessions", [])
+    ]
+
+
+def snapshot_changed(prev, new):
+    """構成が前回と変わったか。定期保存で履歴が埋まるのを防ぐ。"""
+    if not prev:
+        return True
+    return snapshot_signature(prev) != snapshot_signature(new)
+
+
+def resolve_history_stamp(wanted, stamps):
+    """--from に渡された指定を履歴のタイムスタンプに解決する。"""
+    ordered = sorted(stamps)
+    if wanted == "latest":
+        return ordered[-1] if ordered else None
+    if wanted in ordered:
+        return wanted
+    matched = [stamp for stamp in ordered if stamp.startswith(wanted)]
+    return matched[-1] if matched else None
+
+
+def snapshot_path_for(args):
+    """--from / --file から読むスナップショットのパスを決める。"""
+    wanted = getattr(args, "from_stamp", None)
+    if not wanted:
+        return args.file
+    if wanted == "last":
+        return LAST_RESTORED_PATH
+    stamps = [os.path.basename(p)[:-len(".json")]
+              for p in glob.glob(os.path.join(HISTORY_DIR, "*.json"))]
+    stamp = resolve_history_stamp(wanted, stamps)
+    if not stamp:
+        return os.path.join(HISTORY_DIR, wanted + ".json")
+    return os.path.join(HISTORY_DIR, stamp + ".json")
+
+
+def resolve_session_name(name, existing):
+    """復元先のセッション名。
+
+    zsh がターミナル起動時に同名セッションを作るので、埋まっていれば連番を足した
+    別セッションを立てる。既存のウィンドウを一切動かさずに済む。
+    """
+    if name not in existing:
+        return name
+    n = 2
+    while "%s-%d" % (name, n) in existing:
+        n += 1
+    return "%s-%d" % (name, n)
+
+
+def drop_running_claude_sessions(snap, running_ids):
+    """既に起動している claude セッションを復元対象から外す。
+
+    同じセッションを二重に開かないため。claude が全て外れたウィンドウは
+    空の shell だけが残るので、そのウィンドウごと復元しない。
+    """
+    dropped = []
+    for sess in snap.get("sessions", []):
+        kept_windows = []
+        for win in sess["windows"]:
+            had_claude = False
+            for pane in win["panes"]:
+                claude = pane.get("claude")
+                if not claude:
+                    continue
+                had_claude = True
+                if claude["sessionId"] in running_ids:
+                    dropped.append(claude["sessionId"])
+                    pane["claude"] = None
+            still_has = any(p.get("claude") for p in win["panes"])
+            if had_claude and not still_has:
+                continue
+            kept_windows.append(win)
+        sess["windows"] = kept_windows
+    return dropped
+
+
+def running_claude_session_ids():
+    """いま動いている claude の sessionId。tmux の外にいるものも含める。"""
+    procs = ps_snapshot()
+    ids = set()
+    for rec in read_claude_session_records():
+        proc = procs.get(rec.get("pid"))
+        if not proc or "claude" not in proc["command"]:
+            continue
+        if rec.get("procStart") and not proc_start_matches(
+                rec["procStart"], proc["lstart"]):
+            continue
+        if rec.get("sessionId"):
+            ids.add(rec["sessionId"])
+    return ids
+
+
+def pending_claude_by_pane(panes, matched_pane_ids):
+    """claude が動いていないペインから、入力済みの再開コマンドを拾う。
+
+    復元しただけで起動していないセッションが次の保存で失われるのを防ぐ。
+    """
+    found = {}
+    for pane in panes:
+        if pane["pane_id"] in matched_pane_ids:
+            continue
+        try:
+            # -J で折り返しを繋ぐ。細いペインだと再開コマンドが複数行に割れる
+            text = _tmux(["capture-pane", "-p", "-J", "-t", pane["pane_id"]])
+        except subprocess.CalledProcessError:
+            continue
+        entry = extract_pending_resume(text)
+        if entry:
+            entry["pending"] = True
+            found[pane["pane_id"]] = entry
+    return found
+
+
+def cmd_save(args):
+    panes = list_panes()
+    if not panes:
+        if not args.quiet:
+            print("tmux サーバが動いていないので保存しません", file=sys.stderr)
+        return 0
+    live_pane_keys = {pane_key(p["session"], p["window_id"], p["pane_id"])
+                      for p in panes}
+    claude_by_pane = select_live_claude_sessions(
+        read_claude_session_records(), ps_snapshot(), live_pane_keys)
+    claude_by_pane.update(pending_claude_by_pane(panes, set(claude_by_pane)))
+    snap = build_snapshot(panes, claude_by_pane)
+
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    changed = snapshot_changed(_read_json(SNAPSHOT_PATH), snap)
+    body = json.dumps(snap, ensure_ascii=False, indent=1)
+    tmp = SNAPSHOT_PATH + ".tmp"
+    with open(tmp, "w") as fh:
+        fh.write(body + "\n")
+    os.replace(tmp, SNAPSHOT_PATH)
+    if changed:
+        stamp = time.strftime("%Y%m%d-%H%M%S")
+        with open(os.path.join(HISTORY_DIR, stamp + ".json"), "w") as fh:
+            fh.write(body + "\n")
+        for path in sorted(glob.glob(os.path.join(HISTORY_DIR, "*.json")))[:-HISTORY_KEEP]:
+            os.remove(path)
+
+    if not args.quiet:
+        n_win = sum(len(s["windows"]) for s in snap["sessions"])
+        print("保存: %d セッション / %d ウィンドウ / claude %d 本 -> %s"
+              % (len(snap["sessions"]), n_win, snap["claudeSessionCount"],
+                 SNAPSHOT_PATH))
+    return 0
+
+
+def _read_json(path):
+    try:
+        with open(path) as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return None
+
+
+def load_snapshot(path):
+    snap = _read_json(path)
+    if snap is None:
+        print("スナップショットがありません: %s" % path, file=sys.stderr)
+    return snap
+
+
+def cmd_list(args):
+    if args.history:
+        paths = sorted(glob.glob(os.path.join(HISTORY_DIR, "*.json")))
+        if not paths:
+            print("履歴がありません", file=sys.stderr)
+            return 1
+        for path in paths:
+            snap = _read_json(path) or {}
+            print("%-18s claude %2d 本 / %d セッション"
+                  % (os.path.basename(path)[:-len(".json")],
+                     snap.get("claudeSessionCount", 0),
+                     len(snap.get("sessions", []))))
+        print("\n復元: tmux-claude-sessions restore --from <上のいずれか>")
+        return 0
+
+    path = snapshot_path_for(args)
+    snap = load_snapshot(path)
+    if snap is None:
+        return 1
+    print("%s  saved: %s  (claude %d 本)"
+          % (path, snap["savedAt"], snap["claudeSessionCount"]))
+    for sess in snap["sessions"]:
+        print("session %s" % sess["name"])
+        for win in sess["windows"]:
+            print("  [%d] %s" % (win["index"], win["name"]))
+            for pane in win["panes"]:
+                claude = pane["claude"]
+                if claude:
+                    mark = "%s%s" % ("待機 " if claude.get("pending") else "claude ",
+                                     claude["sessionId"])
+                else:
+                    mark = pane["command"]
+                print("    .%d %-45s %s" % (pane["index"], mark, pane["cwd"]))
+    return 0
+
+
+class Runner:
+    def __init__(self, dry_run):
+        self.dry_run = dry_run
+        self._fake_ids = 0
+
+    def out(self, args):
+        if self.dry_run:
+            print("+ tmux %s" % " ".join(shlex.quote(a) for a in args))
+            self._fake_ids += 1
+            prefix = "%" if "split-window" in args else "@"
+            return "%sdry%d" % (prefix, self._fake_ids)
+        return _tmux(args).strip()
+
+    def run(self, args, check=True):
+        if self.dry_run:
+            print("+ tmux %s" % " ".join(shlex.quote(a) for a in args))
+            return True
+        try:
+            _tmux(args, check=check)
+            return True
+        except subprocess.CalledProcessError as exc:
+            print("  tmux %s に失敗: %s" % (" ".join(args), exc.stderr.strip()),
+                  file=sys.stderr)
+            return False
+
+
+def send_resume_commands(runner, targets, auto_start, attempts=6, delay=0.3):
+    """復元コマンドをペインへ送る。
+
+    ウィンドウを作った直後のシェルは入力を取りこぼすので、ペインに表示された
+    内容を確かめ、欠けていれば行を消してから送り直す。
+    """
+    failed = []
+    for pane_id, command in targets:
+        sent = False
+        for attempt in range(attempts):
+            if attempt:
+                runner.run(["send-keys", "-t", pane_id, "C-u"], check=False)
+                time.sleep(delay)
+            runner.run(["send-keys", "-t", pane_id, command], check=False)
+            if runner.dry_run:
+                sent = True
+                break
+            time.sleep(delay)
+            shown = last_nonempty_line(
+                runner.out(["capture-pane", "-p", "-J", "-t", pane_id]))
+            if command in shown:
+                sent = True
+                break
+        if sent and auto_start:
+            runner.run(["send-keys", "-t", pane_id, "Enter"], check=False)
+        if not sent:
+            failed.append(pane_id)
+    return failed
+
+
+def _window_name_args(win):
+    """claude が入るウィンドウは名前を付けず automatic-rename に任せる。"""
+    if any(p["claude"] for p in win["panes"]):
+        return []
+    if not win["name"] or win["name"] == win["panes"][0]["command"]:
+        return []
+    return ["-n", win["name"]]
+
+
+def restore_window(runner, win, window_id):
+    pane_ids = [runner.out(["list-panes", "-t", window_id, "-F", "#{pane_id}"])]
+    for pane in win["panes"][1:]:
+        new_id = runner.out(["split-window", "-d", "-P", "-F", "#{pane_id}",
+                             "-t", pane_ids[-1], "-c", pane["cwd"]])
+        if not new_id:
+            print("  ウィンドウ %s: ペインを分割できず %d 個で打ち切り"
+                  % (win["index"], len(pane_ids)), file=sys.stderr)
+            break
+        pane_ids.append(new_id)
+    if win["layout"]:
+        runner.run(["select-layout", "-t", window_id, win["layout"]], check=False)
+    targets = []
+    for pane, pane_id in zip(win["panes"], pane_ids):
+        if pane["claude"]:
+            targets.append((pane_id, build_resume_command(pane["claude"])))
+        if pane["active"]:
+            runner.run(["select-pane", "-t", pane_id], check=False)
+    return targets
+
+
+def cmd_restore(args):
+    path = snapshot_path_for(args)
+    snap = load_snapshot(path)
+    if snap is None:
+        return 1
+    # 復元に使った内容を退避しておく。定期保存が snapshot.json を書き換えても
+    # --from last で同じものを復元し直せる。
+    if not args.dry_run and os.path.abspath(path) != os.path.abspath(
+            LAST_RESTORED_PATH):
+        try:
+            os.makedirs(STATE_DIR, exist_ok=True)
+            with open(LAST_RESTORED_PATH, "w") as fh:
+                json.dump(snap, fh, ensure_ascii=False, indent=1)
+        except OSError as exc:
+            print("退避に失敗: %s" % exc, file=sys.stderr)
+    runner = Runner(args.dry_run)
+
+    if not args.allow_duplicates:
+        dropped = drop_running_claude_sessions(snap, running_claude_session_ids())
+        if dropped:
+            print("起動中の claude %d 本はそのままにします" % len(dropped),
+                  file=sys.stderr)
+
+    try:
+        existing = set(_tmux(["list-sessions", "-F", "#{session_name}"]).split())
+    except subprocess.CalledProcessError:
+        existing = set()
+
+    names = []
+    pending_keys = []
+    n_windows = 0
+    for sess in snap["sessions"]:
+        if args.session and sess["name"] != args.session:
+            continue
+        windows = [w for w in sess["windows"] if w["panes"]]
+        if not windows:
+            continue
+        name = resolve_session_name(sess["name"], existing)
+        existing.add(name)
+        if name != sess["name"]:
+            print("session %s は使われているので %s を作ります" % (sess["name"], name),
+                  file=sys.stderr)
+
+        first = windows[0]
+        wid = runner.out(["new-session", "-d", "-P", "-F", "#{window_id}",
+                          "-s", name, "-c", first["panes"][0]["cwd"]]
+                         + _window_name_args(first))
+        if not wid:
+            print("session %s を作れませんでした" % name, file=sys.stderr)
+            continue
+        runner.run(["move-window", "-s", wid, "-t", "%s:%d" % (name, first["index"])],
+                   check=False)
+        pending_keys.extend(restore_window(runner, first, wid))
+        n_windows += 1
+
+        for win in windows[1:]:
+            wid = runner.out(["new-window", "-d", "-P", "-F", "#{window_id}",
+                              "-t", "%s:%d" % (name, win["index"]),
+                              "-c", win["panes"][0]["cwd"]] + _window_name_args(win))
+            if not wid:
+                print("  ウィンドウ %d を作れませんでした" % win["index"],
+                      file=sys.stderr)
+                continue
+            pending_keys.extend(restore_window(runner, win, wid))
+            n_windows += 1
+
+        active = [w for w in windows if w["active"]]
+        if active:
+            runner.run(["select-window", "-t", "%s:%d" % (name, active[0]["index"])],
+                       check=False)
+        names.append(name)
+
+    # ウィンドウを全て作ってから送る。作った直後のシェルは入力を取りこぼす
+    failed = send_resume_commands(runner, pending_keys, args.start)
+    if failed:
+        print("%d ペインへ再開コマンドを送れませんでした: %s"
+              % (len(failed), " ".join(failed)), file=sys.stderr)
+
+    if names and not args.dry_run:
+        how = "起動済み" if args.start else "各ペインで Enter を押すと再開します"
+        print("%s に %d ウィンドウを復元しました（claude %d 本は %s）"
+              % ("/".join(names), n_windows, len(pending_keys) - len(failed), how))
+        print("移動: tmux switch-client -t %s（または prefix + s）" % names[0])
+    return 0
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    sub = parser.add_subparsers(dest="command")
+
+    p_save = sub.add_parser("save", help="現在の tmux 構成と claude セッションを保存")
+    p_save.add_argument("--quiet", action="store_true")
+    p_save.set_defaults(func=cmd_save)
+
+    p_list = sub.add_parser("list", help="保存内容を表示")
+    p_list.add_argument("--file", default=SNAPSHOT_PATH)
+    p_list.add_argument("--from", dest="from_stamp", metavar="STAMP",
+                        help="履歴から読む。日時・その前方一致・latest・last")
+    p_list.add_argument("--history", action="store_true", help="履歴の一覧を出す")
+    p_list.set_defaults(func=cmd_list)
+
+    p_restore = sub.add_parser("restore", help="保存内容から tmux を復元")
+    p_restore.add_argument("--file", default=SNAPSHOT_PATH)
+    p_restore.add_argument("--from", dest="from_stamp", metavar="STAMP",
+                           help="履歴から復元する。日時・その前方一致・latest・"
+                                "last(前回復元した内容)")
+    p_restore.add_argument("--session", help="このセッション名だけ復元する")
+    p_restore.add_argument("--allow-duplicates", action="store_true",
+                           help="起動中の claude セッションも復元対象にする")
+    p_restore.add_argument("--start", action="store_true",
+                           help="claude を Enter まで送って自動起動する")
+    p_restore.add_argument("--dry-run", action="store_true")
+    p_restore.set_defaults(func=cmd_restore)
+
+    args = parser.parse_args(argv)
+    if not getattr(args, "func", None):
+        parser.print_help()
+        return 1
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
