@@ -1,0 +1,23 @@
+# スクショの保存先を ~/Screenshots 配下のサブフォルダへ切り替える
+# usage: scrdir | scrdir <name> | scrdir --show | scrdir --reset
+
+local base="$HOME/Screenshots"
+
+case $1 in
+  --show)
+    defaults read com.apple.screencapture location
+    return
+    ;;
+  --reset)
+    defaults write com.apple.screencapture location "$HOME/Downloads"
+    killall SystemUIServer
+    echo "スクショ保存先: ~/Downloads"
+    return
+    ;;
+esac
+
+local dir="$base/${1:-$(date +%Y%m%d-%H%M%S)}"
+mkdir -p "$dir"
+defaults write com.apple.screencapture location "$dir"
+killall SystemUIServer
+echo "スクショ保存先: $dir"

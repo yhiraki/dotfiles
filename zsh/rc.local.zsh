@@ -7,7 +7,7 @@
 
 # 自作関数の autoload 用パスを追加
 fpath=($ZDOTDIR/functions $fpath)
-autoload -Uz add-zsh-hook fsh fsql repo cl
+autoload -Uz add-zsh-hook $ZDOTDIR/functions/*(N:t)
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]] &&
   [[ -n ${EMACS_VTERM_PATH} ]] &&
