@@ -75,6 +75,12 @@
     skhdConfig = builtins.readFile ../../skhdrc;
   };
 
+  # nosleep(bin/nosleep) の pmset -a disablesleep をパスワード無しで許可。
+  # 蓋クローズ時のスリープ無効化は root 専用設定でユーザ権限の代替が無いため。
+  security.sudo.extraConfig = ''
+    ${username} ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 0, /usr/bin/pmset -a disablesleep 1
+  '';
+
   # nix-darwin の状態バージョン（初回構築時の値で固定）
   system.stateVersion = 5;
 }

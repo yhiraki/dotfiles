@@ -57,12 +57,12 @@ case "$1" in
         "$@"
         ;;
     *)
-        # 時間指定。タイマーは nohup でターミナルを閉じても生き残る
+        # 時間指定。タイマーは nohup でターミナルを閉じても生き残る。
+        # nohup 自体はユーザ権限で走らせ、pmset 呼び出しだけ sudo する。
         secs=$(to_seconds "$1") || usage
-        sudo -v
-        sudo nohup sh -c "
-            trap 'pmset -a disablesleep 0' EXIT INT TERM
-            pmset -a disablesleep 1
+        nohup sh -c "
+            trap 'sudo pmset -a disablesleep 0' EXIT INT TERM
+            sudo pmset -a disablesleep 1
             sleep $secs
         " >/dev/null 2>&1 &
         disown
