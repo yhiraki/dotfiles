@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# ボイスメモを前面に出して新規録音を開始する
+#
+# usage:
+#   voicememo-record          # 録音を開始
+#   voicememo-record --check  # 開始せずにメニュー項目の有無だけ確認
+
+set -eu
+
+check=0
+[ "${1:-}" = "--check" ] && check=1
+
+open -a VoiceMemos
+
+osascript - "$check" <<'APPLESCRIPT'
+on run argv
+  set checkOnly to (item 1 of argv) is "1"
+  tell application "System Events"
+    tell process "VoiceMemos"
+      repeat 50 times
+        if exists menu bar 1 then exit repeat
+        delay 0.1
+      end repeat
+      set frontmost to true
+      repeat 30 times
+        if frontmost then exit repeat
+        delay 0.1
+      end repeat
+      -- ファイルメニューの先頭が「新規録音を開始」。名前はロケール依存なので位置で取る
+      set recItem to menu item 1 of menu 1 of menu bar item 3 of menu bar 1
+      if checkOnly then
+        return (name of recItem) & " / enabled=" & (enabled of recItem as text)
+      end if
+      click recItem
+    end tell
+  end tell
+end run
+APPLESCRIPT
