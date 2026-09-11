@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# 進行中のボイスメモ録音を停止する
+#
+# usage:
+#   voicememo-stop
+
+set -eu
+
+osascript <<'APPLESCRIPT'
+tell application "System Events"
+  if not (exists process "VoiceMemos") then error "ボイスメモが起動していない"
+  tell process "VoiceMemos"
+    set frontmost to true
+    repeat 30 times
+      if frontmost then exit repeat
+      delay 0.1
+    end repeat
+    -- ファイルメニューの2番目が「編集を完了」。名前はロケール依存なので位置で取る
+    click menu bar item 3 of menu bar 1
+    delay 0.3
+    set stopItem to menu item 2 of menu 1 of menu bar item 3 of menu bar 1
+    if not (enabled of stopItem) then
+      key code 53
+      error "録音中ではない"
+    end if
+    click stopItem
+  end tell
+end tell
+APPLESCRIPT

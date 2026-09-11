@@ -6,3 +6,4 @@ cmd + ctrl - b : open -a 'Google Chrome.app'
 cmd + ctrl - s : open -a Slack.app
 cmd + ctrl - v : open -a VoiceMemos.app
 cmd + ctrl - r : $HOME/src/github.com/yhiraki/dotfiles/bin/voicememo-record
+cmd + ctrl + shift - r : $HOME/src/github.com/yhiraki/dotfiles/bin/voicememo-stop
