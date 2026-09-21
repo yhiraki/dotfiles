@@ -32,9 +32,6 @@
 
 (require 'cl-lib)
 
-(use-package f :ensure t)
-(use-package s :ensure t)
-
 (defvar my/profiler-enabled nil)
 (when my/profiler-enabled
   (require 'profiler)
@@ -67,11 +64,15 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+(use-package f :ensure t)
+(use-package s :ensure t)
+
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
 (defvar darwin-p (eq system-type 'darwin))
 (defvar linux-p (eq system-type 'gnu/linux))
+(defvar windows-p (eq system-type 'windows-nt))
 (defvar wsl-p
   (let* ((ver-file "/proc/version")
          (exists? (file-exists-p ver-file)))
@@ -255,6 +256,7 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package man
+  :if (executable-find "man")
   ;; The 'nanual-entry' command locks Emacs for several seconds, which is annoying.
   :bind ("s-M" . nil)
   )
@@ -314,8 +316,7 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package vc-hooks
   :custom
-  (vc-handled-backends nil) ; Macでのパフォーマンスに影響するのでVCを無効化。 magitを使うので問題ない
-
+  (vc-handled-backends '(Git))
   (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
   (auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
   (large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
@@ -449,6 +450,7 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package exec-path-from-shell :ensure t
+  :if (not windows-p)
   :custom
   (exec-path-from-shell-variables
    '(
@@ -580,6 +582,8 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package vterm :ensure t
+  :if (not windows-p)
+
   :custom
   (vterm-always-compile-module t)
   (vterm-buffer-name-string "*vterm: %s*")
@@ -999,6 +1003,7 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package tree-sitter-langs :ensure t
+  :if (not windows-p)
   :after tree-sitter)
 
 (use-package add-node-modules-path :ensure t
@@ -3336,6 +3341,10 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
 
     (setq evil-collection-mode-list (delete 'vterm evil-collection-mode-list))
     (evil-set-initial-state 'vterm-mode 'emacs)
+
+    (when windows-p
+      (setq evil-collection-mode-list
+            (remove 'man evil-collection-mode-list)))
 
     (evil-collection-init)
     )
