@@ -3559,6 +3559,11 @@ EXTRA-FILTERS are additional rg glob patterns (e.g. \"!**/foo/**\")."
   )
 
 (use-package consult-ghq :ensure t
+  :custom
+  (consult-ghq-find-function
+   (if (executable-find "fd")
+       #'consult-fd
+     #'dired))
   :commands (consult-ghq-find consult-ghq-grep)
   )
 
