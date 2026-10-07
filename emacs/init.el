@@ -23,8 +23,6 @@
 ;;
 
 ;;; Code:
-(setq debug-on-error t)
-
 ;; custom-file (自動生成設定) の分離と早期ロード
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -318,7 +316,6 @@ This version does not rely on mdfind (Spotlight)."
   :custom
   (vc-handled-backends '(Git))
   (vc-follow-symlinks t) ; シンボリックリンクの読み込みを許可
-  (auto-revert-check-vc-info t) ; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
   (large-file-warning-threshold 100000000) ; warn when opening files bigger than 100MB
   (tags-revert-without-query 1) ; TAGS ファイルを自動で再読込
   )
@@ -332,6 +329,8 @@ This version does not rely on mdfind (Spotlight)."
   )
 
 (use-package autorevert
+  :custom
+  (auto-revert-avoid-polling t) ; 変更検知は file-notify に任せ、全バッファの定期ポーリングをしない
   :config (global-auto-revert-mode t)
   )
 
