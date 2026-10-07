@@ -261,6 +261,14 @@ This version does not rely on mdfind (Spotlight)."
 
 (use-package diminish :ensure t)
 
+(use-package gcmh :ensure t
+  :diminish
+  :hook (after-init . gcmh-mode)
+  :custom
+  (gcmh-idle-delay 'auto) ; 直前の GC 時間に比例した待ちの後、アイドル中に GC する
+  (gcmh-auto-idle-delay-factor 10)
+  (gcmh-high-cons-threshold (* 16 1024 1024)))
+
 (use-package abbrev
   :diminish)
 

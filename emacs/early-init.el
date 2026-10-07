@@ -15,10 +15,9 @@
 (setq gc-cons-threshold (* 100 1024 1024))
 (setq gc-cons-percentage 0.6)
 
-;; 起動完了後に通常の 800KB に復元するフック
+;; 起動完了後の閾値は gcmh (init.el) が管理する
 (add-hook 'after-init-hook
           (lambda ()
-            (setq gc-cons-threshold (* 800 1024))
             (setq gc-cons-percentage 0.1)))
 
 ;; 2. 画面初期化のちらつきを防ぐため、UI 要素を最速で非表示化
