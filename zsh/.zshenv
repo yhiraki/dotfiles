@@ -96,7 +96,7 @@ PIP_REQUIRE_VIRTUALENV=true
 
 REMOTE_WORKSPACE_FILE=/tmp/gce-workspace-ip
 
-export PNPM_HOME="/home/yuta/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
