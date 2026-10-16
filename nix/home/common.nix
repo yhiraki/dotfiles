@@ -93,6 +93,9 @@ in
     librsvg
     # postgresql: psql/pg_dump 等のクライアント目的（サーバは起動しない）
     postgresql_17
+  ] ++ lib.optionals stdenv.isDarwin [
+    # glibtool: vterm-module の libvterm ビルドが Darwin では glibtool 名で GNU libtool を呼ぶ
+    (writeShellScriptBin "glibtool" ''exec ${libtool}/bin/libtool "$@"'')
   ];
 
   # ~/.gitconfig に共通設定を集約（nix store へコピー、更新は rebuild）。
