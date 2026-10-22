@@ -1621,58 +1621,6 @@ blank lines end up inside the block."
             (org-next-visible-heading 1)
             (org-set-property "ID" id)))))
 
-    (defvar my/org-roam--flag-insert-with-tags "NODE_INSERT_WITH_TAGS")
-    (defvar my/org-roam--flag-insert-with-category "NODE_INSERT_WITH_CATEGORY")
-
-    (defun my/org-roam-set-insert-with-tags ()
-      (interactive)
-      (org-set-property my/org-roam--flag-insert-with-tags "yes"))
-
-    (defun my/org-roam-set-insert-with-category ()
-      (interactive)
-      (org-set-property "CATEGORY" (read-from-minibuffer "CATEGORY: "))
-      (org-set-property my/org-roam--flag-insert-with-category "yes"))
-
-    (defun my/org-roam-node-add-auto-tag (id _description)
-      "Insert node with tags. Node found with iD."
-      (when-let*
-          ((node (org-roam-node-from-id id))
-           (tags (org-roam-node-tags node))
-           (prop (org-roam-node-properties node))
-           (inherit (assoc my/org-roam--flag-insert-with-tags prop)))
-        (setq tags (delete "Reference" tags))
-        (setq tags (delete "noexport" tags))
-        (save-excursion
-          (ignore-errors
-            (org-back-to-heading)
-            (org-set-tags
-             (seq-uniq
-              (append
-               tags
-               (org-get-tags nil t))))))))
-
-    (defun my/org-roam-node-add-auto-category (id _description)
-      "Insert node with category as prop. Node found with iD."
-      (interactive)
-      (when-let*
-          ((node (org-roam-node-from-id id))
-           (prop (org-roam-node-properties node))
-           (inherit (assoc my/org-roam--flag-insert-with-category prop))
-           (category (cdr (assoc "CATEGORY" prop))))
-        (save-excursion
-          (ignore-errors
-            (org-back-to-heading)
-            (org-set-property "CATEGORY" category)))))
-
-    (defun my/org-roam-link-replace-auto-tags-and-category (old-func &rest args)
-      (apply old-func args)
-      (let* ((link (org-element-context))
-             (id (org-element-property :path link)))
-        (my/org-roam-node-add-auto-category id nil)
-        (my/org-roam-node-add-auto-tag id nil)))
-
-    (advice-add #'org-roam-link-replace-at-point :around #'my/org-roam-link-replace-auto-tags-and-category)
-
     (defun my/filename-is-valid-for-publish (filename)
       (let ((case-fold-search nil))
         (string-match "^[a-z0-9-\\.]+$" filename)))
@@ -1805,8 +1753,6 @@ tag (including filetags), or a PUBLISH property set to t."
            (org-roam-db-autosync--setup-update-on-save-h))
          ))
     (org-capture-before-finalize . my/org-roam-move-properties-to-1st-heading)
-    (org-roam-post-node-insert . my/org-roam-node-add-auto-tag)
-    (org-roam-post-node-insert . my/org-roam-node-add-auto-category)
 
     :custom
     (org-roam-completion-everywhere t)
@@ -1854,8 +1800,6 @@ tag (including filetags), or a PUBLISH property set to t."
           ("C-c n t" . org-roam-tag-add)
           ("C-c n w" . my/org-roam-browse-built-file)
           ("C-c n W" . my/org-roam-browse-published-file)
-          ("C-c n I t" . my/org-roam-set-insert-with-tags)
-          ("C-c n I c" . my/org-roam-set-insert-with-category)
           ("C-M-i" . completion-at-point))
     :general
     (:states '(normal visual)
