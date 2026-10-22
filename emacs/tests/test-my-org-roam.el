@@ -16,6 +16,10 @@
       (goto-char (point-min))
       (when (re-search-forward "(defun my/org-roam-find-recent-items" nil t)
         (beginning-of-line)
+        (eval (read (current-buffer))))
+      (goto-char (point-min))
+      (when (re-search-forward "(defun my/org-roam-filter-is-not-journals-or-tasks" nil t)
+        (beginning-of-line)
         (eval (read (current-buffer)))))))
 
 (load-target-functions)
@@ -118,6 +122,22 @@
     (let ((result-node (my/org-roam-find-recent-items)))
       (should result-node)
       (should (equal (org-roam-node-title result-node) "Recent Journal")))))
+
+;; 5. my/org-roam-filter-is-not-journals-or-tasks の除外条件のテスト
+(ert-deftest test-my/org-roam-filter-is-not-journals-or-tasks ()
+  "ジャーナル・タスク・セッションブリーフを除外し、通常ノードを残すか検証するテスト"
+  (cl-flet ((node (tags category)
+              (make-org-roam-node
+               :file "/path/to/file.org"
+               :title "Title"
+               :tags tags
+               :properties (when category `(("CATEGORY" . ,category))))))
+    (should (my/org-roam-filter-is-not-journals-or-tasks (node '("Note") nil)))
+    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node '("Journal") nil)))
+    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node nil "Journal")))
+    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node '("Task") nil)))
+    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node '("SessionBrief") nil)))
+    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node nil "Session")))))
 
 (provide 'test-my-org-roam)
 ;;; test-my-org-roam.el ends here

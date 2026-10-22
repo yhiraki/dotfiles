@@ -1815,10 +1815,12 @@ tag (including filetags), or a PUBLISH property set to t."
     ;; (require 'org-roam-dailies)
 
     (defun my/org-roam-filter-is-not-journals-or-tasks (node)
-      "Return nil if NODE is a journal or task node, otherwise return t.
+      "Return nil if NODE is a journal, task or session brief node, otherwise return t.
 A node is considered a journal if it has the category \"Journal\"
 or the tag \"JOURNAL\".
-A node is considered a task if it has the tag \"TASK\"."
+A node is considered a task if it has the tag \"TASK\".
+A node is considered a session brief if it has the category \"Session\"
+or the tag \"SESSIONBRIEF\"."
       (let* ((tags (org-roam-node-tags node))
              (tags (mapcar #'upcase tags))
              (category (org-roam-node-category node)))
@@ -1832,6 +1834,10 @@ A node is considered a task if it has the tag \"TASK\"."
          ((member "JOURNAL" tags)
           nil)
          ((member "TASK" tags)
+          nil)
+         ((string-equal category "Session")
+          nil)
+         ((member "SESSIONBRIEF" tags)
           nil)
          (t t))))
 
