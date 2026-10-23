@@ -89,9 +89,22 @@
     (should (equal (my/org-roam-node-created-date node-node) "2025-04-24"))))
 
 ;; 4. my/org-roam-find-recent-items のフィルタ/ソート機能のテスト
+(defun test-my/org-roam--fixed-now ()
+  "テストで固定する現在時刻（2026-05-20 12:00 ローカル時刻）を返す。"
+  (encode-time (list 0 0 12 20 5 2026 nil -1 nil)))
+
+(defun test-my/org-roam--journal-node (date title)
+  "DATE（YYYY/MM/DD）のジャーナルノードを作る。"
+  (make-org-roam-node
+   :file (format "/home/yuta/org/roam/journal/%s/120000.org" date)
+   :title title
+   :tags '("Journal")
+   :properties nil))
+
 (ert-deftest test-my/org-roam-find-recent-items ()
   "my/org-roam-find-recent-items のメイン処理が正しく動作するか検証するテスト"
-  (cl-letf* (((symbol-function 'completing-read)
+  (cl-letf* (((symbol-function 'current-time) #'test-my/org-roam--fixed-now)
+             ((symbol-function 'completing-read)
               (lambda (prompt choices &optional default)
                 (car choices))) ; 最も日付が新しい最初の選択肢を自動選択
              ((symbol-function 'org-roam-node-visit)
@@ -101,27 +114,37 @@
               (lambda ()
                 (list
                  ;; 1. 最近のジャーナル (2026-05-15) -> 抽出対象
-                 (make-org-roam-node
-                  :file "/home/yuta/org/roam/journal/2026/05/15/181832.org"
-                  :title "Recent Journal"
-                  :tags '("Journal")
-                  :properties nil)
+                 (test-my/org-roam--journal-node "2026/05/15" "Recent Journal")
                  ;; 2. 古いジャーナル (2020-01-01) -> 対象外
-                 (make-org-roam-node
-                  :file "/home/yuta/org/roam/journal/2020/01/01/120000.org"
-                  :title "Old Journal"
-                  :tags '("Journal")
-                  :properties nil)
+                 (test-my/org-roam--journal-node "2020/01/01" "Old Journal")
                  ;; 3. 最近の一般メモ (2026-05-18) -> 対象外
                  (make-org-roam-node
                   :file "/home/yuta/org/roam/nodes/20260518120000-note.org"
                   :title "Recent Note"
                   :tags '("Note")
                   :properties nil)))))
-    
+
     (let ((result-node (my/org-roam-find-recent-items)))
       (should result-node)
       (should (equal (org-roam-node-title result-node) "Recent Journal")))))
+
+(ert-deftest test-my/org-roam-find-recent-items-boundary ()
+  "ちょうど14日前は候補に含み、15日前は含まないことを検証するテスト"
+  (let (offered)
+    (cl-letf* (((symbol-function 'current-time) #'test-my/org-roam--fixed-now)
+               ((symbol-function 'completing-read)
+                (lambda (prompt choices &optional default)
+                  (setq offered choices)
+                  (car choices)))
+               ((symbol-function 'org-roam-node-visit) #'identity)
+               ((symbol-function 'org-roam-node-list)
+                (lambda ()
+                  (list
+                   (test-my/org-roam--journal-node "2026/05/06" "14 Days Ago")
+                   (test-my/org-roam--journal-node "2026/05/05" "15 Days Ago")))))
+      (my/org-roam-find-recent-items)
+      (should (cl-some (lambda (c) (string-match-p "14 Days Ago" c)) offered))
+      (should-not (cl-some (lambda (c) (string-match-p "15 Days Ago" c)) offered)))))
 
 ;; 5. my/org-roam-filter-is-not-journals-or-tasks の除外条件のテスト
 (ert-deftest test-my/org-roam-filter-is-not-journals-or-tasks ()
