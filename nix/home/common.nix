@@ -113,6 +113,9 @@ in
     # ghostty 設定も同様に out-of-store symlink（編集即反映）
     ".config/ghostty/config".source =
       config.lib.file.mkOutOfStoreSymlink "${repoDir}/ghostty/config";
+
+    ".config/herdr/config.toml".source =
+      config.lib.file.mkOutOfStoreSymlink "${repoDir}/herdr/config.toml";
   } // emacsFiles;
 
   # direnv: nix-direnv の direnvrc は使うが、シェル統合(eval hook)は HM に

@@ -1,0 +1,35 @@
+onboarding = false
+
+[theme]
+name = "terminal"
+auto_switch = false
+
+[keys]
+prefix = "ctrl+t"
+reload_config = "prefix+r"
+goto = "prefix+w"
+workspace_picker = "prefix+s"
+settings = "prefix+shift+s"
+split_vertical = ["prefix+|", "prefix+%"]
+split_horizontal = ["prefix+minus", "prefix+\""]
+resize_mode = "prefix+shift+r"
+resize_pane_left = "prefix+shift+h"
+resize_pane_down = "prefix+shift+j"
+resize_pane_up = "prefix+shift+k"
+resize_pane_right = "prefix+shift+l"
+swap_pane_left = "prefix+alt+h"
+swap_pane_down = "prefix+alt+j"
+swap_pane_up = "prefix+alt+k"
+swap_pane_right = "prefix+alt+l"
+
+[ui]
+tab_bar_position = "bottom"
+prompt_new_tab_name = false
+show_agent_labels_on_pane_borders = true
+status_indicators = "symbols"
+tab_bar_right = [
+  { type = "command", command = "tmux-window-status-right", interval_seconds = 5, timeout_seconds = 2 },
+]
+
+[terminal]
+new_cwd = "follow"
