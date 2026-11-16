@@ -1345,6 +1345,7 @@ This version does not rely on mdfind (Spotlight)."
   (org-after-todo-statistics . my/org-sync-todo-with-progress)
   (org-after-todo-state-change . my/org-add-date-for-book-state)
   (org-checkbox-statistics . my/org-checkbox-todo)
+  (org-checkbox-statistics . my/org-ask-answered-by-checkbox)
   (org-mode . org-indent-mode)
   (org-mode . my/setup-org-mode-local-hooks)
 
@@ -1371,6 +1372,9 @@ This version does not rely on mdfind (Spotlight)."
   (org-log-done 'time) ; DONEの時刻を記録
   (org-log-into-drawer "LOGBOOK")
   (org-image-actual-width nil)  ; to use #+ATTR_ORG: :width or fixed width
+  ;; [/] の数え方から ASK・ANSWERED・CLOSED を外す
+  (org-provide-todo-statistics
+   '(("TODO" "NEXT" "STARTED" "WAITING" "SOMEDAY") ("DONE" "CANCELLED")))
   (org-tag-alist
    '((:startgrouptag)
      ("Work")
@@ -1423,6 +1427,19 @@ Do nothing if the heading has no TODO keyword."
             (let ((done (string-to-number (match-string 2)))
                   (total (string-to-number (match-string 3))))
               (my/org-sync-todo-with-progress done (- total done))))))))
+
+  (defun my/org-ask-answered-by-checkbox ()
+    "ASK の選択肢にチェックが入ったら ANSWERED にし、すべて外れたら ASK に戻す。"
+    (save-excursion
+      (org-back-to-heading t)
+      (let ((state (org-get-todo-state)))
+        (when (member state '("ASK" "ANSWERED"))
+          (let* ((end (save-excursion (outline-next-heading) (point)))
+                 (checked (save-excursion
+                            (re-search-forward "^[ \t]*- \\[X\\] " end t))))
+            (cond
+             ((and checked (equal state "ASK")) (org-todo "ANSWERED"))
+             ((and (not checked) (equal state "ANSWERED")) (org-todo "ASK"))))))))
 
   (defun my/org-add-date-for-book-state ()
     "Set date string when book state changed."
@@ -2614,6 +2631,11 @@ LANG はシンボル (例: python, emacs-lisp)。"
      "────────────────"))
   (org-refile-targets '((org-agenda-files :maxlevel . 2)))
   (org-agenda-files `(,org-directory))
+  (org-agenda-prefix-format
+   '((agenda . " %i %-12:c%?-12t% s")
+     (todo . " %i %-12:c%b")
+     (tags . " %i %-12:c")
+     (search . " %i %-12:c")))
   (org-agenda-span 'day)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :fileskip0 t :tags t :hidefiles t))
   (org-agenda-cmp-user-defined #'my/org-agenda-sort-by-property-created)
