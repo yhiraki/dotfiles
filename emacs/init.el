@@ -1832,31 +1832,14 @@ tag (including filetags), or a PUBLISH property set to t."
     ;; (require 'org-roam-dailies)
 
     (defun my/org-roam-filter-is-not-journals-or-tasks (node)
-      "Return nil if NODE is a journal, task or session brief node, otherwise return t.
-A node is considered a journal if it has the category \"Journal\"
-or the tag \"JOURNAL\".
-A node is considered a task if it has the tag \"TASK\".
-A node is considered a session brief if it has the category \"Session\"
-or the tag \"SESSIONBRIEF\"."
-      (let* ((tags (org-roam-node-tags node))
-             (tags (mapcar #'upcase tags))
-             (category (org-roam-node-category node)))
-        (cond
-         ((string-equal category "Inbox")
-          nil)
-         ((string-equal category "Journal")
-          nil)
-         ((string-equal category "Reference")
-          nil)
-         ((member "JOURNAL" tags)
-          nil)
-         ((member "TASK" tags)
-          nil)
-         ((string-equal category "Session")
-          nil)
-         ((member "SESSIONBRIEF" tags)
-          nil)
-         (t t))))
+      "Return nil if NODE lives in journal/, inbox/, refs/ or wp/, otherwise t.
+The kind of a file is decided by its path under `org-roam-directory',
+including the secret/ side and secret/pj/<slug>/wp/."
+      (let ((rel (file-relative-name (org-roam-node-file node)
+                                     (file-name-as-directory org-roam-directory))))
+        (not (string-match-p
+              "\\`\\(?:secret/\\(?:roam/\\|pj/[^/]+/\\)?\\)?\\(?:journal\\|inbox\\|refs\\|wp\\)/"
+              rel))))
 
     (defun my/org-roam-find-only-node ()
       (interactive)
@@ -2100,9 +2083,104 @@ non-nil if the node should be included."
 
 %?
 ")
+
+       ("w" "WP"
+        plain (file my/org-capture-wp-file)
+        (function my/org-capture-wp-template)
+        :unnarrowed t)
        ))
 
     :config
+
+    (defun my/org-wp-file-path (root target slug time)
+      "ROOT 配下の WP ファイルのパスを返す。
+TARGET は案件の slug か、案件に属さない WP の置き場所 `secret' か `public'。"
+      (let ((case-fold-search nil))
+        (unless (string-match-p "\\`[a-z0-9]+\\(?:-[a-z0-9]+\\)*\\'" slug)
+          (user-error "WP の slug は英小文字・数字・ハイフンにする: %s" slug)))
+      (expand-file-name
+       (format "%s-%s.org" (format-time-string "%Y%m%d" time) slug)
+       (expand-file-name (pcase target
+                           ('public "wp")
+                           ('secret "secret/wp")
+                           (_ (format "secret/pj/%s/wp" target)))
+                         root)))
+
+    (defun my/org-wp-read-project (root slug)
+      "ROOT/secret/pj/SLUG/project.org の先頭見出しから、案件の slug・ID・題名・カテゴリーを返す。"
+      (let ((file (expand-file-name (format "secret/pj/%s/project.org" slug) root)))
+        (when (file-exists-p file)
+          (with-temp-buffer
+            (insert-file-contents file)
+            (delay-mode-hooks (org-mode))
+            (goto-char (point-min))
+            (when (re-search-forward org-heading-regexp nil t)
+              (beginning-of-line)
+              (let ((end (save-excursion (or (outline-next-heading) (point-max)))))
+                (list :slug slug
+                      :id (org-entry-get nil "ID")
+                      :title (org-get-heading t t t t)
+                      :category (save-excursion
+                                  (when (re-search-forward
+                                         "^[ \t]*:CATEGORY:[ \t]+\\(.+?\\)[ \t]*$" end t)
+                                    (match-string-no-properties 1))))))))))
+
+    (defun my/org-wp-template-string (project id time)
+      "WP ファイルの capture テンプレートを返す。PROJECT は `my/org-wp-read-project' の値か nil。"
+      (let ((date (format-time-string "%Y-%m-%d" time))
+            (dow (aref ["日" "月" "火" "水" "木" "金" "土"]
+                       (string-to-number (format-time-string "%w" time)))))
+        (concat
+         "#+DATE: " date "\n"
+         (when project
+           (concat (when-let* ((c (plist-get project :category)))
+                     (format "#+CATEGORY: %s\n" c))
+                   (format "#+filetags: :pj@%s:\n" (plist-get project :slug))))
+         "* TODO %^{WP の題名} [/]\n"
+         ":PROPERTIES:\n"
+         (format ":ID:       %s\n" id)
+         ":COOKIE_DATA: todo recursive\n"
+         (when project ":DIR:      ../files/\n")
+         (format ":MODIFIED: [%s]\n" (format-time-string "%Y-%m-%d %H:%M:%S" time))
+         ":END:\n\n"
+         (if project
+             (format "[[id:%s][%s]] の%%?\n" (plist-get project :id) (plist-get project :title))
+           "%?\n")
+         "\n** やること\n*** NEXT\n** 経過\n"
+         (format "- [%s %s] 着手した\n" date dow))))
+
+    (defvar my/org-capture-wp--file nil
+      "capture 中の WP ファイルのパス。`my/org-capture-wp-template' が設定する。")
+
+    (defun my/org-capture-wp-template ()
+      "案件と slug を尋ねて保存先を決め、WP ファイルのテンプレートを返す。
+org-capture は保存先より先にテンプレートを評価するので、ここで尋ねる。"
+      (let* ((root (file-name-as-directory org-roam-directory))
+             (pj-dir (expand-file-name "secret/pj" root))
+             (slugs (when (file-directory-p pj-dir)
+                      (seq-filter
+                       (lambda (d) (file-exists-p (expand-file-name (concat d "/project.org") pj-dir)))
+                       (directory-files pj-dir nil "\\`[^.]"))))
+             (no-pj-secret "(案件なし・secret)")
+             (no-pj-public "(案件なし・公開)")
+             (choice (completing-read "案件: " (append slugs (list no-pj-secret no-pj-public)) nil t))
+             (target (cond ((equal choice no-pj-secret) 'secret)
+                           ((equal choice no-pj-public) 'public)
+                           (t choice)))
+             (file (my/org-wp-file-path root target
+                                        (read-string "WP の slug（英小文字・数字・ハイフン）: ")
+                                        (current-time))))
+        (when (file-exists-p file)
+          (user-error "WP ファイルが既にある: %s" file))
+        (make-directory (file-name-directory file) t)
+        (setq my/org-capture-wp--file file)
+        (my/org-wp-template-string (and (stringp target) (my/org-wp-read-project root target))
+                                   (upcase (org-id-new))
+                                   (current-time))))
+
+    (defun my/org-capture-wp-file ()
+      (or my/org-capture-wp--file
+          (user-error "WP ファイルの保存先が決まっていない")))
 
     (defun my/org-new-random-file (parent-dir id num-subdir)
       (let* ((pref (substring id 0 num-subdir))
@@ -2276,6 +2354,21 @@ non-nil if the node should be included."
 
     :config
     (use-package org-attach-git)
+
+    (defun my/org-attach-secret-id-dir (file secret-root)
+      "FILE が SECRET-ROOT 配下なら、その添付の書き先 SECRET-ROOT/data/ を返す。"
+      (when file
+        (let ((root (file-name-as-directory (file-truename secret-root))))
+          (when (string-prefix-p root (file-truename file))
+            (file-name-as-directory (expand-file-name "data" root))))))
+
+    (defun my/org-attach-use-secret-dir ()
+      "secret のノートの添付を emacs-data ではなく secret/data/ に書く。"
+      (when-let* ((dir (my/org-attach-secret-id-dir
+                        buffer-file-name (f-join org-directory "roam" "secret"))))
+        (setq-local org-attach-id-dir dir)))
+
+    (add-hook 'org-mode-hook #'my/org-attach-use-secret-dir)
     )
 
   (use-package org-download :ensure t
@@ -2579,6 +2672,25 @@ LANG はシンボル (例: python, emacs-lisp)。"
               (setq found t))))
         found)))
 
+  (defun my/org-wp-stuck-p ()
+    "見出しが進行中の WP で、子孫に NEXT・STARTED の見出しが無ければ non-nil。
+WP は SOMEDAY 以外の未完了 TODO で、見出しに進捗クッキーがあるもの。"
+    (save-excursion
+      (org-back-to-heading t)
+      (let ((comps (org-heading-components))
+            (case-fold-search nil))
+        (and (member (nth 2 comps) org-not-done-keywords)
+             (not (equal (nth 2 comps) "SOMEDAY"))
+             (string-match-p my/org-sub-todo-progress-regexp (or (nth 4 comps) ""))
+             (let ((end (save-excursion (org-end-of-subtree t t))))
+               (forward-line 1)
+               (not (re-search-forward "^\\*+ +\\(?:NEXT\\|STARTED\\)\\(?: \\|$\\)" end t)))))))
+
+  (defun my/org-agenda-skip-unless-stuck-wp ()
+    "止まっている WP 以外を agenda から外す skip 関数。"
+    (unless (my/org-wp-stuck-p)
+      (save-excursion (or (outline-next-heading) (point-max)))))
+
   ;; "t"/"w" の Tasks 系コマンドで共有するブロック
   (defvar my/org-agenda-block-deadline-scheduled
     '(agenda "" ((org-agenda-entry-types '(:deadline :scheduled))
@@ -2609,11 +2721,15 @@ LANG はシンボル (例: python, emacs-lisp)。"
                   (org-agenda-sorting-strategy '(deadline-up))
                   (org-agenda-overriding-header "Deadlines: "))))
 
-  (defvar my/org-agenda-block-projects
+  (defvar my/org-agenda-block-wp
     '(todo 'todo ((org-agenda-skip-function
                    '(org-agenda-skip-entry-if
                      'notregexp my/org-sub-todo-progress-regexp))
-                  (org-agenda-overriding-header "Projects: "))))
+                  (org-agenda-overriding-header "WP: "))))
+
+  (defvar my/org-agenda-block-stuck-wp
+    '(todo 'todo ((org-agenda-skip-function #'my/org-agenda-skip-unless-stuck-wp)
+                  (org-agenda-overriding-header "Stuck WP: "))))
 
   (defvar my/org-agenda-block-someday
     '(todo "SOMEDAY" ((org-agenda-overriding-header "Someday: "))))
@@ -2655,7 +2771,7 @@ LANG はシンボル (例: python, emacs-lisp)。"
        (todo 'todo ((org-agenda-skip-function my/org-agenda-todos-skip-function)
                     (org-agenda-overriding-header "TODOs: ")))
        ,my/org-agenda-block-deadlines
-       ,my/org-agenda-block-projects
+       ,my/org-agenda-block-wp
        ,my/org-agenda-block-someday)
       ;; 期間を限定せず、TODO を含む全ファイルを対象にする
       ((org-agenda-files (my/org-agenda-files-todo))))
@@ -2666,12 +2782,13 @@ LANG はシンボル (例: python, emacs-lisp)。"
        (tags-todo "Work" ((org-agenda-skip-function my/org-agenda-todos-skip-function)
                           (org-agenda-overriding-header "TODOs: ")))
        ,my/org-agenda-block-deadlines
-       ,my/org-agenda-block-projects
+       ,my/org-agenda-block-wp
        ,my/org-agenda-block-someday))
      ("n" "Next Tasks"
       (,my/org-agenda-block-next))
      ("r" "GTD review"
       ((tags-todo "CATEGORY=\"Inbox\"" ((org-agenda-overriding-header "Inbox: ")))
+       ,my/org-agenda-block-stuck-wp
        (todo "SOMEDAY" ((org-agenda-overriding-header "SOMEDAY: ")))
        ))
      ("b" "Books"

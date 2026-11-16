@@ -147,20 +147,37 @@
       (should-not (cl-some (lambda (c) (string-match-p "15 Days Ago" c)) offered)))))
 
 ;; 5. my/org-roam-filter-is-not-journals-or-tasks の除外条件のテスト
+(defvar org-roam-directory)
+
 (ert-deftest test-my/org-roam-filter-is-not-journals-or-tasks ()
-  "ジャーナル・タスク・セッションブリーフを除外し、通常ノードを残すか検証するテスト"
-  (cl-flet ((node (tags category)
-              (make-org-roam-node
-               :file "/path/to/file.org"
-               :title "Title"
-               :tags tags
-               :properties (when category `(("CATEGORY" . ,category))))))
-    (should (my/org-roam-filter-is-not-journals-or-tasks (node '("Note") nil)))
-    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node '("Journal") nil)))
-    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node nil "Journal")))
-    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node '("Task") nil)))
-    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node '("SessionBrief") nil)))
-    (should-not (my/org-roam-filter-is-not-journals-or-tasks (node nil "Session")))))
+  "ノード以外の置き場所 journal・inbox・refs・wp を、タグやカテゴリーではなくパスで除外するか検証するテスト"
+  (let ((org-roam-directory "/home/yuta/org/roam/"))
+    (cl-flet ((keep-p (rel &optional tags category)
+                (my/org-roam-filter-is-not-journals-or-tasks
+                 (make-org-roam-node
+                  :file (concat org-roam-directory rel)
+                  :title "Title"
+                  :tags tags
+                  :properties (when category `(("CATEGORY" . ,category)))))))
+      (should (keep-p "nodes/20250424222752-famille.org"))
+      (should (keep-p "secret/nodes/20250424222752-famille.org"))
+      (should (keep-p "secret/pj/shimamura/project.org"))
+      (should (keep-p "secret/pj/shimamura/docs/20261113-review.org"))
+      ;; 種別のタグやカテゴリーが付いていても、ノードの置き場所なら残す
+      (should (keep-p "nodes/20231129100521-task.org" '("Task") "Inbox"))
+      (should-not (keep-p "journal/2026/05/15/120000.org"))
+      (should-not (keep-p "secret/journal/2026/05/15/120000.org"))
+      (should-not (keep-p "inbox/AB/CDEF.org"))
+      (should-not (keep-p "secret/inbox/AB/CDEF.org"))
+      (should-not (keep-p "secret/roam/inbox/CDEF.org"))
+      (should-not (keep-p "refs/AB/CDEF.org"))
+      (should-not (keep-p "secret/refs/AB/CDEF.org"))
+      (should-not (keep-p "wp/20261116-sample.org"))
+      (should-not (keep-p "secret/wp/20261116-sample.org"))
+      (should-not (keep-p "secret/pj/shimamura/wp/20261112-proposal-review.org"))
+      ;; 置き場所の名前を含むだけのノードは残す
+      (should (keep-p "nodes/journal-tips.org"))
+      (should (keep-p "nodes/clock/wp/sample.org")))))
 
 (provide 'test-my-org-roam)
 ;;; test-my-org-roam.el ends here
