@@ -2686,6 +2686,27 @@ WP は SOMEDAY 以外の未完了 TODO で、見出しに進捗クッキーが�
                (forward-line 1)
                (not (re-search-forward "^\\*+ +\\(?:NEXT\\|STARTED\\)\\(?: \\|$\\)" end t)))))))
 
+  (defun my/org-agenda-category-label ()
+    "agenda の prefix のカテゴリー欄の文字列を返す。
+/wp/ 配下で #+CATEGORY が無くファイル名が代用されている場合は、
+最上位見出しの題名（TODO キーワード・進捗クッキーを除く）を幅 10 に詰めて使う。
+それ以外は org の %-12:c と同じく、カテゴリーを幅 12 に右詰めで埋める。"
+    (let* ((cat (or (org-get-category) ""))
+           (file (buffer-file-name (org-base-buffer (current-buffer)))))
+      (if (and file
+               (string-match-p "/wp/" file)
+               (equal cat (file-name-base file)))
+          (let ((title (save-excursion
+                         (org-back-to-heading t)
+                         (while (> (org-current-level) 1) (org-up-heading-safe))
+                         (string-trim
+                          (replace-regexp-in-string
+                           "\\[[0-9/%]*\\]" "" (or (nth 4 (org-heading-components)) ""))))))
+            (truncate-string-to-width
+             (concat (truncate-string-to-width title 10 nil nil "…") ":")
+             12 nil ?\s))
+        (truncate-string-to-width (concat cat ":") 12 nil ?\s))))
+
   (defun my/org-agenda-skip-unless-stuck-wp ()
     "止まっている WP 以外を agenda から外す skip 関数。"
     (unless (my/org-wp-stuck-p)
@@ -2749,7 +2770,7 @@ WP は SOMEDAY 以外の未完了 TODO で、見出しに進捗クッキーが�
   (org-agenda-files `(,org-directory))
   (org-agenda-prefix-format
    '((agenda . " %i %-12:c%?-12t% s")
-     (todo . " %i %-12:c%b")
+     (todo . " %i %(my/org-agenda-category-label)")
      (tags . " %i %-12:c")
      (search . " %i %-12:c")))
   (org-agenda-span 'day)
