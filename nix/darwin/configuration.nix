@@ -55,6 +55,17 @@
     };
   };
 
+  # macOS 標準ショートカット「コンテクストメニューを表示」(symbolichotkey 159, ⌃Return) を無効化。
+  # Terminal.app 上の Claude Code で Ctrl-Enter を使うため。
+  # CustomUserPreferences は AppleSymbolicHotKeys 全体を上書きするので -dict-add で 1 件だけ書く。
+  system.activationScripts.postActivation.text = ''
+    launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
+      defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 159 \
+      '<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>36</integer><integer>262144</integer></array><key>type</key><string>standard</string></dict></dict>'
+    launchctl asuser "$(id -u -- ${username})" sudo --user=${username} -- \
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+  '';
+
   # ===== brew-free =====
   # CLI は nixpkgs(home-manager 側 home.packages)で導入。
   # karabiner-elements は DriverKit システム拡張のため手動インストール（nix 管理外）。
